@@ -1,3 +1,7 @@
 #kt_login {
-    height: 100vh !important;
+    height: 125vh !important;
+}
+
+body {
+    zoom: 80%;
 }

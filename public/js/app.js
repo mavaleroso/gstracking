@@ -2047,7 +2047,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      username: '',
+      email: '',
       password: '',
       errors: [],
       req: axios.create({
@@ -2061,8 +2061,8 @@ __webpack_require__.r(__webpack_exports__);
 
       this.errors = [];
 
-      if (!this.username) {
-        this.errors.push('Username is required.');
+      if (!this.email) {
+        this.errors.push('Email is required.');
       }
 
       if (!this.password) {
@@ -2071,10 +2071,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.errors.length) {
         var data = {
-          username: this.username,
+          email: this.email,
           password: this.password
         };
-        this.req.post('auth/login_request', data).then(function (response) {
+        this.req.post('/login', data).then(function (response) {
           window.location = '/';
         })["catch"](function (error) {
           _this.errors.push(error.response.data.error);
@@ -38277,7 +38277,7 @@ var render = function() {
                                 staticClass:
                                   "font-size-h6 font-weight-bolder text-dark"
                               },
-                              [_vm._v("Username")]
+                              [_vm._v("Email")]
                             ),
                             _vm._v(" "),
                             _c("input", {
@@ -38285,8 +38285,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.username,
-                                  expression: "username"
+                                  value: _vm.email,
+                                  expression: "email"
                                 }
                               ],
                               staticClass:
@@ -38297,13 +38297,13 @@ var render = function() {
                                 name: "username",
                                 type: "text"
                               },
-                              domProps: { value: _vm.username },
+                              domProps: { value: _vm.email },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
-                                  _vm.username = $event.target.value
+                                  _vm.email = $event.target.value
                                 }
                               }
                             })
@@ -39122,7 +39122,7 @@ var render = function() {
                 {
                   staticClass:
                     "btn btn-sm btn-light-primary font-weight-bolder py-2 px-5",
-                  attrs: { href: "auth/logout_request" }
+                  attrs: { href: "/logout" }
                 },
                 [_vm._v("Sign Out")]
               )

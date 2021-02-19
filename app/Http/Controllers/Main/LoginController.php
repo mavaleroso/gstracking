@@ -15,7 +15,7 @@ class LoginController extends Controller
     public function index()
     {
         if (auth('users')->check()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('main.dashboard');
         }
         return view('login');
     }

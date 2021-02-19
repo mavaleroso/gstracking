@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Main;
 
+use App\Http\Controllers\Main\BaseController as Controller;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller

@@ -36,8 +36,8 @@
 								<!--begin::Title-->
 								<!--begin::Form group-->
 								<div class="form-group">
-									<label class="font-size-h6 font-weight-bolder text-dark">Username</label>
-									<input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" autocomplete="off" id="username" name="username" type="text" v-model="username"/>
+									<label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+									<input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" autocomplete="off" id="username" name="username" type="text" v-model="email"/>
 								</div>
 								<!--end::Form group-->
 								<!--begin::Form group-->
@@ -120,7 +120,7 @@
         },
         data () {
             return {
-                username: '',
+                email: '',
                 password: '',
                 errors: [],
                 req: axios.create({
@@ -132,8 +132,8 @@
             login() {
                 this.errors = [];
 
-                if (!this.username) {
-                    this.errors.push('Username is required.');
+                if (!this.email) {
+                    this.errors.push('Email is required.');
                 }
 
                 if (!this.password) {
@@ -142,11 +142,11 @@
 
                 if (!this.errors.length) {
                     const data = {
-                        username: this.username,
+                        email: this.email,
                         password: this.password
                     }
 
-                    this.req.post('auth/login_request', data).then(response => {
+                    this.req.post('/login', data).then(response => {
                         window.location = '/';
                     }).catch(error => {
                         this.errors.push(error.response.data.error);

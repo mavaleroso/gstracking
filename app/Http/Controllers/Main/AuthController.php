@@ -58,15 +58,15 @@ class AuthController extends BaseController
         if ($status === User::LOGIN_BAD_CREDENTIALS || $status === User::LOGIN_INACTIVE) {
             $this->incrementAttempts($request);
             // Message
-            $message = __('staff/notifications.login_bad_credentials');
+            // $message = __('staff/notifications.login_bad_credentials');
             if ($status === User::LOGIN_INACTIVE)
-                $message = __('staff/notifications.login_inactive');
+                // $message = __('staff/notifications.login_inactive');
             // redirect back to login page
             return redirect()->back()->with('notification', [
                 ['type' => 'error', 'message' => $message]
             ]);
         }
-        return redirect()->route('dashboard');
+        return redirect()->route('main.login');
     }
 
     /**
@@ -77,6 +77,6 @@ class AuthController extends BaseController
     public function logout()
     {
         $this->logoutUser->execute();
-        return redirect()->route('login');
+        return redirect()->route('main.login');
     }
 }

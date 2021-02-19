@@ -41,10 +41,10 @@ class UserSeeder extends Seeder
             if (empty($user))
                 $user = User::create($data);
             // create if empty, update if not
-            // if (empty($user->details))
-            //     $user->details()->create($details);
-            // else
-            //     $user->details()->update($details);
+            if (empty($user->details))
+                $user->details()->create($details);
+            else
+                $user->details()->update($details);
         }
     }
 }
