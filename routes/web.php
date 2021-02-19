@@ -13,5 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'AppController@main')->name('main');
-Route::get('login', 'AppController@login')->name('login');
+// Route::get('/', 'AppController@index')->name('index');
+// Route::get('login', 'AppController@login')->name('login');
+// Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+
+// Route::prefix('auth')->group(function() {
+// 	Route::get('init', 'AppController@init');
+// 	Route::post('login_request', 'AppController@login_request');
+// 	Route::get('logout_request', 'AppController@logout_request');
+// });
+Route::get('/', 'main\LoginController@index')->name('main.login');
+Route::post('/login', 'main\AuthController@login')->name('main.auth.login');
+Route::get('/dashboard', 'DashboardController@index')->name('main.dashboard');
+

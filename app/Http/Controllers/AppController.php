@@ -23,6 +23,14 @@ class AppController extends Controller
 		}
     }
 
+    public function index()
+    {
+        if (auth('users')->check()) {
+            return redirect()->route('dashboard');
+        }
+        return view('login');
+    }
+
     public function login()
     {
         if (session()->has('user_id')) {
@@ -30,5 +38,25 @@ class AppController extends Controller
 		} else {
 			return view('login');
 		}
+    }
+
+    public function login_request(Request $request)
+    {
+    	if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
+			$user = Auth::user();
+            session()->put('user_id', $user->id);
+            session()->put('user_uname', $user->username);
+            Auth::login($user);
+    	} else {
+    		return response()->json(['error' => 'Could not log you in.'], 401);
+    	}
+    }
+
+
+    public function logout_request()
+    {
+		Auth::logout();
+        session()->flush();
+        return redirect()->route('login');
     }
 }
