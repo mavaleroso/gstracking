@@ -8,6 +8,7 @@ use App\Traits\ThrottlesRequests;
 use App\Services\Users\LoginUser;
 use App\Services\Users\LogoutUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller for admin authentication
@@ -51,6 +52,12 @@ class AuthController extends BaseController
      * @param MainLoginRequest $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
+    public function init()
+    {
+    	$user = Auth::user();
+    	return response()->json(['user' => $user], 200);
+	}
+
     public function login(MainLoginRequest $request)
     {
         $this->checkThrottling($request);
@@ -58,15 +65,24 @@ class AuthController extends BaseController
         if ($status === User::LOGIN_BAD_CREDENTIALS || $status === User::LOGIN_INACTIVE) {
             $this->incrementAttempts($request);
             // Message
-            // $message = __('staff/notifications.login_bad_credentials');
+            $message = __('main/notifications.login_bad_credentials');
             if ($status === User::LOGIN_INACTIVE)
-                // $message = __('staff/notifications.login_inactive');
+                $message = __('main/notifications.login_inactive');
             // redirect back to login page
-            return redirect()->back()->with('notification', [
+
+            return response()->json([
                 ['type' => 'error', 'message' => $message]
             ]);
+
+            // return redirect()->back()->with('notification', [
+            //     ['type' => 'error', 'message' => $message]
+            // ]);
+
         }
-        return redirect()->route('main.login');
+        return response()->json([
+            ['type' => 'success', 'message' => 'Login successfully!']
+        ]);
+        // return redirect()->route('main.login');
     }
 
     /**

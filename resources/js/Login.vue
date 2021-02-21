@@ -35,6 +35,11 @@
 								</div>
 								<!--begin::Title-->
 								<!--begin::Form group-->
+								<div class="alert alert-custom alert-danger p-2 pl-5" role="alert" v-for="(error, index) in errors" :key="index">
+									<div class="alert-icon"><i class="flaticon-warning"></i></div>
+									<div class="alert-text">{{ error }}</div>
+								</div>
+								
 								<div class="form-group">
 									<label class="font-size-h6 font-weight-bolder text-dark">Email</label>
 									<input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg" autocomplete="off" id="username" name="username" type="text" v-model="email"/>
@@ -51,7 +56,7 @@
 								<!--end::Form group-->
 								<!--begin::Action-->
 								<div class="pb-lg-0 pb-10">
-									<button type="button" id="kt_login_signin_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3" @click="login">Sign In</button>
+									<button type="button" id="login-btn" class="btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 mr-3" @click="login">Sign In</button>
 									<button type="button" class="btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg">
 									<span class="svg-icon svg-icon-md">
                                         <img src="/assets/media/logos/ISSO.png" class="h-30px" alt="">
@@ -131,7 +136,6 @@
         methods: {
             login() {
                 this.errors = [];
-
                 if (!this.email) {
                     this.errors.push('Email is required.');
                 }
@@ -145,11 +149,17 @@
                         email: this.email,
                         password: this.password
                     }
-
+					$('#login-btn').addClass('spinner spinner-white spinner-right');
                     this.req.post('/login', data).then(response => {
-                        window.location = '/';
+						if (response.data[0].type == 'error') {
+                        	this.errors.push(response.data[0].message);
+							$('#login-btn').removeClass('spinner spinner-white spinner-right');
+						} else {
+	                        window.location = '/';
+						}
                     }).catch(error => {
-                        this.errors.push(error.response.data.error);
+                        this.errors.push(error.response.data.errors[0][0]);
+						$('#login-btn').removeClass('spinner spinner-white spinner-right');
                     });
                 }
             }

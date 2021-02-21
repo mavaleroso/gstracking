@@ -2040,6 +2040,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Login',
   props: {
@@ -2074,10 +2079,19 @@ __webpack_require__.r(__webpack_exports__);
           email: this.email,
           password: this.password
         };
+        $('#login-btn').addClass('spinner spinner-white spinner-right');
         this.req.post('/login', data).then(function (response) {
-          window.location = '/';
+          if (response.data[0].type == 'error') {
+            _this.errors.push(response.data[0].message);
+
+            $('#login-btn').removeClass('spinner spinner-white spinner-right');
+          } else {
+            window.location = '/';
+          }
         })["catch"](function (error) {
-          _this.errors.push(error.response.data.error);
+          _this.errors.push(error.response.data.errors[0][0]);
+
+          $('#login-btn').removeClass('spinner spinner-white spinner-right');
         });
       }
     }
@@ -38270,6 +38284,25 @@ var render = function() {
                         [
                           _vm._m(1),
                           _vm._v(" "),
+                          _vm._l(_vm.errors, function(error, index) {
+                            return _c(
+                              "div",
+                              {
+                                key: index,
+                                staticClass:
+                                  "alert alert-custom alert-danger p-2 pl-5",
+                                attrs: { role: "alert" }
+                              },
+                              [
+                                _vm._m(2, true),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "alert-text" }, [
+                                  _vm._v(_vm._s(error))
+                                ])
+                              ]
+                            )
+                          }),
+                          _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
                             _c(
                               "label",
@@ -38310,7 +38343,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
-                            _vm._m(2),
+                            _vm._m(3),
                             _vm._v(" "),
                             _c("input", {
                               directives: [
@@ -38346,29 +38379,27 @@ var render = function() {
                               "button",
                               {
                                 staticClass:
-                                  "btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3",
-                                attrs: {
-                                  type: "button",
-                                  id: "kt_login_signin_submit"
-                                },
+                                  "btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 mr-3",
+                                attrs: { type: "button", id: "login-btn" },
                                 on: { click: _vm.login }
                               },
                               [_vm._v("Sign In")]
                             ),
                             _vm._v(" "),
-                            _vm._m(3)
+                            _vm._m(4)
                           ])
-                        ]
+                        ],
+                        2
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(4),
+                    _vm._m(5),
                     _vm._v(" "),
-                    _vm._m(5)
+                    _vm._m(6)
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(6)
+                _vm._m(7)
               ]
             )
           ]
@@ -38441,6 +38472,14 @@ var staticRenderFns = [
       _c("h3", { staticClass: "font-weight-bolder text-dark display5" }, [
         _vm._v("Welcome to GS Tracking")
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-icon" }, [
+      _c("i", { staticClass: "flaticon-warning" })
     ])
   },
   function() {
@@ -39393,7 +39432,7 @@ var staticRenderFns = [
       { staticClass: "brand-logo", attrs: { href: "index.html" } },
       [
         _c("img", {
-          attrs: { alt: "Logo", src: "assets/media/logos/logo-light.png" }
+          attrs: { alt: "Logo", src: "assets/media/logos/logo-gstracking.png" }
         })
       ]
     )

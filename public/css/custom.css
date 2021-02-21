@@ -5,3 +5,7 @@
 body {
     zoom: 80%;
 }
+
+.brand-logo img {
+    width: 158px;
+}
