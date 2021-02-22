@@ -14,7 +14,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('main');
+        if (auth('users')->check()) {
+            return view('main');
+        }
+        return redirect()->route('main.login');
     }
 
     /**

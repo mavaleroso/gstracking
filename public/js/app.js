@@ -38243,7 +38243,18 @@ var render = function() {
     {
       staticClass:
         "header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading",
-      attrs: { id: "kt_body" }
+      attrs: { id: "kt_body" },
+      on: {
+        keyup: function($event) {
+          if (
+            !$event.type.indexOf("key") &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          return _vm.login($event)
+        }
+      }
     },
     [
       _c("div", { staticClass: "d-flex flex-column flex-root" }, [
@@ -38381,7 +38392,24 @@ var render = function() {
                                 staticClass:
                                   "btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 mr-3",
                                 attrs: { type: "button", id: "login-btn" },
-                                on: { click: _vm.login }
+                                on: {
+                                  click: _vm.login,
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.login($event)
+                                  }
+                                }
                               },
                               [_vm._v("Sign In")]
                             ),

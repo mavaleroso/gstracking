@@ -1,5 +1,5 @@
 <template>
-    <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+    <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading" @keyup.enter="login">
        <!--begin::Main-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Login-->
@@ -56,7 +56,7 @@
 								<!--end::Form group-->
 								<!--begin::Action-->
 								<div class="pb-lg-0 pb-10">
-									<button type="button" id="login-btn" class="btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 mr-3" @click="login">Sign In</button>
+									<button type="button" id="login-btn" class="btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 mr-3" @click="login"  @keyup.enter="login">Sign In</button>
 									<button type="button" class="btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg">
 									<span class="svg-icon svg-icon-md">
                                         <img src="/assets/media/logos/ISSO.png" class="h-30px" alt="">

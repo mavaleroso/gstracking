@@ -52,11 +52,6 @@ class AuthController extends BaseController
      * @param MainLoginRequest $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function init()
-    {
-    	$user = Auth::user();
-    	return response()->json(['user' => $user], 200);
-	}
 
     public function login(MainLoginRequest $request)
     {
@@ -94,5 +89,6 @@ class AuthController extends BaseController
     {
         $this->logoutUser->execute();
         return redirect()->route('main.login');
+        
     }
 }
