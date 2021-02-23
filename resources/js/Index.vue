@@ -1,16 +1,16 @@
 <template>
     <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
-        <mobile :app="this"></mobile>
+        <mobile></mobile>
         <div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="d-flex flex-row flex-column-fluid page">
 				<!--begin::Aside-->
-				<sidebar :app="this"></sidebar>
+				<sidebar></sidebar>
 				<!--end::Aside-->
 				<!--begin::Wrapper-->
 				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
 					<!--begin::Header-->
-					<topheader></topheader>
+					<topheader :session-name="sessionData.name"></topheader>
 					<!--end::Header-->
 					<!--begin::Content-->
 					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -21,7 +21,7 @@
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
 							<div class="container">
-								<router-view :app="this"></router-view>
+								<router-view></router-view>
 							</div>
 							<!--end::Container-->
 						</div>
@@ -36,7 +36,7 @@
 			</div>
 			<!--end::Page-->
 		</div>
-        <rightpanel></rightpanel>
+        <rightpanel :session-data="{name: sessionData.name, email: sessionData.email}"></rightpanel>
     </div>
 </template>
 
@@ -49,7 +49,10 @@ import Subheader from './components/Layouts/Subheader';
 import Navfooter from './components/Layouts/Footer';
 import Rightpanel from './components/Layouts/Rightpanel';
 export default {
-    components: {
+	props: [
+		'sessionData'
+	],
+	components: {
         Navbar,
         Mobile,
         Sidebar,
@@ -57,6 +60,6 @@ export default {
         Subheader,
         Navfooter,
         Rightpanel
-    }
+    },
 }
 </script>

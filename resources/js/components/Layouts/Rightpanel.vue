@@ -17,7 +17,7 @@
                     <i class="symbol-badge bg-success"></i>
                 </div>
                 <div class="d-flex flex-column">
-                    <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">James Jones</a>
+                    <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ sessionData.name }}</a>
                     <div class="text-muted mt-1">Application Developer</div>
                     <div class="navi mt-2">
                         <a href="#" class="navi-item">
@@ -35,7 +35,7 @@
                                         <!--end::Svg Icon-->
                                     </span>
                                 </span>
-                                <span class="navi-text text-muted text-hover-primary">jm@softplus.com</span>
+                                <span class="navi-text text-muted text-hover-primary">{{ sessionData.email }}</span>
                             </span>
                         </a>
                         <a href="/logout" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
@@ -50,3 +50,11 @@
         <!--end::Content-->
     </div>
 </template>
+
+<script>
+export default {
+    props: [
+        'sessionData'
+    ]
+}
+</script>

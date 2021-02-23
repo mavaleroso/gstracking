@@ -28,7 +28,7 @@
     </head>
     <body>
         <div id="app">
-            <index></index>
+            <index :session-data="{{ auth()->user() }}"></index>
         </div>
         <script>var BASE_URL = '{{ URL::to('/') }}';</script>
         <script src="{{ asset('js/app.js') }}"></script>

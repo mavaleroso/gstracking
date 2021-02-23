@@ -27,3 +27,15 @@ Route::post('/login', 'main\AuthController@login')->name('main.auth.login');
 Route::get('/logout', 'main\AuthController@logout')->name('main.auth.logout');
 Route::get('/dashboard', 'main\DashboardController@index')->name('main.dashboard');
 
+// SPA
+Route::get('/request_travel', 'main\DashboardController@index');
+Route::get('/list_requests', 'main\DashboardController@index');
+Route::get('/list_travels', 'main\DashboardController@index');
+Route::get('/list_transportation', 'main\DashboardController@index');
+
+
+// dev routes
+
+Route::get('/data', function() {
+    dd(auth()->user());
+});
