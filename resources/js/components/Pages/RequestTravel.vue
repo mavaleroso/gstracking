@@ -94,7 +94,13 @@
                         </div>
                         <div class="separator separator-dashed my-10"></div>
                         <div class="my-5">
-                            <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
+                            <div class="d-flex">
+                                <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
+                                <div class="ml-auto">
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-plus-square p-0"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-minus-square p-0"></i></button>
+                                </div>
+                            </div>
                             <table class="table w-100">
                                 <thead>
                                     <tr>
@@ -109,8 +115,7 @@
                                         <th scope="row">1</th>
                                         <td><input class="form-control form-control-solid" type="text" value="" /></td>
                                         <td><input class="form-control form-control-solid" type="text" value="" /></td>
-                                        <td>
-                                            
+                                        <td>                                          
                                         </td>
                                     </tr>
                                 </tbody>

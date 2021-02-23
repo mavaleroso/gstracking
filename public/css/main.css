@@ -1,0 +1,19 @@
+
+
+.brand-logo img {
+    width: 158px;
+}
+
+.card-sticky-on-custom {
+    z-index: 90;
+    top: 119px;
+    left: 290px;
+    right: 25px;
+}
+
+.card-sticky-on-custom2 {
+    z-index: 90;
+    top: 119px;
+    left: 161px;
+    right: 90px;
+}

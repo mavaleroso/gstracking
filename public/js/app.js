@@ -41632,11 +41632,27 @@ var staticRenderFns = [
                 _c("div", { staticClass: "separator separator-dashed my-10" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "my-5" }, [
-                  _c(
-                    "h3",
-                    { staticClass: "text-dark font-weight-bold mb-10" },
-                    [_vm._v("Passenger Details:")]
-                  ),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c(
+                      "h3",
+                      { staticClass: "text-dark font-weight-bold mb-10" },
+                      [_vm._v("Passenger Details:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-auto" }, [
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-plus-square p-0" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-minus-square p-0" })]
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("table", { staticClass: "table w-100" }, [
                     _c("thead", [
