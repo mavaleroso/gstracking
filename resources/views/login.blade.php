@@ -28,7 +28,7 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="animate__animated animate__fadeIn">
         <login></login>
     </div>
     <script>var BASE_URL = '{{ URL::to('/') }}';</script>

@@ -41394,9 +41394,324 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    This is Request Travel\n")])
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "card card-custom card-sticky animate__animated animate__fadeIn",
+        attrs: { id: "kt_page_sticky_card" }
+      },
+      [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [
+              _vm._v("Motor Vehicle\n            "),
+              _c("i", { staticClass: "mr-2" }),
+              _vm._v(" "),
+              _c("small", {}, [_vm._v("Request Form")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-toolbar" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-light-primary font-weight-bolder mr-2",
+                attrs: { href: "#" }
+              },
+              [
+                _c("i", { staticClass: "ki ki-long-arrow-back icon-sm" }),
+                _vm._v("Back")
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "btn-group" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary font-weight-bolder",
+                  attrs: { type: "button" }
+                },
+                [
+                  _c("i", { staticClass: "ki ki-check icon-sm" }),
+                  _vm._v("Save Form")
+                ]
+              ),
+              _vm._v(" "),
+              _c("button", {
+                staticClass:
+                  "btn btn-primary dropdown-toggle dropdown-toggle-split",
+                attrs: {
+                  type: "button",
+                  "data-toggle": "dropdown",
+                  "aria-haspopup": "true",
+                  "aria-expanded": "false"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "dropdown-menu dropdown-menu-sm dropdown-menu-right"
+                },
+                [
+                  _c("ul", { staticClass: "nav nav-hover flex-column" }, [
+                    _c("li", { staticClass: "nav-item" }, [
+                      _c(
+                        "a",
+                        { staticClass: "nav-link", attrs: { href: "#" } },
+                        [
+                          _c("i", { staticClass: "nav-icon flaticon2-reload" }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "nav-text" }, [
+                            _vm._v("Save & continue")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("li", { staticClass: "nav-item" }, [
+                      _c(
+                        "a",
+                        { staticClass: "nav-link", attrs: { href: "#" } },
+                        [
+                          _c("i", { staticClass: "nav-icon flaticon2-add-1" }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "nav-text" }, [
+                            _vm._v("Save & add new")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("li", { staticClass: "nav-item" }, [
+                      _c(
+                        "a",
+                        { staticClass: "nav-link", attrs: { href: "#" } },
+                        [
+                          _c("i", { staticClass: "nav-icon flaticon2-power" }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "nav-text" }, [
+                            _vm._v("Save & exit")
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("form", { staticClass: "form", attrs: { id: "kt_form" } }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-xl-2" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xl-8" }, [
+                _c("div", { staticClass: "my-5" }, [
+                  _c(
+                    "h3",
+                    { staticClass: "text-dark font-weight-bold mb-10" },
+                    [_vm._v("Requestor Info:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Type of Motor Vehicle")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("div", { staticClass: "checkbox-inline" }, [
+                        _c("label", { staticClass: "radio mr-2" }, [
+                          _c("input", {
+                            attrs: { type: "radio", name: "typoRadio" }
+                          }),
+                          _vm._v(
+                            " Office\n                                        "
+                          ),
+                          _c("span")
+                        ]),
+                        _vm._v(" "),
+                        _c("label", { staticClass: "radio" }, [
+                          _c("input", {
+                            attrs: { type: "radio", name: "typoRadio" }
+                          }),
+                          _vm._v(
+                            " Rental\n                                        "
+                          ),
+                          _c("span")
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Program/Division/Section")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("input", {
+                        staticClass: "form-control form-control-solid",
+                        attrs: { type: "text", value: "" }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Purpose of travel")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("input", {
+                        staticClass: "form-control form-control-solid",
+                        attrs: { type: "text", value: "" }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Destination")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("input", {
+                        staticClass: "form-control form-control-solid",
+                        attrs: { type: "text", value: "" }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Date of Travel")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("input", {
+                        staticClass: "form-control form-control-solid",
+                        attrs: {
+                          type: "date",
+                          value: "",
+                          id: "example-date-input"
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { staticClass: "col-3" }, [
+                      _vm._v("Time of Departure")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-9" }, [
+                      _c("input", {
+                        staticClass: "form-control form-control-solid",
+                        attrs: {
+                          type: "time",
+                          value: "",
+                          id: "example-time-input"
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "separator separator-dashed my-10" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "my-5" }, [
+                  _c(
+                    "h3",
+                    { staticClass: "text-dark font-weight-bold mb-10" },
+                    [_vm._v("Passenger Details:")]
+                  ),
+                  _vm._v(" "),
+                  _c("table", { staticClass: "table w-100" }, [
+                    _c("thead", [
+                      _c("tr", [
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            attrs: { scope: "col" }
+                          },
+                          [_vm._v("#")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            attrs: { scope: "col" }
+                          },
+                          [_vm._v("Name of Passenger/s")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            attrs: { scope: "col" }
+                          },
+                          [_vm._v("Position/Designation")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "th",
+                          {
+                            staticClass: "text-center",
+                            attrs: { scope: "col" }
+                          },
+                          [_vm._v("Action")]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("th", { attrs: { scope: "row" } }, [_vm._v("1")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            staticClass: "form-control form-control-solid",
+                            attrs: { type: "text", value: "" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            staticClass: "form-control form-control-solid",
+                            attrs: { type: "text", value: "" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td")
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xl-2" })
+            ])
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
