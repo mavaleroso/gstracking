@@ -42,5 +42,6 @@
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/crud/datatables/basic/basic.js') }}"></script>
+		<script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
     </body>
 </html>
