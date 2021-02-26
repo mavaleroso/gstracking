@@ -13,13 +13,23 @@ var KTSelect2 = function() {
         });
 
         // multi select
-        $('#kt_select2_3, #kt_select2_3_validate').select2({
-            placeholder: "Select a state",
+        $('#kt_select_province, #kt_select2_3_validate').select2({
+            placeholder: "Select a Province",
+        });
+
+        // multi select
+        $('#kt_select_city, #kt_select2_3_validate').select2({
+            placeholder: "Select a City",
+        });
+
+        // multi select
+        $('#kt_select_brgy, #kt_select2_3_validate').select2({
+            placeholder: "Select a Barangay",
         });
 
         // basic
-        $('#kt_select2_4').select2({
-            placeholder: "Select a state",
+        $('#kt_select_region').select2({
+            placeholder: "Select a Region",
             allowClear: true
         });
 

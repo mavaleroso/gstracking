@@ -2487,7 +2487,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    this.renderClass();
+  },
   methods: {
     addRow: function addRow(event) {
       event.preventDefault();
@@ -2513,6 +2558,11 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
       }
+    },
+    renderClass: function renderClass() {
+      setTimeout(function () {
+        $('.select2-container').addClass("mb-2");
+      }, 1000);
     }
   }
 });
@@ -41747,9 +41797,129 @@ var staticRenderFns = [
         _c("label", { staticClass: "col-3" }, [_vm._v("Destination")]),
         _vm._v(" "),
         _c("div", { staticClass: "col-9" }, [
+          _c(
+            "select",
+            {
+              staticClass: "form-control select2",
+              attrs: { id: "kt_select_region", name: "param" }
+            },
+            [
+              _c("option", { attrs: { label: "Label" } }),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "AK" } }, [_vm._v("Alaska")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "HI" } }, [_vm._v("Hawaii")])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              staticClass: "form-control select2 kt_select2_3",
+              attrs: {
+                id: "kt_select_province",
+                name: "param",
+                multiple: "multiple"
+              }
+            },
+            [
+              _c(
+                "optgroup",
+                { attrs: { label: "Alaskan/Hawaiian Time Zone" } },
+                [
+                  _c("option", { attrs: { value: "AK" } }, [_vm._v("Alaska")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "HI" } }, [_vm._v("Hawaii")])
+                ]
+              ),
+              _vm._v(" "),
+              _c("optgroup", { attrs: { label: "Pacific Time Zone" } }, [
+                _c("option", { attrs: { value: "CA" } }, [
+                  _vm._v("California")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "NV" } }, [_vm._v("Nevada")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "OR" } }, [_vm._v("Oregon")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "WA" } }, [_vm._v("Washington")])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              staticClass: "form-control select2 kt_select2_3",
+              attrs: {
+                id: "kt_select_city",
+                name: "param",
+                multiple: "multiple"
+              }
+            },
+            [
+              _c(
+                "optgroup",
+                { attrs: { label: "Alaskan/Hawaiian Time Zone" } },
+                [
+                  _c("option", { attrs: { value: "AK" } }, [_vm._v("Alaska")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "HI" } }, [_vm._v("Hawaii")])
+                ]
+              ),
+              _vm._v(" "),
+              _c("optgroup", { attrs: { label: "Pacific Time Zone" } }, [
+                _c("option", { attrs: { value: "CA" } }, [
+                  _vm._v("California")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "NV" } }, [_vm._v("Nevada")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "OR" } }, [_vm._v("Oregon")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "WA" } }, [_vm._v("Washington")])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              staticClass: "form-control select2 kt_select2_3",
+              attrs: {
+                id: "kt_select_brgy",
+                name: "param",
+                multiple: "multiple"
+              }
+            },
+            [
+              _c(
+                "optgroup",
+                { attrs: { label: "Alaskan/Hawaiian Time Zone" } },
+                [
+                  _c("option", { attrs: { value: "AK" } }, [_vm._v("Alaska")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "HI" } }, [_vm._v("Hawaii")])
+                ]
+              ),
+              _vm._v(" "),
+              _c("optgroup", { attrs: { label: "Pacific Time Zone" } }, [
+                _c("option", { attrs: { value: "CA" } }, [
+                  _vm._v("California")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "NV" } }, [_vm._v("Nevada")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "OR" } }, [_vm._v("Oregon")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "WA" } }, [_vm._v("Washington")])
+              ])
+            ]
+          ),
+          _vm._v(" "),
           _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "destination", type: "text", value: "" }
+            staticClass: "form-control",
+            attrs: { name: "pur-travel", type: "text", placeholder: "Others" }
           })
         ])
       ]),

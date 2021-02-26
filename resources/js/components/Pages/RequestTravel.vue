@@ -53,8 +53,50 @@
                             <div class="form-group row">
                                 <label class="col-3">Destination</label>
                                 <div class="col-9">
-                                    <input name="destination" class="form-control form-control-solid" type="text" value="" />
+                                    <select class="form-control select2" id="kt_select_region" name="param">
+                                        <option label="Label"></option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="HI">Hawaii</option>
+                                    </select>
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_province" name="param" multiple="multiple">
+                                        <optgroup label="Alaskan/Hawaiian Time Zone">
+                                            <option value="AK">Alaska</option>
+                                            <option value="HI">Hawaii</option>
+                                        </optgroup>
+                                        <optgroup label="Pacific Time Zone">
+                                            <option value="CA">California</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="WA">Washington</option>
+                                        </optgroup>
+                                    </select>
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_city" name="param" multiple="multiple">
+                                        <optgroup label="Alaskan/Hawaiian Time Zone">
+                                            <option value="AK" >Alaska</option>
+                                            <option value="HI">Hawaii</option>
+                                        </optgroup>
+                                        <optgroup label="Pacific Time Zone">
+                                            <option value="CA">California</option>
+                                            <option value="NV" >Nevada</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="WA">Washington</option>
+                                        </optgroup>
+                                    </select>
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="param" multiple="multiple">
+                                        <optgroup label="Alaskan/Hawaiian Time Zone">
+                                            <option value="AK" >Alaska</option>
+                                            <option value="HI">Hawaii</option>
+                                        </optgroup>
+                                        <optgroup label="Pacific Time Zone">
+                                            <option value="CA">California</option>
+                                            <option value="NV" >Nevada</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="WA">Washington</option>
+                                        </optgroup>
+                                    </select>
+                                    <input name="pur-travel" class="form-control" type="text" placeholder="Others" />
                                 </div>
+                                
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Date of Travel</label>
@@ -109,6 +151,9 @@
 
 <script>
 export default {
+    mounted() {
+        this.renderClass();
+    },
     methods: {
         addRow(event) {
             event.preventDefault();
@@ -132,6 +177,11 @@ export default {
             } else {
                 Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
             }
+        },
+        renderClass() {
+            setTimeout(()=>{
+                $('.select2-container').addClass("mb-2");
+            }, 1000);
         }
     },
 }
