@@ -10,31 +10,8 @@
                 <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                 <i class="ki ki-long-arrow-back icon-sm"></i>Back</a>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary font-weight-bolder">
+                    <button type="button" class="btn btn-primary font-weight-bolder" @click="saveForm">
                     <i class="ki ki-check icon-sm"></i>Save Form</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                        <ul class="nav nav-hover flex-column">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon flaticon2-reload"></i>
-                                    <span class="nav-text">Save &amp; continue</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon flaticon2-add-1"></i>
-                                    <span class="nav-text">Save &amp; add new</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon flaticon2-power"></i>
-                                    <span class="nav-text">Save &amp; exit</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -51,11 +28,11 @@
                                 <div class="col-9">
                                     <div class="checkbox-inline">
                                         <label class="radio mr-2">
-                                            <input type="radio" name="typoRadio"/> Office
+                                            <input type="radio" name="typoRadio" value="Office"/> Office
                                             <span></span>
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="typoRadio"/> Rental
+                                            <input type="radio" name="typoRadio" value="Rental"/> Rental
                                             <span></span>
                                         </label>
                                     </div>
@@ -64,31 +41,31 @@
                             <div class="form-group row">
                                 <label class="col-3">Program/Division/Section</label>
                                 <div class="col-9">
-                                    <input class="form-control form-control-solid" type="text" value="" />
+                                    <input name="prog-div-sec" class="form-control form-control-solid" type="text" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input class="form-control form-control-solid" type="text" value="" />
+                                    <input name="pur-travel" class="form-control form-control-solid" type="text" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Destination</label>
                                 <div class="col-9">
-                                    <input class="form-control form-control-solid" type="text" value="" />
+                                    <input name="destination" class="form-control form-control-solid" type="text" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Date of Travel</label>
                                 <div class="col-9">
-                                    <input class="form-control form-control-solid" type="date" value="" id="example-date-input" />
+                                    <input name="date-travel" class="form-control form-control-solid" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Time of Departure</label>
                                 <div class="col-9">
-                                    <input class="form-control form-control-solid" type="time" value="" id="example-time-input" />
+                                    <input name="time-depart" class="form-control form-control-solid" type="time" value="" />
                                 </div>
                             </div>
                         </div>
@@ -97,11 +74,12 @@
                             <div class="d-flex">
                                 <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
                                 <div class="ml-auto">
-                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-plus-square p-0"></i></button>
-                                    <button class="btn btn-sm btn-outline-primary"><i class="fa fa-minus-square p-0"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
                             </div>
-                            <table class="table w-100">
+                            <input id="pax-total" type="hidden" name="pax-total" value="1">
+                            <table id="passenger-tbl" class="table w-100">
                                 <thead>
                                     <tr>
                                         <th scope="col" class="text-center">#</th>
@@ -112,11 +90,10 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td><input class="form-control form-control-solid" type="text" value="" /></td>
-                                        <td><input class="form-control form-control-solid" type="text" value="" /></td>
-                                        <td>                                          
-                                        </td>
+                                        <td scope="row" class="text-center">1</td>
+                                        <td><input name="pax-name-1" class="form-control form-control-solid" type="text"/></td>
+                                        <td><input name="pax-des-1" class="form-control form-control-solid" type="text"/></td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -129,3 +106,33 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        addRow(event) {
+            event.preventDefault();
+            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+            lastTr += 1;
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax-name-'+lastTr+'" class="form-control form-control-solid" type="text" /></td><td><input name="pax-des-'+lastTr+'" class="form-control form-control-solid" type="text" /></td><td></td></tr>');
+            $('#pax-total').val(lastTr);
+        },
+        removeRow(event) {
+            event.preventDefault();
+            let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+            if(lastTr.find('td:eq(0)').text() != '1') {
+                lastTr.remove();
+            }
+            $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },
+        saveForm() {
+            let requestform = $('#kt_form').serialize();
+            if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
+                // submit
+            } else {
+                Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
+            }
+        }
+    },
+}
+</script>
