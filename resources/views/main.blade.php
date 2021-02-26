@@ -10,6 +10,7 @@
         <!--end::Fonts-->
         <!--begin::Page Custom Styles(used by this page)-->
         <link href="{{ asset('css/app.css') }}"  rel="stylesheet" type="text/css"/>
+		<link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
 		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
         <!--end::Page Custom Styles-->
@@ -22,12 +23,13 @@
         <link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
-        <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div id="app">
+        <div id="app" class="animate__animated animate__fadeIn">
             <index :session-data="{{ auth()->user() }}"></index>
         </div>
         <script>var BASE_URL = '{{ URL::to('/') }}';</script>
@@ -38,6 +40,8 @@
         <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
-
+		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<script src="{{ asset('assets/js/pages/crud/datatables/basic/basic.js') }}"></script>
+		<script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
     </body>
 </html>

@@ -499,7 +499,7 @@ var KTCard = function(elementId, options) {
 
             if (KTUtil.hasClass(body, 'card-sticky-on')) {
                 if (the.options.sticky.position.top instanceof Function) {
-                    top = parseInt(the.options.sticky.position.top.call(this, the));
+                    top = parseInt(the.options.sticky.position.top.call(this, the.hea));
                 } else {
                     top = parseInt(the.options.sticky.position.top);
                 }
@@ -519,9 +519,18 @@ var KTCard = function(elementId, options) {
                 }
 
                 KTUtil.css(the.header, 'z-index', the.options.sticky.zIndex);
-                KTUtil.css(the.header, 'top', top + 'px');
+                KTUtil.css(the.header, 'top', '119px');
                 KTUtil.css(the.header, 'left', left + 'px');
                 KTUtil.css(the.header, 'right', right + 'px');
+
+                let kt_body_stats = $('#kt_body').attr('class');
+                if (kt_body_stats.search('page-loading aside-minimize') != -1) {
+                    $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom2');
+                    $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
+                } else {
+                    $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom');
+                    $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
+                }
             }
         },
 
@@ -535,6 +544,9 @@ var KTCard = function(elementId, options) {
                 KTUtil.css(the.header, 'top', '');
                 KTUtil.css(the.header, 'left', '');
                 KTUtil.css(the.header, 'right', '');
+
+                $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
+                $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
             }
         },
 
@@ -9086,11 +9098,10 @@ var KTLayoutAsideToggle = function() {
     var _body;
     var _element;
     var _toggleObject;
-
 	// Initialize
 	var _init = function() {
 		_toggleObject = new KTToggle(_element, {
-			target: _body,
+			target: 'kt_body',
 			targetState: 'aside-minimize',
 			toggleState: 'active'
 		});

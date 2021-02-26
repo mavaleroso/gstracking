@@ -25,10 +25,10 @@
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="animate__animated animate__fadeIn">
         <login></login>
     </div>
     <script>var BASE_URL = '{{ URL::to('/') }}';</script>

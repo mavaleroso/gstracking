@@ -2367,6 +2367,158 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    addRow: function addRow(event) {
+      event.preventDefault();
+      var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+      lastTr += 1;
+      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax-name-' + lastTr + '" class="form-control form-control-solid" type="text" /></td><td><input name="pax-des-' + lastTr + '" class="form-control form-control-solid" type="text" /></td><td></td></tr>');
+      $('#pax-total').val(lastTr);
+    },
+    removeRow: function removeRow(event) {
+      event.preventDefault();
+      var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+
+      if (lastTr.find('td:eq(0)').text() != '1') {
+        lastTr.remove();
+      }
+
+      $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+    },
+    saveForm: function saveForm() {
+      var requestform = $('#kt_form').serialize();
+
+      if (requestform.search('=&') == -1 && requestform[requestform.length - 1] != '=') {// submit
+      } else {
+        Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -39246,15 +39398,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _RequestTravel_vue_vue_type_template_id_1241b243___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RequestTravel.vue?vue&type=template&id=1241b243& */ "./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RequestTravel.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _RequestTravel_vue_vue_type_template_id_1241b243___WEBPACK_IMPORTED_MODULE_0__.render,
   _RequestTravel_vue_vue_type_template_id_1241b243___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -39348,6 +39502,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Sidebar.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RequestTravel.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -41394,9 +41564,274 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    This is Request Travel\n")])
+  return _c(
+    "div",
+    {
+      staticClass:
+        "card card-custom card-sticky animate__animated animate__fadeIn",
+      attrs: { id: "kt_page_sticky_card" }
+    },
+    [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-toolbar" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "btn-group" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary font-weight-bolder",
+                attrs: { type: "button" },
+                on: { click: _vm.saveForm }
+              },
+              [
+                _c("i", { staticClass: "ki ki-check icon-sm" }),
+                _vm._v("Save Form")
+              ]
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("form", { staticClass: "form", attrs: { id: "kt_form" } }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-xl-2" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xl-8" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "separator separator-dashed my-10" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "my-5" }, [
+                _c("div", { staticClass: "d-flex" }, [
+                  _c(
+                    "h3",
+                    { staticClass: "text-dark font-weight-bold mb-10" },
+                    [_vm._v("Passenger Details:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "ml-auto" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-outline-primary",
+                        on: { click: _vm.addRow }
+                      },
+                      [_c("i", { staticClass: "fa fa-plus-square p-0" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-outline-primary",
+                        on: { click: _vm.removeRow }
+                      },
+                      [_c("i", { staticClass: "fa fa-minus-square p-0" })]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "pax-total",
+                    type: "hidden",
+                    name: "pax-total",
+                    value: "1"
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(3)
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xl-2" })
+          ])
+        ])
+      ])
+    ]
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-title" }, [
+      _c("h3", { staticClass: "card-label" }, [
+        _vm._v("Motor Vehicle\n            "),
+        _c("i", { staticClass: "mr-2" }),
+        _vm._v(" "),
+        _c("small", {}, [_vm._v("Request Form")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-light-primary font-weight-bolder mr-2",
+        attrs: { href: "#" }
+      },
+      [
+        _c("i", { staticClass: "ki ki-long-arrow-back icon-sm" }),
+        _vm._v("Back")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "my-5" }, [
+      _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
+        _vm._v("Requestor Info:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [
+          _vm._v("Type of Motor Vehicle")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("div", { staticClass: "checkbox-inline" }, [
+            _c("label", { staticClass: "radio mr-2" }, [
+              _c("input", {
+                attrs: { type: "radio", name: "typoRadio", value: "Office" }
+              }),
+              _vm._v(" Office\n                                        "),
+              _c("span")
+            ]),
+            _vm._v(" "),
+            _c("label", { staticClass: "radio" }, [
+              _c("input", {
+                attrs: { type: "radio", name: "typoRadio", value: "Rental" }
+              }),
+              _vm._v(" Rental\n                                        "),
+              _c("span")
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [
+          _vm._v("Program/Division/Section")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("input", {
+            staticClass: "form-control form-control-solid",
+            attrs: { name: "prog-div-sec", type: "text", value: "" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [_vm._v("Purpose of travel")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("input", {
+            staticClass: "form-control form-control-solid",
+            attrs: { name: "pur-travel", type: "text", value: "" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [_vm._v("Destination")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("input", {
+            staticClass: "form-control form-control-solid",
+            attrs: { name: "destination", type: "text", value: "" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [_vm._v("Date of Travel")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("input", {
+            staticClass: "form-control form-control-solid",
+            attrs: { name: "date-travel", type: "date", value: "" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("label", { staticClass: "col-3" }, [_vm._v("Time of Departure")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-9" }, [
+          _c("input", {
+            staticClass: "form-control form-control-solid",
+            attrs: { name: "time-depart", type: "time", value: "" }
+          })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "table",
+      { staticClass: "table w-100", attrs: { id: "passenger-tbl" } },
+      [
+        _c("thead", [
+          _c("tr", [
+            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+              _vm._v("#")
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+              _vm._v("Name of Passenger/s")
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+              _vm._v("Position/Designation")
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+              _vm._v("Action")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", { staticClass: "text-center", attrs: { scope: "row" } }, [
+              _vm._v("1")
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                staticClass: "form-control form-control-solid",
+                attrs: { name: "pax-name-1", type: "text" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                staticClass: "form-control form-control-solid",
+                attrs: { name: "pax-des-1", type: "text" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td")
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
