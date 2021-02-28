@@ -39,3 +39,4 @@ Route::get('/list_transportation', 'main\DashboardController@index');
 Route::get('/data', function() {
     dd(auth()->user());
 });
+

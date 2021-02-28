@@ -1,5 +1,5 @@
 <template>
-    <div class="card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
+    <div class="request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
         <div class="card-header">
             <div class="card-title">
                 <h3 class="card-label">Motor Vehicle
@@ -55,46 +55,21 @@
                                 <div class="col-9">
                                     <select class="form-control select2" id="kt_select_region" name="param">
                                         <option label="Label"></option>
-                                        <option value="AK">Alaska</option>
-                                        <option value="HI">Hawaii</option>
+                                        <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                     </select>
                                     <select class="form-control select2 kt_select2_3" id="kt_select_province" name="param" multiple="multiple">
-                                        <optgroup label="Alaskan/Hawaiian Time Zone">
-                                            <option value="AK">Alaska</option>
-                                            <option value="HI">Hawaii</option>
-                                        </optgroup>
-                                        <optgroup label="Pacific Time Zone">
-                                            <option value="CA">California</option>
-                                            <option value="NV">Nevada</option>
-                                            <option value="OR">Oregon</option>
-                                            <option value="WA">Washington</option>
-                                        </optgroup>
+                                        <option v-for="province in provinces" :key="province.id" :value="province.id" @click="removeProv(province.id)">{{ province.province_name }}</option>
                                     </select>
                                     <select class="form-control select2 kt_select2_3" id="kt_select_city" name="param" multiple="multiple">
-                                        <optgroup label="Alaskan/Hawaiian Time Zone">
-                                            <option value="AK" >Alaska</option>
-                                            <option value="HI">Hawaii</option>
-                                        </optgroup>
-                                        <optgroup label="Pacific Time Zone">
-                                            <option value="CA">California</option>
-                                            <option value="NV" >Nevada</option>
-                                            <option value="OR">Oregon</option>
-                                            <option value="WA">Washington</option>
+                                        <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
+                                            <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                         </optgroup>
                                     </select>
                                     <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="param" multiple="multiple">
-                                        <optgroup label="Alaskan/Hawaiian Time Zone">
-                                            <option value="AK" >Alaska</option>
-                                            <option value="HI">Hawaii</option>
-                                        </optgroup>
-                                        <optgroup label="Pacific Time Zone">
-                                            <option value="CA">California</option>
-                                            <option value="NV" >Nevada</option>
-                                            <option value="OR">Oregon</option>
-                                            <option value="WA">Washington</option>
+                                        <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
+                                            <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
                                     </select>
-                                    <input name="pur-travel" class="form-control" type="text" placeholder="Others" />
                                 </div>
                                 
                             </div>
@@ -151,10 +126,76 @@
 
 <script>
 export default {
+    data() {
+        return {
+            regions: [],
+            provinces: [],
+            cities: [],
+            brgys: [],
+            activeProvinces: [],
+            activeCities: []
+        }
+    },
+    created() {
+        this.getRegion();
+    },
     mounted() {
-        this.renderClass();
+        this.ini();
     },
     methods: {
+        ini() {
+            var scripts = [
+            "/assets/js/pages/crud/forms/widgets/select2.js"
+            ];
+            scripts.forEach(script => {
+                let tag = document.createElement("script");
+                tag.setAttribute("src", script);
+                document.getElementById("kt_page_sticky_card").appendChild(tag);
+            });
+
+            setTimeout(()=>{
+                $('.select2-container').addClass("mb-2");
+            }, 1000);
+
+            $(() => { 
+                $('#kt_select_region').on('change', () => {
+                    let id  = $('#kt_select_region').val();
+                    this.getProvince(id);
+                });
+
+                $('#kt_select_province').on('change', () => {
+                    let id  = $('#kt_select_province').val();
+                    id = id.map(i=>Number(i));
+                    this.provinces.map(i=> {
+                        if (id.indexOf(i.id) != -1) {
+                            i.active="true";
+                        } else {
+                            i.active="false";
+                        }
+                    });
+                    if(id.length != 0) {
+                        this.getCity(id);
+                        this.currentProv();             
+                    }
+                });
+
+                $('#kt_select_city').on('change', () => {
+                    let id  = $('#kt_select_city').val();
+                    id = id.map(i=>Number(i));
+                    this.cities.map(i=> {
+                        if (id.indexOf(i.id) != -1) {
+                            i.active="true";
+                        } else {
+                            i.active="false";
+                        }
+                    });
+                    if(id.length != 0) {
+                        this.getBrgy(id);
+                        this.currentCity();
+                    }
+                });
+            });
+        },
         addRow(event) {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
@@ -173,15 +214,41 @@ export default {
         saveForm() {
             let requestform = $('#kt_form').serialize();
             if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
-                // submit
+                console.log(requestform);
             } else {
                 Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
             }
         },
-        renderClass() {
-            setTimeout(()=>{
-                $('.select2-container').addClass("mb-2");
-            }, 1000);
+        getRegion() {
+            axios.get("/api/regions_data").then(response => {
+                this.regions = response.data;
+            });
+        },
+        getProvince(id) {
+            axios.get("/api/provinces_data", {params: {id: id}}).then(response => {
+                this.provinces = response.data;
+                this.provinces.map(i=>i.active="false")
+            });
+        },
+        getCity(id) {
+            axios.get("/api/cities_data", {params: {id: id}}).then(response => {
+                this.cities = response.data;
+                this.cities.map(i=>i.active="false")
+            });
+        },
+        getBrgy(id) {
+            axios.get("/api/brgys_data", {params: {id: id}}).then(response => {
+                this.brgys = response.data;
+            });
+        },
+        currentProv() {
+            this.activeProvinces = this.provinces.filter(i => i.active === 'true');
+        },
+        currentCity() {
+            this.activeCities = this.cities.filter(i => i.active === 'true');
+        },
+        removeProv(id) {
+            alert(id);
         }
     },
 }
