@@ -28,11 +28,11 @@
                                 <div class="col-9">
                                     <div class="checkbox-inline">
                                         <label class="radio mr-2">
-                                            <input type="radio" name="typoRadio" value="Office"/> Office
+                                            <input type="radio" name="travel_radio" value="Office"/> Office
                                             <span></span>
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="typoRadio" value="Rental"/> Rental
+                                            <input type="radio" name="travel_radio" value="Rental"/> Rental
                                             <span></span>
                                         </label>
                                     </div>
@@ -41,31 +41,31 @@
                             <div class="form-group row">
                                 <label class="col-3">Program/Division/Section</label>
                                 <div class="col-9">
-                                    <input name="prog-div-sec" class="form-control form-control-solid" type="text" value="" />
+                                    <input name="prog_div_sec" type="text" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur-travel" class="form-control form-control-solid" type="text" value="" />
+                                    <input name="pur_travel" type="text" class="form-control" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Destination</label>
                                 <div class="col-9">
-                                    <select class="form-control select2" id="kt_select_region" name="param">
+                                    <select class="form-control select2" id="kt_select_region" name="region">
                                         <option label="Label"></option>
                                         <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_province" name="param" multiple="multiple">
-                                        <option v-for="province in provinces" :key="province.id" :value="province.id" @click="removeProv(province.id)">{{ province.province_name }}</option>
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_province" name="province[]" multiple="multiple">
+                                        <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_city" name="param" multiple="multiple">
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
                                         <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
                                             <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                         </optgroup>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="param" multiple="multiple">
+                                    <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
                                         <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
                                             <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
@@ -76,13 +76,13 @@
                             <div class="form-group row">
                                 <label class="col-3">Date of Travel</label>
                                 <div class="col-9">
-                                    <input name="date-travel" class="form-control form-control-solid" type="date" value="" />
+                                    <input name="date_travel" class="form-control" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Time of Departure</label>
                                 <div class="col-9">
-                                    <input name="time-depart" class="form-control form-control-solid" type="time" value="" />
+                                    <input name="time_depart" class="form-control" type="time" value="" />
                                 </div>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                                     <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
                             </div>
-                            <input id="pax-total" type="hidden" name="pax-total" value="1">
+                            <input id="pax-total" type="hidden" name="pax_total" value="1">
                             <table id="passenger-tbl" class="table w-100">
                                 <thead>
                                     <tr>
@@ -108,8 +108,8 @@
                                 <tbody>
                                     <tr>
                                         <td scope="row" class="text-center">1</td>
-                                        <td><input name="pax-name-1" class="form-control form-control-solid" type="text"/></td>
-                                        <td><input name="pax-des-1" class="form-control form-control-solid" type="text"/></td>
+                                        <td><input name="pax_name_1" class="form-control" type="text"/></td>
+                                        <td><input name="pax_des_1" class="form-control" type="text"/></td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -153,14 +153,15 @@ export default {
                 document.getElementById("kt_page_sticky_card").appendChild(tag);
             });
 
-            setTimeout(()=>{
-                $('.select2-container').addClass("mb-2");
-            }, 1000);
-
             $(() => { 
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
+                    this.provinces= [];
+                    this.cities = [];
+                    this.brgys = [];
+                    this.activeProvinces = [];
+                    this.activeCities = [];
                 });
 
                 $('#kt_select_province').on('change', () => {
@@ -194,13 +195,18 @@ export default {
                         this.currentCity();
                     }
                 });
+
             });
+            
+            setTimeout(()=>{
+                $('.select2-container').addClass("mb-2");
+            }, 1000);
         },
         addRow(event) {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax-name-'+lastTr+'" class="form-control form-control-solid" type="text" /></td><td><input name="pax-des-'+lastTr+'" class="form-control form-control-solid" type="text" /></td><td></td></tr>');
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control" type="text" /></td><td><input name="pax_des-'+lastTr+'" class="form-control" type="text" /></td><td></td></tr>');
             $('#pax-total').val(lastTr);
         },
         removeRow(event) {
@@ -213,11 +219,69 @@ export default {
         },
         saveForm() {
             let requestform = $('#kt_form').serialize();
-            if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
-                console.log(requestform);
-            } else {
-                Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
-            }
+            // if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
+            //     console.log(requestform);
+            // } else {
+            //     Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
+            // }
+            axios.put("/travel/store", requestform).then(response => {
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+            }).catch((error) => {
+                console.log(error.response.data.errors);
+                let data = error.response.data.errors;
+                let keys = [];
+                let names = ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'];
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    if (`${key}` == 'travel_radio') {
+                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.checkbox-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        }
+                    } else if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
+                        if (`${key}` == 'brgy') {
+                            if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        } else {
+                            if ($('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        }
+                    } else if (`${key}` == 'date_travel' || `${key}` == 'pax_des_1' || `${key}` == 'pax_name_1' || `${key}` == 'prog_div_sec' || `${key}` == 'pur_travel' || `${key}` == 'time_depart') {
+                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                        }
+                    }
+                }
+                for (let i = 0; i < names.length; i++) {
+                    if (names[i] == 'travel_radio') {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            if ($('.checkbox-inline').next().length != 0) {
+                                $('.checkbox-inline').next('.invalid-feedback').remove();
+                            }
+                        } 
+                    } else if (names[i] == 'region' || names[i] == 'province' || names[i] == 'city' || names[i] == 'brgy') {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            if (names[i] == 'brgy') {
+                                if ($('#kt_select_'+names[i]).next().next().length != 0) {
+                                    $('#kt_select_'+names[i]).next().next('.invalid-feedback').remove();
+                                }
+                            } else {
+                                if ($('#kt_select_'+names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                                    $('#kt_select_'+names[i]).next().next('.invalid-feedback').remove();
+                                }
+                            }
+                        }
+                    } else {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            $('input[name="'+names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+names[i]+'"]').next('.invalid-feedback').remove();
+                        }
+                    }
+                }
+            });
         },
         getRegion() {
             axios.get("/api/regions_data").then(response => {
@@ -246,9 +310,6 @@ export default {
         },
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
-        },
-        removeProv(id) {
-            alert(id);
         }
     },
 }

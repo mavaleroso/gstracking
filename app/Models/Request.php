@@ -7,5 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
 {
-    use HasFactory;
+    protected $table = 'users_details';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type_vehicle',
+        'department',
+        'purpose',
+        'travel_date',
+        'depart_time',        
+        'status',
+    ];
 }
