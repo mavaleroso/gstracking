@@ -37,12 +37,7 @@ class TravelController extends Controller
     public function store(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
     {
         $createTravel->execute($travelStoreRequest->validated());
-        return json_encode('notification', [
-              [
-                  'type' => 'success',
-                  'message' => __('main/notifications.travel_created_successfully')
-              ]
-        ]);
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully')]);
     }
 
     // public function store(Request $request)

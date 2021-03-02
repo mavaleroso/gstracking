@@ -2524,7 +2524,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       cities: [],
       brgys: [],
       activeProvinces: [],
-      activeCities: []
+      activeCities: [],
+      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart']
     };
   },
   created: function created() {
@@ -2604,34 +2605,61 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control" type="text" /></td><td><input name="pax_des-' + lastTr + '" class="form-control" type="text" /></td><td></td></tr>');
+      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control" type="text" /></td><td></td></tr>');
       $('#pax-total').val(lastTr);
+      this.names.push('pax_name_' + lastTr);
+      this.names.push('pax_des_' + lastTr);
+      console.log(this.names);
     },
     removeRow: function removeRow(event) {
       event.preventDefault();
       var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
 
       if (lastTr.find('td:eq(0)').text() != '1') {
+        var aliasNames = this.names;
+        var paxName = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
+        var paxDes = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
+
+        if (paxName > -1) {
+          aliasNames.splice(paxName, 1);
+        }
+
+        if (paxDes > -1) {
+          aliasNames.splice(paxDes, 1);
+        }
+
+        this.names = aliasNames;
+        console.log(this.names);
         lastTr.remove();
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
     saveForm: function saveForm() {
-      var requestform = $('#kt_form').serialize(); // if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
-      //     console.log(requestform);
-      // } else {
-      //     Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
-      // }
+      var _this2 = this;
 
+      var requestform = $('#kt_form').serialize();
       axios.put("/travel/store", requestform).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
+
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'travel_radio') {
+            $('[name="' + _this2.names[i] + '"]').prop('checked', false);
+          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
+            $('#kt_select_' + _this2.names[i]).empty();
+          } else {
+            $('[name="' + _this2.names[i] + '"]').val(null);
+          }
+        }
+
+        Swal.fire("Good job!", response.data.message, "success");
+
+        _this2.showToast(response.data.message, 'success');
       })["catch"](function (error) {
-        console.log(error.response.data.errors);
         var data = error.response.data.errors;
         var keys = [];
-        var names = ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'];
+        var values = [];
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
           var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
@@ -2639,6 +2667,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               value = _Object$entries$_i[1];
 
           keys.push("".concat(key));
+          values.push("".concat(value));
 
           if ("".concat(key) == 'travel_radio') {
             if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
@@ -2654,7 +2683,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
               }
             }
-          } else if ("".concat(key) == 'date_travel' || "".concat(key) == 'pax_des_1' || "".concat(key) == 'pax_name_1' || "".concat(key) == 'prog_div_sec' || "".concat(key) == 'pur_travel' || "".concat(key) == 'time_depart') {
+          } else {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
@@ -2662,80 +2691,82 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < names.length; i++) {
-          if (names[i] == 'travel_radio') {
-            if (keys.indexOf('' + names[i] + '') == -1) {
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'travel_radio') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('.checkbox-inline').next().length != 0) {
                 $('.checkbox-inline').next('.invalid-feedback').remove();
               }
             }
-          } else if (names[i] == 'region' || names[i] == 'province' || names[i] == 'city' || names[i] == 'brgy') {
-            if (keys.indexOf('' + names[i] + '') == -1) {
-              if (names[i] == 'brgy') {
-                if ($('#kt_select_' + names[i]).next().next().length != 0) {
-                  $('#kt_select_' + names[i]).next().next('.invalid-feedback').remove();
+          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if (_this2.names[i] == 'brgy') {
+                if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
                 }
               } else {
-                if ($('#kt_select_' + names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                  $('#kt_select_' + names[i]).next().next('.invalid-feedback').remove();
+                if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
                 }
               }
             }
           } else {
-            if (keys.indexOf('' + names[i] + '') == -1) {
-              $('input[name="' + names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              $('input[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
+
+        _this2.showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     getRegion: function getRegion() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/regions_data").then(function (response) {
-        _this2.regions = response.data;
+        _this3.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/provinces_data", {
         params: {
           id: id
         }
       }).then(function (response) {
-        _this3.provinces = response.data;
+        _this4.provinces = response.data;
 
-        _this3.provinces.map(function (i) {
+        _this4.provinces.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getCity: function getCity(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/api/cities_data", {
         params: {
           id: id
         }
       }).then(function (response) {
-        _this4.cities = response.data;
+        _this5.cities = response.data;
 
-        _this4.cities.map(function (i) {
+        _this5.cities.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getBrgy: function getBrgy(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get("/api/brgys_data", {
         params: {
           id: id
         }
       }).then(function (response) {
-        _this5.brgys = response.data;
+        _this6.brgys = response.data;
       });
     },
     currentProv: function currentProv() {
@@ -2747,6 +2778,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.activeCities = this.cities.filter(function (i) {
         return i.active === 'true';
       });
+    },
+    showToast: function showToast(data, type) {
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "5000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+      type == 'error' ? toastr.error(data) : toastr.success(data);
     }
   }
 });

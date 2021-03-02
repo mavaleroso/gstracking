@@ -133,7 +133,8 @@ export default {
             cities: [],
             brgys: [],
             activeProvinces: [],
-            activeCities: []
+            activeCities: [],
+            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart']
         }
     },
     created() {
@@ -145,7 +146,7 @@ export default {
     methods: {
         ini() {
             var scripts = [
-            "/assets/js/pages/crud/forms/widgets/select2.js"
+                "/assets/js/pages/crud/forms/widgets/select2.js"
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");
@@ -206,34 +207,57 @@ export default {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control" type="text" /></td><td><input name="pax_des-'+lastTr+'" class="form-control" type="text" /></td><td></td></tr>');
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control" type="text" /></td><td></td></tr>');
             $('#pax-total').val(lastTr);
+            this.names.push('pax_name_'+lastTr);
+            this.names.push('pax_des_'+lastTr);
+            console.log(this.names);
         },
         removeRow(event) {
             event.preventDefault();
             let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
             if(lastTr.find('td:eq(0)').text() != '1') {
+                let aliasNames = this.names;
+                let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
+                let paxDes = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
+                if (paxName > -1) {
+                    aliasNames.splice(paxName, 1);
+                }
+                if (paxDes > -1) {
+                    aliasNames.splice(paxDes, 1);
+                }
+                this.names = aliasNames;
+                console.log(this.names);
+
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+
+            
         },
         saveForm() {
             let requestform = $('#kt_form').serialize();
-            // if ((requestform.search('=&') == -1) && (requestform[requestform.length - 1] != '=')) {
-            //     console.log(requestform);
-            // } else {
-            //     Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
-            // }
             axios.put("/travel/store", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
+                for (let i = 0; i < this.names.length; i++) {
+                    if (this.names[i] == 'travel_radio') {
+                        $('[name="'+this.names[i]+'"]').prop('checked', false);
+                    } else if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                        $('#kt_select_'+this.names[i]).empty();
+                    } else {
+                        $('[name="'+this.names[i]+'"]').val(null);
+                    }
+                }
+                Swal.fire("Good job!", response.data.message, "success");
+                this.showToast(response.data.message, 'success');
             }).catch((error) => {
-                console.log(error.response.data.errors);
                 let data = error.response.data.errors;
                 let keys = [];
-                let names = ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'];
+                let values = [];
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
+                    values.push(`${value}`);
                     if (`${key}` == 'travel_radio') {
                         if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
                             $('.checkbox-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
@@ -248,40 +272,42 @@ export default {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
                             }
                         }
-                    } else if (`${key}` == 'date_travel' || `${key}` == 'pax_des_1' || `${key}` == 'pax_name_1' || `${key}` == 'prog_div_sec' || `${key}` == 'pur_travel' || `${key}` == 'time_depart') {
+                    } else {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                             $('input[name="'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
                 }
-                for (let i = 0; i < names.length; i++) {
-                    if (names[i] == 'travel_radio') {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
+                for (let i = 0; i < this.names.length; i++) {
+                    if (this.names[i] == 'travel_radio') {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
                             if ($('.checkbox-inline').next().length != 0) {
                                 $('.checkbox-inline').next('.invalid-feedback').remove();
                             }
                         } 
-                    } else if (names[i] == 'region' || names[i] == 'province' || names[i] == 'city' || names[i] == 'brgy') {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
-                            if (names[i] == 'brgy') {
-                                if ($('#kt_select_'+names[i]).next().next().length != 0) {
-                                    $('#kt_select_'+names[i]).next().next('.invalid-feedback').remove();
+                    } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            if (this.names[i] == 'brgy') {
+                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
                                 }
                             } else {
-                                if ($('#kt_select_'+names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                                    $('#kt_select_'+names[i]).next().next('.invalid-feedback').remove();
+                                if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
                                 }
                             }
                         }
                     } else {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
-                            $('input[name="'+names[i]+'"]').removeClass('is-invalid');
-                            $('[name="'+names[i]+'"]').next('.invalid-feedback').remove();
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
                         }
                     }
                 }
+                this.showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
+
         },
         getRegion() {
             axios.get("/api/regions_data").then(response => {
@@ -310,6 +336,27 @@ export default {
         },
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
+        },
+        showToast(data,type) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "5000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                };
+
+            (type == 'error')? toastr.error(data):toastr.success(data);
         }
     },
 }
