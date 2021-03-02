@@ -15,6 +15,7 @@ class CreateDestinationsTable extends Migration
     {
         Schema::create('destinations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('request_id')->nullable();
             $table->unsignedBigInteger('region_id')->nullable();
             $table->unsignedBigInteger('province_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();

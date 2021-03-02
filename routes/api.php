@@ -20,3 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1', 'namespace' => 'Api\V1', 'middleware' => 'locale.api'], function () {    
     
 });
+
+// AXIOS
+Route::get('/regions_data', 'ajax\RegionController@index');
+Route::get('/provinces_data', 'ajax\ProvinceController@show');
+Route::get('/cities_data', 'ajax\CityController@show');
+Route::get('/brgys_data', 'ajax\BrgyController@show');

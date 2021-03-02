@@ -39,3 +39,13 @@ Route::get('/list_transportation', 'main\DashboardController@index');
 Route::get('/data', function() {
     dd(auth()->user());
 });
+
+Route::get('/travel/index', 'main\TravelController@index');
+
+// Request Travel
+Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
+    Route::get('/index', 'TravelController@index');
+    Route::put('/store', 'TravelController@store');
+});
+
+

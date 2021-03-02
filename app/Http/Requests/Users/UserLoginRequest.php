@@ -38,8 +38,8 @@ class UserLoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => __('staff/validations.required'),
-            'password.required' => __('staff/validations.required'),
+            'email.required' => __('main/validations.required'),
+            'password.required' => __('main/validations.required'),
         ];
     }
 }

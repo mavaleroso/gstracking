@@ -2378,6 +2378,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2488,31 +2517,287 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      regions: [],
+      provinces: [],
+      cities: [],
+      brgys: [],
+      activeProvinces: [],
+      activeCities: [],
+      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart']
+    };
+  },
+  created: function created() {
+    this.getRegion();
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
   methods: {
+    ini: function ini() {
+      var _this = this;
+
+      var scripts = ["/assets/js/pages/crud/forms/widgets/select2.js"];
+      scripts.forEach(function (script) {
+        var tag = document.createElement("script");
+        tag.setAttribute("src", script);
+        document.getElementById("kt_page_sticky_card").appendChild(tag);
+      });
+      $(function () {
+        $('#kt_select_region').on('change', function () {
+          var id = $('#kt_select_region').val();
+
+          _this.getProvince(id);
+
+          _this.provinces = [];
+          _this.cities = [];
+          _this.brgys = [];
+          _this.activeProvinces = [];
+          _this.activeCities = [];
+        });
+        $('#kt_select_province').on('change', function () {
+          var id = $('#kt_select_province').val();
+          id = id.map(function (i) {
+            return Number(i);
+          });
+
+          _this.provinces.map(function (i) {
+            if (id.indexOf(i.id) != -1) {
+              i.active = "true";
+            } else {
+              i.active = "false";
+            }
+          });
+
+          if (id.length != 0) {
+            _this.getCity(id);
+
+            _this.currentProv();
+          }
+        });
+        $('#kt_select_city').on('change', function () {
+          var id = $('#kt_select_city').val();
+          id = id.map(function (i) {
+            return Number(i);
+          });
+
+          _this.cities.map(function (i) {
+            if (id.indexOf(i.id) != -1) {
+              i.active = "true";
+            } else {
+              i.active = "false";
+            }
+          });
+
+          if (id.length != 0) {
+            _this.getBrgy(id);
+
+            _this.currentCity();
+          }
+        });
+      });
+      setTimeout(function () {
+        $('.select2-container').addClass("mb-2");
+      }, 1000);
+    },
     addRow: function addRow(event) {
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax-name-' + lastTr + '" class="form-control form-control-solid" type="text" /></td><td><input name="pax-des-' + lastTr + '" class="form-control form-control-solid" type="text" /></td><td></td></tr>');
+      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control" type="text" /></td><td></td></tr>');
       $('#pax-total').val(lastTr);
+      this.names.push('pax_name_' + lastTr);
+      this.names.push('pax_des_' + lastTr);
+      console.log(this.names);
     },
     removeRow: function removeRow(event) {
       event.preventDefault();
       var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
 
       if (lastTr.find('td:eq(0)').text() != '1') {
+        var aliasNames = this.names;
+        var paxName = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
+        var paxDes = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
+
+        if (paxName > -1) {
+          aliasNames.splice(paxName, 1);
+        }
+
+        if (paxDes > -1) {
+          aliasNames.splice(paxDes, 1);
+        }
+
+        this.names = aliasNames;
+        console.log(this.names);
         lastTr.remove();
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
     saveForm: function saveForm() {
-      var requestform = $('#kt_form').serialize();
+      var _this2 = this;
 
-      if (requestform.search('=&') == -1 && requestform[requestform.length - 1] != '=') {// submit
-      } else {
-        Swal.fire("Entry Field Error!", "Please fill-in all the fields to proceed.", "error");
-      }
+      var requestform = $('#kt_form').serialize();
+      axios.put("/travel/store", requestform).then(function (response) {
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
+
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'travel_radio') {
+            $('[name="' + _this2.names[i] + '"]').prop('checked', false);
+          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
+            $('#kt_select_' + _this2.names[i]).empty();
+          } else {
+            $('[name="' + _this2.names[i] + '"]').val(null);
+          }
+        }
+
+        Swal.fire("Good job!", response.data.message, "success");
+
+        _this2.showToast(response.data.message, 'success');
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ("".concat(key) == 'travel_radio') {
+            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+              $('.checkbox-inline').after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
+            if ("".concat(key) == 'brgy') {
+              if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
+                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+              }
+            } else {
+              if ($('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
+                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+              }
+            }
+          } else {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            }
+          }
+        }
+
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'travel_radio') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if ($('.checkbox-inline').next().length != 0) {
+                $('.checkbox-inline').next('.invalid-feedback').remove();
+              }
+            }
+          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if (_this2.names[i] == 'brgy') {
+                if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+                }
+              } else {
+                if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+                }
+              }
+            }
+          } else {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              $('input[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            }
+          }
+        }
+
+        _this2.showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
+    },
+    getRegion: function getRegion() {
+      var _this3 = this;
+
+      axios.get("/api/regions_data").then(function (response) {
+        _this3.regions = response.data;
+      });
+    },
+    getProvince: function getProvince(id) {
+      var _this4 = this;
+
+      axios.get("/api/provinces_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this4.provinces = response.data;
+
+        _this4.provinces.map(function (i) {
+          return i.active = "false";
+        });
+      });
+    },
+    getCity: function getCity(id) {
+      var _this5 = this;
+
+      axios.get("/api/cities_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this5.cities = response.data;
+
+        _this5.cities.map(function (i) {
+          return i.active = "false";
+        });
+      });
+    },
+    getBrgy: function getBrgy(id) {
+      var _this6 = this;
+
+      axios.get("/api/brgys_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this6.brgys = response.data;
+      });
+    },
+    currentProv: function currentProv() {
+      this.activeProvinces = this.provinces.filter(function (i) {
+        return i.active === 'true';
+      });
+    },
+    currentCity: function currentCity() {
+      this.activeCities = this.cities.filter(function (i) {
+        return i.active === 'true';
+      });
+    },
+    showToast: function showToast(data, type) {
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "5000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+      type == 'error' ? toastr.error(data) : toastr.success(data);
     }
   }
 });
@@ -41568,7 +41853,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "card card-custom card-sticky animate__animated animate__fadeIn",
+        "request-travel card card-custom card-sticky animate__animated animate__fadeIn",
       attrs: { id: "kt_page_sticky_card" }
     },
     [
@@ -41601,7 +41886,142 @@ var render = function() {
             _c("div", { staticClass: "col-xl-2" }),
             _vm._v(" "),
             _c("div", { staticClass: "col-xl-8" }, [
-              _vm._m(2),
+              _c("div", { staticClass: "my-5" }, [
+                _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
+                  _vm._v("Requestor Info:")
+                ]),
+                _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _vm._m(4),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-3" }, [
+                    _vm._v("Destination")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control select2",
+                        attrs: { id: "kt_select_region", name: "region" }
+                      },
+                      [
+                        _c("option", { attrs: { label: "Label" } }),
+                        _vm._v(" "),
+                        _vm._l(_vm.regions, function(region) {
+                          return _c(
+                            "option",
+                            { key: region.id, domProps: { value: region.id } },
+                            [_vm._v(_vm._s(region.region_name))]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control select2 kt_select2_3",
+                        attrs: {
+                          id: "kt_select_province",
+                          name: "province[]",
+                          multiple: "multiple"
+                        }
+                      },
+                      _vm._l(_vm.provinces, function(province) {
+                        return _c(
+                          "option",
+                          {
+                            key: province.id,
+                            domProps: { value: province.id }
+                          },
+                          [_vm._v(_vm._s(province.province_name))]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control select2 kt_select2_3",
+                        attrs: {
+                          id: "kt_select_city",
+                          name: "city[]",
+                          multiple: "multiple"
+                        }
+                      },
+                      _vm._l(_vm.activeProvinces, function(activeProv) {
+                        return _c(
+                          "optgroup",
+                          {
+                            key: activeProv.id,
+                            attrs: { label: activeProv.province_name }
+                          },
+                          _vm._l(
+                            _vm.cities.filter(function(i) {
+                              return i.province_id == activeProv.id
+                            }),
+                            function(city) {
+                              return _c(
+                                "option",
+                                { key: city.id, domProps: { value: city.id } },
+                                [_vm._v(_vm._s(city.city_name))]
+                              )
+                            }
+                          ),
+                          0
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control select2 kt_select2_3",
+                        attrs: {
+                          id: "kt_select_brgy",
+                          name: "brgy[]",
+                          multiple: "multiple"
+                        }
+                      },
+                      _vm._l(_vm.activeCities, function(activeCity) {
+                        return _c(
+                          "optgroup",
+                          {
+                            key: activeCity.id,
+                            attrs: { label: activeCity.city_name }
+                          },
+                          _vm._l(
+                            _vm.brgys.filter(function(i) {
+                              return i.city_id == activeCity.id
+                            }),
+                            function(brgy) {
+                              return _c(
+                                "option",
+                                { key: brgy.id, domProps: { value: brgy.id } },
+                                [_vm._v(_vm._s(brgy.brgy_name))]
+                              )
+                            }
+                          ),
+                          0
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(5),
+                _vm._v(" "),
+                _vm._m(6)
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
               _vm._v(" "),
@@ -41638,12 +42058,12 @@ var render = function() {
                   attrs: {
                     id: "pax-total",
                     type: "hidden",
-                    name: "pax-total",
+                    name: "pax_total",
                     value: "1"
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(7)
               ])
             ]),
             _vm._v(" "),
@@ -41688,92 +42108,89 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "my-5" }, [
-      _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
-        _vm._v("Requestor Info:")
-      ]),
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3" }, [_vm._v("Type of Motor Vehicle")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [
-          _vm._v("Type of Motor Vehicle")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("div", { staticClass: "checkbox-inline" }, [
-            _c("label", { staticClass: "radio mr-2" }, [
-              _c("input", {
-                attrs: { type: "radio", name: "typoRadio", value: "Office" }
-              }),
-              _vm._v(" Office\n                                        "),
-              _c("span")
-            ]),
-            _vm._v(" "),
-            _c("label", { staticClass: "radio" }, [
-              _c("input", {
-                attrs: { type: "radio", name: "typoRadio", value: "Rental" }
-              }),
-              _vm._v(" Rental\n                                        "),
-              _c("span")
-            ])
+      _c("div", { staticClass: "col-9" }, [
+        _c("div", { staticClass: "checkbox-inline" }, [
+          _c("label", { staticClass: "radio mr-2" }, [
+            _c("input", {
+              attrs: { type: "radio", name: "travel_radio", value: "Office" }
+            }),
+            _vm._v(" Office\n                                        "),
+            _c("span")
+          ]),
+          _vm._v(" "),
+          _c("label", { staticClass: "radio" }, [
+            _c("input", {
+              attrs: { type: "radio", name: "travel_radio", value: "Rental" }
+            }),
+            _vm._v(" Rental\n                                        "),
+            _c("span")
           ])
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3" }, [
+        _vm._v("Program/Division/Section")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [
-          _vm._v("Program/Division/Section")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "prog-div-sec", type: "text", value: "" }
-          })
-        ])
-      ]),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { name: "prog_div_sec", type: "text" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3" }, [_vm._v("Purpose of travel")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [_vm._v("Purpose of travel")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "pur-travel", type: "text", value: "" }
-          })
-        ])
-      ]),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { name: "pur_travel", type: "text" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3" }, [_vm._v("Date of Travel")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [_vm._v("Destination")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "destination", type: "text", value: "" }
-          })
-        ])
-      ]),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { name: "date_travel", type: "date", value: "" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3" }, [_vm._v("Time of Departure")]),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [_vm._v("Date of Travel")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "date-travel", type: "date", value: "" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row" }, [
-        _c("label", { staticClass: "col-3" }, [_vm._v("Time of Departure")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-9" }, [
-          _c("input", {
-            staticClass: "form-control form-control-solid",
-            attrs: { name: "time-depart", type: "time", value: "" }
-          })
-        ])
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { name: "time_depart", type: "time", value: "" }
+        })
       ])
     ])
   },
@@ -41813,15 +42230,15 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("td", [
               _c("input", {
-                staticClass: "form-control form-control-solid",
-                attrs: { name: "pax-name-1", type: "text" }
+                staticClass: "form-control",
+                attrs: { name: "pax_name_1", type: "text" }
               })
             ]),
             _vm._v(" "),
             _c("td", [
               _c("input", {
-                staticClass: "form-control form-control-solid",
-                attrs: { name: "pax-des-1", type: "text" }
+                staticClass: "form-control",
+                attrs: { name: "pax_des_1", type: "text" }
               })
             ]),
             _vm._v(" "),
