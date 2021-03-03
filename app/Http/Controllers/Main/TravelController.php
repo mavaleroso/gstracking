@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Travels\TravelStoreRequest;
 use App\Services\Travels\CreateTravel;
+use App\Models\Request as Trequest;
 
 class TravelController extends Controller
 {
@@ -16,6 +17,7 @@ class TravelController extends Controller
      */
     public function index()
     {
+        return response()->json(Trequest::all());
     }
 
     /**

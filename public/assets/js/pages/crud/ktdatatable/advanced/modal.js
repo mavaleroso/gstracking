@@ -12,7 +12,8 @@ var KTDatatableModal = function() {
                 type: 'remote',
                 source: {
                     read: {
-                        url: '',
+                        url: HOST_URL + '/api/request_data',
+                        method: 'GET',
                     },
                 },
                 pageSize: 10, // display 20 records per page
@@ -41,85 +42,76 @@ var KTDatatableModal = function() {
 
             // columns definition
             columns: [{
-                field: 'RecordID',
+                field: 'id',
                 title: 'ID',
-                width: 35,
+                width: 35
             }, {
-                field: 'TypeVehicle',
+                field: 'type_vehicle',
                 title: 'Vehicle Type',
             }, {
-                field: 'Department',
+                field: 'department',
                 title: 'Department',
             }, {
-                field: 'Purpose',
+                field: 'purpose',
                 title: 'Purpose',
             }, {
-                field: 'TraveDate',
+                field: 'travel_date',
                 title: 'Travel Date',
+                textAlign: 'center',
+                template: (row) => {
+                    var date = new Date(row.travel_date);
+                    var options = {year: 'numeric', month: 'long', day: 'numeric' };
+                    return date.toLocaleDateString('en-US', options);
+                }
             }, {
-                field: 'DepartTime',
+                field: 'depart_time',
                 title: 'Depart Time',
+                textAlign: 'center',
+                template: (row) => {
+                    let time = row.depart_time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+                    if (time.length > 1) { 
+                        time = time.slice(1);  
+                        time[3] = +time[0] < 12 ? ' AM' : ' PM'; 
+                        time[0] = +time[0] % 12 || 12;
+                    }
+                    return time.join (''); 
+                }
             }, {
-                field: 'Status',
+                field: 'status',
                 title: 'Status',
                 // callback function support for column rendering
-                template: function(row) {
+                template: (row) => {
                     var status = {
-                        1: {
+                        0: {
                             'title': 'Pending',
-                            'class': 'label-light-primary'
-                        },
-                        2: {
-                            'title': 'Delivered',
-                            'class': ' label-light-success'
-                        },
-                        3: {
-                            'title': 'Canceled',
-                            'class': ' label-light-primary'
-                        },
-                        4: {
-                            'title': 'Success',
-                            'class': ' label-light-success'
-                        },
-                        5: {
-                            'title': 'Info',
-                            'class': ' label-light-info'
-                        },
-                        6: {
-                            'title': 'Danger',
-                            'class': ' label-light-danger'
-                        },
-                        7: {
-                            'title': 'Warning',
                             'class': ' label-light-warning'
                         },
-                    };
-                    return '<span class="label label-lg font-weight-bold' + status[row.Status].class + ' label-inline">' + status[row.Status].title + '</span>';
-                },
-            }, {
-                field: 'Type',
-                title: 'Type',
-                autoHide: false,
-                // callback function support for column rendering
-                template: function(row) {
-                    var status = {
                         1: {
-                            'title': 'Online',
-                            'state': 'danger'
+                            'title': 'Approved',
+                            'class': ' label-light-info'
                         },
                         2: {
-                            'title': 'Retail',
-                            'state': 'primary'
+                            'title': 'Completed',
+                            'class': ' label-light-success'
                         },
                         3: {
-                            'title': 'Direct',
-                            'state': 'accent'
-                        },
+                            'title': 'Declined',
+                            'class': ' label-light-danger'
+                        }
                     };
-                    return '<span class="label label-' + status[row.Type].state + ' label-dot mr-2"></span><span class="font-weight-bold text-' + status[row.Type].state +
-                        '">' +
-                        status[row.Type].title + '</span>';
+                    return '<span class="label label-lg font-weight-bold' + status[row.status].class + ' label-inline">' + status[row.status].title + '</span>';
                 },
+            }, {
+                field: 'created_at',
+                title: 'Date Created',
+                width: 130,
+                textAlign: 'center',
+                template: (row) => {
+                    var date = new Date(row.created_at);
+                    var options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
+                    return date.toLocaleDateString('en-US', options);
+                }
             }, {
                 field: 'Actions',
                 width: 130,
