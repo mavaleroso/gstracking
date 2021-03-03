@@ -5107,7 +5107,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	// plugin setup
 	$.fn[pluginName] = function(options) {
 		if ($(this).length === 0) {
-			console.warn('No ' + pluginName + ' element exist.');
+			// console.warn('No ' + pluginName + ' element exist.');
 			return;
 		}
 

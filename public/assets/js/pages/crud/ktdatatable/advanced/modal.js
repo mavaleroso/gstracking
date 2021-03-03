@@ -12,7 +12,7 @@ var KTDatatableModal = function() {
                 type: 'remote',
                 source: {
                     read: {
-                        url: HOST_URL + '/api/datatables/demos/customers.php',
+                        url: '',
                     },
                 },
                 pageSize: 10, // display 20 records per page
@@ -42,26 +42,23 @@ var KTDatatableModal = function() {
             // columns definition
             columns: [{
                 field: 'RecordID',
-                title: '',
-                sortable: false,
-                width: 30,
-                textAlign: 'center',
+                title: 'ID',
+                width: 35,
             }, {
-                field: 'FirstName',
-                title: 'First Name',
-                sortable: 'asc',
+                field: 'TypeVehicle',
+                title: 'Vehicle Type',
             }, {
-                field: 'LastName',
-                title: 'Last Name',
+                field: 'Department',
+                title: 'Department',
             }, {
-                field: 'Company',
-                title: 'Company',
+                field: 'Purpose',
+                title: 'Purpose',
             }, {
-                field: 'Email',
-                title: 'Email',
+                field: 'TraveDate',
+                title: 'Travel Date',
             }, {
-                field: 'Phone',
-                title: 'Phone',
+                field: 'DepartTime',
+                title: 'Depart Time',
             }, {
                 field: 'Status',
                 title: 'Status',
@@ -532,7 +529,7 @@ var KTDatatableModal = function() {
         $('#kt_datatable_search_status_3, #kt_datatable_search_type_3').selectpicker();
 
         // fix datatable layout after modal shown
-        datatable.hide();
+        // datatable.hide();
 
         var alreadyReloaded = false;
         modal.on('shown.bs.modal', function() {
@@ -814,7 +811,7 @@ var KTDatatableModal = function() {
         $('#kt_datatable_search_status_4, #kt_datatable_search_type_4').selectpicker();
 
         // fix datatable layout after modal shown
-        datatable.hide();
+        // datatable.hide();
         var alreadyReloaded = false;
         modal.on('shown.bs.modal', function() {
             if (!alreadyReloaded) {
