@@ -1,5 +1,5 @@
 <template>
-    <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+    <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable">
         <mobile></mobile>
         <div class="d-flex flex-column flex-root">
 			<!--begin::Page-->

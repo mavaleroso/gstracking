@@ -1,4 +1,7 @@
-
+#kt_body {
+    min-height: 100vh !important;
+    display: flex !important;
+}
 
 .brand-logo img {
     width: 158px;
@@ -16,4 +19,8 @@
     top: 119px;
     left: 161px;
     right: 90px;
+}
+
+.select2-container {
+    margin-bottom: 0.5rem !important;
 }

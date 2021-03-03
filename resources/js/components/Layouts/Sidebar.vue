@@ -117,12 +117,9 @@
 <script>
 export default {
     mounted() {
-        this.init();
+        this.active();
     },
     methods: {
-        init(){
-            $('.router-link-active').parent().addClass('menu-item-active');
-        },
         active(){
             $('.menu-item').removeClass('menu-item-active');
             $('.router-link-active').parent().addClass('menu-item-active');

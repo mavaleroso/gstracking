@@ -145,8 +145,9 @@ export default {
     },
     methods: {
         ini() {
+            // LOAD SCRIPTS
             var scripts = [
-                "/assets/js/pages/crud/forms/widgets/select2.js"
+                "/assets/js/pages/crud/forms/widgets/select2.js",
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");
@@ -154,7 +155,12 @@ export default {
                 document.getElementById("kt_page_sticky_card").appendChild(tag);
             });
 
+
+            // EVENT HANDLING AFTER MOUNT
             $(() => { 
+                $('.menu-item').removeClass('menu-item-active');
+                $('.router-link-active').parent().addClass('menu-item-active');
+
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
@@ -199,9 +205,6 @@ export default {
 
             });
             
-            setTimeout(()=>{
-                $('.select2-container').addClass("mb-2");
-            }, 1000);
         },
         addRow(event) {
             event.preventDefault();
@@ -227,7 +230,6 @@ export default {
                     aliasNames.splice(paxDes, 1);
                 }
                 this.names = aliasNames;
-                console.log(this.names);
 
                 lastTr.remove();
             }
