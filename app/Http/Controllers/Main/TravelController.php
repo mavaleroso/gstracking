@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Travels\TravelStoreRequest;
 use App\Services\Travels\CreateTravel;
-use App\Models\Request as Trequest;
+use Illuminate\Support\Facades\DB;
 
 class TravelController extends Controller
 {
@@ -17,7 +17,18 @@ class TravelController extends Controller
      */
     public function index()
     {
-        return response()->json(Trequest::all());
+        // $data['meta'] = array(
+        //     "page" => 1,
+        //     "pages" => 1,
+        //     "perpage" => -1,
+        //     "total" => Trequest::count(),
+        //     "sort" => "asc",
+        //     "field" => "id"
+        // );
+
+        // $data['data'] = Trequest::all();
+
+        return response()->json(DB::table('requests')->select('*', DB::raw('CONCAT(first_name," ",last_name) AS fullname'))->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')->get());
     }
 
     /**

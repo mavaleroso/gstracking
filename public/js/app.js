@@ -1892,8 +1892,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -2235,8 +2233,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -2471,84 +2467,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -40449,14 +40367,12 @@ var render = function() {
                   [
                     _c("subheader"),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex flex-column-fluid" }, [
-                      _c(
-                        "div",
-                        { staticClass: "container" },
-                        [_c("router-view")],
-                        1
-                      )
-                    ])
+                    _c(
+                      "div",
+                      { staticClass: "d-flex flex-column-fluid" },
+                      [_c("router-view")],
+                      1
+                    )
                   ],
                   1
                 ),
@@ -41406,28 +41322,20 @@ var staticRenderFns = [
                                       _vm._v("All")
                                     ]),
                                     _vm._v(" "),
-                                    _c("option", { attrs: { value: "1" } }, [
+                                    _c("option", { attrs: { value: "0" } }, [
                                       _vm._v("Pending")
                                     ]),
                                     _vm._v(" "),
-                                    _c("option", { attrs: { value: "2" } }, [
+                                    _c("option", { attrs: { value: "1" } }, [
                                       _vm._v("Delivered")
                                     ]),
                                     _vm._v(" "),
-                                    _c("option", { attrs: { value: "3" } }, [
+                                    _c("option", { attrs: { value: "2" } }, [
                                       _vm._v("Canceled")
                                     ]),
                                     _vm._v(" "),
-                                    _c("option", { attrs: { value: "4" } }, [
+                                    _c("option", { attrs: { value: "3" } }, [
                                       _vm._v("Success")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "5" } }, [
-                                      _vm._v("Info")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "6" } }, [
-                                      _vm._v("Danger")
                                     ])
                                   ]
                                 )
@@ -42405,7 +42313,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "list-requests-page" } },
+    { staticClass: "container-fluid", attrs: { id: "list-requests-page" } },
     [
       _c(
         "div",
@@ -42424,82 +42332,6 @@ var render = function() {
                 "div",
                 { staticClass: "card-toolbar" },
                 [
-                  _c("div", { staticClass: "dropdown dropdown-inline mr-2" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-light-primary font-weight-bolder dropdown-toggle",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("rect", {
-                                    attrs: {
-                                      x: "0",
-                                      y: "0",
-                                      width: "24",
-                                      height: "24"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z",
-                                      fill: "#000000",
-                                      opacity: "0.3"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z",
-                                      fill: "#000000"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v("Export")
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(1)
-                  ]),
-                  _vm._v(" "),
                   _c(
                     "router-link",
                     {
@@ -42572,7 +42404,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(2)
+          _vm._m(1)
         ]
       ),
       _vm._v(" "),
@@ -42596,83 +42428,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "dropdown-menu dropdown-menu-sm dropdown-menu-right" },
-      [
-        _c("ul", { staticClass: "navi flex-column navi-hover py-2" }, [
-          _c(
-            "li",
-            {
-              staticClass:
-                "navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-            },
-            [_vm._v("Choose an option:")]
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-print" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Print")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-copy" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Copy")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-excel-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Excel")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-text-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("CSV")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-pdf-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("PDF")])
-            ])
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-body" }, [
       _c("div", { staticClass: "mb-7" }, [
         _c("div", { staticClass: "row align-items-center" }, [
-          _c("div", { staticClass: "col-lg-9 col-xl-8" }, [
+          _c("div", { staticClass: "col-lg-9 col-xl-6" }, [
             _c("div", { staticClass: "row align-items-center" }, [
-              _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
+              _c("div", { staticClass: "col-md-6 my-2 my-md-0" }, [
                 _c("div", { staticClass: "input-icon" }, [
                   _c("input", {
                     staticClass: "form-control",
@@ -42689,7 +42450,7 @@ var staticRenderFns = [
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
+              _c("div", { staticClass: "col-md-6 my-2 my-md-0" }, [
                 _c("div", { staticClass: "d-flex align-items-center" }, [
                   _c("label", { staticClass: "mr-3 mb-0 d-none d-md-block" }, [
                     _vm._v("Status:")
@@ -42709,52 +42470,15 @@ var staticRenderFns = [
                       ]),
                       _vm._v(" "),
                       _c("option", { attrs: { value: "2" } }, [
-                        _vm._v("Delivered")
+                        _vm._v("Approved")
                       ]),
                       _vm._v(" "),
                       _c("option", { attrs: { value: "3" } }, [
-                        _vm._v("Canceled")
+                        _vm._v("Completed")
                       ]),
                       _vm._v(" "),
                       _c("option", { attrs: { value: "4" } }, [
-                        _vm._v("Success")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "5" } }, [_vm._v("Info")]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "6" } }, [
-                        _vm._v("Danger")
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
-                _c("div", { staticClass: "d-flex align-items-center" }, [
-                  _c("label", { staticClass: "mr-3 mb-0 d-none d-md-block" }, [
-                    _vm._v("Type:")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "select",
-                    {
-                      staticClass: "form-control",
-                      attrs: { id: "kt_datatable_search_type" }
-                    },
-                    [
-                      _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "1" } }, [
-                        _vm._v("Online")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "2" } }, [
-                        _vm._v("Retail")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "3" } }, [
-                        _vm._v("Direct")
+                        _vm._v("Declined")
                       ])
                     ]
                   )
@@ -42763,7 +42487,7 @@ var staticRenderFns = [
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-xl-4 mt-5 mt-lg-0" }, [
+          _c("div", { staticClass: "col-lg-3 col-xl-6 mt-5 mt-lg-0" }, [
             _c(
               "a",
               {
@@ -42859,7 +42583,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "request-travel card card-custom card-sticky animate__animated animate__fadeIn",
+        "container request-travel card card-custom card-sticky animate__animated animate__fadeIn",
       attrs: { id: "kt_page_sticky_card" }
     },
     [

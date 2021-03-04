@@ -1,5 +1,5 @@
 <template>
-    <div class="request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
+    <div class="container request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
         <div class="card-header">
             <div class="card-title">
                 <h3 class="card-label">Motor Vehicle
