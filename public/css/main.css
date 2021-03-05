@@ -24,3 +24,14 @@
 .select2-container {
     margin-bottom: 0.5rem !important;
 }
+
+.modal-date {
+    margin-left: auto;
+    margin-right: 50px;
+    font-size: 15px;
+}
+
+.modal-status {
+    font-size: 13px !important;
+    padding: 20px !important;
+}

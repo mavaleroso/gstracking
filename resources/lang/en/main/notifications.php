@@ -6,5 +6,5 @@ return [
     'login_inactive' => 'User is disabled, please contact administrator',
 
     // Request Travel Page
-    'travel_created_successfully' => 'Travel created succesfilly',
+    'travel_created_successfully' => 'Travel created succesfully',
 ];

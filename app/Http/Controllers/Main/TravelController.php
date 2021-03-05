@@ -17,18 +17,10 @@ class TravelController extends Controller
      */
     public function index()
     {
-        // $data['meta'] = array(
-        //     "page" => 1,
-        //     "pages" => 1,
-        //     "perpage" => -1,
-        //     "total" => Trequest::count(),
-        //     "sort" => "asc",
-        //     "field" => "id"
-        // );
-
-        // $data['data'] = Trequest::all();
-
-        return response()->json(DB::table('requests')->select('*', DB::raw('CONCAT(first_name," ",last_name) AS fullname'))->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')->get());
+        return response()->json(DB::table('requests')
+            ->select('requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'))
+            ->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
+            ->get());
     }
 
     /**
@@ -52,11 +44,6 @@ class TravelController extends Controller
         $createTravel->execute($travelStoreRequest->validated());
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully')]);
     }
-
-    // public function store(Request $request)
-    // {
-    //     dd($request);
-    // }
 
     /**
      * Display the specified resource.

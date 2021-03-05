@@ -2188,51 +2188,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -2467,9 +2422,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-//
-//
-//
 //
 //
 //
@@ -41240,17 +41192,24 @@ var staticRenderFns = [
               },
               [
                 _c("div", { staticClass: "modal-header py-5" }, [
+                  _c("h5", {
+                    staticClass: "modal-status label label-inline mr-5"
+                  }),
+                  _vm._v(" "),
                   _c("h5", { staticClass: "modal-title" }, [
-                    _vm._v("Sub Datatable in Modal Pop-up\n                "),
-                    _c(
-                      "span",
-                      { staticClass: "d-block text-muted font-size-sm" },
-                      [
-                        _vm._v(
-                          "sub datatable for the selected row is loaded from remote data source"
-                        )
-                      ]
-                    )
+                    _c("span", { staticClass: "m-title" }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-block text-muted font-size-sm"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", { staticClass: "modal-date" }, [
+                    _c("span", { staticClass: "m-date" }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-block text-muted font-size-sm"
+                    })
                   ]),
                   _vm._v(" "),
                   _c(
@@ -41272,144 +41231,7 @@ var staticRenderFns = [
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c("div", { staticClass: "mb-5" }, [
-                    _c("div", { staticClass: "row align-items-center" }, [
-                      _c("div", { staticClass: "col-lg-9 col-xl-8" }, [
-                        _c("div", { staticClass: "row align-items-center" }, [
-                          _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
-                            _c("div", { staticClass: "input-icon" }, [
-                              _c("input", {
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Search...",
-                                  id: "kt_datatable_search_query_2"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("span", [
-                                _c("i", {
-                                  staticClass: "flaticon2-search-1 text-muted"
-                                })
-                              ])
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
-                            _c(
-                              "div",
-                              { staticClass: "d-flex align-items-center" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "mr-3 mb-0 d-none d-md-block"
-                                  },
-                                  [_vm._v("Status:")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "select",
-                                  {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      id: "kt_datatable_search_status_2"
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { value: "" } }, [
-                                      _vm._v("All")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "0" } }, [
-                                      _vm._v("Pending")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "1" } }, [
-                                      _vm._v("Delivered")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "2" } }, [
-                                      _vm._v("Canceled")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "3" } }, [
-                                      _vm._v("Success")
-                                    ])
-                                  ]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-4 my-2 my-md-0" }, [
-                            _c(
-                              "div",
-                              { staticClass: "d-flex align-items-center" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "mr-3 mb-0 d-none d-md-block"
-                                  },
-                                  [_vm._v("Type:")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "select",
-                                  {
-                                    staticClass: "form-control",
-                                    attrs: { id: "kt_datatable_search_type_2" }
-                                  },
-                                  [
-                                    _c("option", { attrs: { value: "" } }, [
-                                      _vm._v("All")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "1" } }, [
-                                      _vm._v("Online")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "2" } }, [
-                                      _vm._v("Retail")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "3" } }, [
-                                      _vm._v("Direct")
-                                    ])
-                                  ]
-                                )
-                              ]
-                            )
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-lg-3 col-xl-4 mt-5 mt-lg-0" },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn btn-light-primary px-6 font-weight-bold",
-                              attrs: { href: "#" }
-                            },
-                            [_vm._v("Search")]
-                          )
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass:
-                      "datatable datatable-bordered datatable-head-custom",
-                    attrs: { id: "kt_datatable_sub" }
-                  })
-                ]),
+                _c("div", { staticClass: "modal-body" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-footer" }, [
                   _c(
@@ -42485,17 +42307,6 @@ var staticRenderFns = [
                 ])
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-xl-6 mt-5 mt-lg-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-light-primary px-6 font-weight-bold",
-                attrs: { href: "#" }
-              },
-              [_vm._v("Search")]
-            )
           ])
         ])
       ]),
