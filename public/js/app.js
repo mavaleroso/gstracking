@@ -2185,6 +2185,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -2419,9 +2422,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-//
-//
-//
 //
 //
 //
@@ -41192,13 +41192,24 @@ var staticRenderFns = [
               },
               [
                 _c("div", { staticClass: "modal-header py-5" }, [
+                  _c("h5", {
+                    staticClass: "modal-status label label-inline mr-5"
+                  }),
+                  _vm._v(" "),
                   _c("h5", { staticClass: "modal-title" }, [
-                    _vm._v("XDWQY-2021\n                "),
-                    _c(
-                      "span",
-                      { staticClass: "d-block text-muted font-size-sm" },
-                      [_vm._v("Request form from Accounting Section")]
-                    )
+                    _c("span", { staticClass: "m-title" }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-block text-muted font-size-sm"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("h3", { staticClass: "modal-date" }, [
+                    _c("span", { staticClass: "m-date" }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-block text-muted font-size-sm"
+                    })
                   ]),
                   _vm._v(" "),
                   _c(
@@ -42296,17 +42307,6 @@ var staticRenderFns = [
                 ])
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-3 col-xl-6 mt-5 mt-lg-0" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-light-primary px-6 font-weight-bold",
-                attrs: { href: "#" }
-              },
-              [_vm._v("Search")]
-            )
           ])
         ])
       ]),

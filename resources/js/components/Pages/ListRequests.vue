@@ -53,9 +53,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-6 mt-5 mt-lg-0">
-                            <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
-                        </div>
                     </div>
                 </div>
                 <!--end::Search Form-->

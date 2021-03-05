@@ -18,7 +18,7 @@ class Request extends Model
      */
     protected $fillable = [
         'user_id',
-        'code',
+        'serial_code',
         'type_vehicle',
         'department',
         'purpose',

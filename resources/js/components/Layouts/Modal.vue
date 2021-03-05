@@ -3,8 +3,11 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content" style="min-height: 590px;">
                 <div class="modal-header py-5">
-                    <h5 class="modal-title">XDWQY-2021
-                    <span class="d-block text-muted font-size-sm">Request form from Accounting Section</span></h5>
+                    <h5 class="modal-status label label-inline mr-5"></h5>
+                    <h5 class="modal-title"><span class="m-title"></span>
+                    <span class="d-block text-muted font-size-sm"></span></h5>
+                    <h3 class="modal-date"><span class="m-date"></span>
+                    <span class="d-block text-muted font-size-sm"></span></h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
