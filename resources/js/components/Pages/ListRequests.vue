@@ -1,5 +1,5 @@
 <template>
-    <div id="list-requests-page" class="container-fluid">
+    <div id="list-requests-page">
         <!--begin::Card-->
         <div class="card card-custom gutter-b animate__animated animate__fadeIn">
             <div class="card-header flex-wrap border-0 pt-6 pb-0">

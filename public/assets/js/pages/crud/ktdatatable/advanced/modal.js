@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 // Class definition
 
 var KTDatatableModal = function() {
@@ -24,7 +24,7 @@ var KTDatatableModal = function() {
             // layout definition
             layout: {
                 theme: 'default',
-                scroll: false,
+                scroll: true,
                 height: null,
                 footer: false,
             },
@@ -147,8 +147,10 @@ var KTDatatableModal = function() {
         // $('#kt_datatable_search_status').selectpicker();
 
         datatable.on('click', '[data-record-id]', function() {
-            let recordID = $(this).attr('data-record-id');
-            let recordData = datatable.getRecord(recordID);
+            let recordID = $(this).data('record-id');
+            let recordData = datatable.dataSet.filter(obj => {
+                return obj.RecordID == recordID;
+            }).end();
             let mTitle = $('#kt_datatable_modal .modal-title .m-title');
             let mDate = $('#kt_datatable_modal .modal-date .m-date');
             let mStatus = $('#kt_datatable_modal .modal-status');
@@ -156,14 +158,14 @@ var KTDatatableModal = function() {
             let mdSubtitle = $('#kt_datatable_modal .modal-date .text-muted');
             let mBody = $('#kt_datatable_modal .modal-body');
 
-            mStatus.text(recordData.API.value[7].innerText);
-            switch (recordData.API.value[7].innerText) {
-                case 'Pending':
+            switch (recordData[0].is_status) {
+                case 1:
                         mStatus.addClass('label-warning');
+                        mStatus.text('Pending');    
                     break;
             }
-            mTitle.text(recordData.API.value[1].innerText);
-            mDate.text(recordData.API.value[8].innerText);
+            mTitle.text(recordData[0].serial_code);
+            mDate.text(recordData[0].created_at);
             mSubtitle.text('Reference Code');
             mdSubtitle.text('Date Created');
             mBody.html('<form class="form">\
@@ -244,10 +246,10 @@ var KTDatatableModal = function() {
             </form>');
             $('#kt_datatable_modal').modal('show');
 
-            $("input[name=travel_radio][value='"+recordData.API.value[2].innerText+"']").prop("checked",true);
-            $("input[name=pur_travel]").val(recordData.API.value[4].innerText);
-            $("input[name=date_travel]").val(recordData.API.value[5].innerText);
-            $("input[name=time_depart]").val(recordData.API.value[6].innerText);
+            $("input[name=travel_radio][value='"+recordData[0].type_vehicle+"']").prop("checked",true);
+            $("input[name=pur_travel]").val(recordData[0].purpose);
+            $("input[name=date_travel]").val(recordData[0].travel_date);
+            $("input[name=time_depart]").val(recordData[0].depart_time);
         });
 
     };

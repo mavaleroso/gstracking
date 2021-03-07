@@ -1892,6 +1892,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -40319,12 +40321,14 @@ var render = function() {
                   [
                     _c("subheader"),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "d-flex flex-column-fluid" },
-                      [_c("router-view")],
-                      1
-                    )
+                    _c("div", { staticClass: "d-flex flex-column-fluid" }, [
+                      _c(
+                        "div",
+                        { staticClass: "container" },
+                        [_c("router-view")],
+                        1
+                      )
+                    ])
                   ],
                   1
                 ),
@@ -42135,7 +42139,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container-fluid", attrs: { id: "list-requests-page" } },
+    { attrs: { id: "list-requests-page" } },
     [
       _c(
         "div",
@@ -42394,7 +42398,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "container request-travel card card-custom card-sticky animate__animated animate__fadeIn",
+        "request-travel card card-custom card-sticky animate__animated animate__fadeIn",
       attrs: { id: "kt_page_sticky_card" }
     },
     [

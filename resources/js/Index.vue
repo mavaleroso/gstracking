@@ -20,7 +20,9 @@
 						<!--begin::Entry-->
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
-							<router-view></router-view>
+							<div class="container">
+								<router-view></router-view>
+							</div>
 							<!--end::Container-->
 						</div>
 						<!--end::Entry-->
