@@ -1,3 +1,8 @@
+#kt_body {
+    height: 100vh;
+    display: flex;
+}
+
 .brand-logo img {
     width: 158px;
 }

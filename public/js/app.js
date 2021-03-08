@@ -2183,19 +2183,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
   },
   methods: {
-    ini: function ini() {}
+    ini: function ini() {// $('#kt_datatable_modal').modal('show');
+    },
+    details: function details() {
+      alert('123');
+    }
   }
 });
 
@@ -2495,8 +2492,109 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      request_status: null,
+      request_status_lbl: null,
+      request_title: null,
+      request_createdAt: null,
+      request_vehicle: null,
+      request_travelPurpose: null,
+      request_travelDate: null,
+      request_departTime: null
+    };
+  },
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
@@ -2505,14 +2603,228 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ini: function ini() {
+      var _this = this;
+
       // LOAD SCRIPTS
-      var scripts = ["/assets/js/pages/crud/ktdatatable/advanced/modal.js"];
+      var scripts = [// "/assets/js/pages/crud/ktdatatable/advanced/modal.js",
+      "/assets/js/pages/crud/forms/widgets/select2.js"];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
         document.getElementById("list-requests-page").appendChild(tag);
       });
-    }
+      $(function () {
+        _this.KTDatatableModal().init();
+      });
+    },
+    KTDatatableModal: function KTDatatableModal() {
+      var initDatatable = function initDatatable() {
+        var el = $('#kt_datatable');
+        var count = 0;
+        var datatable = el.KTDatatable({
+          // datasource definition
+          data: {
+            type: 'remote',
+            source: {
+              read: {
+                url: HOST_URL + '/api/request_data',
+                method: 'GET'
+              }
+            },
+            pageSize: 10 // display 20 records per page
+
+          },
+          // layout definition
+          layout: {
+            theme: 'default',
+            scroll: true,
+            height: null,
+            footer: false
+          },
+          // column sorting
+          sortable: true,
+          pagination: true,
+          search: {
+            input: $('#kt_datatable_search_query'),
+            key: 'generalSearch'
+          },
+          // columns definition
+          columns: [{
+            field: 'id',
+            title: 'ID',
+            width: 35,
+            autoHide: false,
+            template: function template() {
+              count += 1;
+              return count;
+            }
+          }, {
+            field: 'serial_code',
+            title: 'code',
+            textAlign: 'center',
+            autoHide: false
+          }, {
+            field: 'type_vehicle',
+            title: 'Vehicle Type',
+            autoHide: false
+          }, {
+            field: 'department',
+            title: 'Department',
+            autoHide: false
+          }, {
+            field: 'purpose',
+            title: 'Purpose',
+            autoHide: false
+          }, {
+            field: 'travel_date',
+            title: 'Travel Date',
+            autoHide: false,
+            textAlign: 'center',
+            template: function template(row) {
+              var date = new Date(row.travel_date);
+              var options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              };
+              return date.toLocaleDateString('en-US', options);
+            }
+          }, {
+            field: 'depart_time',
+            title: 'Depart Time',
+            textAlign: 'center',
+            autoHide: false,
+            template: function template(row) {
+              var time = row.depart_time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+              if (time.length > 1) {
+                time = time.slice(1);
+                time[3] = +time[0] < 12 ? ' AM' : ' PM';
+                time[0] = +time[0] % 12 || 12;
+              }
+
+              return time.join('');
+            }
+          }, {
+            field: 'is_status',
+            title: 'Status',
+            autoHide: false,
+            // callback function support for column rendering
+            template: function template(row) {
+              var status = {
+                1: {
+                  'title': 'Pending',
+                  'class': ' label-light-warning'
+                },
+                2: {
+                  'title': 'Approved',
+                  'class': ' label-light-info'
+                },
+                3: {
+                  'title': 'Completed',
+                  'class': ' label-light-success'
+                },
+                4: {
+                  'title': 'Declined',
+                  'class': ' label-light-danger'
+                }
+              };
+              return '<span class="label label-lg font-weight-bold ' + status[row.is_status]["class"] + ' label-inline">' + status[row.is_status].title + '</span>';
+            }
+          }, {
+            field: 'created_at',
+            title: 'Date Created',
+            order: 'desc',
+            autoHide: false,
+            width: 130,
+            textAlign: 'center',
+            template: function template(row) {
+              var date = new Date(row.created_at);
+              var options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+              };
+              return date.toLocaleDateString('en-US', options);
+            }
+          }, {
+            field: 'fullname',
+            title: 'Requested By',
+            autoHide: false
+          }, {
+            field: 'Actions',
+            width: 130,
+            title: 'Actions',
+            sortable: false,
+            overflow: 'visible',
+            textAlign: 'left',
+            autoHide: false,
+            template: function template(row) {
+              return '\
+                                <button data-record-id="' + row.id + '" class="btn btn-sm btn-clean btn-details" title="View records">\
+                                    <i class="flaticon2-document"></i> Details\
+                                </button>';
+            }
+          }]
+        });
+        $('#kt_datatable_search_status').on('change', function () {
+          datatable.search($(this).val().toLowerCase(), 'is_status');
+        });
+
+        record_details = function record_details(id) {
+          alert(id);
+        };
+
+        $(document).on('click', '.btn-details', function () {
+          var id = $(this).data('record-id');
+          record_details(id);
+        }); // $('#kt_datatable_search_status').selectpicker();
+        // let details =  datatable.on('click', '[data-record-id]', function() {
+        // return $(this).data('record-id');
+        // $('#kt_datatable_modal').modal('show');
+        // return recordData;
+        // });
+        //    let recordData = datatable.dataSet.filter(obj => {
+        //         return obj.RecordID == recordID;
+        //     }).end();
+        // console.log(details);
+        // switch (recordData[0].is_status) {
+        //     case 1:
+        //             this.request_status = 'Pending';
+        //             this.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
+        //         break;
+        //     case 2:
+        //             this.request_status = 'Approved';
+        //             this.request_status_lbl = 'label-primary';
+        //         break;
+        //     case 3:
+        //             this.request_status = 'Completed';
+        //             this.request_status_lbl = 'label-success';
+        //         break;
+        //     case 4:
+        //             this.request_status = 'Rejected';
+        //             this.request_status_lbl = 'label-danger';
+        //         break; 
+        // }
+        // this.request_title = recordData[0].serial_code;
+        // this.request_createdAt = recordData[0].created_at;
+        // this.request_vehicle = recordData[0].type_vehicle;
+        // this.request_travelPurpose = recordData[0].purpose;
+        // this.request_travelDate = recordData[0].travel_date;
+        // this.request_departTime = recordData[0].depart_time;
+      };
+
+      return {
+        // public functions
+        init: function init() {
+          initDatatable();
+        }
+      };
+    },
+    addRow: function addRow() {},
+    removeRow: function removeRow() {}
   }
 });
 
@@ -40324,7 +40636,7 @@ var render = function() {
                     _c("div", { staticClass: "d-flex flex-column-fluid" }, [
                       _c(
                         "div",
-                        { staticClass: "container" },
+                        { staticClass: "container-fluid" },
                         [_c("router-view")],
                         1
                       )
@@ -41166,106 +41478,63 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: { id: "kt_datatable_modal", role: "dialog", "aria-hidden": "true" }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "modal-dialog modal-xl modal-dialog-centered" },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-content",
+              staticStyle: { "min-height": "590px" }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "modal-header py-5" },
+                [_vm._t("header")],
+                2
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [_vm._t("body")], 2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-light-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button" },
+                    on: { click: _vm.details }
+                  },
+                  [_vm._v("Submit")]
+                )
+              ])
+            ]
+          )
+        ]
+      )
+    ]
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "kt_datatable_modal",
-          role: "dialog",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-xl modal-dialog-centered" },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "modal-content",
-                staticStyle: { "min-height": "590px" }
-              },
-              [
-                _c("div", { staticClass: "modal-header py-5" }, [
-                  _c("h5", {
-                    staticClass: "modal-status label label-inline mr-5"
-                  }),
-                  _vm._v(" "),
-                  _c("h5", { staticClass: "modal-title" }, [
-                    _c("span", { staticClass: "m-title" }),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "d-block text-muted font-size-sm"
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("h3", { staticClass: "modal-date" }, [
-                    _c("span", { staticClass: "m-date" }),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "d-block text-muted font-size-sm"
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        type: "button",
-                        "data-dismiss": "modal",
-                        "aria-label": "Close"
-                      }
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "ki ki-close",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-light-primary font-weight-bold text-uppercase",
-                      attrs: { type: "button", "data-dismiss": "modal" }
-                    },
-                    [_vm._v("Close")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "btn btn-primary font-weight-bold text-uppercase",
-                      attrs: { type: "button" }
-                    },
-                    [_vm._v("Submit")]
-                  )
-                ])
-              ]
-            )
-          ]
-        )
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42234,7 +42503,344 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c("modal")
+      _c("modal", {
+        scopedSlots: _vm._u([
+          {
+            key: "header",
+            fn: function() {
+              return [
+                _c("h5", {}, [_vm._v(_vm._s(_vm.request_status))]),
+                _vm._v(" "),
+                _c("h5", { staticClass: "modal-title" }, [
+                  _c("span", { staticClass: "m-title" }),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Reference Code")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("h3", { staticClass: "modal-date" }, [
+                  _c("span", { staticClass: "m-date" }),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Date Created")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "ki ki-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "body",
+            fn: function() {
+              return [
+                _c("form", { staticClass: "form" }, [
+                  _c("div", { staticClass: "card-body row" }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass:
+                          "col-lg-12 text-dark font-weight-bold mb-10"
+                      },
+                      [_vm._v("Requestor Details:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Type of Motor Vehicle")]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "radio-inline" }, [
+                          _c("label", { staticClass: "radio radio-solid" }, [
+                            _c("input", {
+                              attrs: {
+                                type: "radio",
+                                name: "travel_radio",
+                                checked: "checked",
+                                disabled: "disabled",
+                                value: "Office"
+                              }
+                            }),
+                            _vm._v(
+                              " Office\n                                    "
+                            ),
+                            _c("span")
+                          ]),
+                          _vm._v(" "),
+                          _c("label", { staticClass: "radio radio-solid" }, [
+                            _c("input", {
+                              attrs: {
+                                type: "radio",
+                                name: "travel_radio",
+                                disabled: "disabled",
+                                value: "Rental"
+                              }
+                            }),
+                            _vm._v(
+                              " Rental\n                                    "
+                            ),
+                            _c("span")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Purpose of Travel")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "pur_travel",
+                            disabled: "disabled"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Date of Travel")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "date_travel",
+                            disabled: "disabled"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Time of Departure")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "time_depart",
+                            disabled: "disabled"
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Destination")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control mt-4",
+                          attrs: { type: "text", disabled: "disabled" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "form-text text-muted" }, [
+                          _vm._v("Region")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control mt-4",
+                          attrs: { type: "text", disabled: "disabled" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "form-text text-muted" }, [
+                          _vm._v("Province")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control mt-4",
+                          attrs: { type: "text", disabled: "disabled" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "form-text text-muted" }, [
+                          _vm._v("City")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control mt-4",
+                          attrs: { type: "text", disabled: "disabled" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "form-text text-muted" }, [
+                          _vm._v("Barangay")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", {
+                        staticClass: "separator separator-dashed my-10"
+                      }),
+                      _vm._v(" "),
+                      _c("div", {}, [
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c(
+                            "h5",
+                            { staticClass: "text-dark font-weight-bold mb-10" },
+                            [_vm._v("Passenger Details:")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "ml-auto",
+                              staticStyle: { display: "none" }
+                            },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm btn-outline-primary",
+                                  on: { click: _vm.addRow }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-plus-square p-0"
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm btn-outline-primary",
+                                  on: { click: _vm.removeRow }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-minus-square p-0"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: {
+                            id: "pax-total",
+                            type: "hidden",
+                            name: "pax_total",
+                            value: "1"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "table",
+                          {
+                            staticClass: "table w-100",
+                            attrs: { id: "passenger-tbl" }
+                          },
+                          [
+                            _c("thead", [
+                              _c("tr", [
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-center",
+                                    attrs: { scope: "col" }
+                                  },
+                                  [_vm._v("#")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-center",
+                                    attrs: { scope: "col" }
+                                  },
+                                  [_vm._v("Name of Passenger/s")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-center",
+                                    attrs: { scope: "col" }
+                                  },
+                                  [_vm._v("Position/Designation")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "th",
+                                  {
+                                    staticClass: "text-center",
+                                    staticStyle: { display: "none" },
+                                    attrs: { scope: "col" }
+                                  },
+                                  [_vm._v("Action")]
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("tbody", [
+                              _c("tr", [
+                                _c(
+                                  "td",
+                                  {
+                                    staticClass: "text-center",
+                                    attrs: { scope: "row" }
+                                  },
+                                  [_vm._v("1")]
+                                ),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      name: "pax_name_1",
+                                      type: "text",
+                                      disabled: "disabled"
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      name: "pax_des_1",
+                                      type: "text",
+                                      disabled: "disabled"
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticStyle: { display: "none" } })
+                              ])
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
     ],
     1
   )
