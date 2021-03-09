@@ -2153,51 +2153,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mounted: function mounted() {
-    this.ini();
-  },
-  methods: {
-    ini: function ini() {// $('#kt_datatable_modal').modal('show');
-    },
-    details: function details() {
-      alert('123');
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Rightpanel.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Rightpanel.vue?vue&type=script&lang=js& ***!
@@ -2581,6 +2536,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2592,11 +2563,22 @@ __webpack_require__.r(__webpack_exports__);
       request_vehicle: null,
       request_travelPurpose: null,
       request_travelDate: null,
-      request_departTime: null
+      request_departTime: null,
+      regions: [],
+      provinces: [],
+      cities: [],
+      brgys: [],
+      activeProvinces: [],
+      activeCities: [],
+      destinations: [],
+      passengers: []
     };
   },
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  created: function created() {
+    this.getRegion();
   },
   mounted: function mounted() {
     this.ini();
@@ -2606,8 +2588,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       // LOAD SCRIPTS
-      var scripts = [// "/assets/js/pages/crud/ktdatatable/advanced/modal.js",
-      "/assets/js/pages/crud/forms/widgets/select2.js"];
+      var scripts = ["/assets/js/pages/crud/forms/widgets/select2.js"];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
@@ -2615,12 +2596,67 @@ __webpack_require__.r(__webpack_exports__);
       });
       $(function () {
         _this.KTDatatableModal().init();
+
+        $('#kt_select_region').on('change', function () {
+          var id = $('#kt_select_region').val();
+
+          _this.getProvince(id);
+
+          _this.provinces = [];
+          _this.cities = [];
+          _this.brgys = [];
+          _this.activeProvinces = [];
+          _this.activeCities = [];
+        });
+        $('#kt_select_province').on('change', function () {
+          var id = $('#kt_select_province').val();
+          id = id.map(function (i) {
+            return Number(i);
+          });
+
+          _this.provinces.map(function (i) {
+            if (id.indexOf(i.id) != -1) {
+              i.active = "true";
+            } else {
+              i.active = "false";
+            }
+          });
+
+          if (id.length != 0) {
+            _this.getCity(id);
+
+            _this.currentProv();
+          }
+        });
+        $('#kt_select_city').on('change', function () {
+          var id = $('#kt_select_city').val();
+          id = id.map(function (i) {
+            return Number(i);
+          });
+
+          _this.cities.map(function (i) {
+            if (id.indexOf(i.id) != -1) {
+              i.active = "true";
+            } else {
+              i.active = "false";
+            }
+          });
+
+          if (id.length != 0) {
+            _this.getBrgy(id);
+
+            _this.currentCity();
+          }
+        });
       });
     },
     KTDatatableModal: function KTDatatableModal() {
+      var _this2 = this;
+
       var initDatatable = function initDatatable() {
         var el = $('#kt_datatable');
         var count = 0;
+        var vm = _this2;
         var datatable = el.KTDatatable({
           // datasource definition
           data: {
@@ -2772,48 +2808,44 @@ __webpack_require__.r(__webpack_exports__);
         $('#kt_datatable_search_status').on('change', function () {
           datatable.search($(this).val().toLowerCase(), 'is_status');
         });
+        datatable.on('click', '[data-record-id]', function () {
+          var recordID = $(this).data('record-id');
+          var recordData = $.grep(datatable.dataSet, function (v) {
+            return v.id === recordID;
+          });
+          vm.getDetails(recordID);
+          vm.getPassengers(recordID);
 
-        record_details = function record_details(id) {
-          alert(id);
-        };
+          switch (recordData[0].is_status) {
+            case 1:
+              vm.request_status = 'Pending';
+              vm.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
+              break;
 
-        $(document).on('click', '.btn-details', function () {
-          var id = $(this).data('record-id');
-          record_details(id);
-        }); // $('#kt_datatable_search_status').selectpicker();
-        // let details =  datatable.on('click', '[data-record-id]', function() {
-        // return $(this).data('record-id');
-        // $('#kt_datatable_modal').modal('show');
-        // return recordData;
-        // });
-        //    let recordData = datatable.dataSet.filter(obj => {
-        //         return obj.RecordID == recordID;
-        //     }).end();
-        // console.log(details);
-        // switch (recordData[0].is_status) {
-        //     case 1:
-        //             this.request_status = 'Pending';
-        //             this.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
-        //         break;
-        //     case 2:
-        //             this.request_status = 'Approved';
-        //             this.request_status_lbl = 'label-primary';
-        //         break;
-        //     case 3:
-        //             this.request_status = 'Completed';
-        //             this.request_status_lbl = 'label-success';
-        //         break;
-        //     case 4:
-        //             this.request_status = 'Rejected';
-        //             this.request_status_lbl = 'label-danger';
-        //         break; 
-        // }
-        // this.request_title = recordData[0].serial_code;
-        // this.request_createdAt = recordData[0].created_at;
-        // this.request_vehicle = recordData[0].type_vehicle;
-        // this.request_travelPurpose = recordData[0].purpose;
-        // this.request_travelDate = recordData[0].travel_date;
-        // this.request_departTime = recordData[0].depart_time;
+            case 2:
+              vm.request_status = 'Approved';
+              vm.request_status_lbl = 'modal-status label label-primary label-inline mr-5';
+              break;
+
+            case 3:
+              vm.request_status = 'Completed';
+              vm.request_status_lbl = 'modal-status label label-success label-inline mr-5';
+              break;
+
+            case 4:
+              vm.request_status = 'Rejected';
+              vm.request_status_lbl = 'modal-status label label-danger label-inline mr-5';
+              break;
+          }
+
+          vm.request_title = recordData[0].serial_code;
+          vm.request_createdAt = recordData[0].created_at;
+          vm.request_vehicle = recordData[0].type_vehicle;
+          vm.request_travelPurpose = recordData[0].purpose;
+          vm.request_travelDate = recordData[0].travel_date;
+          vm.request_departTime = recordData[0].depart_time;
+          $('#kt_datatable_modal').modal('show');
+        });
       };
 
       return {
@@ -2822,6 +2854,119 @@ __webpack_require__.r(__webpack_exports__);
           initDatatable();
         }
       };
+    },
+    getRegion: function getRegion() {
+      var _this3 = this;
+
+      axios.get("/api/regions_data").then(function (response) {
+        _this3.regions = response.data;
+      });
+    },
+    getProvince: function getProvince(id) {
+      var _this4 = this;
+
+      axios.get("/api/provinces_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this4.provinces = response.data;
+
+        _this4.provinces.map(function (i) {
+          return i.active = "false";
+        });
+      });
+    },
+    getCity: function getCity(id) {
+      var _this5 = this;
+
+      axios.get("/api/cities_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this5.cities = response.data;
+
+        _this5.cities.map(function (i) {
+          return i.active = "false";
+        });
+      });
+    },
+    getBrgy: function getBrgy(id) {
+      var _this6 = this;
+
+      axios.get("/api/brgys_data", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this6.brgys = response.data;
+      });
+    },
+    currentProv: function currentProv() {
+      this.activeProvinces = this.provinces.filter(function (i) {
+        return i.active === 'true';
+      });
+    },
+    currentCity: function currentCity() {
+      this.activeCities = this.cities.filter(function (i) {
+        return i.active === 'true';
+      });
+    },
+    getDetails: function getDetails(id) {
+      axios.get("/api/destination_details", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        var destination = response.data;
+        var data = [];
+
+        var distinct = function distinct(value, index, self) {
+          return self.indexOf(value) === index;
+        };
+
+        data['region'] = destination.map(function (d) {
+          return d['region_id'];
+        }).filter(distinct);
+        data['province'] = destination.map(function (d) {
+          return d['province_id'];
+        }).filter(distinct);
+        data['city'] = destination.map(function (d) {
+          return d['city_id'];
+        }).filter(distinct);
+        data['brgy'] = destination.map(function (d) {
+          return d['brgy_id'];
+        }).filter(distinct);
+        $('#kt_select_region').val(data.region);
+        $('#kt_select_region').trigger('change');
+        setTimeout(function () {
+          $('#kt_select_province').val(data.province);
+          $('#kt_select_province').trigger('change');
+        }, 1000);
+        setTimeout(function () {
+          $('#kt_select_city').val(data.city);
+          $('#kt_select_city').trigger('change');
+        }, 2000);
+        setTimeout(function () {
+          $('#kt_select_brgy').val(data.brgy);
+          $('#kt_select_brgy').trigger('change');
+        }, 3000);
+      });
+    },
+    getPassengers: function getPassengers(id) {
+      var _this7 = this;
+
+      axios.get("/api/passenger_details", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        _this7.passengers = response.data;
+      });
+    },
+    paxIndex: function paxIndex(index) {
+      return index + 1;
     },
     addRow: function addRow() {},
     removeRow: function removeRow() {}
@@ -39849,17 +39994,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Modal_vue_vue_type_template_id_0bd86fac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Modal.vue?vue&type=template&id=0bd86fac& */ "./resources/js/components/Layouts/Modal.vue?vue&type=template&id=0bd86fac&");
-/* harmony import */ var _Modal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Modal.vue?vue&type=script&lang=js& */ "./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-
-
+var script = {}
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _Modal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  script,
   _Modal_vue_vue_type_template_id_0bd86fac___WEBPACK_IMPORTED_MODULE_0__.render,
   _Modal_vue_vue_type_template_id_0bd86fac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -40259,22 +40402,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Header.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Header.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Header_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Modal.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -41505,28 +41632,7 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [_vm._t("body")], 2),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-light-primary font-weight-bold text-uppercase",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-primary font-weight-bold text-uppercase",
-                    attrs: { type: "button" },
-                    on: { click: _vm.details }
-                  },
-                  [_vm._v("Submit")]
-                )
-              ])
+              _c("div", { staticClass: "modal-footer" }, [_vm._t("footer")], 2)
             ]
           )
         ]
@@ -42509,10 +42615,14 @@ var render = function() {
             key: "header",
             fn: function() {
               return [
-                _c("h5", {}, [_vm._v(_vm._s(_vm.request_status))]),
+                _c("h5", { class: _vm.request_status_lbl }, [
+                  _vm._v(_vm._s(_vm.request_status))
+                ]),
                 _vm._v(" "),
                 _c("h5", { staticClass: "modal-title" }, [
-                  _c("span", { staticClass: "m-title" }),
+                  _c("span", { staticClass: "m-title" }, [
+                    _vm._v(_vm._s(_vm.request_title))
+                  ]),
                   _vm._v(" "),
                   _c(
                     "span",
@@ -42522,7 +42632,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("h3", { staticClass: "modal-date" }, [
-                  _c("span", { staticClass: "m-date" }),
+                  _c("span", { staticClass: "m-date" }, [
+                    _vm._v(_vm._s(_vm.request_createdAt))
+                  ]),
                   _vm._v(" "),
                   _c(
                     "span",
@@ -42574,12 +42686,27 @@ var render = function() {
                         _c("div", { staticClass: "radio-inline" }, [
                           _c("label", { staticClass: "radio radio-solid" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.request_vehicle,
+                                  expression: "request_vehicle"
+                                }
+                              ],
                               attrs: {
                                 type: "radio",
                                 name: "travel_radio",
-                                checked: "checked",
                                 disabled: "disabled",
                                 value: "Office"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.request_vehicle, "Office")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.request_vehicle = "Office"
+                                }
                               }
                             }),
                             _vm._v(
@@ -42590,11 +42717,27 @@ var render = function() {
                           _vm._v(" "),
                           _c("label", { staticClass: "radio radio-solid" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.request_vehicle,
+                                  expression: "request_vehicle"
+                                }
+                              ],
                               attrs: {
                                 type: "radio",
                                 name: "travel_radio",
                                 disabled: "disabled",
                                 value: "Rental"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.request_vehicle, "Rental")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.request_vehicle = "Rental"
+                                }
                               }
                             }),
                             _vm._v(
@@ -42609,11 +42752,28 @@ var render = function() {
                         _c("label", [_vm._v("Purpose of Travel")]),
                         _vm._v(" "),
                         _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.request_travelPurpose,
+                              expression: "request_travelPurpose"
+                            }
+                          ],
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
                             name: "pur_travel",
                             disabled: "disabled"
+                          },
+                          domProps: { value: _vm.request_travelPurpose },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.request_travelPurpose = $event.target.value
+                            }
                           }
                         })
                       ]),
@@ -42622,11 +42782,28 @@ var render = function() {
                         _c("label", [_vm._v("Date of Travel")]),
                         _vm._v(" "),
                         _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.request_travelDate,
+                              expression: "request_travelDate"
+                            }
+                          ],
                           staticClass: "form-control",
                           attrs: {
-                            type: "text",
+                            type: "date",
                             name: "date_travel",
                             disabled: "disabled"
+                          },
+                          domProps: { value: _vm.request_travelDate },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.request_travelDate = $event.target.value
+                            }
                           }
                         })
                       ]),
@@ -42635,11 +42812,28 @@ var render = function() {
                         _c("label", [_vm._v("Time of Departure")]),
                         _vm._v(" "),
                         _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.request_departTime,
+                              expression: "request_departTime"
+                            }
+                          ],
                           staticClass: "form-control",
                           attrs: {
-                            type: "text",
+                            type: "time",
                             name: "time_depart",
                             disabled: "disabled"
+                          },
+                          domProps: { value: _vm.request_departTime },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.request_departTime = $event.target.value
+                            }
                           }
                         })
                       ])
@@ -42649,37 +42843,150 @@ var render = function() {
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [_vm._v("Destination")]),
                         _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control mt-4",
-                          attrs: { type: "text", disabled: "disabled" }
-                        }),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-control select2",
+                            attrs: {
+                              id: "kt_select_region",
+                              name: "region",
+                              disabled: "disabled"
+                            }
+                          },
+                          _vm._l(_vm.regions, function(region) {
+                            return _c(
+                              "option",
+                              {
+                                key: region.id,
+                                domProps: { value: region.id }
+                              },
+                              [_vm._v(_vm._s(region.region_name))]
+                            )
+                          }),
+                          0
+                        ),
                         _vm._v(" "),
                         _c("span", { staticClass: "form-text text-muted" }, [
                           _vm._v("Region")
                         ]),
                         _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control mt-4",
-                          attrs: { type: "text", disabled: "disabled" }
-                        }),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-control select2 kt_select2_3",
+                            attrs: {
+                              id: "kt_select_province",
+                              name: "province[]",
+                              multiple: "multiple",
+                              disabled: "disabled"
+                            }
+                          },
+                          _vm._l(_vm.provinces, function(province) {
+                            return _c(
+                              "option",
+                              {
+                                key: province.id,
+                                domProps: { value: province.id }
+                              },
+                              [_vm._v(_vm._s(province.province_name))]
+                            )
+                          }),
+                          0
+                        ),
                         _vm._v(" "),
                         _c("span", { staticClass: "form-text text-muted" }, [
                           _vm._v("Province")
                         ]),
                         _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control mt-4",
-                          attrs: { type: "text", disabled: "disabled" }
-                        }),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-control select2 kt_select2_3",
+                            attrs: {
+                              id: "kt_select_city",
+                              name: "city[]",
+                              multiple: "multiple",
+                              disabled: "disabled"
+                            }
+                          },
+                          _vm._l(_vm.activeProvinces, function(activeProv) {
+                            return _c(
+                              "optgroup",
+                              {
+                                key: activeProv.id,
+                                attrs: { label: activeProv.province_name }
+                              },
+                              _vm._l(
+                                _vm.cities.filter(function(i) {
+                                  return i.province_id == activeProv.id
+                                }),
+                                function(city) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: city.id,
+                                      domProps: { value: city.id }
+                                    },
+                                    [_vm._v(_vm._s(city.city_name))]
+                                  )
+                                }
+                              ),
+                              0
+                            )
+                          }),
+                          0
+                        ),
                         _vm._v(" "),
                         _c("span", { staticClass: "form-text text-muted" }, [
                           _vm._v("City")
                         ]),
                         _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control mt-4",
-                          attrs: { type: "text", disabled: "disabled" }
-                        }),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-control select2 kt_select2_3",
+                            attrs: {
+                              id: "kt_select_brgy",
+                              name: "brgy[]",
+                              multiple: "multiple",
+                              disabled: "disabled"
+                            }
+                          },
+                          _vm._l(_vm.activeCities, function(activeCity) {
+                            return _c(
+                              "optgroup",
+                              {
+                                key: activeCity.id,
+                                attrs: { label: activeCity.city_name }
+                              },
+                              _vm._l(
+                                _vm.brgys.filter(function(i) {
+                                  return i.city_id == activeCity.id
+                                }),
+                                function(brgy) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: brgy.id,
+                                      domProps: { value: brgy.id }
+                                    },
+                                    [_vm._v(_vm._s(brgy.brgy_name))]
+                                  )
+                                }
+                              ),
+                              0
+                            )
+                          }),
+                          0
+                        ),
                         _vm._v(" "),
                         _c("span", { staticClass: "form-text text-muted" }, [
                           _vm._v("Barangay")
@@ -42793,42 +43100,48 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("tbody", [
-                              _c("tr", [
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "text-center",
-                                    attrs: { scope: "row" }
-                                  },
-                                  [_vm._v("1")]
-                                ),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c("input", {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      name: "pax_name_1",
-                                      type: "text",
-                                      disabled: "disabled"
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _c("input", {
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      name: "pax_des_1",
-                                      type: "text",
-                                      disabled: "disabled"
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticStyle: { display: "none" } })
-                              ])
-                            ])
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.passengers, function(pax, index) {
+                                return _c("tr", { key: index }, [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "text-center",
+                                      attrs: { scope: "row" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.paxIndex(index)))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        name: "pax_name_" + _vm.paxIndex(index),
+                                        type: "text",
+                                        disabled: "disabled"
+                                      },
+                                      domProps: { value: pax.name }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c("input", {
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        name: "pax_des_1" + _vm.paxIndex(index),
+                                        type: "text",
+                                        disabled: "disabled"
+                                      },
+                                      domProps: { value: pax.designation }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", { staticStyle: { display: "none" } })
+                                ])
+                              }),
+                              0
+                            )
                           ]
                         )
                       ])

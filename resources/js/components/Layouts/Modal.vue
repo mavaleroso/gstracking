@@ -9,26 +9,9 @@
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary font-weight-bold text-uppercase" @click="details">Submit</button>
+                    <slot name="footer"></slot>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<script>
-export default {
-    mounted() {
-        this.ini();
-    },
-    methods: {
-        ini() {
-            // $('#kt_datatable_modal').modal('show');
-        },
-        details() {
-            alert('123');
-        }
-    },
-}
-</script>

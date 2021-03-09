@@ -27,7 +27,6 @@ class CreateTravel
      */
     public function execute($fields)
     {
-
         $request = Request::create([
             'user_id' => auth()->user()->id,
             'type_vehicle' => $fields['travel_radio'],
@@ -39,7 +38,7 @@ class CreateTravel
 
         for ($i=0; $i < count($fields['brgy']); $i++) { 
             $request->destinations()->create([
-                'region_id' => $fields['region'][0],
+                'region_id' => $fields['region'],
                 'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
                 'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
                 'brgy_id' => $fields['brgy'][$i]
