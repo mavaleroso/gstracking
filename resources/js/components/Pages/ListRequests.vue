@@ -325,7 +325,6 @@ export default {
                     }, {
                         field: 'department',
                         title: 'Department',
-                        autoHide: false,
                     }, {
                         field: 'purpose',
                         title: 'Purpose',
@@ -385,7 +384,6 @@ export default {
                         field: 'created_at',
                         title: 'Date Created',
                         order: 'desc',
-                        autoHide: false,
                         width: 130,
                         textAlign: 'center',
                         template: (row) => {
@@ -396,7 +394,6 @@ export default {
                     }, {
                         field: 'fullname',
                         title: 'Requested By',
-                        autoHide: false,
                     },{
                         field: 'Actions',
                         width: 130,
@@ -513,15 +510,15 @@ export default {
                 setTimeout(() => {
                     $('#kt_select_province').val(data.province);
                     $('#kt_select_province').trigger('change');
-                }, 1000);
+                }, 500);
                 setTimeout(() => {
                     $('#kt_select_city').val(data.city);
                     $('#kt_select_city').trigger('change');
-                }, 2000);
+                }, 1000);
                 setTimeout(() => {
                     $('#kt_select_brgy').val(data.brgy);
                     $('#kt_select_brgy').trigger('change');
-                }, 3000);
+                }, 1500);
 
             });
         },

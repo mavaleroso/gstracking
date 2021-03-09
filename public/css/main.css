@@ -40,3 +40,15 @@
     font-size: 13px !important;
     padding: 20px !important;
 }
+
+@media only screen and (max-width: 1500px) {
+    #kt_body {
+        zoom: 90%;
+        height: 110vh;
+    }
+    .modal-backdrop {
+        width: 1000vh;
+        height: 1000vh;
+        overflow: hidden;
+    }
+}

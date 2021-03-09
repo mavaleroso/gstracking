@@ -2705,8 +2705,7 @@ __webpack_require__.r(__webpack_exports__);
             autoHide: false
           }, {
             field: 'department',
-            title: 'Department',
-            autoHide: false
+            title: 'Department'
           }, {
             field: 'purpose',
             title: 'Purpose',
@@ -2771,7 +2770,6 @@ __webpack_require__.r(__webpack_exports__);
             field: 'created_at',
             title: 'Date Created',
             order: 'desc',
-            autoHide: false,
             width: 130,
             textAlign: 'center',
             template: function template(row) {
@@ -2787,8 +2785,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }, {
             field: 'fullname',
-            title: 'Requested By',
-            autoHide: false
+            title: 'Requested By'
           }, {
             field: 'Actions',
             width: 130,
@@ -2943,15 +2940,15 @@ __webpack_require__.r(__webpack_exports__);
         setTimeout(function () {
           $('#kt_select_province').val(data.province);
           $('#kt_select_province').trigger('change');
-        }, 1000);
+        }, 500);
         setTimeout(function () {
           $('#kt_select_city').val(data.city);
           $('#kt_select_city').trigger('change');
-        }, 2000);
+        }, 1000);
         setTimeout(function () {
           $('#kt_select_brgy').val(data.brgy);
           $('#kt_select_brgy').trigger('change');
-        }, 3000);
+        }, 1500);
       });
     },
     getPassengers: function getPassengers(id) {
@@ -40763,7 +40760,7 @@ var render = function() {
                     _c("div", { staticClass: "d-flex flex-column-fluid" }, [
                       _c(
                         "div",
-                        { staticClass: "container-fluid" },
+                        { staticClass: "container" },
                         [_c("router-view")],
                         1
                       )
