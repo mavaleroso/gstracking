@@ -69,67 +69,73 @@
                 <h5 :class="request_status_lbl">{{ request_status }}</h5>
                 <h5 class="modal-title"><span class="m-title">{{ request_title }}</span>
                 <span class="d-block text-muted font-size-sm">Reference Code</span></h5>
-                <h3 class="modal-date"><span class="m-date">{{ request_createdAt }}</span>
+                <h3 class="modal-date"><span class="m-date">{{ dateTimeFormat(request_createdAt) }}</span>
                 <span class="d-block text-muted font-size-sm">Date Created</span></h3>
+                <button @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
+                    <i class="la la-edit icon-md"></i>
+                    <span>Edit</span>
+                </button>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </template>
             <template v-slot:body>
-                <form class="form">
+                <form id="request-form" class="form">
+                    <input name="request_id" type="hidden" v-model="request_id"/>
                     <div class="card-body row">
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Requestor Details:</h5>
                         <div class="col-lg-6">
+                            <input name="prog_div_sec" type="hidden" v-model="request_dept"/>
                             <div class="form-group">
                                 <label>Type of Motor Vehicle</label>
                                 <div class="radio-inline">
                                     <label class="radio radio-solid">
-                                        <input type="radio" name="travel_radio" disabled="disabled" value="Office" v-model="request_vehicle"/> Office
+                                        <input type="radio" name="travel_radio" disabled="disabled" class="details-input" value="Office" v-model="request_vehicle"/> Office
                                         <span></span>
                                     </label>
                                     <label class="radio radio-solid">
-                                        <input type="radio" name="travel_radio" disabled="disabled" value="Rental" v-model="request_vehicle"/> Rental
+                                        <input type="radio" name="travel_radio" disabled="disabled" class="details-input" value="Rental" v-model="request_vehicle"/> Rental
                                         <span></span>
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Purpose of Travel</label>
-                                <input type="text" name="pur_travel" class="form-control" disabled="disabled" v-model="request_travelPurpose"/>
+                                <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
                             </div>
                             <div class="form-group">
                                 <label>Date of Travel</label>
-                                <input type="date" name="date_travel" class="form-control" disabled="disabled" v-model="request_travelDate"/>
+                                <input type="date" name="date_travel" class="form-control details-input" disabled="disabled" v-model="request_travelDate"/>
                             </div>
                             <div class="form-group">
                                 <label>Time of Departure</label>
-                                <input type="time" name="time_depart" class="form-control" disabled="disabled" v-model="request_departTime"/>
+                                <input type="time" name="time_depart" class="form-control details-input" disabled="disabled" v-model="request_departTime"/>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Destination</label>
                                 <br>
-                                <select class="form-control select2" id="kt_select_region" name="region" disabled="disabled">
+                                <select class="form-control select2 details-input" id="kt_select_region" name="region" disabled="disabled">
                                     <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                 </select>
                                 <span class="form-text text-muted">Region</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
+                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
                                     <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                 </select>
                                 <span class="form-text text-muted">Province</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
+                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
-                                        <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
+                                        <option v-for="city in cities.filter(i=>i.province_id === activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                     </optgroup>
                                 </select>
                                 <span class="form-text text-muted">City</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
+                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
-                                        <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
+                                        <option v-for="brgy in brgys.filter(i=>i.city_id === activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                     </optgroup>
                                 </select>
                                 <span class="form-text text-muted">Barangay</span>
@@ -139,13 +145,13 @@
                             <div class="separator separator-dashed my-10"></div>
                             <div class="">
                                 <div class="d-flex">
+                                    <input id="pax-total" type="hidden" name="pax_total" v-model="passengers.length">
                                     <h5 class="text-dark font-weight-bold mb-10">Passenger Details:</h5>
-                                    <div class="ml-auto" style="display:none;">
+                                    <div class="ml-auto" v-if="request_edit">
                                         <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
                                         <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                     </div>
                                 </div>
-                                <input id="pax-total" type="hidden" name="pax_total" value="1">
                                 <table id="passenger-tbl" class="table w-100">
                                     <thead>
                                         <tr>
@@ -158,8 +164,8 @@
                                     <tbody>
                                         <tr v-for="(pax, index) in passengers" :key="index">
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
-                                            <td><input :name="'pax_name_' + paxIndex(index)" class="form-control" type="text" disabled="disabled" :value="pax.name"/></td>
-                                            <td><input :name="'pax_des_1' + paxIndex(index)" class="form-control" type="text" disabled="disabled" :value="pax.designation"/></td>
+                                            <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
+                                            <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
                                             <td style="display:none;"></td>
                                         </tr>
                                     </tbody>
@@ -168,6 +174,10 @@
                         </div>
                     </div>
                 </form>
+            </template>
+            <template v-slot:footer v-if="request_edit">
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
+                <button @click="save(request_id)" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
             </template>
         </modal>
         <!--end::Modal-->
@@ -179,6 +189,7 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            request_id: null,
             request_status: null,
             request_status_lbl: null,
             request_title: null,
@@ -187,6 +198,7 @@ export default {
             request_travelPurpose: null,
             request_travelDate: null,
             request_departTime: null,
+            request_dept: null,
             regions: [],
             provinces: [],
             cities: [],
@@ -195,6 +207,9 @@ export default {
             activeCities: [],
             destinations: [],
             passengers: [],
+            request_edit: 0,
+            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+            ktdatatable: null
         }
     },  
     components: {
@@ -309,10 +324,10 @@ export default {
                         title: 'ID',
                         width: 35,
                         autoHide: false,
-                        template: () => {
-                            count += 1;
-                            return count;
-                        }
+                        // template: () => {
+                        //     count += 1;
+                        //     return count;
+                        // }
                     }, {
                         field: 'serial_code',
                         title: 'code',
@@ -387,9 +402,7 @@ export default {
                         width: 130,
                         textAlign: 'center',
                         template: (row) => {
-                            var date = new Date(row.created_at);
-                            var options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
-                            return date.toLocaleDateString('en-US', options);
+                            return vm.dateTimeFormat(row.created_at);
                         }
                     }, {
                         field: 'fullname',
@@ -411,6 +424,8 @@ export default {
                     }],
                 });
 
+                vm.ktdatatable = datatable;
+
                 $('#kt_datatable_search_status').on('change', function() {
                     datatable.search($(this).val().toLowerCase(), 'is_status');
                 });
@@ -420,9 +435,6 @@ export default {
                     let recordData = $.grep(datatable.dataSet, v => {
                         return v.id === recordID;
                     });
-
-                    vm.getDetails(recordID);
-                    vm.getPassengers(recordID);
 
                     switch (recordData[0].is_status) {
                         case 1:
@@ -443,12 +455,17 @@ export default {
                             break; 
                     }
 
+                    vm.request_id = recordData[0].id;
                     vm.request_title = recordData[0].serial_code;
                     vm.request_createdAt = recordData[0].created_at;
                     vm.request_vehicle = recordData[0].type_vehicle;
                     vm.request_travelPurpose = recordData[0].purpose;
                     vm.request_travelDate = recordData[0].travel_date;
                     vm.request_departTime = recordData[0].depart_time;
+                    vm.request_dept = recordData[0].department;
+
+                    vm.getDetails(vm.request_id);
+                    vm.getPassengers(vm.request_id);
 
                     $('#kt_datatable_modal').modal('show');
                 });
@@ -461,6 +478,11 @@ export default {
                     initDatatable();
                 }
             };
+        },
+        dateTimeFormat(nDate) {
+            var date = new Date(nDate);
+            var options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
+            return date.toLocaleDateString('en-US', options);
         },
         getRegion() {
             axios.get("/api/regions_data").then(response => {
@@ -491,6 +513,8 @@ export default {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
         getDetails(id) {
+            $('.details-input').attr('disabled',true);
+            this.request_edit = 0;
             axios.get("/api/destination_details", {params: {id: id}}).then(response => {
                 let destination = response.data;
                 let data = [];
@@ -504,7 +528,30 @@ export default {
                 data['city'] = (destination.map(function(d) { return d['city_id']; })).filter(distinct);
                 data['brgy'] = (destination.map(function(d) { return d['brgy_id']; })).filter(distinct);
 
+                
 
+                // console.log('sampe: ' +  $('#kt_select_region').val()  );
+                // $('#kt_select_province').val(data.province);
+                // $('#kt_select_province').trigger('change');
+
+                // $('#kt_select_region').on('select2:select', function (e) {
+                //     // $('#kt_select_province').val(data.province);
+                //     // $('#kt_select_province').trigger('change');
+                //     alert("province");
+                // });
+
+                // $('#kt_select_region').val(data.region);
+                // $('#kt_select_region').trigger('change');
+
+                // // console.log('');
+
+                // console.log('province:' + data.province);
+                // console.log('city:' + data.city);
+                // console.log('brgy:' + data.brgy);
+
+                // $('#kt_select_region').trigger('change').promise.done(() => {
+                    
+                // });
                 $('#kt_select_region').val(data.region);
                 $('#kt_select_region').trigger('change');
                 setTimeout(() => {
@@ -530,11 +577,137 @@ export default {
         paxIndex(index) {
             return index + 1;
         },
-        addRow(){
-
+        edit() {
+            let btn_edit = $('.btn-edit span');
+            if (btn_edit.text() == 'Edit') {
+                btn_edit.text('Cancel');
+                $('.details-input').attr('disabled',false);
+                this.request_edit = 1;
+                this.showToast('Can edit request now!', 'info');
+            } else {
+                btn_edit.text('Edit');
+                $('.details-input').attr('disabled',true);
+                this.request_edit = 0;
+                this.showToast('Canceled edit request now!', 'info');
+            }
+            
         },
-        removeRow(){
+        save(id) {
+            let requestform = $('#request-form').serialize();
+            axios.put("/travel/store", requestform).then(response => {
+                $('.details-input').attr('disabled',true);
+                this.request_edit = 0;
+                $('.btn-edit span').text('Edit');
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+                Swal.fire("Good job!", response.data.message, "success");
+                this.showToast(response.data.message, 'success');
+                this.getPassengers(this.request_id);
+            }).catch((error) => {
+                let data = error.response.data.errors;
+                let keys = [];
+                let values = [];
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    values.push(`${value}`);
+                    if (`${key}` == 'travel_radio') {
+                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.checkbox-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        }
+                    } else if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
+                        if (`${key}` == 'brgy') {
+                            if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        } else {
+                            if ($('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        }
+                    } else {
+                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                        }
+                    }
+                }
+                for (let i = 0; i < this.names.length; i++) {
+                    if (this.names[i] == 'travel_radio') {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            if ($('.checkbox-inline').next().length != 0) {
+                                $('.checkbox-inline').next('.invalid-feedback').remove();
+                            }
+                        } 
+                    } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            if (this.names[i] == 'brgy') {
+                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                                }
+                            } else {
+                                if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                                }
+                            }
+                        }
+                    } else {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                        }
+                    }
+                }
+                this.showToast(values.toString().replace(/,/g,'</br>'), 'error');
+            });
+        },
+        addRow(event){
+            event.preventDefault();
+            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+            lastTr += 1;
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td></td></tr>');
+            $('#pax-total').val(lastTr);
+            this.names.push('pax_name_'+lastTr);
+            this.names.push('pax_des_'+lastTr);
+        },
+        removeRow(event){
+            event.preventDefault();
+            let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+            if(lastTr.find('td:eq(0)').text() != '1') {
+                let aliasNames = this.names;
+                let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
+                let paxDes = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
+                if (paxName > -1) {
+                    aliasNames.splice(paxName, 1);
+                }
+                if (paxDes > -1) {
+                    aliasNames.splice(paxDes, 1);
+                }
+                this.names = aliasNames;
 
+                lastTr.remove();
+            }
+            $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },
+        showToast(data,type) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "5000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                };
+
+            (type == 'error')? toastr.error(data):(type == 'info')? toastr.info(data):toastr.success(data);
         }
     },
 }
