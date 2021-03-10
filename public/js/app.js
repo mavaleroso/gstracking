@@ -2969,37 +2969,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }).filter(distinct);
         data['brgy'] = destination.map(function (d) {
           return d['brgy_id'];
-        }).filter(distinct); // console.log('sampe: ' +  $('#kt_select_region').val()  );
-        // $('#kt_select_province').val(data.province);
-        // $('#kt_select_province').trigger('change');
-        // $('#kt_select_region').on('select2:select', function (e) {
-        //     // $('#kt_select_province').val(data.province);
-        //     // $('#kt_select_province').trigger('change');
-        //     alert("province");
-        // });
-        // $('#kt_select_region').val(data.region);
-        // $('#kt_select_region').trigger('change');
-        // // console.log('');
-        // console.log('province:' + data.province);
-        // console.log('city:' + data.city);
-        // console.log('brgy:' + data.brgy);
-        // $('#kt_select_region').trigger('change').promise.done(() => {
-        // });
-
-        $('#kt_select_region').val(data.region);
-        $('#kt_select_region').trigger('change');
+        }).filter(distinct);
+        $('#kt_select_city').on('change', function () {
+          setTimeout(function () {
+            $('#kt_select_brgy').val(data.brgy);
+            $('#kt_select_brgy').trigger('change');
+          }, 500);
+        });
+        $('#kt_select_province').on('change', function () {
+          setTimeout(function () {
+            $('#kt_select_city').val(data.city);
+            $('#kt_select_city').trigger('change');
+          }, 500);
+        });
+        $('#kt_select_region').on('change', function () {
+          setTimeout(function () {
+            $('#kt_select_province').val(data.province);
+            $('#kt_select_province').trigger('change');
+          }, 500);
+        });
         setTimeout(function () {
-          $('#kt_select_province').val(data.province);
-          $('#kt_select_province').trigger('change');
+          $('#kt_select_region').val(data.region);
+          $('#kt_select_region').trigger('change');
         }, 500);
-        setTimeout(function () {
-          $('#kt_select_city').val(data.city);
-          $('#kt_select_city').trigger('change');
-        }, 1000);
-        setTimeout(function () {
-          $('#kt_select_brgy').val(data.brgy);
-          $('#kt_select_brgy').trigger('change');
-        }, 1500);
       });
     },
     getPassengers: function getPassengers(id) {
