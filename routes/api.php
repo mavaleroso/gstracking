@@ -27,3 +27,6 @@ Route::get('/provinces_data', 'ajax\ProvinceController@show');
 Route::get('/cities_data', 'ajax\CityController@show');
 Route::get('/brgys_data', 'ajax\BrgyController@show');
 Route::get('/request_data', 'main\TravelController@index');
+
+Route::get('/destination_details', 'page\ListRequestController@destinations');
+Route::get('/passenger_details', 'page\ListRequestController@passengers');

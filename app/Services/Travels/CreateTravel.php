@@ -2,6 +2,8 @@
 namespace App\Services\Travels;
 
 use App\Models\Request;
+use App\Models\Destination;
+use App\Models\Passenger;
 use Illuminate\Support\Arr;
 use App\Services\Travels\CreateTravel;
 use App\Services\Travels\GetBrgy;
@@ -27,8 +29,9 @@ class CreateTravel
      */
     public function execute($fields)
     {
-
-        $request = Request::create([
+        $request = Request::updateOrCreate([
+            'id' =>  $fields['request_id']
+        ],[
             'user_id' => auth()->user()->id,
             'type_vehicle' => $fields['travel_radio'],
             'department' => $fields['prog_div_sec'],
@@ -37,20 +40,54 @@ class CreateTravel
             'depart_time' => $fields['time_depart']
         ]);
 
-        for ($i=0; $i < count($fields['brgy']); $i++) { 
-            $request->destinations()->create([
-                'region_id' => $fields['region'][0],
-                'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
-                'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
-                'brgy_id' => $fields['brgy'][$i]
-            ]);
+        $dest = Destination::select('id')->where('request_id', $fields['request_id'])->get();
+        $destDiff = (count($dest) - count($fields['brgy']));
+        if ($destDiff > 0) {
+            for ($i=$destDiff-1; $i >= 0 ; $i--) { 
+                Destination::where('id', $dest[(count($dest) - 1) - $i]->id)->delete();
+            }
         }
-
-        for ($i=1; $i <= $fields['pax_total']; $i++) { 
-            $request->passengers()->create([
-                'name' => $fields['pax_name_'.$i],
-                'designation' => $fields['pax_des_'.$i]
-            ]);
+        for ($i=0; $i < count($fields['brgy']); $i++) { 
+            try {
+                if ($fields['request_id']) {
+                    $request->destinations()->where('id', $dest[$i]->id)->update([
+                        'region_id' => $fields['region'],
+                        'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
+                        'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
+                        'brgy_id' => $fields['brgy'][$i]
+                    ]);
+                }
+            } catch (\Throwable $th) {
+                $request->destinations()->create([
+                    'region_id' => $fields['region'],
+                    'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
+                    'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
+                    'brgy_id' => $fields['brgy'][$i]
+                ]);
+            }
+        }
+        
+        $pax = Passenger::select('id')->where('request_id', $fields['request_id'])->get();
+        $paxDiff = count($pax) - $fields['pax_total'];
+        if ($paxDiff > 0) {
+            for ($i=$paxDiff-1; $i >= 0 ; $i--) { 
+                Passenger::where('id', $pax[(count($pax)-1) - $i]->id)->delete();
+            }
+        }
+        for ($i=1; $i <= $fields['pax_total']; $i++) {
+            try {
+                if ($fields['request_id']) {
+                    $request->passengers()->where('id', $pax[$i-1]->id)->update([
+                        'name' => $fields['pax_name_'.$i],
+                        'designation' => $fields['pax_des_'.$i]
+                    ]);
+                }
+            } catch (\Throwable $th) {
+                $request->passengers()->create([
+                    'name' => $fields['pax_name_'.$i],
+                    'designation' => $fields['pax_des_'.$i]
+                ]);
+            }
         }
 
         return $request;

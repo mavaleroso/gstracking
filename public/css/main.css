@@ -1,6 +1,6 @@
 #kt_body {
-    min-height: 100vh !important;
-    display: flex !important;
+    height: 100vh;
+    display: flex;
 }
 
 .brand-logo img {
@@ -23,6 +23,11 @@
 
 .select2-container {
     margin-bottom: 0.5rem !important;
+    width: 100% !important;
+}
+
+#kt_datatable_modal .select2-container {
+    background-color: #e9ecef !important;
 }
 
 .modal-date {
@@ -34,4 +39,16 @@
 .modal-status {
     font-size: 13px !important;
     padding: 20px !important;
+}
+
+@media only screen and (max-width: 1500px) {
+    #kt_body {
+        zoom: 90%;
+        height: 110vh;
+    }
+    .modal-backdrop {
+        width: 1000vh;
+        height: 1000vh;
+        overflow: hidden;
+    }
 }

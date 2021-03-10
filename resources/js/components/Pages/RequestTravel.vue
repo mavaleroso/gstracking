@@ -1,5 +1,5 @@
 <template>
-    <div class="container request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
+    <div class="request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
         <div class="card-header">
             <div class="card-title">
                 <h3 class="card-label">Motor Vehicle
@@ -22,6 +22,7 @@
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
                         <div class="my-5">
+                            <input name="request_id" type="hidden" value=""/>
                             <h3 class="text-dark font-weight-bold mb-10">Requestor Info:</h3>
                             <div class="form-group row">
                                 <label class="col-3">Type of Motor Vehicle</label>
@@ -214,7 +215,6 @@ export default {
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
-            console.log(this.names);
         },
         removeRow(event) {
             event.preventDefault();

@@ -25,6 +25,7 @@ class TravelStoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'request_id' => 'nullable',
             'travel_radio' => 'required',
             'prog_div_sec' => 'required',
             'pur_travel' => 'required',

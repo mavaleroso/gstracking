@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Destination;
 use App\Models\Passenger;
 
@@ -26,13 +26,13 @@ class Request extends Model
         'depart_time'    
     ];
 
-    public function destinations(): HasOne
+    public function destinations(): HasMany
     {
-        return $this->hasOne(Destination::class);
+        return $this->hasMany(Destination::class);
     }
 
-    public function passengers(): HasOne
+    public function passengers(): HasMany
     {
-        return $this->hasOne(Passenger::class);
+        return $this->hasMany(Passenger::class);
     }
 }
