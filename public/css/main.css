@@ -21,13 +21,9 @@
     right: 90px;
 }
 
-.select2-container {
+.select2 {
     margin-bottom: 0.5rem !important;
     width: 100% !important;
-}
-
-.select2-container--open {
-    width: 485px !important;
 }
 
 #kt_datatable_modal .select2-container {
