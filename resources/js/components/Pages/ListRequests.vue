@@ -69,7 +69,7 @@
                 <h5 :class="request_status_lbl">{{ request_status }}</h5>
                 <h5 class="modal-title"><span class="m-title">{{ request_title }}</span>
                 <span class="d-block text-muted font-size-sm">Reference Code</span></h5>
-                <h3 class="modal-date"><span class="m-date">{{ dateTimeFormat(request_createdAt) }}</span>
+                <h3 class="modal-date"><span class="m-date">{{ dateTimeEng }}</span>
                 <span class="d-block text-muted font-size-sm">Date Created</span></h3>
                 <button @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
                     <i class="la la-edit icon-md"></i>
@@ -209,7 +209,8 @@ export default {
             passengers: [],
             request_edit: 0,
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-            ktdatatable: null
+            ktdatatable: null,
+            dateTimeEng: null
         }
     },  
     components: {
@@ -235,7 +236,6 @@ export default {
 
             $(()=>{
                 this.KTDatatableModal().init();
-
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
@@ -350,9 +350,7 @@ export default {
                         autoHide: false,
                         textAlign: 'center',
                         template: (row) => {
-                            var date = new Date(row.travel_date);
-                            var options = {year: 'numeric', month: 'long', day: 'numeric' };
-                            return date.toLocaleDateString('en-US', options);
+                            return dateEng(row.travel_date);
                         }
                     }, {
                         field: 'depart_time',
@@ -360,14 +358,7 @@ export default {
                         textAlign: 'center',
                         autoHide: false,
                         template: (row) => {
-                            let time = row.depart_time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-                            if (time.length > 1) { 
-                                time = time.slice(1);  
-                                time[3] = +time[0] < 12 ? ' AM' : ' PM'; 
-                                time[0] = +time[0] % 12 || 12;
-                            }
-                            return time.join (''); 
+                            return timeEng(row.depart_time);
                         }
                     }, {
                         field: 'is_status',
@@ -402,7 +393,7 @@ export default {
                         width: 130,
                         textAlign: 'center',
                         template: (row) => {
-                            return vm.dateTimeFormat(row.created_at);
+                            return dateTimeEng(row.created_at);
                         }
                     }, {
                         field: 'fullname',
@@ -464,6 +455,7 @@ export default {
                     vm.request_departTime = recordData[0].depart_time;
                     vm.request_dept = recordData[0].department;
 
+                    vm.dateTimeEng = dateTimeEng(recordData[0].created_at);
                     vm.getDetails(vm.request_id);
                     vm.getPassengers(vm.request_id);
 
@@ -478,11 +470,6 @@ export default {
                     initDatatable();
                 }
             };
-        },
-        dateTimeFormat(nDate) {
-            var date = new Date(nDate);
-            var options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
-            return date.toLocaleDateString('en-US', options);
         },
         getRegion() {
             axios.get("/api/regions_data").then(response => {
@@ -566,12 +553,12 @@ export default {
                 btn_edit.text('Cancel');
                 $('.details-input').attr('disabled',false);
                 this.request_edit = 1;
-                this.showToast('Can edit request now!', 'info');
+                showToast('Can edit request now!', 'info');
             } else {
                 btn_edit.text('Edit');
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;
-                this.showToast('Canceled edit request now!', 'info');
+                showToast('Canceled edit request now!', 'info');
             }
             
         },
@@ -584,7 +571,7 @@ export default {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                this.showToast(response.data.message, 'success');
+                showToast(response.data.message, 'success');
                 this.getPassengers(this.request_id);
             }).catch((error) => {
                 let data = error.response.data.errors;
@@ -640,7 +627,7 @@ export default {
                         }
                     }
                 }
-                this.showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         addRow(event){
@@ -670,27 +657,6 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
-        },
-        showToast(data,type) {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "5000",
-                "timeOut": "3000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-                };
-
-            (type == 'error')? toastr.error(data):(type == 'info')? toastr.info(data):toastr.success(data);
         }
     },
 }

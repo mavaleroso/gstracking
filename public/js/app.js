@@ -2598,7 +2598,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       passengers: [],
       request_edit: 0,
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-      ktdatatable: null
+      ktdatatable: null,
+      dateTimeEng: null
     };
   },
   components: {
@@ -2743,13 +2744,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             autoHide: false,
             textAlign: 'center',
             template: function template(row) {
-              var date = new Date(row.travel_date);
-              var options = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              };
-              return date.toLocaleDateString('en-US', options);
+              return dateEng(row.travel_date);
             }
           }, {
             field: 'depart_time',
@@ -2757,15 +2752,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             textAlign: 'center',
             autoHide: false,
             template: function template(row) {
-              var time = row.depart_time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-              if (time.length > 1) {
-                time = time.slice(1);
-                time[3] = +time[0] < 12 ? ' AM' : ' PM';
-                time[0] = +time[0] % 12 || 12;
-              }
-
-              return time.join('');
+              return timeEng(row.depart_time);
             }
           }, {
             field: 'is_status',
@@ -2800,7 +2787,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             width: 130,
             textAlign: 'center',
             template: function template(row) {
-              return vm.dateTimeFormat(row.created_at);
+              return dateTimeEng(row.created_at);
             }
           }, {
             field: 'fullname',
@@ -2861,6 +2848,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.request_travelDate = recordData[0].travel_date;
           vm.request_departTime = recordData[0].depart_time;
           vm.request_dept = recordData[0].department;
+          vm.dateTimeEng = dateTimeEng(recordData[0].created_at);
           vm.getDetails(vm.request_id);
           vm.getPassengers(vm.request_id);
           $('#kt_datatable_modal').modal('show');
@@ -2873,17 +2861,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           initDatatable();
         }
       };
-    },
-    dateTimeFormat: function dateTimeFormat(nDate) {
-      var date = new Date(nDate);
-      var options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      };
-      return date.toLocaleDateString('en-US', options);
     },
     getRegion: function getRegion() {
       var _this3 = this;
@@ -3015,12 +2992,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         btn_edit.text('Cancel');
         $('.details-input').attr('disabled', false);
         this.request_edit = 1;
-        this.showToast('Can edit request now!', 'info');
+        showToast('Can edit request now!', 'info');
       } else {
         btn_edit.text('Edit');
         $('.details-input').attr('disabled', true);
         this.request_edit = 0;
-        this.showToast('Canceled edit request now!', 'info');
+        showToast('Canceled edit request now!', 'info');
       }
     },
     save: function save(id) {
@@ -3034,8 +3011,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-
-        _this8.showToast(response.data.message, 'success');
+        showToast(response.data.message, 'success');
 
         _this8.getPassengers(_this8.request_id);
       })["catch"](function (error) {
@@ -3100,7 +3076,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        _this8.showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     addRow: function addRow(event) {
@@ -3134,26 +3110,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
-    },
-    showToast: function showToast(data, type) {
-      toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "5000",
-        "timeOut": "3000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-      };
-      type == 'error' ? toastr.error(data) : type == 'info' ? toastr.info(data) : toastr.success(data);
     }
   }
 });
@@ -3447,8 +3403,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         Swal.fire("Good job!", response.data.message, "success");
-
-        _this2.showToast(response.data.message, 'success');
+        showToast(response.data.message, 'success');
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -3511,7 +3466,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        _this2.showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     getRegion: function getRegion() {
@@ -3571,26 +3526,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.activeCities = this.cities.filter(function (i) {
         return i.active === 'true';
       });
-    },
-    showToast: function showToast(data, type) {
-      toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "5000",
-        "timeOut": "3000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-      };
-      type == 'error' ? toastr.error(data) : toastr.success(data);
     }
   }
 });
@@ -42819,7 +42754,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("h3", { staticClass: "modal-date" }, [
                     _c("span", { staticClass: "m-date" }, [
-                      _vm._v(_vm._s(_vm.dateTimeFormat(_vm.request_createdAt)))
+                      _vm._v(_vm._s(_vm.dateTimeEng))
                     ]),
                     _vm._v(" "),
                     _c(

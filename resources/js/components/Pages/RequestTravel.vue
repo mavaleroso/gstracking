@@ -252,7 +252,7 @@ export default {
                     }
                 }
                 Swal.fire("Good job!", response.data.message, "success");
-                this.showToast(response.data.message, 'success');
+                showToast(response.data.message, 'success');
             }).catch((error) => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -307,7 +307,7 @@ export default {
                         }
                     }
                 }
-                this.showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
 
         },
@@ -338,27 +338,6 @@ export default {
         },
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
-        },
-        showToast(data,type) {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "5000",
-                "timeOut": "3000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-                };
-
-            (type == 'error')? toastr.error(data):toastr.success(data);
         }
     },
 }
