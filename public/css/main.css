@@ -26,6 +26,10 @@
     width: 100% !important;
 }
 
+.select2-container--open {
+    width: 485px !important;
+}
+
 #kt_datatable_modal .select2-container {
     background-color: #e9ecef !important;
 }
