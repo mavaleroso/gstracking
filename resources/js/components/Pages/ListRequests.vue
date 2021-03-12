@@ -224,7 +224,7 @@ export default {
         ini() {
             // LOAD SCRIPTS
             var scripts = [
-                "/assets/js/pages/crud/ forms/widgets/select2.js"
+                "/assets/js/pages/crud/forms/widgets/select2.js"
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");

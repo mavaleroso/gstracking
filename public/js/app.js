@@ -2614,7 +2614,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       // LOAD SCRIPTS
-      var scripts = ["/assets/js/pages/crud/ forms/widgets/select2.js"];
+      var scripts = ["/assets/js/pages/crud/forms/widgets/select2.js"];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
