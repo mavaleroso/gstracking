@@ -4,6 +4,7 @@ import RequestTravel from './components/Pages/RequestTravel';
 import ListRequests from './components/Pages/ListRequests';
 import ListTravels from './components/Pages/ListTravels';
 import ListTransportation from './components/Pages/ListTransportation';
+import TransactionLogs from './components/Pages/TransactionLogs';
 
 const routes = [
     {
@@ -44,6 +45,14 @@ const routes = [
         name: 'listTransportation',
         meta: {
             title: 'List of Transportation'
+        }   
+    },
+    {
+        path: '/transaction_logs',
+        component: TransactionLogs,
+        name: 'transactionLogs',
+        meta: {
+            title: 'List of Logs'
         }   
     },
 ]
