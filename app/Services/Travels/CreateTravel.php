@@ -56,6 +56,13 @@ class CreateTravel
                         'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
                         'brgy_id' => $fields['brgy'][$i]
                     ]);
+                } else {
+                    $request->destinations()->where('id', $dest[$i]->id)->update([
+                        'region_id' => $fields['region'],
+                        'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
+                        'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
+                        'brgy_id' => $fields['brgy'][$i]
+                    ]);
                 }
             } catch (\Throwable $th) {
                 $request->destinations()->create([
@@ -78,6 +85,11 @@ class CreateTravel
             try {
                 if ($fields['request_id']) {
                     $request->passengers()->where('id', $pax[$i-1]->id)->update([
+                        'name' => $fields['pax_name_'.$i],
+                        'designation' => $fields['pax_des_'.$i]
+                    ]);
+                } else {
+                    $request->passengers()->create([
                         'name' => $fields['pax_name_'.$i],
                         'designation' => $fields['pax_des_'.$i]
                     ]);
