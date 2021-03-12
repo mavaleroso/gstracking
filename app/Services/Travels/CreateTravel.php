@@ -4,10 +4,12 @@ namespace App\Services\Travels;
 use App\Models\Request;
 use App\Models\Destination;
 use App\Models\Passenger;
+use App\Models\System;
 use Illuminate\Support\Arr;
 use App\Services\Travels\CreateTravel;
 use App\Services\Travels\GetBrgy;
 use App\Services\Travels\GetCity;
+use App\Services\Travels\GenerateCode;
 
 class CreateTravel
 {
@@ -17,10 +19,11 @@ class CreateTravel
     /**
      * Initialization
      */
-    public function __construct(GetBrgy $getBrgy, GetCity $getCity)
+    public function __construct(GetBrgy $getBrgy, GetCity $getCity, GenerateCode $getCode)
     {
         $this->getBrgy = $getBrgy;
         $this->getCity = $getCity;
+        $this->getCode = $getCode;
     }
     /**
      * create user execution     
@@ -29,16 +32,22 @@ class CreateTravel
      */
     public function execute($fields)
     {
+
+        $rqt_code = $this->getCode->request_code();
+
         $request = Request::updateOrCreate([
             'id' =>  $fields['request_id']
         ],[
             'user_id' => auth()->user()->id,
+            ($fields['request_id'])? NULL:'serial_code' => $rqt_code,
             'type_vehicle' => $fields['travel_radio'],
             'department' => $fields['prog_div_sec'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
             'depart_time' => $fields['time_depart']
         ]);
+
+        ($request)? System::where('handler', 'RQT_CODE')->update(['value'=> $rqt_code]):NULL;
 
         $dest = Destination::select('id')->where('request_id', $fields['request_id'])->get();
         $destDiff = (count($dest) - count($fields['brgy']));
