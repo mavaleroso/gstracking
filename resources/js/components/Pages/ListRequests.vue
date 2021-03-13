@@ -128,14 +128,14 @@
                                 <br>
                                 <select class="form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
-                                        <option v-for="city in cities.filter(i=>i.province_id === activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
+                                        <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                     </optgroup>
                                 </select>
                                 <span class="form-text text-muted">City</span>
                                 <br>
                                 <select class="form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
-                                        <option v-for="brgy in brgys.filter(i=>i.city_id === activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
+                                        <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                     </optgroup>
                                 </select>
                                 <span class="form-text text-muted">Barangay</span>
@@ -158,7 +158,6 @@
                                             <th scope="col" class="text-center">#</th>
                                             <th scope="col" class="text-center">Name of Passenger/s</th>
                                             <th scope="col" class="text-center">Position/Designation</th>
-                                            <th scope="col" class="text-center" style="display:none;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,7 +165,6 @@
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
                                             <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
                                             <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
-                                            <td style="display:none;"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -224,15 +222,16 @@ export default {
     },
     methods: {
         ini() {
-           // LOAD SCRIPTS
+            // LOAD SCRIPTS
             var scripts = [
-                "/assets/js/pages/crud/forms/widgets/select2.js"
+                "/assets/js/pages/crud/ forms/widgets/select2.js"
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");
                 tag.setAttribute("src", script);
                 document.getElementById("list-requests-page").appendChild(tag);
             });
+
 
             $(()=>{
                 this.KTDatatableModal().init();
@@ -278,6 +277,11 @@ export default {
                     }
                 });
 
+                $('#kt_datatable_modal').on('hidden.bs.modal', function (e) {
+                    $('.details-input').attr('disabled',true);
+                    this.request_edit = 0;
+                    $('.btn-edit span').text('Edit');
+                })
             });
         },
         KTDatatableModal() {
@@ -502,6 +506,7 @@ export default {
         getDetails(id) {
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
+            $('#kt_select_region').val();
             axios.get("/api/destination_details", {params: {id: id}}).then(response => {
                 let destination = response.data;
                 let data = [];
@@ -515,28 +520,59 @@ export default {
                 data['city'] = (destination.map(function(d) { return d['city_id']; })).filter(distinct);
                 data['brgy'] = (destination.map(function(d) { return d['brgy_id']; })).filter(distinct);
 
-                $('#kt_select_city').on('change', () => {
-                    setTimeout(() => {
-                        $('#kt_select_brgy').val(data.brgy);
-                        $('#kt_select_brgy').trigger('change');
-                    }, 500);
-                });
-                $('#kt_select_province').on('change', () => {
-                    setTimeout(() => {
-                        $('#kt_select_city').val(data.city);
-                        $('#kt_select_city').trigger('change');
-                    }, 500);
-                });
-                $('#kt_select_region').on('change', () => {
-                    setTimeout(() => {
-                        $('#kt_select_province').val(data.province);
-                        $('#kt_select_province').trigger('change');
-                    }, 500);
-                });
+                $('#kt_select_region').val(data.region);
+                $('#kt_select_region').trigger('change');
+                let ctr_p = 0;
+                let ctr_c = 0;
+                let ctr_b = 0;
+
+
+                // setTimeout(() => {
+                //     while($('#kt_select_province').val() == '') {
+                //         $('#kt_select_province').val(data.province);
+                //         $('#kt_select_province').select2().trigger('change');
+                //         if ($('#kt_select_province').val() != '' || ctr_p == 100) {
+                //             break;
+                //         }
+                //         ctr_p++;
+                //     }
+                // }, 500);
+                // setTimeout(() => {
+                //     while($('#kt_select_city').val() == '') {
+                //         $('#kt_select_city').val(data.city);
+                //         $('#kt_select_city').trigger('change');
+                //         if ($('#kt_select_city').val() != '' || ctr_c == 500) {
+                //             return;
+                //         }
+                //         ctr_c++;
+                //         console.log('city:'+ctr_c);
+                //     }
+                // }, 500);
+                // setTimeout(() => {
+                //     while($('#kt_select_brgy').val() == '') {
+                //         $('#kt_select_brgy').val(data.brgy);
+                //         $('#kt_select_brgy').trigger('change');
+                //         if ($('#kt_select_brgy').val() != '' || ctr_b == 5000) {
+                //             break;
+                //         }
+                //         ctr_b++;
+                //         console.log('brgy:'+ctr_b);
+                //     }
+                // }, 500);
+                
                 setTimeout(() => {
-                    $('#kt_select_region').val(data.region);
-                    $('#kt_select_region').trigger('change');
+                    $('#kt_select_province').val(data.province);
+                    $('#kt_select_province').trigger('change');
                 }, 500);
+                setTimeout(() => {
+                    $('#kt_select_city').val(data.city);
+                    $('#kt_select_city').trigger('change');
+                }, 1000);
+                setTimeout(() => {
+                    $('#kt_select_brgy').val(data.brgy);
+                    $('#kt_select_brgy').trigger('change');
+                }, 1500);
+                    
             });
         },
         getPassengers(id) {
@@ -565,6 +601,7 @@ export default {
         save(id) {
             let requestform = $('#request-form').serialize();
             axios.put("/travel/store", requestform).then(response => {
+                $('.new-row').remove();
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;
                 $('.btn-edit span').text('Edit');
@@ -634,7 +671,7 @@ export default {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td></td></tr>');
+            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
