@@ -6,7 +6,7 @@
                 <i class="mr-2"></i>
                 <small class="">Request Form</small></h3>
             </div>
-            <div class="card-toolbar">
+            <div v-if="complete == false" class="card-toolbar">
                 <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                 <i class="ki ki-long-arrow-back icon-sm"></i>Back</a>
                 <div class="btn-group">
@@ -21,6 +21,17 @@
                 <div class="row">
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
+                        <div v-if="complete" class="jumbotron">
+                            <span>Your request code:</span>
+                            <h1 class="display-4">{{ requestCode }}</h1>
+                            <p class="lead">Your request has successfully completed!</p>
+                            <hr class="my-4">
+                            <p>{{ createdAt }}</p>
+                            <p class="lead">
+                                <router-link :to="{name: 'listRequests'}" class="btn btn-success btn-sm" href="#" role="button">Update request</router-link>
+                                <a class="btn btn-primary btn-sm" href="#" @click="newRequest" role="button">New request</a>
+                            </p>
+                        </div>
                         <div class="my-5">
                             <input name="request_id" type="hidden" value=""/>
                             <h3 class="text-dark font-weight-bold mb-10">Requestor Info:</h3>
@@ -29,11 +40,11 @@
                                 <div class="col-9">
                                     <div class="checkbox-inline">
                                         <label class="radio mr-2">
-                                            <input type="radio" name="travel_radio" value="Office"/> Office
+                                            <input class="details-input" type="radio" name="travel_radio" value="Office"/> Office
                                             <span></span>
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="travel_radio" value="Rental"/> Rental
+                                            <input class="details-input" type="radio" name="travel_radio" value="Rental"/> Rental
                                             <span></span>
                                         </label>
                                     </div>
@@ -42,31 +53,31 @@
                             <div class="form-group row">
                                 <label class="col-3">Program/Division/Section</label>
                                 <div class="col-9">
-                                    <input name="prog_div_sec" type="text" class="form-control"/>
+                                    <input name="prog_div_sec" type="text" class="details-input form-control"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur_travel" type="text" class="form-control" />
+                                    <input name="pur_travel" type="text" class="details-input form-control" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Destination</label>
                                 <div class="col-9">
-                                    <select class="form-control select2" id="kt_select_region" name="region">
+                                    <select class="details-input form-control select2" id="kt_select_region" name="region">
                                         <option label="Label"></option>
                                         <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_province" name="province[]" multiple="multiple">
+                                    <select class="details-input form-control select2 kt_select2_3" id="kt_select_province" name="province[]" multiple="multiple">
                                         <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
+                                    <select class="details-input form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
                                         <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
                                             <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                         </optgroup>
                                     </select>
-                                    <select class="form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
+                                    <select class="details-input form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
                                         <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
                                             <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
@@ -77,13 +88,13 @@
                             <div class="form-group row">
                                 <label class="col-3">Date of Travel</label>
                                 <div class="col-9">
-                                    <input name="date_travel" class="form-control" type="date" value="" />
+                                    <input name="date_travel" class="details-input form-control" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3">Time of Departure</label>
                                 <div class="col-9">
-                                    <input name="time_depart" class="form-control" type="time" value="" />
+                                    <input name="time_depart" class="details-input form-control" type="time" value="" />
                                 </div>
                             </div>
                         </div>
@@ -91,7 +102,7 @@
                         <div class="my-5">
                             <div class="d-flex">
                                 <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
-                                <div class="ml-auto">
+                                <div v-if="complete == false" class="ml-auto">
                                     <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
                                     <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
@@ -103,15 +114,13 @@
                                         <th scope="col" class="text-center">#</th>
                                         <th scope="col" class="text-center">Name of Passenger/s</th>
                                         <th scope="col" class="text-center">Position/Designation</th>
-                                        <th scope="col" class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td scope="row" class="text-center">1</td>
-                                        <td><input name="pax_name_1" class="form-control" type="text"/></td>
-                                        <td><input name="pax_des_1" class="form-control" type="text"/></td>
-                                        <td></td>
+                                        <td><input name="pax_name_1" class="details-input form-control" type="text"/></td>
+                                        <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -135,7 +144,10 @@ export default {
             brgys: [],
             activeProvinces: [],
             activeCities: [],
-            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart']
+            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+            complete: false,
+            requestCode: null,
+            createdAt: null
         }
     },
     created() {
@@ -211,7 +223,7 @@ export default {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control" type="text" /></td><td></td></tr>');
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
@@ -242,17 +254,14 @@ export default {
             axios.put("/travel/store", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
-                for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i] == 'travel_radio') {
-                        $('[name="'+this.names[i]+'"]').prop('checked', false);
-                    } else if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
-                        $('#kt_select_'+this.names[i]).empty();
-                    } else {
-                        $('[name="'+this.names[i]+'"]').val(null);
-                    }
-                }
+
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
+                $('.details-input').attr('disabled', true);
+                this.complete = true;
+                this.requestCode = response.data.result.serial_code;
+                this.createdAt = dateTimeEng(response.data.result.created_at);
+
             }).catch((error) => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -338,6 +347,22 @@ export default {
         },
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
+        },
+        newRequest() {
+            for (let i = 0; i < this.names.length; i++) {
+                if (this.names[i] == 'travel_radio') {
+                    $('[name="'+this.names[i]+'"]').prop('checked', false);
+                } else if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                    $('#kt_select_'+this.names[i]).empty();
+                } else {
+                    $('[name="'+this.names[i]+'"]').val(null);
+                }
+            }
+
+            $('.details-input').attr('disabled', false);
+            this.complete = false;
+            this.requestCode = null;
+            this.createdAt = null;
         }
     },
 }

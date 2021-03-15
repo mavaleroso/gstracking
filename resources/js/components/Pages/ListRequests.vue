@@ -224,7 +224,7 @@ export default {
         ini() {
             // LOAD SCRIPTS
             var scripts = [
-                "/assets/js/pages/crud/ forms/widgets/select2.js"
+                "/assets/js/pages/crud/forms/widgets/select2.js"
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");
@@ -234,6 +234,9 @@ export default {
 
 
             $(()=>{
+                $('.menu-item').removeClass('menu-item-active');
+                $('.router-link-active').parent().addClass('menu-item-active');
+                
                 this.KTDatatableModal().init();
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();

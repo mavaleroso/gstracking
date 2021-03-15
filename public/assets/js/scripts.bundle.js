@@ -523,14 +523,14 @@ var KTCard = function(elementId, options) {
                 KTUtil.css(the.header, 'left', left + 'px');
                 KTUtil.css(the.header, 'right', right + 'px');
 
-                let kt_body_stats = $('#kt_body').attr('class');
-                if (kt_body_stats.search('page-loading aside-minimize') != -1) {
-                    $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom2');
-                    $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
-                } else {
-                    $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom');
-                    $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
-                }
+                // let kt_body_stats = $('#kt_body').attr('class');
+                // if (kt_body_stats.search('page-loading aside-minimize') != -1) {
+                //     $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom2');
+                //     $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
+                // } else {
+                //     $('#kt_page_sticky_card .card-header').addClass('card-sticky-on-custom');
+                //     $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
+                // }
             }
         },
 
@@ -545,8 +545,8 @@ var KTCard = function(elementId, options) {
                 KTUtil.css(the.header, 'left', '');
                 KTUtil.css(the.header, 'right', '');
 
-                $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
-                $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
+                // $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom');
+                // $('#kt_page_sticky_card .card-header').removeClass('card-sticky-on-custom2');
             }
         },
 
