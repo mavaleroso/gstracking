@@ -31,7 +31,7 @@
             <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                 <!--begin::Menu Nav-->
                 <ul class="menu-nav">
-                    <li class="menu-item" aria-haspopup="true" @click="active">
+                    <li class="menu-item" aria-haspopup="true" @click="active('menu')">
                         <router-link :to="{name: 'dashboard'}" class="menu-link">
                             <span class="svg-icon menu-icon">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
@@ -51,7 +51,7 @@
                         <h4 class="menu-text">Travel Requests</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
-                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active">
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active('menu')">
                         <router-link :to="{name: 'requestTravel'}" class="menu-link menu-toggle">
                             <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Files\File-plus.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -65,7 +65,7 @@
                             <span class="menu-text">Request Travel</span>
                         </router-link>
                     </li>
-                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active">
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active('menu')">
                         <router-link :to="{name: 'listRequests'}" class="menu-link menu-toggle">
                             <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Text\Bullet-list.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -81,7 +81,7 @@
                         <h4 class="menu-text">Tracking</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
-                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active">
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active('menu')">
                         <router-link :to="{name: 'listTravels'}" class="menu-link menu-toggle" >
                             <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Layout\Layout-grid.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -93,8 +93,8 @@
                             <span class="menu-text">List of Travels</span>
                         </router-link>
                     </li>
-                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active">
-                        <router-link :to="{name: 'listTransportation'}" class="menu-link menu-toggle">
+                    <li id="dropdown-transpo" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="javascript:;" class="menu-link menu-toggle">
                             <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Layout\Layout-4-blocks.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                     <rect x="0" y="0" width="24" height="24"/>
@@ -102,15 +102,58 @@
                                     <path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3"/>
                                 </g>
                             </svg><!--end::Svg Icon--></span>
-                            <span class="menu-text">List of Transportation</span>
-                        </router-link>
+                            <span class="menu-text">Transportation</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="menu-submenu">
+                            <i class="menu-arrow"></i>
+                            <ul class="menu-subnav">
+                                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                    <span class="menu-link">
+                                        <span class="menu-text">Transportation</span>
+                                    </span>
+                                </li>
+                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
+                                    <router-link :to="{name: 'listTransportation'}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Overview</span>
+                                    </router-link>
+                                </li>
+                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
+                                    <router-link :to="{name: 'listVehicle'}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Vehicle</span>
+                                    </router-link>
+                                </li>
+                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
+                                    <router-link :to="{name: 'listDriver'}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Driver</span>
+                                    </router-link>
+                                </li>
+                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
+                                    <router-link :to="{name: 'listServiceProvider'}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Service Provider</span>
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="menu-section">
                         <h4 class="menu-text">History</h4>
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
 
-                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active">
+                    <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" @click="active('menu')">
                         <router-link :to="{name: 'transactionLogs'}" class="menu-link menu-toggle" >
                             <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Layout\Layout-grid.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -134,10 +177,19 @@
 <script>
 export default {
     mounted() {
+        this.ini();
         this.active();
     },
     methods: {
-        active(){
+        ini() {
+            let pageLabel = this.$route.meta.title;
+            let pages = ['List of Transportation', 'List of Vehicles', 'List of Drivers', 'List of Service Provider'];
+            if (pages.indexOf(pageLabel) != -1) {
+                $('#dropdown-transpo').addClass('menu-item-open')
+            }
+        },
+        active(type = null){
+            (type == 'menu')? $('#dropdown-transpo').removeClass('menu-item-open') : null;
             $('.menu-item').removeClass('menu-item-active');
             $('.router-link-active').parent().addClass('menu-item-active');
         }

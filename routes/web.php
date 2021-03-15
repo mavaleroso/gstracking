@@ -33,6 +33,10 @@ Route::get('/list_requests', 'main\DashboardController@index');
 Route::get('/list_travels', 'main\DashboardController@index');
 Route::get('/list_transportation', 'main\DashboardController@index');
 Route::get('/transaction_logs', 'main\DashboardController@index');
+Route::get('/list_transportation', 'main\DashboardController@index');
+Route::get('/list_vehicle', 'main\DashboardController@index');
+Route::get('/list_drivers', 'main\DashboardController@index');
+Route::get('/list_service_provider', 'main\DashboardController@index');
 
 
 // dev routes
