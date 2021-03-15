@@ -5,6 +5,10 @@ import ListRequests from './components/Pages/ListRequests';
 import ListTravels from './components/Pages/ListTravels';
 import ListTransportation from './components/Pages/ListTransportation';
 import TransactionLogs from './components/Pages/TransactionLogs';
+import Overview from './components/Pages/Transportation/Overview';
+import Vehicle from './components/Pages/Transportation/Vehicle';
+import Drivers from './components/Pages/Transportation/Driver';
+import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 
 const routes = [
     {
@@ -41,10 +45,34 @@ const routes = [
     },
     {
         path: '/list_transportation',
-        component: ListTransportation,
+        component: Overview,
         name: 'listTransportation',
         meta: {
             title: 'List of Transportation'
+        }   
+    },
+    {
+        path: '/list_vehicle',
+        component: Vehicle,
+        name: 'listVehicle',
+        meta: {
+            title: 'List of Vehicles'
+        }   
+    },
+    {
+        path: '/list_drivers',
+        component: Drivers,
+        name: 'listDriver',
+        meta: {
+            title: 'List of Drivers'
+        }   
+    },
+    {
+        path: '/list_service_provider',
+        component: ServiceProvider,
+        name: 'listServiceProvider',
+        meta: {
+            title: 'List of Service Provider'
         }   
     },
     {
