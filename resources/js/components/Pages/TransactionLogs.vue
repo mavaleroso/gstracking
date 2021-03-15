@@ -148,6 +148,7 @@ export default {
             scrollY: '50vh',
             scrollX: true,
             scrollCollapse: true,
+            processing: true,
             columnDefs: [{
                     targets: -1,
                     title: 'Actions',

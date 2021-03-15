@@ -3,7 +3,6 @@ import Dashboard from './components/Pages/Dashboard';
 import RequestTravel from './components/Pages/RequestTravel';
 import ListRequests from './components/Pages/ListRequests';
 import ListTravels from './components/Pages/ListTravels';
-import ListTransportation from './components/Pages/ListTransportation';
 import TransactionLogs from './components/Pages/TransactionLogs';
 import Overview from './components/Pages/Transportation/Overview';
 import Vehicle from './components/Pages/Transportation/Vehicle';
