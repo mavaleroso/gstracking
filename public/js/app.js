@@ -4237,47 +4237,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      create: false
+      create: false,
+      serviceProviders: [],
+      drivers: []
     };
+  },
+  created: function created() {
+    this.getServiceProviders();
+    this.getDrivers();
   },
   mounted: function mounted() {
     this.ini();
   },
   methods: {
-    ini: function ini() {
+    getServiceProviders: function getServiceProviders() {
       var _this = this;
 
-      $(function () {
-        _this.tdatatable().init();
+      axios.get("/api/service_providers").then(function (response) {
+        _this.serviceProviders = response.data;
       });
     },
-    newEntry: function newEntry() {
+    getDrivers: function getDrivers() {
       var _this2 = this;
 
-      this.create = true;
-      $(function () {
-        _this2.image();
-
-        $('#kt_select2_drivers').select2({
-          placeholder: "Select Drivers"
-        });
+      axios.get("/api/drivers_data").then(function (response) {
+        _this2.drivers = response.data;
       });
     },
-    cancelEntry: function cancelEntry() {
+    ini: function ini() {
       var _this3 = this;
 
-      this.create = false;
       $(function () {
         _this3.tdatatable().init();
       });
     },
+    newEntry: function newEntry() {
+      var _this4 = this;
+
+      this.create = true;
+      $(function () {
+        _this4.image();
+
+        $('#kt_select_svc_provider').select2({
+          placeholder: "Select service provider"
+        });
+        $('#kt_select2_drivers').select2({
+          placeholder: "Select drivers"
+        });
+      });
+    },
+    cancelEntry: function cancelEntry() {
+      var _this5 = this;
+
+      this.create = false;
+      $(function () {
+        _this5.tdatatable().init();
+      });
+    },
     saveNewEntry: function saveNewEntry() {
+      var vehicleImg = $("#vehicle-img")[0].files[0].name;
+      var formData = $('#vehicle-form').serialize() + '&vehicle_img=' + vehicleImg;
+      console.log(formData);
       alert('Saved Form');
     },
     tdatatable: function tdatatable() {
@@ -45993,7 +46016,86 @@ var render = function() {
           [
             _vm._m(0),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "form",
+                { staticClass: "form", attrs: { id: "vehicle-form" } },
+                [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group my-10" }, [
+                          _c("label", [_vm._v("Service Provider:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select_svc_provider",
+                                name: "vehicle_svc_provider"
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.serviceProviders, function(svc) {
+                                return _c(
+                                  "option",
+                                  { key: svc.id, domProps: { value: svc.id } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(svc.company_name) +
+                                        " (" +
+                                        _vm._s(svc.type) +
+                                        ")"
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group my-10" }, [
+                          _c("label", [_vm._v("Drivers:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select2_drivers",
+                                name: "vehicle_drivers[]",
+                                multiple: "multiple"
+                              }
+                            },
+                            _vm._l(_vm.drivers, function(driver) {
+                              return _c(
+                                "option",
+                                {
+                                  key: driver.id,
+                                  domProps: { value: driver.id }
+                                },
+                                [_vm._v(_vm._s(driver.fullname))]
+                              )
+                            }),
+                            0
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-footer" }, [
               _c("div", { staticClass: "row" }, [
@@ -46103,7 +46205,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(4)
           ]
         )
   ])
@@ -46128,194 +46230,136 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("form", { staticClass: "form" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-6" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("p", [_vm._v("Image:")]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "image-input image-input-empty image-input-outline",
-                    staticStyle: {
-                      "background-image": "url(assets/media/users/blank.png)"
-                    },
-                    attrs: { id: "kt_image_5" }
-                  },
-                  [
-                    _c("div", { staticClass: "image-input-wrapper" }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
-                        attrs: {
-                          "data-action": "change",
-                          "data-toggle": "tooltip",
-                          title: "",
-                          "data-original-title": "Change avatar"
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-pen icon-sm text-muted"
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          attrs: {
-                            type: "file",
-                            name: "profile_avatar",
-                            accept: ".png, .jpg, .jpeg"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          attrs: {
-                            type: "hidden",
-                            name: "profile_avatar_remove"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
-                        attrs: {
-                          "data-action": "cancel",
-                          "data-toggle": "tooltip",
-                          title: "Cancel avatar"
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "ki ki-bold-close icon-xs text-muted"
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        staticClass:
-                          "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
-                        attrs: {
-                          "data-action": "remove",
-                          "data-toggle": "tooltip",
-                          title: "Remove avatar"
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "ki ki-bold-close icon-xs text-muted"
-                        })
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Name:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Enter vehicle name" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Description:")]),
-                _vm._v(" "),
-                _c("textarea", {
-                  staticClass: "form-control",
-                  attrs: { id: "exampleTextarea", rows: "3" }
-                })
-              ])
-            ]),
+    return _c("div", { staticClass: "col-lg-6" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("p", [_vm._v("Image:")]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "image-input image-input-empty image-input-outline",
+            staticStyle: {
+              "background-image": "url(assets/media/users/blank.png)"
+            },
+            attrs: { id: "kt_image_5" }
+          },
+          [
+            _c("div", { staticClass: "image-input-wrapper" }),
             _vm._v(" "),
-            _c("div", { staticClass: "col-lg-6" }, [
-              _c("div", { staticClass: "form-group my-10" }, [
-                _c("label", [_vm._v("Service Provider:")]),
+            _c(
+              "label",
+              {
+                staticClass:
+                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+                attrs: {
+                  "data-action": "change",
+                  "data-toggle": "tooltip",
+                  title: "",
+                  "data-original-title": "Change avatar"
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-pen icon-sm text-muted" }),
                 _vm._v(" "),
                 _c("input", {
-                  staticClass: "form-control",
                   attrs: {
-                    type: "email",
-                    placeholder: "Enter service provider name"
+                    type: "file",
+                    id: "vehicle-img",
+                    name: "vehicle_avatar",
+                    accept: ".png, .jpg, .jpeg"
                   }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group my-10" }, [
-                _c("label", [_vm._v("Template Number:")]),
+                }),
                 _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "email", placeholder: "Enter template number" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group my-10" }, [
-                _c("label", [_vm._v("Capacity Number:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "email", placeholder: "Enter capacity number" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group my-10" }, [
-                _c("label", [_vm._v("Drivers:")]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    staticClass: "form-control select2",
-                    attrs: {
-                      id: "kt_select2_drivers",
-                      name: "param",
-                      multiple: "multiple"
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "AK" } }, [
-                      _vm._v("Alaska")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "HI" } }, [
-                      _vm._v("Hawaii")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "CA" } }, [
-                      _vm._v("California")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "NV" } }, [
-                      _vm._v("Nevada")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "OR" } }, [
-                      _vm._v("Oregon")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "WA" } }, [
-                      _vm._v("Washington")
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ])
-        ])
+                _c("input", { attrs: { type: "hidden" } })
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+                attrs: {
+                  "data-action": "cancel",
+                  "data-toggle": "tooltip",
+                  title: "Cancel avatar"
+                }
+              },
+              [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+                attrs: {
+                  "data-action": "remove",
+                  "data-toggle": "tooltip",
+                  title: "Remove avatar"
+                }
+              },
+              [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", [_vm._v("Name:")]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "vehicle_name",
+            placeholder: "Enter vehicle name"
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", [_vm._v("Description:")]),
+        _vm._v(" "),
+        _c("textarea", {
+          staticClass: "form-control",
+          attrs: { name: "vehicle_des", id: "exampleTextarea", rows: "3" }
+        })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group my-10" }, [
+      _c("label", [_vm._v("Template Number:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "email",
+          name: "vehicle_template",
+          placeholder: "Enter template number"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group my-10" }, [
+      _c("label", [_vm._v("Capacity Number:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "email",
+          name: "vehicle_capacity",
+          placeholder: "Enter capacity number"
+        }
+      })
     ])
   },
   function() {

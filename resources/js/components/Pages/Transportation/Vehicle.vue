@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form">
+                <form class="form" id="vehicle-form">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
@@ -20,8 +20,8 @@
 
                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
                                             <i class="fa fa-pen icon-sm text-muted"></i>
-                                            <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"/>
-                                            <input type="hidden" name="profile_avatar_remove"/>
+                                            <input type="file" id="vehicle-img" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
+                                            <input type="hidden"/>
                                         </label>
 
                                         <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
@@ -35,38 +35,35 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Name:</label>
-                                    <input type="text" class="form-control" placeholder="Enter vehicle name"/>
+                                    <input type="text" class="form-control" name="vehicle_name" placeholder="Enter vehicle name"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Description:</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group my-10">
                                     <label>Service Provider:</label>
-                                    <input type="email" class="form-control" placeholder="Enter service provider name"/>
-                                    <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
+                                    <select class="form-control select2" id="kt_select_svc_provider" name="vehicle_svc_provider">
+                                        <option label="Label"></option>
+                                        <option v-for="svc in serviceProviders" :key="svc.id" :value="svc.id">{{ svc.company_name }} ({{ svc.type }})</option>
+                                    </select>
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Template Number:</label>
-                                    <input type="email" class="form-control" placeholder="Enter template number"/>
+                                    <input type="email" class="form-control" name="vehicle_template" placeholder="Enter template number"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Capacity Number:</label>
-                                    <input type="email" class="form-control" placeholder="Enter capacity number"/>
+                                    <input type="email" class="form-control" name="vehicle_capacity" placeholder="Enter capacity number"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Drivers:</label>
-                                    <select class="form-control select2" id="kt_select2_drivers" name="param" multiple="multiple">
-                                        <option value="AK">Alaska</option>
-                                        <option value="HI">Hawaii</option>
-                                        <option value="CA">California</option>
-                                        <option value="NV">Nevada</option>
-                                        <option value="OR">Oregon</option>
-                                        <option value="WA">Washington</option>
+                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers[]" multiple="multiple">
+                                        <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -143,12 +140,28 @@ export default {
     data() {
         return {
             create: false,
+            serviceProviders: [],
+            drivers: []
         }
+    },
+    created() {
+        this.getServiceProviders();
+        this.getDrivers();
     },
     mounted() {
         this.ini();
     },
     methods:{
+        getServiceProviders() {
+            axios.get("/api/service_providers").then(response => {
+                this.serviceProviders = response.data;
+            });
+        },
+        getDrivers() {
+            axios.get("/api/drivers_data").then(response => {
+                this.drivers = response.data;
+            });
+        },
         ini(){
             $(()=>{
                 this.tdatatable().init();
@@ -158,8 +171,11 @@ export default {
             this.create = true;
             $(() => {
                 this.image();
+                $('#kt_select_svc_provider').select2({
+                    placeholder: "Select service provider",
+                });
                 $('#kt_select2_drivers').select2({
-                    placeholder: "Select Drivers",
+                    placeholder: "Select drivers",
                 });
             });
         },
@@ -170,6 +186,10 @@ export default {
             });
         },
         saveNewEntry() {
+            let vehicleImg = $("#vehicle-img")[0].files[0].name;
+            let formData = $('#vehicle-form').serialize() + '&vehicle_img='+vehicleImg;
+
+            console.log(formData);
             alert('Saved Form');
         },
         tdatatable(){
