@@ -284,7 +284,7 @@ export default {
                     $('.details-input').attr('disabled',true);
                     this.request_edit = 0;
                     $('.btn-edit span').text('Edit');
-                })
+                });
             });
         },
         KTDatatableModal() {
