@@ -234,6 +234,9 @@ export default {
 
 
             $(()=>{
+                $('.menu-item').removeClass('menu-item-active');
+                $('.router-link-active').parent().addClass('menu-item-active');
+                
                 this.KTDatatableModal().init();
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();

@@ -2621,6 +2621,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         document.getElementById("list-requests-page").appendChild(tag);
       });
       $(function () {
+        $('.menu-item').removeClass('menu-item-active');
+        $('.router-link-active').parent().addClass('menu-item-active');
+
         _this.KTDatatableModal().init();
 
         $('#kt_select_region').on('change', function () {
@@ -3298,6 +3301,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3307,7 +3319,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       brgys: [],
       activeProvinces: [],
       activeCities: [],
-      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart']
+      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+      complete: false,
+      requestCode: null,
+      createdAt: null
     };
   },
   created: function created() {
@@ -3388,7 +3403,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control" type="text" /></td><td></td></tr>');
+      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="details-input form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="details-input form-control" type="text" /></td></tr>');
       $('#pax-total').val(lastTr);
       this.names.push('pax_name_' + lastTr);
       this.names.push('pax_des_' + lastTr);
@@ -3423,19 +3438,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       axios.put("/travel/store", requestform).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
-
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'travel_radio') {
-            $('[name="' + _this2.names[i] + '"]').prop('checked', false);
-          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
-            $('#kt_select_' + _this2.names[i]).empty();
-          } else {
-            $('[name="' + _this2.names[i] + '"]').val(null);
-          }
-        }
-
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
+        $('.details-input').attr('disabled', true);
+        _this2.complete = true;
+        _this2.requestCode = response.data.result.serial_code;
+        _this2.createdAt = dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -3558,6 +3566,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.activeCities = this.cities.filter(function (i) {
         return i.active === 'true';
       });
+    },
+    newRequest: function newRequest() {
+      for (var i = 0; i < this.names.length; i++) {
+        if (this.names[i] == 'travel_radio') {
+          $('[name="' + this.names[i] + '"]').prop('checked', false);
+        } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+          $('#kt_select_' + this.names[i]).empty();
+        } else {
+          $('[name="' + this.names[i] + '"]').val(null);
+        }
+      }
+
+      $('.details-input').attr('disabled', false);
+      this.complete = false;
+      this.requestCode = null;
+      this.createdAt = null;
     }
   }
 });
@@ -43615,24 +43639,26 @@ var render = function() {
       _c("div", { staticClass: "card-header" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "card-toolbar" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "btn-group" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary font-weight-bolder",
-                attrs: { type: "button" },
-                on: { click: _vm.saveForm }
-              },
-              [
-                _c("i", { staticClass: "ki ki-check icon-sm" }),
-                _vm._v("Save Form")
-              ]
-            )
-          ])
-        ])
+        _vm.complete == false
+          ? _c("div", { staticClass: "card-toolbar" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "btn-group" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary font-weight-bolder",
+                    attrs: { type: "button" },
+                    on: { click: _vm.saveForm }
+                  },
+                  [
+                    _c("i", { staticClass: "ki ki-check icon-sm" }),
+                    _vm._v("Save Form")
+                  ]
+                )
+              ])
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -43641,6 +43667,54 @@ var render = function() {
             _c("div", { staticClass: "col-xl-2" }),
             _vm._v(" "),
             _c("div", { staticClass: "col-xl-8" }, [
+              _vm.complete
+                ? _c("div", { staticClass: "jumbotron" }, [
+                    _c("span", [_vm._v("Your request code:")]),
+                    _vm._v(" "),
+                    _c("h1", { staticClass: "display-4" }, [
+                      _vm._v(_vm._s(_vm.requestCode))
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "lead" }, [
+                      _vm._v("Your request has successfully completed!")
+                    ]),
+                    _vm._v(" "),
+                    _c("hr", { staticClass: "my-4" }),
+                    _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(_vm.createdAt))]),
+                    _vm._v(" "),
+                    _c(
+                      "p",
+                      { staticClass: "lead" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: {
+                              to: { name: "listRequests" },
+                              href: "#",
+                              role: "button"
+                            }
+                          },
+                          [_vm._v("Update request")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: { href: "#", role: "button" },
+                            on: { click: _vm.newRequest }
+                          },
+                          [_vm._v("New request")]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "my-5" }, [
                 _c("input", {
                   attrs: { name: "request_id", type: "hidden", value: "" }
@@ -43665,7 +43739,7 @@ var render = function() {
                     _c(
                       "select",
                       {
-                        staticClass: "form-control select2",
+                        staticClass: "details-input form-control select2",
                         attrs: { id: "kt_select_region", name: "region" }
                       },
                       [
@@ -43685,7 +43759,8 @@ var render = function() {
                     _c(
                       "select",
                       {
-                        staticClass: "form-control select2 kt_select2_3",
+                        staticClass:
+                          "details-input form-control select2 kt_select2_3",
                         attrs: {
                           id: "kt_select_province",
                           name: "province[]",
@@ -43708,7 +43783,8 @@ var render = function() {
                     _c(
                       "select",
                       {
-                        staticClass: "form-control select2 kt_select2_3",
+                        staticClass:
+                          "details-input form-control select2 kt_select2_3",
                         attrs: {
                           id: "kt_select_city",
                           name: "city[]",
@@ -43743,7 +43819,8 @@ var render = function() {
                     _c(
                       "select",
                       {
-                        staticClass: "form-control select2 kt_select2_3",
+                        staticClass:
+                          "details-input form-control select2 kt_select2_3",
                         attrs: {
                           id: "kt_select_brgy",
                           name: "brgy[]",
@@ -43792,25 +43869,27 @@ var render = function() {
                     [_vm._v("Passenger Details:")]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "ml-auto" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-sm btn-outline-primary",
-                        on: { click: _vm.addRow }
-                      },
-                      [_c("i", { staticClass: "fa fa-plus-square p-0" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-sm btn-outline-primary",
-                        on: { click: _vm.removeRow }
-                      },
-                      [_c("i", { staticClass: "fa fa-minus-square p-0" })]
-                    )
-                  ])
+                  _vm.complete == false
+                    ? _c("div", { staticClass: "ml-auto" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-outline-primary",
+                            on: { click: _vm.addRow }
+                          },
+                          [_c("i", { staticClass: "fa fa-plus-square p-0" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-outline-primary",
+                            on: { click: _vm.removeRow }
+                          },
+                          [_c("i", { staticClass: "fa fa-minus-square p-0" })]
+                        )
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("input", {
@@ -43874,6 +43953,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "checkbox-inline" }, [
           _c("label", { staticClass: "radio mr-2" }, [
             _c("input", {
+              staticClass: "details-input",
               attrs: { type: "radio", name: "travel_radio", value: "Office" }
             }),
             _vm._v(" Office\n                                        "),
@@ -43882,6 +43962,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("label", { staticClass: "radio" }, [
             _c("input", {
+              staticClass: "details-input",
               attrs: { type: "radio", name: "travel_radio", value: "Rental" }
             }),
             _vm._v(" Rental\n                                        "),
@@ -43902,7 +43983,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
-          staticClass: "form-control",
+          staticClass: "details-input form-control",
           attrs: { name: "prog_div_sec", type: "text" }
         })
       ])
@@ -43917,7 +43998,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
-          staticClass: "form-control",
+          staticClass: "details-input form-control",
           attrs: { name: "pur_travel", type: "text" }
         })
       ])
@@ -43932,7 +44013,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
-          staticClass: "form-control",
+          staticClass: "details-input form-control",
           attrs: { name: "date_travel", type: "date", value: "" }
         })
       ])
@@ -43947,7 +44028,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
-          staticClass: "form-control",
+          staticClass: "details-input form-control",
           attrs: { name: "time_depart", type: "time", value: "" }
         })
       ])
@@ -43973,10 +44054,6 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
               _vm._v("Position/Designation")
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-              _vm._v("Action")
             ])
           ])
         ]),
@@ -43989,19 +44066,17 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("td", [
               _c("input", {
-                staticClass: "form-control",
+                staticClass: "details-input form-control",
                 attrs: { name: "pax_name_1", type: "text" }
               })
             ]),
             _vm._v(" "),
             _c("td", [
               _c("input", {
-                staticClass: "form-control",
+                staticClass: "details-input form-control",
                 attrs: { name: "pax_des_1", type: "text" }
               })
-            ]),
-            _vm._v(" "),
-            _c("td")
+            ])
           ])
         ])
       ]

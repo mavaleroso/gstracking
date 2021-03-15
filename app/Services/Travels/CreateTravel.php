@@ -111,6 +111,6 @@ class CreateTravel
             }
         }
 
-        return $request;
+        return $request->fresh();
     }
 }
