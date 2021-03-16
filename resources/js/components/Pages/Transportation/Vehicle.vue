@@ -35,34 +35,34 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Name:</label>
-                                    <input type="text" class="form-control" name="vehicle_name" placeholder="Enter vehicle name"/>
+                                    <input type="text" class="form-control" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
                                 </div>
                                 <div class="form-group">
                                     <label>Description:</label>
-                                    <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3"></textarea>
+                                    <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3" v-model="formFields.description"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group my-10">
                                     <label>Service Provider:</label>
-                                    <select class="form-control select2" id="kt_select_svc_provider" name="vehicle_svc_provider">
+                                    <select class="form-control select2" id="kt_select_svc_provider" name="vehicle_svc_provider" v-model="formFields.serviceProvider">
                                         <option label="Label"></option>
                                         <option v-for="svc in serviceProviders" :key="svc.id" :value="svc.id">{{ svc.company_name }} ({{ svc.type }})</option>
                                     </select>
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Template Number:</label>
-                                    <input type="email" class="form-control" name="vehicle_template" placeholder="Enter template number"/>
+                                    <input type="text" class="form-control" name="vehicle_template" placeholder="Enter template number" v-model="formFields.templateNumber"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Capacity Number:</label>
-                                    <input type="email" class="form-control" name="vehicle_capacity" placeholder="Enter capacity number"/>
+                                    <input type="number" class="form-control" name="vehicle_capacity" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Drivers:</label>
-                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers[]" multiple="multiple">
+                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers[]" multiple="multiple" v-model="formFields.drivers">
                                         <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
                                     </select>
                                 </div>
@@ -141,7 +141,16 @@ export default {
         return {
             create: false,
             serviceProviders: [],
-            drivers: []
+            drivers: [],
+            formFields: {
+                picture: null,
+                name: null,
+                description: null,
+                serviceProvider: null,
+                templateNumber: null,
+                capacityNumber: null,
+                drivers: []
+            }
         }
     },
     created() {
@@ -169,6 +178,7 @@ export default {
         },
         newEntry() {
             this.create = true;
+            let vm = this;
             $(() => {
                 this.image();
                 $('#kt_select_svc_provider').select2({
@@ -177,6 +187,13 @@ export default {
                 $('#kt_select2_drivers').select2({
                     placeholder: "Select drivers",
                 });
+                $('#kt_select_svc_provider').change(function() {
+                    vm.formFields.serviceProvider = $(this).val();
+                });
+                $('#kt_select2_drivers').change(function() {
+                    vm.formFields.drivers = $(this).val();
+                });
+
             });
         },
         cancelEntry() {
@@ -186,14 +203,25 @@ export default {
             });
         },
         saveNewEntry() {
-            let vehicleImg = $("#vehicle-img")[0].files[0].name;
-            let formData = $('#vehicle-form').serialize() + '&vehicle_img='+vehicleImg;
-
+            let formData = new FormData();
+            formData.append("picture", this.formFields.picture);
+            formData.append("name", this.formFields.name);
+            formData.append("description", this.formFields.description);
+            formData.append("serviceProvider", this.formFields.serviceProvider);
+            formData.append("templateNumber", this.formFields.templateNumber);
+            formData.append("capacityNumber", this.formFields.capacityNumber);
+            formData.append("drivers", this.formFields.drivers);
             console.log(formData);
-            alert('Saved Form');
+            // axios.post('/posts', formData1)
+            //     .then((res) => {
+            //         console.log(res);
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //  });
         },
         tdatatable(){
-            var initTable = ()=> {
+            var initTable = () => {
             var table = $('#vehicle-tbl');
 
             // begin first table
@@ -244,6 +272,7 @@ export default {
         },
         image() {
             var avatar5 = new KTImageInput('kt_image_5');
+            var vm = this;
 
             avatar5.on('cancel', function(imageInput) {
                 swal.fire({
@@ -256,13 +285,14 @@ export default {
             });
 
             avatar5.on('change', function(imageInput) {
-                swal.fire({
-                    title: 'Image successfully changed !',
-                    type: 'success',
-                    buttonsStyling: false,
-                    confirmButtonText: 'Awesome!',
-                    confirmButtonClass: 'btn btn-primary font-weight-bold'
-                });
+                vm.formFields.picture = imageInput.input.files[0];
+                // swal.fire({
+                //     title: 'Image successfully changed !',
+                //     type: 'success',
+                //     buttonsStyling: false,
+                //     confirmButtonText: 'Awesome!',
+                //     confirmButtonClass: 'btn btn-primary font-weight-bold'
+                // });
             });
 
             avatar5.on('remove', function(imageInput) {

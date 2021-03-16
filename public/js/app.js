@@ -4242,7 +4242,16 @@ __webpack_require__.r(__webpack_exports__);
     return {
       create: false,
       serviceProviders: [],
-      drivers: []
+      drivers: [],
+      formFields: {
+        picture: null,
+        name: null,
+        description: null,
+        serviceProvider: null,
+        templateNumber: null,
+        capacityNumber: null,
+        drivers: []
+      }
     };
   },
   created: function created() {
@@ -4278,6 +4287,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.create = true;
+      var vm = this;
       $(function () {
         _this4.image();
 
@@ -4286,6 +4296,12 @@ __webpack_require__.r(__webpack_exports__);
         });
         $('#kt_select2_drivers').select2({
           placeholder: "Select drivers"
+        });
+        $('#kt_select_svc_provider').change(function () {
+          vm.formFields.serviceProvider = $(this).val();
+        });
+        $('#kt_select2_drivers').change(function () {
+          vm.formFields.drivers = $(this).val();
         });
       });
     },
@@ -4298,10 +4314,21 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     saveNewEntry: function saveNewEntry() {
-      var vehicleImg = $("#vehicle-img")[0].files[0].name;
-      var formData = $('#vehicle-form').serialize() + '&vehicle_img=' + vehicleImg;
-      console.log(formData);
-      alert('Saved Form');
+      var formData = new FormData();
+      formData.append("picture", this.formFields.picture);
+      formData.append("name", this.formFields.name);
+      formData.append("description", this.formFields.description);
+      formData.append("serviceProvider", this.formFields.serviceProvider);
+      formData.append("templateNumber", this.formFields.templateNumber);
+      formData.append("capacityNumber", this.formFields.capacityNumber);
+      formData.append("drivers", this.formFields.drivers);
+      console.log(formData); // axios.post('/posts', formData1)
+      //     .then((res) => {
+      //         console.log(res);
+      //     })
+      //     .catch((error) => {
+      //         console.log(error);
+      //  });
     },
     tdatatable: function tdatatable() {
       var initTable = function initTable() {
@@ -4355,6 +4382,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     image: function image() {
       var avatar5 = new KTImageInput('kt_image_5');
+      var vm = this;
       avatar5.on('cancel', function (imageInput) {
         swal.fire({
           title: 'Image successfully changed !',
@@ -4365,13 +4393,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
       avatar5.on('change', function (imageInput) {
-        swal.fire({
-          title: 'Image successfully changed !',
-          type: 'success',
-          buttonsStyling: false,
-          confirmButtonText: 'Awesome!',
-          confirmButtonClass: 'btn btn-primary font-weight-bold'
-        });
+        vm.formFields.picture = imageInput.input.files[0]; // swal.fire({
+        //     title: 'Image successfully changed !',
+        //     type: 'success',
+        //     buttonsStyling: false,
+        //     confirmButtonText: 'Awesome!',
+        //     confirmButtonClass: 'btn btn-primary font-weight-bold'
+        // });
       });
       avatar5.on('remove', function (imageInput) {
         swal.fire({
@@ -46023,7 +46051,77 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _vm._m(1),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Name:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.name,
+                                expression: "formFields.name"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "vehicle_name",
+                              placeholder: "Enter vehicle name"
+                            },
+                            domProps: { value: _vm.formFields.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Description:")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.description,
+                                expression: "formFields.description"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "vehicle_des",
+                              id: "exampleTextarea",
+                              rows: "3"
+                            },
+                            domProps: { value: _vm.formFields.description },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "description",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group my-10" }, [
@@ -46032,10 +46130,38 @@ var render = function() {
                           _c(
                             "select",
                             {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.serviceProvider,
+                                  expression: "formFields.serviceProvider"
+                                }
+                              ],
                               staticClass: "form-control select2",
                               attrs: {
                                 id: "kt_select_svc_provider",
                                 name: "vehicle_svc_provider"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "serviceProvider",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
                             },
                             [
@@ -46060,9 +46186,73 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(2),
+                        _c("div", { staticClass: "form-group my-10" }, [
+                          _c("label", [_vm._v("Template Number:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.templateNumber,
+                                expression: "formFields.templateNumber"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "vehicle_template",
+                              placeholder: "Enter template number"
+                            },
+                            domProps: { value: _vm.formFields.templateNumber },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "templateNumber",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
-                        _vm._m(3),
+                        _c("div", { staticClass: "form-group my-10" }, [
+                          _c("label", [_vm._v("Capacity Number:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.capacityNumber,
+                                expression: "formFields.capacityNumber"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              name: "vehicle_capacity",
+                              placeholder: "Enter capacity number"
+                            },
+                            domProps: { value: _vm.formFields.capacityNumber },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "capacityNumber",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group my-10" }, [
                           _c("label", [_vm._v("Drivers:")]),
@@ -46070,11 +46260,39 @@ var render = function() {
                           _c(
                             "select",
                             {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.drivers,
+                                  expression: "formFields.drivers"
+                                }
+                              ],
                               staticClass: "form-control select2",
                               attrs: {
                                 id: "kt_select2_drivers",
                                 name: "vehicle_drivers[]",
                                 multiple: "multiple"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "drivers",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
                             },
                             _vm._l(_vm.drivers, function(driver) {
@@ -46205,7 +46423,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(4)
+            _vm._m(2)
           ]
         )
   ])
@@ -46230,136 +46448,78 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-6" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("p", [_vm._v("Image:")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "image-input image-input-empty image-input-outline",
-            staticStyle: {
-              "background-image": "url(assets/media/users/blank.png)"
-            },
-            attrs: { id: "kt_image_5" }
+    return _c("div", { staticClass: "form-group" }, [
+      _c("p", [_vm._v("Image:")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "image-input image-input-empty image-input-outline",
+          staticStyle: {
+            "background-image": "url(assets/media/users/blank.png)"
           },
-          [
-            _c("div", { staticClass: "image-input-wrapper" }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass:
-                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+          attrs: { id: "kt_image_5" }
+        },
+        [
+          _c("div", { staticClass: "image-input-wrapper" }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass:
+                "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+              attrs: {
+                "data-action": "change",
+                "data-toggle": "tooltip",
+                title: "",
+                "data-original-title": "Change avatar"
+              }
+            },
+            [
+              _c("i", { staticClass: "fa fa-pen icon-sm text-muted" }),
+              _vm._v(" "),
+              _c("input", {
                 attrs: {
-                  "data-action": "change",
-                  "data-toggle": "tooltip",
-                  title: "",
-                  "data-original-title": "Change avatar"
+                  type: "file",
+                  id: "vehicle-img",
+                  name: "vehicle_avatar",
+                  accept: ".png, .jpg, .jpeg"
                 }
-              },
-              [
-                _c("i", { staticClass: "fa fa-pen icon-sm text-muted" }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "file",
-                    id: "vehicle-img",
-                    name: "vehicle_avatar",
-                    accept: ".png, .jpg, .jpeg"
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", { attrs: { type: "hidden" } })
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass:
-                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
-                attrs: {
-                  "data-action": "cancel",
-                  "data-toggle": "tooltip",
-                  title: "Cancel avatar"
-                }
-              },
-              [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass:
-                  "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
-                attrs: {
-                  "data-action": "remove",
-                  "data-toggle": "tooltip",
-                  title: "Remove avatar"
-                }
-              },
-              [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
-            )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Name:")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            name: "vehicle_name",
-            placeholder: "Enter vehicle name"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Description:")]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: { name: "vehicle_des", id: "exampleTextarea", rows: "3" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group my-10" }, [
-      _c("label", [_vm._v("Template Number:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          type: "email",
-          name: "vehicle_template",
-          placeholder: "Enter template number"
-        }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group my-10" }, [
-      _c("label", [_vm._v("Capacity Number:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          type: "email",
-          name: "vehicle_capacity",
-          placeholder: "Enter capacity number"
-        }
-      })
+              }),
+              _vm._v(" "),
+              _c("input", { attrs: { type: "hidden" } })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+              attrs: {
+                "data-action": "cancel",
+                "data-toggle": "tooltip",
+                title: "Cancel avatar"
+              }
+            },
+            [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow",
+              attrs: {
+                "data-action": "remove",
+                "data-toggle": "tooltip",
+                title: "Remove avatar"
+              }
+            },
+            [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
+          )
+        ]
+      )
     ])
   },
   function() {
