@@ -42,7 +42,7 @@
 }
 
 @media only screen and (max-width: 1500px) {
-    #kt_body {
+    /* #kt_body {
         zoom: 90%;
         height: 110vh;
     }
@@ -50,5 +50,5 @@
         width: 1000vh;
         height: 1000vh;
         overflow: hidden;
-    }
+    } */
 }

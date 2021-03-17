@@ -4247,8 +4247,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4256,15 +4254,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       serviceProviders: [],
       drivers: [],
       formFields: {
-        picture: null,
-        name: null,
-        description: null,
-        serviceProvider: null,
-        templateNumber: null,
-        capacityNumber: null,
+        picture: '',
+        name: '',
+        description: '',
+        serviceProvider: '',
+        templateNumber: '',
+        capacityNumber: '',
         drivers: []
       },
-      names: ['name', 'templateNumber', 'capacityNumber']
+      names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
     };
   },
   created: function created() {
@@ -4337,14 +4335,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
       formD.append('drivers', this.formFields.drivers);
-      axios.put('/transportation/vehicle/store', formD, {
-        header: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (res) {
-        console.log(res.data);
+      axios.post('/transportation/vehicle/create', formD).then(function (res) {
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
       })["catch"](function (error) {
-        console.log(error.response.data.errors);
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
@@ -4358,24 +4352,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           values.push("".concat(value));
 
           if ("".concat(key) == 'serviceProvider') {
-            $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+            if ($('#kt_select_svc_provider').next().next().length == 0) {
+              $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
           } else {
-            $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
-            $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            }
           }
         }
 
         for (var i = 0; i < _this6.names.length; i++) {
           if (_this6.names[i] == 'serviceProvider') {
             if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this6.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this6.names[i]).next().next('.invalid-feedback').remove();
+              if ($('#kt_select_svc_provider').next().next().length != 0) {
+                $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
               }
             }
           } else {
             if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              $('input[name="' + _this6.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
+              $('[name="vehicle_' + _this6.names[i] + '"]').removeClass('is-invalid');
+              $('[name="vehicle_' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }

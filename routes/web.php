@@ -55,7 +55,7 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Page'], function () {
 
 Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () {
     Route::group(['prefix' => 'vehicle'], function () {
-        Route::put('/store', 'TransportationVehicleController@store');
+        Route::post('/create', 'TransportationVehicleController@create');
     });
 });
 

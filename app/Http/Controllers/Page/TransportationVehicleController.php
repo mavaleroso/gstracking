@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\VehicleRequest;
-use App\Services\Tracking\StoreVehicle;
+use App\Services\Tracking\CreateVehicle;
 
 class TransportationVehicleController extends Controller
 {
@@ -24,9 +24,24 @@ class TransportationVehicleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
     {
-        //
+        $result = $createVehicle->execute($vehicleRequest->validated());
+        // try {
+        //     if($request->hasFile('picture')) {
+        //         $file = $request->file('picture');
+        //         $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
+        //         $file->storeAs('images', $file_name);
+        //         return response()->json([
+        //             'message' => 'File uploaded successfully!'
+        //         ], 200);
+        //     }
+        // } catch (\Exeption $e) {
+        //     return response()->json([
+        //         'message' => $e->getMessage()
+        //     ]);
+        // }
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -35,12 +50,10 @@ class TransportationVehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(VehicleRequest $vehicleRequest, StoreVehicle $storeVehicle)
-    public function store(Request $request)
+    public function store()
     {
-        dd($request);
-        // $result = $storeVehicle->execute($vehicleRequest->validated());
-        // return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+
+        
     }
 
     /**

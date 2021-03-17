@@ -53,12 +53,10 @@
                                 <div class="form-group my-10">
                                     <label>Template Number:</label>
                                     <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter template number" v-model="formFields.templateNumber"/>
-                                    <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Capacity Number:</label>
                                     <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
-                                    <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Drivers:</label>
@@ -143,15 +141,15 @@ export default {
             serviceProviders: [],
             drivers: [],
             formFields: {
-                picture: null,
-                name: null,
-                description: null,
-                serviceProvider: null,
-                templateNumber: null,
-                capacityNumber: null,
+                picture: '',
+                name: '',
+                description: '',
+                serviceProvider: '',
+                templateNumber: '',
+                capacityNumber: '',
                 drivers: []
             },
-            names: ['name', 'templateNumber', 'capacityNumber']
+            names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
         }
     },
     created() {
@@ -214,11 +212,11 @@ export default {
             formD.append('capacityNumber', this.formFields.capacityNumber);
             formD.append('drivers', this.formFields.drivers);
 
-            axios.put('/transportation/vehicle/store', formD, {header: {'Content-Type': 'multipart/form-data'}}).then((res) => {
-                    console.log(res.data);
+            axios.post('/transportation/vehicle/create', formD).then((res) => {
+                    $('.invalid-feedback').remove();
+                    $('.is-invalid').removeClass('is-invalid');
                 })
                 .catch((error) => {
-                    console.log(error.response.data.errors);
                     let data = error.response.data.errors;
                     let keys = [];
                     let values = [];
@@ -226,24 +224,27 @@ export default {
                         keys.push(`${key}`);
                         values.push(`${value}`);
                         if(`${key}` == 'serviceProvider'){
-                            $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            if ($('#kt_select_svc_provider').next().next().length == 0) {
+                                $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
                         } else {
-                            $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
-                            $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                                $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
+                                $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            }
                         }
                     }
-
                     for (let i = 0; i < this.names.length; i++) {
                         if (this.names[i] == 'serviceProvider') {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
-                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                                if ($('#kt_select_svc_provider').next().next().length != 0) {
+                                    $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
                                 }
                             }
                         } else {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
-                                $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                                $('[name="vehicle_'+this.names[i]+'"]').removeClass('is-invalid');
+                                $('[name="vehicle_'+this.names[i]+'"]').next('.invalid-feedback').remove();
                             }
                         }
                     }

@@ -19,7 +19,6 @@ class VehicleRequest extends FormRequest
     
     public function rules()
     {
-
         return [
             'picture' => 'nullable',
             'name' => 'required',
@@ -29,7 +28,6 @@ class VehicleRequest extends FormRequest
             'capacityNumber' => 'required',
             'drivers' => 'nullable',
         ];
-
     }
 
     public function attributes()
