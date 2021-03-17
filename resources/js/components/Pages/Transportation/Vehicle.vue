@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form" id="vehicle-form">
+                <form class="form" id="vehicle-form" @submit.prevent="saveNewEntry">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
@@ -20,7 +20,7 @@
 
                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
                                             <i class="fa fa-pen icon-sm text-muted"></i>
-                                            <input type="file" id="vehicle-img" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
+                                            <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
                                             <input type="hidden"/>
                                         </label>
 
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Name:</label>
-                                    <input type="text" class="form-control" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
+                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
                                 </div>
                                 <div class="form-group">
                                     <label>Description:</label>
@@ -52,12 +52,12 @@
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Template Number:</label>
-                                    <input type="text" class="form-control" name="vehicle_template" placeholder="Enter template number" v-model="formFields.templateNumber"/>
+                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter template number" v-model="formFields.templateNumber"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
                                     <label>Capacity Number:</label>
-                                    <input type="number" class="form-control" name="vehicle_capacity" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
+                                    <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
                                     <!-- <span class="form-text text-muted">Please enter your contact number</span> -->
                                 </div>
                                 <div class="form-group my-10">
@@ -69,15 +69,15 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <button @click="saveNewEntry" type="reset" class="btn btn-primary mr-2">Save</button>
-                        <button @click="cancelEntry" type="reset" class="btn btn-secondary">Cancel</button>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                <button @click="cancelEntry" type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div v-else class="card card-custom gutter-b animate__animated animate__fadeIn" >
@@ -150,7 +150,8 @@ export default {
                 templateNumber: null,
                 capacityNumber: null,
                 drivers: []
-            }
+            },
+            names: ['name', 'templateNumber', 'capacityNumber']
         }
     },
     created() {
@@ -203,22 +204,52 @@ export default {
             });
         },
         saveNewEntry() {
-            let formData = new FormData();
-            formData.append("picture", this.formFields.picture);
-            formData.append("name", this.formFields.name);
-            formData.append("description", this.formFields.description);
-            formData.append("serviceProvider", this.formFields.serviceProvider);
-            formData.append("templateNumber", this.formFields.templateNumber);
-            formData.append("capacityNumber", this.formFields.capacityNumber);
-            formData.append("drivers", this.formFields.drivers);
-            console.log(formData);
-            // axios.post('/posts', formData1)
-            //     .then((res) => {
-            //         console.log(res);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //  });
+            let formD = new FormData();
+
+            formD.append('picture', this.formFields.picture);
+            formD.append('name', this.formFields.name);
+            formD.append('description', this.formFields.description);
+            formD.append('serviceProvider', this.formFields.serviceProvider);
+            formD.append('templateNumber', this.formFields.templateNumber);
+            formD.append('capacityNumber', this.formFields.capacityNumber);
+            formD.append('drivers', this.formFields.drivers);
+
+            axios.put('/transportation/vehicle/store', formD, {header: {'Content-Type': 'multipart/form-data'}}).then((res) => {
+                    console.log(res.data);
+                })
+                .catch((error) => {
+                    console.log(error.response.data.errors);
+                    let data = error.response.data.errors;
+                    let keys = [];
+                    let values = [];
+                    for (const [key, value] of Object.entries(data)) {
+                        keys.push(`${key}`);
+                        values.push(`${value}`);
+                        if(`${key}` == 'serviceProvider'){
+                            $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        } else {
+                            $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                        }
+                    }
+
+                    for (let i = 0; i < this.names.length; i++) {
+                        if (this.names[i] == 'serviceProvider') {
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                                }
+                            }
+                        } else {
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+                                $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                                $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            }
+                        }
+                    }
+
+
+            });
         },
         tdatatable(){
             var initTable = () => {
@@ -286,6 +317,7 @@ export default {
 
             avatar5.on('change', function(imageInput) {
                 vm.formFields.picture = imageInput.input.files[0];
+                console.log(imageInput.input.files[0]);
                 // swal.fire({
                 //     title: 'Image successfully changed !',
                 //     type: 'success',
