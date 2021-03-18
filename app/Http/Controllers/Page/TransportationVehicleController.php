@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\VehicleRequest;
 use App\Services\Tracking\CreateVehicle;
+use App\Services\Tracking\GetListingVehicle;
+use App\Models\Vehicle;
 
 class TransportationVehicleController extends Controller
 {
@@ -14,10 +16,11 @@ class TransportationVehicleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingVehicle $getListingVehicle)
     {
-        //
-    }
+        $records = $getListingVehicle->execute();
+        return response()->json($records);
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -27,22 +30,6 @@ class TransportationVehicleController extends Controller
     public function create(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
     {
         $result = $createVehicle->execute($vehicleRequest->validated());
-        // if ($result) {
-        //     try {
-        //         if($request->hasFile('picture')) {
-        //             $file = $request->file('picture');
-        //             $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
-        //             $file->storeAs('images', $file_name);
-        //             return response()->json([
-        //                 'message' => 'File uploaded successfully!'
-        //             ], 200);
-        //         }
-        //     } catch (\Exeption $e) {
-        //         return response()->json([
-        //             'message' => $e->getMessage()
-        //         ]);
-        //     }
-        // }
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 

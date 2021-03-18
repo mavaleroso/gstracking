@@ -114,19 +114,6 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>DSWD</td>
-                            <td>SUV</td>
-                            <td>SUV 123</td>
-                            <td>7</td>
-                            <td>PS 12345</td>
-                            <td>03/12/2020</td>
-                            <td>2/19/2021</td>
-                            <td>Edit</td>
-                        </tr>
-                    </tbody>
                 </table>
                 <!--end: Datatable-->
             </div>
@@ -260,13 +247,28 @@ export default {
         tdatatable(){
             var initTable = () => {
             var table = $('#vehicle-tbl');
-
             // begin first table
                 table.DataTable({
                     scrollY: '50vh',
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: BASE_URL + '/api/vehicle_data',
+                        type: 'GET'
+                    },
+                    columns: [
+                        { "data": "id" },
+                        { "data": "service_provider_id" },
+                        { "data": "vehicle_type" },
+                        { "data": "name" },
+                        { "data": "template" },
+                        { "data": "capacity" },
+                        { "data": "created_at" },
+                        { "data": "updated_at" },
+                        { "data": "id" },
+                    ],
                     columnDefs: [{
                         targets: -1,
                         title: 'Actions',
@@ -299,6 +301,7 @@ export default {
                             ';
                         },
                     },],
+                    
                 });
             };
             return {

@@ -4234,19 +4234,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4393,6 +4380,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           scrollX: true,
           scrollCollapse: true,
           processing: true,
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + '/api/vehicle_data',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "service_provider_id"
+          }, {
+            "data": "vehicle_type"
+          }, {
+            "data": "name"
+          }, {
+            "data": "template"
+          }, {
+            "data": "capacity"
+          }, {
+            "data": "created_at"
+          }, {
+            "data": "updated_at"
+          }, {
+            "data": "id"
+          }],
           columnDefs: [{
             targets: -1,
             title: 'Actions',
@@ -46627,28 +46638,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("Updated")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("DSWD")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("SUV")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("SUV 123")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("PS 12345")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("03/12/2020")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2/19/2021")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Edit")])
             ])
           ])
         ]
