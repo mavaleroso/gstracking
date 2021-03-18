@@ -38,6 +38,8 @@ Route::get('/list_vehicle', 'main\DashboardController@index');
 Route::get('/list_drivers', 'main\DashboardController@index');
 Route::get('/list_service_provider', 'main\DashboardController@index');
 
+Route::get('/list_transaction_logs', 'main\DashboardController@logs');
+
 
 // dev routes
 

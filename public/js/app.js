@@ -3721,99 +3721,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      transactionlogs: {}
+    };
+  },
   mounted: function mounted() {
     this.ini();
+    this.getTransactionLogs();
   },
   methods: {
-    ini: function ini() {
+    getTransactionLogs: function getTransactionLogs() {
       var _this = this;
 
+      axios.get('list_transaction_logs').then(function (response) {
+        _this.transactionlogs = response.data;
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    },
+    ini: function ini() {
+      var _this2 = this;
+
       $(function () {
-        _this.tdatatable().init();
+        _this2.tdatatable().init();
       });
     },
     tdatatable: function tdatatable() {
-      var initTable1 = function initTable1() {
+      var initTable = function initTable() {
         var table = $('#transaction-logs'); // begin first table
 
         table.DataTable({
@@ -3821,160 +3757,13 @@ __webpack_require__.r(__webpack_exports__);
           scrollX: true,
           scrollCollapse: true,
           processing: true,
-          columnDefs: [{
-            targets: -1,
-            title: 'Actions',
-            orderable: false,
-            width: '125px',
-            render: function render(data, type, full, meta) {
-              return '\
-	                        <div class="dropdown dropdown-inline">\
-	                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
-	                                <span class="svg-icon svg-icon-md">\
-	                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-	                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-	                                            <rect x="0" y="0" width="24" height="24"/>\
-	                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"/>\
-	                                        </g>\
-	                                    </svg>\
-	                                </span>\
-	                            </a>\
-	                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
-	                                <ul class="navi flex-column navi-hover py-2">\
-	                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
-	                                        Choose an action:\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-print"></i></span>\
-	                                            <span class="navi-text">Print</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-copy"></i></span>\
-	                                            <span class="navi-text">Copy</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-excel-o"></i></span>\
-	                                            <span class="navi-text">Excel</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
-	                                            <span class="navi-text">CSV</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>\
-	                                            <span class="navi-text">PDF</span>\
-	                                        </a>\
-	                                    </li>\
-	                                </ul>\
-	                            </div>\
-	                        </div>\
-	                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
-	                            <span class="svg-icon svg-icon-md">\
-	                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-	                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-	                                        <rect x="0" y="0" width="24" height="24"/>\
-	                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-	                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-	                                    </g>\
-	                                </svg>\
-	                            </span>\
-	                        </a>\
-	                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
-	                            <span class="svg-icon svg-icon-md">\
-	                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-	                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-	                                        <rect x="0" y="0" width="24" height="24"/>\
-	                                        <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
-	                                        <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
-	                                    </g>\
-	                                </svg>\
-	                            </span>\
-	                        </a>\
-	                    ';
-            }
-          }, {
-            targets: 8,
-            width: '75px',
-            render: function render(data, type, full, meta) {
-              var status = {
-                1: {
-                  'title': 'Pending',
-                  'class': 'label-light-primary'
-                },
-                2: {
-                  'title': 'Delivered',
-                  'class': ' label-light-danger'
-                },
-                3: {
-                  'title': 'Canceled',
-                  'class': ' label-light-primary'
-                },
-                4: {
-                  'title': 'Success',
-                  'class': ' label-light-success'
-                },
-                5: {
-                  'title': 'Info',
-                  'class': ' label-light-info'
-                },
-                6: {
-                  'title': 'Danger',
-                  'class': ' label-light-danger'
-                },
-                7: {
-                  'title': 'Warning',
-                  'class': ' label-light-warning'
-                }
-              };
-
-              if (typeof status[data] === 'undefined') {
-                return data;
-              }
-
-              return '<span class="label label-lg font-weight-bold' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
-            }
-          }, {
-            targets: 9,
-            width: '75px',
-            render: function render(data, type, full, meta) {
-              var status = {
-                1: {
-                  'title': 'Online',
-                  'state': 'danger'
-                },
-                2: {
-                  'title': 'Retail',
-                  'state': 'primary'
-                },
-                3: {
-                  'title': 'Direct',
-                  'state': 'success'
-                }
-              };
-
-              if (typeof status[data] === 'undefined') {
-                return data;
-              }
-
-              return '<span class="label label-' + status[data].state + ' label-dot mr-2"></span>' + '<span class="font-weight-bold text-' + status[data].state + '">' + status[data].title + '</span>';
-            }
-          }]
+          columnDefs: []
         });
       };
 
       return {
-        //main function to initiate the module
         init: function init() {
-          initTable1();
+          initTable();
         }
       };
     }
@@ -45462,77 +45251,6 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "card-toolbar" }, [
-          _c("div", { staticClass: "dropdown dropdown-inline mr-2" }, [
-            _c(
-              "button",
-              {
-                staticClass:
-                  "btn btn-light-primary font-weight-bolder dropdown-toggle",
-                attrs: {
-                  type: "button",
-                  "data-toggle": "dropdown",
-                  "aria-haspopup": "true",
-                  "aria-expanded": "false"
-                }
-              },
-              [
-                _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                        width: "24px",
-                        height: "24px",
-                        viewBox: "0 0 24 24",
-                        version: "1.1"
-                      }
-                    },
-                    [
-                      _c(
-                        "g",
-                        {
-                          attrs: {
-                            stroke: "none",
-                            "stroke-width": "1",
-                            fill: "none",
-                            "fill-rule": "evenodd"
-                          }
-                        },
-                        [
-                          _c("rect", {
-                            attrs: { x: "0", y: "0", width: "24", height: "24" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z",
-                              fill: "#000000"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v("Export")
-              ]
-            ),
-            _vm._v(" "),
-            _vm._m(1)
-          ]),
-          _vm._v(" "),
           _c(
             "a",
             {
@@ -45592,7 +45310,37 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(2)
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "table",
+          {
+            staticClass:
+              "table table-separate table-head-custom table-checkable",
+            attrs: { id: "transaction-logs" }
+          },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.transactionlogs, function(transactionlogs, logs) {
+                return _c("tr", { key: logs }, [
+                  _c("td", [_vm._v(_vm._s(logs + 1))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(transactionlogs.page))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(transactionlogs.url))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(transactionlogs.action))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(transactionlogs.created_at))])
+                ])
+              }),
+              0
+            )
+          ]
+        )
+      ])
     ]
   )
 }
@@ -45614,138 +45362,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "dropdown-menu dropdown-menu-sm dropdown-menu-right" },
-      [
-        _c("ul", { staticClass: "navi flex-column navi-hover py-2" }, [
-          _c(
-            "li",
-            {
-              staticClass:
-                "navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2"
-            },
-            [_vm._v("Choose an option:")]
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-print" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Print")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-copy" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Copy")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-excel-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("Excel")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-text-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("CSV")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "navi-item" }, [
-            _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-              _c("span", { staticClass: "navi-icon" }, [
-                _c("i", { staticClass: "la la-file-pdf-o" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "navi-text" }, [_vm._v("PDF")])
-            ])
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-separate table-head-custom table-checkable",
-          attrs: { id: "transaction-logs" }
-        },
-        [
-          _c("thead", [
-            _c("tr", [
-              _c("th", [_vm._v("Record ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Order ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Country")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Ship City")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Ship Address")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Company Agent")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Company Name")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Ship Date")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Type")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Actions")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("64616-103")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Brazil")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("São Félix do Xingu")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("698 Oriole Pass")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Hayes Boule")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Casper-Kerluke")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10/15/2017")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("5")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", { attrs: { nowrap: "nowrap" } })
-            ])
-          ])
-        ]
-      )
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("User ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Page")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Url")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created")])
+      ])
     ])
   }
 ]
