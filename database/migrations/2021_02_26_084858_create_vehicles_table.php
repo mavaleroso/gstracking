@@ -17,7 +17,11 @@ class CreateVehiclesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('service_provider_id')->nullable();
             $table->string('vehicle_type')->nullable();
+            $table->text('image')->nullable();
             $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->text('template')->nullable();
+            $table->integer('capacity')->nullable();
             $table->timestamps();
         });
     }

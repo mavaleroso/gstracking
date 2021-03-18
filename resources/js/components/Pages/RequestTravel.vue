@@ -261,7 +261,6 @@ export default {
                 this.complete = true;
                 this.requestCode = response.data.result.serial_code;
                 this.createdAt = dateTimeEng(response.data.result.created_at);
-
             }).catch((error) => {
                 let data = error.response.data.errors;
                 let keys = [];
