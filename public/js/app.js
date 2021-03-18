@@ -4335,9 +4335,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
       formD.append('drivers', this.formFields.drivers);
-      axios.post('/transportation/vehicle/create', formD).then(function (res) {
+      axios.post('/transportation/vehicle/create', formD).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+        setTimeout(function () {
+          _this6.cancelEntry();
+        }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];

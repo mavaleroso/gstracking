@@ -212,9 +212,14 @@ export default {
             formD.append('capacityNumber', this.formFields.capacityNumber);
             formD.append('drivers', this.formFields.drivers);
 
-            axios.post('/transportation/vehicle/create', formD).then((res) => {
+            axios.post('/transportation/vehicle/create', formD).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
+                    Swal.fire("Good job!", response.data.message, "success");
+                    showToast(response.data.message, 'success');
+                    setTimeout(() => {
+                        this.cancelEntry();
+                    }, 1000);
                 })
                 .catch((error) => {
                     let data = error.response.data.errors;

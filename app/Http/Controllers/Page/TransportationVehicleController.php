@@ -27,19 +27,21 @@ class TransportationVehicleController extends Controller
     public function create(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
     {
         $result = $createVehicle->execute($vehicleRequest->validated());
-        // try {
-        //     if($request->hasFile('picture')) {
-        //         $file = $request->file('picture');
-        //         $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
-        //         $file->storeAs('images', $file_name);
+        // if ($result) {
+        //     try {
+        //         if($request->hasFile('picture')) {
+        //             $file = $request->file('picture');
+        //             $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
+        //             $file->storeAs('images', $file_name);
+        //             return response()->json([
+        //                 'message' => 'File uploaded successfully!'
+        //             ], 200);
+        //         }
+        //     } catch (\Exeption $e) {
         //         return response()->json([
-        //             'message' => 'File uploaded successfully!'
-        //         ], 200);
+        //             'message' => $e->getMessage()
+        //         ]);
         //     }
-        // } catch (\Exeption $e) {
-        //     return response()->json([
-        //         'message' => $e->getMessage()
-        //     ]);
         // }
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }

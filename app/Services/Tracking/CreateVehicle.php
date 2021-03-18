@@ -14,22 +14,27 @@ class CreateVehicle
      */
     public function execute($fields)
     {
-        try {
-            if($this->request->hasFile('picture')) {
-                $file = $this->request->file('picture');
-                $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('images', $file_name);
-                return response()->json([
-                    'message' => 'File uploaded successfully!'
-                ], 200);
-            }
-        } catch (\Exeption $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ]);
+
+        $file_name = NULL;
+        
+        if($fields['picture']) {
+            $file = $fields['picture'];
+            $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
         }
-        // $vehicle = Vehicle::create([
-        //     'service_provider_id' => $fields['serviceProvider'],
-        // ]);
+        
+        $vehicle = Vehicle::create([
+            'service_provider_id' => $fields['serviceProvider'],
+            (!$file_name)? NULL:'image' => $file_name,
+            'name' => $fields['name'],
+            'description' => $fields['description'],
+            'template' => $fields['templateNumber'],
+            'capacity' => $fields['capacityNumber'],
+        ]);
+
+        if ($fields['picture']) {
+            ($vehicle)? $file->storeAs('images', $file_name):NULL;
+        }
+
+        return $vehicle;
     }
-}
+}   
