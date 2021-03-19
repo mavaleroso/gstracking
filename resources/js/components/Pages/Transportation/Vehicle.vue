@@ -1,9 +1,9 @@
 <template>
     <div id="vehicle-page">
-        <div v-if="create" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+        <div v-if="store" class="card card-custom gutter-b animate__animated animate__fadeInRight">
             <div class="card-header flex-wrap">
                 <div class="card-title">
-                    <h3 class="card-label">Create Vehicle
+                    <h3 class="card-label"><span></span>
                     <i class="mr-2"></i>
                     <small class="">Form</small></h3>
                 </div>
@@ -124,7 +124,7 @@
 export default {
     data() {
         return {
-            create: false,
+            store: false,
             serviceProviders: [],
             drivers: [],
             formFields: {
@@ -163,7 +163,7 @@ export default {
             });
         },
         newEntry() {
-            this.create = true;
+            this.store = true;
             let vm = this;
             $(() => {
                 this.image();
@@ -179,11 +179,42 @@ export default {
                 $('#kt_select2_drivers').change(function() {
                     vm.formFields.drivers = $(this).val();
                 });
-
+                $('.card-label span').text('Create Vehicle');
             });
         },
+        editEntry(id) {
+            this.store = true;
+            let vm = this;
+            $(() => {
+                this.image();
+                $('#kt_select_svc_provider').select2({
+                    placeholder: "Select service provider",
+                });
+                $('#kt_select2_drivers').select2({
+                    placeholder: "Select drivers",
+                });
+                $('#kt_select_svc_provider').change(function() {
+                    vm.formFields.serviceProvider = $(this).val();
+                });
+                $('#kt_select2_drivers').change(function() {
+                    vm.formFields.drivers = $(this).val();
+                });
+                $('.card-label span').text('Edit Vehicle');
+            });
+
+            axios.get("/api/vehicle_data/"+id).then(response => {
+                vm.formFields.name = response.data[0].name;
+                vm.formFields.description = response.data[0].description;
+                vm.formFields.capacityNumber = response.data[0].capacity;
+                vm.formFields.serviceProvider = response.data[0].service_provider_id;
+                vm.formFields.templateNumber = response.data[0].template;
+                let img = (response.data[0].image)? BASE_URL + '/images/' + response.data[0].image : BASE_URL + '/images/vehicle-photo-default.jpg';
+                $('#kt_image_5').css('background-image', 'url('+img+')');
+            });
+            
+        },
         cancelEntry() {
-            this.create = false;
+            this.store = false;
             $(() => {
                 this.tdatatable().init();
             });
@@ -245,6 +276,7 @@ export default {
             });
         },
         tdatatable(){
+            var vm = this;
             var initTable = () => {
             var table = $('#vehicle-tbl');
             // begin first table
@@ -275,9 +307,9 @@ export default {
                             title: 'Actions',
                             orderable: false,
                             width: '125px',
-                            render: function(data, type, full, meta) {
+                            render: data => {
                                 return '\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                    <a href="javascript:;" data-id="'+ data +'" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -306,7 +338,7 @@ export default {
                             targets: 1,
                             render: data => {
                                 var img_path = (data)? BASE_URL + '/images/' + data : BASE_URL + '/images/vehicle-photo-default.jpg';
-                                return '<img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'">';
+                                return '<a class="vehicle-img-viewer" href="'+ img_path +'"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'"></a>';
                             }
                         },
                         {
@@ -316,6 +348,14 @@ export default {
                             }
                         },
                     ],
+                    drawCallback: () => {
+                        $(".vehicle-img-viewer").fancybox();
+
+                        $('.btn-edit').click(function() {
+                            let id = $(this).data('id');
+                            vm.editEntry(id);
+                        });
+                    }
                     
                 });
             };
@@ -341,14 +381,6 @@ export default {
 
             avatar5.on('change', function(imageInput) {
                 vm.formFields.picture = imageInput.input.files[0];
-                console.log(imageInput.input.files[0]);
-                // swal.fire({
-                //     title: 'Image successfully changed !',
-                //     type: 'success',
-                //     buttonsStyling: false,
-                //     confirmButtonText: 'Awesome!',
-                //     confirmButtonClass: 'btn btn-primary font-weight-bold'
-                // });
             });
 
             avatar5.on('remove', function(imageInput) {

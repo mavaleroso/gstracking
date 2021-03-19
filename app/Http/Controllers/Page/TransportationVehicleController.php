@@ -42,7 +42,6 @@ class TransportationVehicleController extends Controller
     public function store()
     {
 
-        
     }
 
     /**
@@ -53,7 +52,7 @@ class TransportationVehicleController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Vehicle::where('id', $id)->get());
     }
 
     /**

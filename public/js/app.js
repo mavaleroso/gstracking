@@ -4237,7 +4237,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      create: false,
+      store: false,
       serviceProviders: [],
       drivers: [],
       formFields: {
@@ -4284,7 +4284,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newEntry: function newEntry() {
       var _this4 = this;
 
-      this.create = true;
+      this.store = true;
       var vm = this;
       $(function () {
         _this4.image();
@@ -4301,18 +4301,51 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_select2_drivers').change(function () {
           vm.formFields.drivers = $(this).val();
         });
+        $('.card-label span').text('Create Vehicle');
+      });
+    },
+    editEntry: function editEntry(id) {
+      var _this5 = this;
+
+      this.store = true;
+      var vm = this;
+      $(function () {
+        _this5.image();
+
+        $('#kt_select_svc_provider').select2({
+          placeholder: "Select service provider"
+        });
+        $('#kt_select2_drivers').select2({
+          placeholder: "Select drivers"
+        });
+        $('#kt_select_svc_provider').change(function () {
+          vm.formFields.serviceProvider = $(this).val();
+        });
+        $('#kt_select2_drivers').change(function () {
+          vm.formFields.drivers = $(this).val();
+        });
+        $('.card-label span').text('Edit Vehicle');
+      });
+      axios.get("/api/vehicle_data/" + id).then(function (response) {
+        vm.formFields.name = response.data[0].name;
+        vm.formFields.description = response.data[0].description;
+        vm.formFields.capacityNumber = response.data[0].capacity;
+        vm.formFields.serviceProvider = response.data[0].service_provider_id;
+        vm.formFields.templateNumber = response.data[0].template;
+        var img = response.data[0].image ? BASE_URL + '/images/' + response.data[0].image : BASE_URL + '/images/vehicle-photo-default.jpg';
+        $('#kt_image_5').css('background-image', 'url(' + img + ')');
       });
     },
     cancelEntry: function cancelEntry() {
-      var _this5 = this;
+      var _this6 = this;
 
-      this.create = false;
+      this.store = false;
       $(function () {
-        _this5.tdatatable().init();
+        _this6.tdatatable().init();
       });
     },
     saveNewEntry: function saveNewEntry() {
-      var _this6 = this;
+      var _this7 = this;
 
       var formD = new FormData();
       formD.append('picture', this.formFields.picture);
@@ -4328,7 +4361,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this6.cancelEntry();
+          _this7.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4355,23 +4388,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this6.names.length; i++) {
-          if (_this6.names[i] == 'serviceProvider') {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
+        for (var i = 0; i < _this7.names.length; i++) {
+          if (_this7.names[i] == 'serviceProvider') {
+            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
               if ($('#kt_select_svc_provider').next().next().length != 0) {
                 $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              $('[name="vehicle_' + _this6.names[i] + '"]').removeClass('is-invalid');
-              $('[name="vehicle_' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
+              $('[name="vehicle_' + _this7.names[i] + '"]').removeClass('is-invalid');
+              $('[name="vehicle_' + _this7.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
       });
     },
     tdatatable: function tdatatable() {
+      var vm = this;
+
       var initTable = function initTable() {
         var table = $('#vehicle-tbl'); // begin first table
 
@@ -4409,9 +4444,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             title: 'Actions',
             orderable: false,
             width: '125px',
-            render: function render(data, type, full, meta) {
+            render: function render(data) {
               return '\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4439,14 +4474,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             targets: 1,
             render: function render(data) {
               var img_path = data ? BASE_URL + '/images/' + data : BASE_URL + '/images/vehicle-photo-default.jpg';
-              return '<img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '">';
+              return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
             targets: 7,
             render: function render(data) {
               return dateTimeEng(data);
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $(".vehicle-img-viewer").fancybox();
+            $('.btn-edit').click(function () {
+              var id = $(this).data('id');
+              vm.editEntry(id);
+            });
+          }
         });
       };
 
@@ -4470,13 +4512,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
       avatar5.on('change', function (imageInput) {
         vm.formFields.picture = imageInput.input.files[0];
-        console.log(imageInput.input.files[0]); // swal.fire({
-        //     title: 'Image successfully changed !',
-        //     type: 'success',
-        //     buttonsStyling: false,
-        //     confirmButtonText: 'Awesome!',
-        //     confirmButtonClass: 'btn btn-primary font-weight-bold'
-        // });
       });
       avatar5.on('remove', function (imageInput) {
         swal.fire({
@@ -46111,7 +46146,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "vehicle-page" } }, [
-    _vm.create
+    _vm.store
       ? _c(
           "div",
           {
@@ -46574,7 +46609,8 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header flex-wrap" }, [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
-          _vm._v("Create Vehicle\n                "),
+          _c("span"),
+          _vm._v(" "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),
           _c("small", {}, [_vm._v("Form")])
