@@ -43,7 +43,10 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Ccore\\Core\\": "packages/ccore/core/src"
-        }
+        },
+        "files": [
+            "app/Helpers/General.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

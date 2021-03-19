@@ -15,7 +15,9 @@ class GetListingVehicle
      */
     public function execute()
     {
-        $query = Vehicle::select(['*']);
+        // $query = Vehicle::select(['*']);
+        $query = Vehicle::join('service_providers', 'vehicles.service_provider_id', '=', 'service_providers.id')
+                    ->select(['vehicles.*', 'service_providers.company_name']);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [
@@ -36,7 +38,7 @@ class GetListingVehicle
 
         return [
             'data' => $records,
-            'draw' -> intval(request()->draw),
+            'draw' => intval(request()->draw),
             'recordsTotal' => $result['total'],
             'recordsFiltered' => $result['total']
         ];
