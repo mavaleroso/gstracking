@@ -30,3 +30,8 @@ Route::get('/request_data', 'page\TravelController@index');
 
 Route::get('/destination_details', 'page\ListRequestController@destinations');
 Route::get('/passenger_details', 'page\ListRequestController@passengers');
+
+Route::get('/service_providers', 'page\TransportationController@service_providers');
+Route::get('/drivers_data', 'page\TransportationController@drivers');
+
+Route::get('/vehicle_data', 'page\TransportationVehicleController@index');

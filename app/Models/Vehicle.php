@@ -2,10 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\WithPaginate;
 use Illuminate\Database\Eloquent\Model;
+use Ccore\Core\Traits\ExtendedEloquentTrait;
 
 class Vehicle extends Model
 {
-    use HasFactory;
+    use ExtendedEloquentTrait;
+    use WithPaginate;
+    /**
+     * Database table name
+     */
+    protected $table = 'vehicles';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'service_provider_id',
+        'vehicle_type',
+        'image',
+        'name',
+        'description',
+        'template',
+        'capacity'
+    ];
 }

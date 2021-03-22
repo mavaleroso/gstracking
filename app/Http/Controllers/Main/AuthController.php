@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Main\BaseController;
-use App\Http\Requests\MainLoginRequest;
+use App\Http\Requests\Users\UserLoginRequest;
 use App\Traits\ThrottlesRequests;
 use App\Services\Users\LoginUser;
 use App\Services\Users\LogoutUser;
@@ -49,11 +49,11 @@ class AuthController extends BaseController
     /**
      * Admin login
      *
-     * @param MainLoginRequest $request
+     * @param UserLoginRequest $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
 
-    public function login(MainLoginRequest $request)
+    public function login(UserLoginRequest $request)
     {
         $this->checkThrottling($request);
         $status = $this->loginUser->execute($request->validated());
