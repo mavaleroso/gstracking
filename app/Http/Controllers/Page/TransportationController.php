@@ -18,7 +18,7 @@ class TransportationController extends Controller
 
     public function drivers()
     {
-        return response()->json(Driver::where('vehicle_id', NULL)->get());
+        return response()->json(Driver::all());
     }
 
     public function store_vehicle(VehicleRequest $vehicleRequest, StoreVehicle $storeVehicle)

@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\VehicleRequest;
 use App\Services\Tracking\CreateVehicle;
+use App\Services\Tracking\UpdateVehicle;
 use App\Services\Tracking\GetListingVehicle;
 use App\Models\Vehicle;
+use App\Models\Driver;
 
 class TransportationVehicleController extends Controller
 {
@@ -52,7 +54,10 @@ class TransportationVehicleController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Vehicle::join('drivers', 'vehicles.id', '=', 'drivers.vehicle_id')->select('vehicles.*')->where('id', $id)->get());
+        $data['vehicles'] = Vehicle::where('id', $id)->get();
+        $data['drivers'] = Driver::where('vehicle_id', $id)->get();
+
+        return response()->json($data);
     }
 
     /**
@@ -61,9 +66,10 @@ class TransportationVehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(VehicleRequest $vehicleRequest, UpdateVehicle $updateVehicle)
     {
-        //
+        $result = $updateVehicle->execute($vehicleRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
     /**

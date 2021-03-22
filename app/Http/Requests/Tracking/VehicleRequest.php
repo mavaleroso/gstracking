@@ -20,7 +20,9 @@ class VehicleRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'nullable',
             'picture' => 'nullable',
+            'pictureName' => 'nullable',
             'name' => 'required',
             'description' => 'nullable',
             'serviceProvider' => 'required',

@@ -7,4 +7,5 @@ return [
 
     // Request Travel Page
     'travel_created_successfully' => 'Travel created succesfully',
+    'travel_updated_successfully' => 'Travel updated succesfully',
 ];

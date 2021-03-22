@@ -9,13 +9,13 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form" id="vehicle-form" @submit.prevent="saveNewEntry">
+                <form class="form" id="vehicle-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <p>Image:</p>
-                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(assets/media/users/blank.png)">
+                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.jpg)">
                                         <div class="image-input-wrapper"></div>
 
                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
@@ -129,7 +129,9 @@ export default {
             serviceProviders: [],
             drivers: [],
             formFields: {
+                id: '',
                 picture: '',
+                pictureName: '',
                 name: '',
                 description: '',
                 serviceProvider: '',
@@ -188,12 +190,25 @@ export default {
             let vm = this;
             $(() => {
                 axios.get("/api/vehicle_data/"+id).then(response => {
-                    vm.formFields.name = response.data[0].name;
-                    vm.formFields.description = response.data[0].description;
-                    vm.formFields.capacityNumber = response.data[0].capacity;
-                    vm.formFields.templateNumber = response.data[0].template;
-                    vm.formFields.serviceProvider = response.data[0].service_provider_id;
-                    let img = (response.data[0].image)? BASE_URL + '/storage/images/' + response.data[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+                    console.log(response.data);
+                    let driverLength = 0;
+
+                    vm.formFields.id = response.data.vehicles[0].id;
+                    vm.formFields.pictureName = response.data.vehicles[0].image;
+                    vm.formFields.name = response.data.vehicles[0].name;
+                    vm.formFields.description = response.data.vehicles[0].description;
+                    vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
+                    vm.formFields.templateNumber = response.data.vehicles[0].template;
+                    vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
+                    vm.formFields.drivers = [];
+
+                    driverLength = response.data.drivers.length;
+                    
+                    for (let i = 0; i < driverLength; i++) {
+                        vm.formFields.drivers.push(response.data.drivers[i].id);
+                    }
+
+                    let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
                 });
 
@@ -215,6 +230,9 @@ export default {
                 setTimeout(() => {
                     $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
                     $('#kt_select_svc_provider').trigger('change');
+
+                    $('#kt_select2_drivers').val(vm.formFields.drivers);
+                    $('#kt_select2_drivers').trigger('change');
                 }, 500);
             });
         },
@@ -225,10 +243,13 @@ export default {
                 this.tdatatable().init();
             });
         },
-        saveNewEntry() {
+        saveEntry() {
             let formD = new FormData();
+            let method = null;
 
+            formD.append('id', this.formFields.id);
             formD.append('picture', this.formFields.picture);
+            formD.append('pictureName', this.formFields.pictureName);
             formD.append('name', this.formFields.name);
             formD.append('description', this.formFields.description);
             formD.append('serviceProvider', this.formFields.serviceProvider);
@@ -236,7 +257,9 @@ export default {
             formD.append('capacityNumber', this.formFields.capacityNumber);
             formD.append('drivers', this.formFields.drivers);
 
-            axios.post('/transportation/vehicle/create', formD).then(response => {
+            method = (this.create)? 'create':'edit';
+
+            axios.post('/transportation/vehicle/' + method, formD).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -308,6 +331,10 @@ export default {
                         { "data": "id" },
                     ],
                     columnDefs: [
+                        {
+                            targets: [1, 5],
+                            orderable: false
+                        },
                         {
                             targets: -1,
                             title: 'Actions',
