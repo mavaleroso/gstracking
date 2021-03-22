@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Main\BaseController as Controller;
 use Illuminate\Http\Request;
+use App\Models\TransactionLogs;
 
 class DashboardController extends Controller
 {
@@ -18,6 +19,12 @@ class DashboardController extends Controller
             return view('main');
         }
         return redirect()->route('main.login');
+    }
+
+    public function logs()
+    {
+        $play = TransactionLogs::orderBy('id','desc')->get();
+        return response()->json($play);
     }
 
     /**
