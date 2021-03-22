@@ -15,7 +15,6 @@ class GetListingVehicle
      */
     public function execute()
     {
-        // $query = Vehicle::select(['*']);
         $query = Vehicle::join('service_providers', 'vehicles.service_provider_id', '=', 'service_providers.id')
                     ->select(['vehicles.*', 'service_providers.company_name']);
 
@@ -27,6 +26,7 @@ class GetListingVehicle
                 'template'
             ],
             'orderable' => [
+                'id',
                 'vehicle_type',
                 'name',
                 'description',
@@ -42,7 +42,5 @@ class GetListingVehicle
             'recordsTotal' => $result['total'],
             'recordsFiltered' => $result['total']
         ];
-
-        // return $query;
     }
 }   

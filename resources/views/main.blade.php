@@ -26,6 +26,7 @@
         <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('plugins/fancybox/jquery.fancybox.css') }}" rel="stylesheet" type="text/css"/>
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
@@ -45,6 +46,7 @@
 		<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
 		<script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+        <script src="{{ asset('plugins/fancybox/jquery.fancybox.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
     </body>
 </html>

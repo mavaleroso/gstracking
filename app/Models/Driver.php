@@ -7,5 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
-    use HasFactory;
+    protected $table = 'drivers';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'vehicle_id',
+        'fullname',
+        'age',
+        'sex'
+    ];
 }
