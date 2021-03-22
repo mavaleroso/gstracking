@@ -4,9 +4,9 @@ namespace App\Services\Tracking;
 use Ccore\Core\Datatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Vehicle;
+use App\Models\Log;
 
-class GetListingVehicle 
+class GetListingLogs 
 {
     /**
      * Get user by email
@@ -16,23 +16,19 @@ class GetListingVehicle
     public function execute()
     {
         // $query = Vehicle::select(['*']);
-        $query = Vehicle::join('service_providers', 'vehicles.service_provider_id', '=', 'service_providers.id')
-                    ->select(['vehicles.*', 'service_providers.company_name']);
-
-      
-
+        $query = Log::select(['*']);
+        
+       
         $result = Datatable::of($query, request(), [
             'searchable' => [
-                'vehicle_type',
-                'name',
-                'description',
-                'template'
+                'page',
+                'url',
+                'action'
             ],
             'orderable' => [
-                'vehicle_type',
-                'name',
-                'description',
-                'template'
+                'page',
+                'url',
+                'action'
             ]
         ]);
 
@@ -45,6 +41,8 @@ class GetListingVehicle
             'recordsFiltered' => $result['total']
         ];
 
-        // return $query;
+        return $query;
     }
+
+
 }   

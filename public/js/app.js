@@ -3690,74 +3690,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      transactionlogs: {}
+      create: false
     };
   },
   mounted: function mounted() {
     this.ini();
-    this.getTransactionLogs();
   },
   methods: {
-    getTransactionLogs: function getTransactionLogs() {
+    ini: function ini() {
       var _this = this;
 
-      axios.get('list_transaction_logs').then(function (response) {
-        _this.transactionlogs = response.data;
-      })["catch"](function (errors) {
-        console.log(errors);
-      });
-    },
-    ini: function ini() {
-      var _this2 = this;
-
       $(function () {
-        _this2.tdatatable().init();
+        _this.tdatatable().init();
       });
     },
     tdatatable: function tdatatable() {
       var initTable = function initTable() {
-        var table = $('#transaction-logs'); // begin first table
+        var table = $('#logs-tbl'); // begin first table
 
         table.DataTable({
           scrollY: '50vh',
           scrollX: true,
           scrollCollapse: true,
           processing: true,
-          columnDefs: []
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + '/api/logs',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "user_id"
+          }, {
+            "data": "page"
+          }, {
+            "data": "url"
+          }, {
+            "data": "action"
+          }, {
+            "data": "created_at"
+          }],
+          columnDefs: [{
+            targets: 5,
+            render: function render(data) {
+              return dateTimeEng(data);
+            }
+          }]
         });
       };
 
@@ -45368,140 +45350,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "card card-custom gutter-b",
-      attrs: { id: "transaction-page" }
-    },
-    [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-toolbar" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-primary font-weight-bolder",
-              attrs: { href: "#" }
-            },
-            [
-              _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                _c(
-                  "svg",
-                  {
-                    attrs: {
-                      xmlns: "http://www.w3.org/2000/svg",
-                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                      width: "24px",
-                      height: "24px",
-                      viewBox: "0 0 24 24",
-                      version: "1.1"
-                    }
-                  },
-                  [
-                    _c(
-                      "g",
-                      {
-                        attrs: {
-                          stroke: "none",
-                          "stroke-width": "1",
-                          fill: "none",
-                          "fill-rule": "evenodd"
-                        }
-                      },
-                      [
-                        _c("rect", {
-                          attrs: { x: "0", y: "0", width: "24", height: "24" }
-                        }),
-                        _vm._v(" "),
-                        _c("circle", {
-                          attrs: { fill: "#000000", cx: "9", cy: "15", r: "6" }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
-                            fill: "#000000",
-                            opacity: "0.3"
-                          }
-                        })
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v("New Record")
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-separate table-head-custom table-checkable",
-            attrs: { id: "transaction-logs" }
-          },
-          [
-            _vm._m(1),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.transactionlogs, function(transactionlogs, logs) {
-                return _c("tr", { key: logs }, [
-                  _c("td", [_vm._v(_vm._s(logs + 1))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(transactionlogs.page))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(transactionlogs.url))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(transactionlogs.action))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(transactionlogs.created_at))])
-                ])
-              }),
-              0
-            )
-          ]
-        )
-      ])
-    ]
-  )
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-title" }, [
-      _c("h3", { staticClass: "card-label" }, [
-        _vm._v("Transaction Logs\r\n            "),
-        _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" }, [
-          _vm._v("History")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("User ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Page")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Url")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Action")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Created")])
-      ])
+    return _c("div", { attrs: { id: "vehicle-page" } }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "card card-custom gutter-b animate__animated animate__fadeIn"
+        },
+        [
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "table",
+              {
+                staticClass:
+                  "table table-separate table-head-custom table-checkable",
+                attrs: { id: "logs-tbl" }
+              },
+              [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("ID")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("User Id")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Page")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Url")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Action")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Create_at")])
+                  ])
+                ])
+              ]
+            )
+          ])
+        ]
+      )
     ])
   }
 ]

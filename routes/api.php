@@ -35,3 +35,4 @@ Route::get('/service_providers', 'page\TransportationController@service_provider
 Route::get('/drivers_data', 'page\TransportationController@drivers');
 
 Route::get('/vehicle_data', 'page\TransportationVehicleController@index');
+Route::get('/logs', 'page\HistoryLogsController@Logs');
