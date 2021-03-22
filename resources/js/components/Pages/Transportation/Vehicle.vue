@@ -239,9 +239,7 @@ export default {
         cancelEntry() {
             this.create = false;
             this.edit = false;
-            $(() => {
-                this.tdatatable().init();
-            });
+            this.ini();
         },
         saveEntry() {
             let formD = new FormData();
@@ -304,6 +302,27 @@ export default {
 
             });
         },
+        deleteEntry(id) {
+             Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won"t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(result => {
+                if (result.value) {
+                    axios.post('/transportation/vehicle/delete/'+id).then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            response.data.message,
+                            'success'
+                        );
+                        
+                        $("#vehicle-tbl").DataTable().ajax.reload();
+                    });
+                }
+            });
+        },
         tdatatable(){
             var vm = this;
             var initTable = () => {
@@ -353,7 +372,7 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" data-id="'+ data +'" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -387,6 +406,11 @@ export default {
                         $('.btn-edit').click(function() {
                             let id = $(this).data('id');
                             vm.editEntry(id);
+                        });
+
+                        $('.btn-delete').click(function() {
+                            let id = $(this).data('id');
+                            vm.deleteEntry(id);
                         });
                     }
                     
