@@ -8,4 +8,9 @@ return [
     // Request Travel Page
     'travel_created_successfully' => 'Travel created succesfully',
     'travel_updated_successfully' => 'Travel updated succesfully',
+
+    // Transportation Vehicle Page
+    'vehicle_created_successfully' => 'Vehicle created succesfully',
+    'vehicle_updated_successfully' => 'Vehicle updated succesfully',
+    'vehicle_deleted_successfully' => 'Vehicle deleted succesfully',
 ];

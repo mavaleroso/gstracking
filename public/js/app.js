@@ -4358,16 +4358,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     cancelEntry: function cancelEntry() {
-      var _this6 = this;
-
       this.create = false;
       this.edit = false;
-      $(function () {
-        _this6.tdatatable().init();
-      });
+      this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this7 = this;
+      var _this6 = this;
 
       var formD = new FormData();
       var method = null;
@@ -4387,7 +4383,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this7.cancelEntry();
+          _this6.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4414,19 +4410,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this7.names.length; i++) {
-          if (_this7.names[i] == 'serviceProvider') {
-            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
+        for (var i = 0; i < _this6.names.length; i++) {
+          if (_this6.names[i] == 'serviceProvider') {
+            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
               if ($('#kt_select_svc_provider').next().next().length != 0) {
                 $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
-              $('[name="vehicle_' + _this7.names[i] + '"]').removeClass('is-invalid');
-              $('[name="vehicle_' + _this7.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
+              $('[name="vehicle_' + _this6.names[i] + '"]').removeClass('is-invalid');
+              $('[name="vehicle_' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
+        }
+      });
+    },
+    deleteEntry: function deleteEntry(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won"t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post('/transportation/vehicle/delete/' + id).then(function (response) {
+            Swal.fire('Deleted!', response.data.message, 'success');
+            $("#vehicle-tbl").DataTable().ajax.reload();
+          });
         }
       });
     },
@@ -4486,7 +4498,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4516,6 +4528,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.btn-edit').click(function () {
               var id = $(this).data('id');
               vm.editEntry(id);
+            });
+            $('.btn-delete').click(function () {
+              var id = $(this).data('id');
+              vm.deleteEntry(id);
             });
           }
         });

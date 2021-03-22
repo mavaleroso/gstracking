@@ -69,7 +69,7 @@ class TransportationVehicleController extends Controller
     public function edit(VehicleRequest $vehicleRequest, UpdateVehicle $updateVehicle)
     {
         $result = $updateVehicle->execute($vehicleRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_updated_successfully'), 'result' => $result]);
     }
 
     /**
@@ -92,6 +92,7 @@ class TransportationVehicleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Vehicle::destroy($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_deleted_successfully'), 'result' => $result]);
     }
 }
