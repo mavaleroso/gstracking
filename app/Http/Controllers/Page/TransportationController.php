@@ -25,19 +25,5 @@ class TransportationController extends Controller
     {
         $result = $storeVehicle->execute($vehicleRequest->validated());
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
-        // try {
-        //     if($request->hasFile('picture')) {
-        //         $file = $request->file('picture');
-        //         $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
-        //         $file->storeAs('images', $file_name);
-        //         return response()->json([
-        //             'message' => 'File uploaded successfully!'
-        //         ], 200);
-        //     }
-        // } catch (\Exeption $e) {
-        //     return response()->json([
-        //         'message' => $e->getMessage()
-        //     ]);
-        // }
     }
 }

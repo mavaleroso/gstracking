@@ -4009,10 +4009,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   data: function data() {
     return {
       create: false,
+      edit: false,
       serviceProviders: [],
       drivers: [],
       formFields: {
+        id: '',
         picture: '',
+        pictureName: '',
         name: '',
         description: '',
         serviceProvider: '',
@@ -4072,28 +4075,80 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_select2_drivers').change(function () {
           vm.formFields.drivers = $(this).val();
         });
+        $('.card-label span').text('Create Vehicle');
+      });
+    },
+    editEntry: function editEntry(id) {
+      var _this5 = this;
+
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        axios.get("/api/vehicle_data/" + id).then(function (response) {
+          console.log(response.data);
+          var driverLength = 0;
+          vm.formFields.id = response.data.vehicles[0].id;
+          vm.formFields.pictureName = response.data.vehicles[0].image;
+          vm.formFields.name = response.data.vehicles[0].name;
+          vm.formFields.description = response.data.vehicles[0].description;
+          vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
+          vm.formFields.templateNumber = response.data.vehicles[0].template;
+          vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
+          vm.formFields.drivers = [];
+          driverLength = response.data.drivers.length;
+
+          for (var i = 0; i < driverLength; i++) {
+            vm.formFields.drivers.push(response.data.drivers[i].id);
+          }
+
+          var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+          $('#kt_image_5').css('background-image', 'url(' + img + ')');
+        });
+
+        _this5.image();
+
+        $('#kt_select_svc_provider').select2({
+          placeholder: "Select service provider"
+        });
+        $('#kt_select2_drivers').select2({
+          placeholder: "Select drivers"
+        });
+        $('#kt_select_svc_provider').change(function () {
+          vm.formFields.serviceProvider = $(this).val();
+        });
+        $('#kt_select2_drivers').change(function () {
+          vm.formFields.drivers = $(this).val();
+        });
+        $('.card-label span').text('Edit Vehicle');
+        setTimeout(function () {
+          $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
+          $('#kt_select_svc_provider').trigger('change');
+          $('#kt_select2_drivers').val(vm.formFields.drivers);
+          $('#kt_select2_drivers').trigger('change');
+        }, 500);
       });
     },
     cancelEntry: function cancelEntry() {
-      var _this5 = this;
-
       this.create = false;
-      $(function () {
-        _this5.tdatatable().init();
-      });
+      this.edit = false;
+      this.ini();
     },
-    saveNewEntry: function saveNewEntry() {
+    saveEntry: function saveEntry() {
       var _this6 = this;
 
       var formD = new FormData();
+      var method = null;
+      formD.append('id', this.formFields.id);
       formD.append('picture', this.formFields.picture);
+      formD.append('pictureName', this.formFields.pictureName);
       formD.append('name', this.formFields.name);
       formD.append('description', this.formFields.description);
       formD.append('serviceProvider', this.formFields.serviceProvider);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
       formD.append('drivers', this.formFields.drivers);
-      axios.post('/transportation/vehicle/create', formD).then(function (response) {
+      method = this.create ? 'create' : 'edit';
+      axios.post('/transportation/vehicle/' + method, formD).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4142,7 +4197,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
+    deleteEntry: function deleteEntry(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won"t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post('/transportation/vehicle/delete/' + id).then(function (response) {
+            Swal.fire('Deleted!', response.data.message, 'success');
+            $("#vehicle-tbl").DataTable().ajax.reload();
+          });
+        }
+      });
+    },
     tdatatable: function tdatatable() {
+      var vm = this;
+
       var initTable = function initTable() {
         var table = $('#vehicle-tbl'); // begin first table
 
@@ -4176,13 +4249,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
+            targets: [1, 5],
+            orderable: false
+          }, {
             targets: -1,
             title: 'Actions',
             orderable: false,
             width: '125px',
-            render: function render(data, type, full, meta) {
+            render: function render(data) {
               return '\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4193,7 +4269,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4209,15 +4285,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 1,
             render: function render(data) {
-              var img_path = data ? BASE_URL + '/images/' + data : BASE_URL + '/images/vehicle-photo-default.jpg';
-              return '<img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '">';
+              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+              return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
             targets: 7,
             render: function render(data) {
               return dateTimeEng(data);
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $(".vehicle-img-viewer").fancybox();
+            $('.btn-edit').click(function () {
+              var id = $(this).data('id');
+              vm.editEntry(id);
+            });
+            $('.btn-delete').click(function () {
+              var id = $(this).data('id');
+              vm.deleteEntry(id);
+            });
+          }
         });
       };
 
@@ -4241,13 +4328,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
       avatar5.on('change', function (imageInput) {
         vm.formFields.picture = imageInput.input.files[0];
-        console.log(imageInput.input.files[0]); // swal.fire({
-        //     title: 'Image successfully changed !',
-        //     type: 'success',
-        //     buttonsStyling: false,
-        //     confirmButtonText: 'Awesome!',
-        //     confirmButtonClass: 'btn btn-primary font-weight-bold'
-        // });
       });
       avatar5.on('remove', function (imageInput) {
         swal.fire({
@@ -45631,7 +45711,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "vehicle-page" } }, [
-    _vm.create
+    _vm.create == true || _vm.edit == true
       ? _c(
           "div",
           {
@@ -45650,7 +45730,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.saveNewEntry($event)
+                      return _vm.saveEntry($event)
                     }
                   }
                 },
@@ -45668,7 +45748,7 @@ var render = function() {
                                 "image-input image-input-empty image-input-outline",
                               staticStyle: {
                                 "background-image":
-                                  "url(assets/media/users/blank.png)"
+                                  "url(storage/images/vehicle-photo-default.jpg)"
                               },
                               attrs: { id: "kt_image_5" }
                             },
@@ -46094,7 +46174,8 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header flex-wrap" }, [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
-          _vm._v("Create Vehicle\n                "),
+          _c("span"),
+          _vm._v(" "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),
           _c("small", {}, [_vm._v("Form")])

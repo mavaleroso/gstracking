@@ -3,6 +3,7 @@ namespace App\Services\Tracking;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use App\Models\Driver;
 
 class CreateVehicle 
 {
@@ -31,8 +32,15 @@ class CreateVehicle
             'capacity' => $fields['capacityNumber'],
         ]);
 
+        if ($vehicle) {
+            $drivers = explode(',', $fields['drivers']);
+            $driver = Driver::whereIn('id', $drivers)->update([
+                'vehicle_id' => $vehicle->id
+            ]);
+        }
+
         if ($fields['picture']) {
-            ($vehicle)? $file->storeAs('images', $file_name):NULL;
+            ($vehicle)? $file->storeAs('public/images', $file_name):NULL;
         }
 
         return $vehicle;
