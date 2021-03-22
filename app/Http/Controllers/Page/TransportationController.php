@@ -18,26 +18,12 @@ class TransportationController extends Controller
 
     public function drivers()
     {
-        return response()->json(Driver::all());
+        return response()->json(Driver::where('vehicle_id', NULL)->get());
     }
 
     public function store_vehicle(VehicleRequest $vehicleRequest, StoreVehicle $storeVehicle)
     {
         $result = $storeVehicle->execute($vehicleRequest->validated());
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
-        // try {
-        //     if($request->hasFile('picture')) {
-        //         $file = $request->file('picture');
-        //         $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
-        //         $file->storeAs('images', $file_name);
-        //         return response()->json([
-        //             'message' => 'File uploaded successfully!'
-        //         ], 200);
-        //     }
-        // } catch (\Exeption $e) {
-        //     return response()->json([
-        //         'message' => $e->getMessage()
-        //     ]);
-        // }
     }
 }

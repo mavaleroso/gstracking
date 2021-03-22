@@ -52,7 +52,7 @@ class TransportationVehicleController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Vehicle::where('id', $id)->get());
+        return response()->json(Vehicle::join('drivers', 'vehicles.id', '=', 'drivers.vehicle_id')->select('vehicles.*')->where('id', $id)->get());
     }
 
     /**

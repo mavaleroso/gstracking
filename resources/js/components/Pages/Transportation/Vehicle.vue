@@ -1,6 +1,6 @@
 <template>
     <div id="vehicle-page">
-        <div v-if="store" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+        <div v-if="create == true || edit == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
             <div class="card-header flex-wrap">
                 <div class="card-title">
                     <h3 class="card-label"><span></span>
@@ -124,7 +124,8 @@
 export default {
     data() {
         return {
-            store: false,
+            create: false,
+            edit: false,
             serviceProviders: [],
             drivers: [],
             formFields: {
@@ -163,7 +164,7 @@ export default {
             });
         },
         newEntry() {
-            this.store = true;
+            this.create = true;
             let vm = this;
             $(() => {
                 this.image();
@@ -183,9 +184,19 @@ export default {
             });
         },
         editEntry(id) {
-            this.store = true;
+            this.edit = true;
             let vm = this;
             $(() => {
+                axios.get("/api/vehicle_data/"+id).then(response => {
+                    vm.formFields.name = response.data[0].name;
+                    vm.formFields.description = response.data[0].description;
+                    vm.formFields.capacityNumber = response.data[0].capacity;
+                    vm.formFields.templateNumber = response.data[0].template;
+                    vm.formFields.serviceProvider = response.data[0].service_provider_id;
+                    let img = (response.data[0].image)? BASE_URL + '/storage/images/' + response.data[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+                    $('#kt_image_5').css('background-image', 'url('+img+')');
+                });
+
                 this.image();
                 $('#kt_select_svc_provider').select2({
                     placeholder: "Select service provider",
@@ -199,22 +210,17 @@ export default {
                 $('#kt_select2_drivers').change(function() {
                     vm.formFields.drivers = $(this).val();
                 });
+                
                 $('.card-label span').text('Edit Vehicle');
+                setTimeout(() => {
+                    $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
+                    $('#kt_select_svc_provider').trigger('change');
+                }, 500);
             });
-
-            axios.get("/api/vehicle_data/"+id).then(response => {
-                vm.formFields.name = response.data[0].name;
-                vm.formFields.description = response.data[0].description;
-                vm.formFields.capacityNumber = response.data[0].capacity;
-                vm.formFields.serviceProvider = response.data[0].service_provider_id;
-                vm.formFields.templateNumber = response.data[0].template;
-                let img = (response.data[0].image)? BASE_URL + '/images/' + response.data[0].image : BASE_URL + '/images/vehicle-photo-default.jpg';
-                $('#kt_image_5').css('background-image', 'url('+img+')');
-            });
-            
         },
         cancelEntry() {
-            this.store = false;
+            this.create = false;
+            this.edit = false;
             $(() => {
                 this.tdatatable().init();
             });
@@ -337,7 +343,7 @@ export default {
                         {
                             targets: 1,
                             render: data => {
-                                var img_path = (data)? BASE_URL + '/images/' + data : BASE_URL + '/images/vehicle-photo-default.jpg';
+                                var img_path = (data)? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
                                 return '<a class="vehicle-img-viewer" href="'+ img_path +'"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'"></a>';
                             }
                         },

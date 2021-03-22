@@ -4237,7 +4237,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      store: false,
+      create: false,
+      edit: false,
       serviceProviders: [],
       drivers: [],
       formFields: {
@@ -4284,7 +4285,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newEntry: function newEntry() {
       var _this4 = this;
 
-      this.store = true;
+      this.create = true;
       var vm = this;
       $(function () {
         _this4.image();
@@ -4307,9 +4308,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     editEntry: function editEntry(id) {
       var _this5 = this;
 
-      this.store = true;
+      this.edit = true;
       var vm = this;
       $(function () {
+        axios.get("/api/vehicle_data/" + id).then(function (response) {
+          vm.formFields.name = response.data[0].name;
+          vm.formFields.description = response.data[0].description;
+          vm.formFields.capacityNumber = response.data[0].capacity;
+          vm.formFields.templateNumber = response.data[0].template;
+          vm.formFields.serviceProvider = response.data[0].service_provider_id;
+          var img = response.data[0].image ? BASE_URL + '/storage/images/' + response.data[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+          $('#kt_image_5').css('background-image', 'url(' + img + ')');
+        });
+
         _this5.image();
 
         $('#kt_select_svc_provider').select2({
@@ -4325,21 +4336,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.drivers = $(this).val();
         });
         $('.card-label span').text('Edit Vehicle');
-      });
-      axios.get("/api/vehicle_data/" + id).then(function (response) {
-        vm.formFields.name = response.data[0].name;
-        vm.formFields.description = response.data[0].description;
-        vm.formFields.capacityNumber = response.data[0].capacity;
-        vm.formFields.serviceProvider = response.data[0].service_provider_id;
-        vm.formFields.templateNumber = response.data[0].template;
-        var img = response.data[0].image ? BASE_URL + '/images/' + response.data[0].image : BASE_URL + '/images/vehicle-photo-default.jpg';
-        $('#kt_image_5').css('background-image', 'url(' + img + ')');
+        setTimeout(function () {
+          $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
+          $('#kt_select_svc_provider').trigger('change');
+        }, 500);
       });
     },
     cancelEntry: function cancelEntry() {
       var _this6 = this;
 
-      this.store = false;
+      this.create = false;
+      this.edit = false;
       $(function () {
         _this6.tdatatable().init();
       });
@@ -4473,7 +4480,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 1,
             render: function render(data) {
-              var img_path = data ? BASE_URL + '/images/' + data : BASE_URL + '/images/vehicle-photo-default.jpg';
+              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
@@ -46146,7 +46153,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "vehicle-page" } }, [
-    _vm.store
+    _vm.create == true || _vm.edit == true
       ? _c(
           "div",
           {
