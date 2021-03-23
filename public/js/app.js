@@ -3845,6 +3845,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -45895,14 +45903,27 @@ var staticRenderFns = [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-lg-6" }, [
           _c("div", { staticClass: "form-group" }, [
-            _c("label", [_vm._v("Name:")]),
+            _c("label", [_vm._v("Fullname:")]),
             _vm._v(" "),
             _c("input", {
               staticClass: "form-control required-field",
               attrs: {
                 type: "text",
                 name: "vehicle_name",
-                placeholder: "Enter vehicle name"
+                placeholder: "Enter fullname"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Gender:")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control required-field",
+              attrs: {
+                type: "text",
+                name: "vehicle_name",
+                placeholder: "Enter gender"
               }
             })
           ])
@@ -45910,14 +45931,27 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("div", { staticClass: "col-lg-6" }, [
           _c("div", { staticClass: "form-group" }, [
-            _c("label", [_vm._v("Template Number:")]),
+            _c("label", [_vm._v("Age:")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control required-field",
+              attrs: {
+                type: "number",
+                name: "vehicle_templateNumber",
+                placeholder: "Enter age"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Contact Number:")]),
             _vm._v(" "),
             _c("input", {
               staticClass: "form-control required-field",
               attrs: {
                 type: "text",
                 name: "vehicle_templateNumber",
-                placeholder: "Enter template number"
+                placeholder: "Enter contact number"
               }
             })
           ])

@@ -14,14 +14,22 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Name:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter vehicle name" />
+                                    <label>Fullname:</label>
+                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter fullname" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender:</label>
+                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter gender" />
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Template Number:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter template number" />
+                                    <label>Age:</label>
+                                    <input type="number" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter age" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number:</label>
+                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter contact number" />
                                 </div>
                             </div>
                         </div>
