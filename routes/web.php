@@ -71,10 +71,9 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
         Route::get('/read', 'TransportationDriverController@index');
         Route::get('/show/{id}', 'TransportationDriverController@show');
         Route::post('/edit', 'TransportationDriverController@edit');
+        Route::post('/delete/{id}', 'TransportationDriverController@destroy');
     });
 });
 
-// Route::get('/vehicle_data', 'page\TransportationVehicleController@index');
-// Route::get('/vehicle_data/{id}', 'page\TransportationVehicleController@show');
 
 

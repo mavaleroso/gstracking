@@ -123,6 +123,12 @@ export default {
             this.create = true;
             let vm = this;
             $(() => {
+                vm.formFields.id = '';
+                vm.formFields.fullname = '';
+                vm.formFields.age = '';
+                vm.formFields.gender = '';
+                vm.formFields.contactNumber = '';
+
                 $('#kt_select_gender').select2({
                     placeholder: "Select gender",
                     minimumResultsForSearch: Infinity
@@ -221,12 +227,30 @@ export default {
                             }
                         }
                     }
-
-
+                    
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         deleteEntry(id) {
-             
+             Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won"t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(result => {
+                if (result.value) {
+                    axios.post('/transportation/driver/delete/'+id).then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            response.data.message,
+                            'success'
+                        );
+                        
+                        $("#driver-tbl").DataTable().ajax.reload();
+                    });
+                }
+            });
         },
         tdatatable() {
             var vm = this;
@@ -295,6 +319,11 @@ export default {
                         $('.btn-edit').click(function() {
                             let id = $(this).data('id');
                             vm.editEntry(id);
+                        });
+
+                        $('.btn-delete').click(function() {
+                            let id = $(this).data('id');
+                            vm.deleteEntry(id);
                         });
                     }
                     
