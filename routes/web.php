@@ -72,6 +72,12 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
         Route::get('/show/{id}', 'TransportationDriverController@show');
         Route::post('/edit', 'TransportationDriverController@edit');
     });
+    Route::group(['prefix' => 'serviceprovider'], function () {
+        Route::post('/create', 'TransportationServiceProviderController@create');
+        Route::get('/read', 'TransportationServiceProviderController@index');
+        Route::get('/show/{id}', 'TransportationServiceProviderController@show');
+        Route::post('/edit', 'TransportationServiceProviderController@edit');
+    });
 });
 
 // Route::get('/vehicle_data', 'page\TransportationVehicleController@index');

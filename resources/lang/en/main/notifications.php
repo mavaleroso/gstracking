@@ -17,4 +17,7 @@ return [
     // Transportation Driver Page
     'driver_created_successfully' => 'Driver created succesfully',
 
+    // Service Provider  Page
+    'serviceProvider_created_successfully' => 'Service Provider created succesfully',
+
 ];
