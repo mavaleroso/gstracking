@@ -13,4 +13,8 @@ return [
     'vehicle_created_successfully' => 'Vehicle created succesfully',
     'vehicle_updated_successfully' => 'Vehicle updated succesfully',
     'vehicle_deleted_successfully' => 'Vehicle deleted succesfully',
+
+    // Transportation Driver Page
+    'driver_created_successfully' => 'Driver created succesfully',
+
 ];

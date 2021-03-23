@@ -15,21 +15,26 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter fullname" />
+                                    <input type="text" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Gender:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter gender" />
+                                    <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
+                                        <option label="Label"></option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="others">Others</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Age:</label>
-                                    <input type="number" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter age" />
+                                    <input type="number" class="form-control required-field" name="driver_age" placeholder="Enter age" v-model="formFields.age"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter contact number" />
+                                    <input type="text" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber"/>
                                 </div>
                             </div>
                         </div>
@@ -90,8 +95,16 @@
 export default {
     data() {
         return {
-            create: true,
+            create: false,
             edit: false,
+            formFields: {
+                id: '',
+                fullname: '',
+                age: '',
+                gender: '',
+                contactNumber: ''
+            },
+            names: ['fullname', 'age', 'gender', 'contactNumber']
         }
     },
     created() {
@@ -108,6 +121,17 @@ export default {
         },
         newEntry() {
            this.create = true;
+           let vm = this;
+           $(() => {
+                $('#kt_select_gender').select2({
+                    placeholder: "Select gender",
+                    minimumResultsForSearch: Infinity
+                });
+
+                $('#kt_select_gender').change(function() {
+                    vm.formFields.gender = $(this).val();
+                });
+           });
         },
         editEntry(id) {
             
@@ -118,7 +142,61 @@ export default {
             this.ini();
         },
         saveEntry() {
-            
+            let formD = new FormData();
+            let method = null;
+
+            formD.append('id', this.formFields.id);
+            formD.append('fullname', this.formFields.fullname);
+            formD.append('age', this.formFields.age);
+            formD.append('gender', this.formFields.gender);
+            formD.append('contactNumber', this.formFields.contactNumber);
+
+            method = (this.create)? 'create':'edit';
+
+            axios.post('/transportation/driver/' + method, formD).then(response => {
+                    $('.invalid-feedback').remove();
+                    $('.is-invalid').removeClass('is-invalid');
+                    Swal.fire("Good job!", response.data.message, "success");
+                    showToast(response.data.message, 'success');
+                    setTimeout(() => {
+                        this.cancelEntry();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    let data = error.response.data.errors;
+                    let keys = [];
+                    let values = [];
+                    for (const [key, value] of Object.entries(data)) {
+                        keys.push(`${key}`);
+                        values.push(`${value}`);
+                        if(`${key}` == 'gender'){
+                            if ($('#kt_select_gender').next().next().length == 0) {
+                                $('#kt_select_gender').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        } else {
+                            if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                                $('[name="driver_'+`${key}`+'"]').addClass('is-invalid');
+                                $('[name="driver_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.names.length; i++) {
+                        if (this.names[i] == 'gender') {
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+                                if ($('#kt_select_gender').next().next().length != 0) {
+                                    $('#kt_select_gender').next().next('.invalid-feedback').remove();
+                                }
+                            }
+                        } else {
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+                                $('[name="driver_'+this.names[i]+'"]').removeClass('is-invalid');
+                                $('[name="driver_'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            }
+                        }
+                    }
+
+
+            });
         },
         deleteEntry(id) {
              

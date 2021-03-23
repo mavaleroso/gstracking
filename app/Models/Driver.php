@@ -18,6 +18,7 @@ class Driver extends Model
         'vehicle_id',
         'fullname',
         'age',
-        'sex'
+        'sex',
+        'contact'
     ];
 }
