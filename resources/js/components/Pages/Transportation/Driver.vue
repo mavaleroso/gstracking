@@ -120,9 +120,9 @@ export default {
             });
         },
         newEntry() {
-           this.create = true;
-           let vm = this;
-           $(() => {
+            this.create = true;
+            let vm = this;
+            $(() => {
                 $('#kt_select_gender').select2({
                     placeholder: "Select gender",
                     minimumResultsForSearch: Infinity
@@ -131,10 +131,37 @@ export default {
                 $('#kt_select_gender').change(function() {
                     vm.formFields.gender = $(this).val();
                 });
-           });
+
+                $('.card-label span').text('Create Driver');
+            });
         },
         editEntry(id) {
-            
+            this.edit = true;
+            let vm = this;
+            $(() => {
+                $('.card-label span').text('Edit Driver');
+
+                axios.get("/transportation/driver/show/"+id).then(response => {
+                    vm.formFields.id = response.data[0].id;
+                    vm.formFields.fullname = response.data[0].fullname;
+                    vm.formFields.age = response.data[0].age;
+                    vm.formFields.gender = response.data[0].sex;
+                    vm.formFields.contactNumber = response.data[0].contact;
+                });
+
+                $('#kt_select_gender').select2({
+                    placeholder: "Select gender",
+                });
+          
+                $('#kt_select_gender').change(function() {
+                    vm.formFields.gender = $(this).val();
+                });
+
+                setTimeout(() => {
+                    $('#kt_select_gender').val(vm.formFields.gender);
+                    $('#kt_select_gender').trigger('change');
+                }, 500);
+            });
         },
         cancelEntry() {
             this.create = false;
@@ -265,7 +292,10 @@ export default {
                         }
                     ],
                     drawCallback: () => {
-
+                        $('.btn-edit').click(function() {
+                            let id = $(this).data('id');
+                            vm.editEntry(id);
+                        });
                     }
                     
                 });

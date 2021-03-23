@@ -3908,9 +3908,33 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_select_gender').change(function () {
           vm.formFields.gender = $(this).val();
         });
+        $('.card-label span').text('Create Driver');
       });
     },
-    editEntry: function editEntry(id) {},
+    editEntry: function editEntry(id) {
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        $('.card-label span').text('Edit Driver');
+        axios.get("/transportation/driver/show/" + id).then(function (response) {
+          vm.formFields.id = response.data[0].id;
+          vm.formFields.fullname = response.data[0].fullname;
+          vm.formFields.age = response.data[0].age;
+          vm.formFields.gender = response.data[0].sex;
+          vm.formFields.contactNumber = response.data[0].contact;
+        });
+        $('#kt_select_gender').select2({
+          placeholder: "Select gender"
+        });
+        $('#kt_select_gender').change(function () {
+          vm.formFields.gender = $(this).val();
+        });
+        setTimeout(function () {
+          $('#kt_select_gender').val(vm.formFields.gender);
+          $('#kt_select_gender').trigger('change');
+        }, 500);
+      });
+    },
     cancelEntry: function cancelEntry() {
       this.create = false;
       this.edit = false;
@@ -4044,7 +4068,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return dateTimeEng(data);
             }
           }],
-          drawCallback: function drawCallback() {}
+          drawCallback: function drawCallback() {
+            $('.btn-edit').click(function () {
+              var id = $(this).data('id');
+              vm.editEntry(id);
+            });
+          }
         });
       };
 
@@ -4511,7 +4540,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         axios.get("/transportation/vehicle/show/" + id).then(function (response) {
-          console.log(response.data);
           var driverLength = 0;
           vm.formFields.id = response.data.vehicles[0].id;
           vm.formFields.pictureName = response.data.vehicles[0].image;

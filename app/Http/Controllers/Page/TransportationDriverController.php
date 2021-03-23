@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\DriverRequest;
 use App\Services\Tracking\CreateDriver;
+use App\Services\Tracking\UpdateDriver;
 use App\Services\Tracking\GetListingDriver;
+use App\Models\Driver;
 
 class TransportationDriverController extends Controller
 {
@@ -51,7 +53,9 @@ class TransportationDriverController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Driver::where('id', $id)->get();
+
+        return response()->json($data);
     }
 
     /**
@@ -60,9 +64,10 @@ class TransportationDriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(DriverRequest $driverRequest, UpdateDriver $updateDriver)
     {
-        //
+        $result = $updateDriver->execute($driverRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
     }
 
     /**

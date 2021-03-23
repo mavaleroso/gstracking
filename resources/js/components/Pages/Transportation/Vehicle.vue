@@ -190,7 +190,6 @@ export default {
             let vm = this;
             $(() => {
                 axios.get("/transportation/vehicle/show/"+id).then(response => {
-                    console.log(response.data);
                     let driverLength = 0;
 
                     vm.formFields.id = response.data.vehicles[0].id;
