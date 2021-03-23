@@ -204,7 +204,7 @@ export default {
         tdatatable() {
             var vm = this;
             var initTable = () => {
-            var table = $('#vehicle-tbl');
+            var table = $('#driver-tbl');
                 table.DataTable({
                     scrollY: '50vh',
                     scrollX: true,
@@ -212,7 +212,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        // url: BASE_URL + '/api/vehicle_data',
+                        url: BASE_URL + '/transportation/driver/read',
                         type: 'GET'
                     },
                     columns: [
@@ -225,10 +225,6 @@ export default {
                         { "data": "id" },
                     ],
                     columnDefs: [
-                        {
-                            targets: [1, 5],
-                            orderable: false
-                        },
                         {
                             targets: -1,
                             title: 'Actions',
@@ -262,18 +258,11 @@ export default {
                             },
                         },
                         {
-                            targets: 1,
-                            render: data => {
-                                var img_path = (data)? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
-                                return '<a class="vehicle-img-viewer" href="'+ img_path +'"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'"></a>';
-                            }
-                        },
-                        {
-                            targets: 7,
+                            targets: 5,
                             render: data => {
                                 return dateTimeEng(data);
                             }
-                        },
+                        }
                     ],
                     drawCallback: () => {
 

@@ -3981,7 +3981,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#vehicle-tbl');
+        var table = $('#driver-tbl');
         table.DataTable({
           scrollY: '50vh',
           scrollX: true,
@@ -3989,7 +3989,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            // url: BASE_URL + '/api/vehicle_data',
+            url: BASE_URL + '/transportation/driver/read',
             type: 'GET'
           },
           columns: [{
@@ -4008,9 +4008,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: [1, 5],
-            orderable: false
-          }, {
             targets: -1,
             title: 'Actions',
             orderable: false,
@@ -4042,13 +4039,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                 ';
             }
           }, {
-            targets: 1,
-            render: function render(data) {
-              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
-              return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
-            }
-          }, {
-            targets: 7,
+            targets: 5,
             render: function render(data) {
               return dateTimeEng(data);
             }

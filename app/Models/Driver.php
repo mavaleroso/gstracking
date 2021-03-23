@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\WithPaginate;
 use Illuminate\Database\Eloquent\Model;
+use Ccore\Core\Traits\ExtendedEloquentTrait;
 
 class Driver extends Model
 {
+    use ExtendedEloquentTrait;
+    use WithPaginate;
+
+
     protected $table = 'drivers';
 
     /**
@@ -19,6 +24,7 @@ class Driver extends Model
         'fullname',
         'age',
         'sex',
-        'contact'
+        'contact',
+        'updated_at'
     ];
 }
