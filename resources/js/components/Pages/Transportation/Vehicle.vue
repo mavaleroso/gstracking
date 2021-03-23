@@ -189,7 +189,7 @@ export default {
             this.edit = true;
             let vm = this;
             $(() => {
-                axios.get("/api/vehicle_data/"+id).then(response => {
+                axios.get("/transportation/vehicle/show/"+id).then(response => {
                     console.log(response.data);
                     let driverLength = 0;
 
@@ -327,7 +327,6 @@ export default {
             var vm = this;
             var initTable = () => {
             var table = $('#vehicle-tbl');
-            // begin first table
                 table.DataTable({
                     scrollY: '50vh',
                     scrollX: true,
@@ -335,7 +334,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/api/vehicle_data',
+                        url: BASE_URL + '/transportation/vehicle/read',
                         type: 'GET'
                     },
                     columns: [

@@ -58,11 +58,20 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Page'], function () {
 Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () {
     Route::group(['prefix' => 'vehicle'], function () {
         Route::post('/create', 'TransportationVehicleController@create');
+        Route::get('/read', 'TransportationVehicleController@index');
+        Route::get('/show/{id}', 'TransportationVehicleController@show');
         Route::post('/edit', 'TransportationVehicleController@edit');
         Route::post('/delete/{id}', 'TransportationVehicleController@destroy');
+
+
+    });
+
+    Route::group(['prefix' => 'driver'], function () {
+        Route::post('/create', 'TransportationDriverController@create');
     });
 });
 
-
+// Route::get('/vehicle_data', 'page\TransportationVehicleController@index');
+// Route::get('/vehicle_data/{id}', 'page\TransportationVehicleController@show');
 
 
