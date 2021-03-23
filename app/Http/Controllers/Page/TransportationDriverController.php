@@ -90,6 +90,7 @@ class TransportationDriverController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Driver::destroy($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.driver_deleted_successfully'), 'result' => $result]);
     }
 }

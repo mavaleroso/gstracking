@@ -169,7 +169,17 @@ export default {
             this.create = true;
             let vm = this;
             $(() => {
+                vm.formFields.id = '';
+                vm.formFields.pictureName = '';
+                vm.formFields.name = '';
+                vm.formFields.description = '';
+                vm.formFields.capacityNumber = '';
+                vm.formFields.templateNumber = '';
+                vm.formFields.serviceProvider = '';
+                vm.formFields.drivers = [];
+
                 this.image();
+
                 $('#kt_select_svc_provider').select2({
                     placeholder: "Select service provider",
                 });
@@ -298,11 +308,12 @@ export default {
                         }
                     }
 
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
 
             });
         },
         deleteEntry(id) {
-             Swal.fire({
+            Swal.fire({
                 title: 'Are you sure?',
                 text: 'You won"t be able to revert this!',
                 icon: 'warning',

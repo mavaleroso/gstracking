@@ -3901,6 +3901,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
+        vm.formFields.id = '';
+        vm.formFields.fullname = '';
+        vm.formFields.age = '';
+        vm.formFields.gender = '';
+        vm.formFields.contactNumber = '';
         $('#kt_select_gender').select2({
           placeholder: "Select gender",
           minimumResultsForSearch: Infinity
@@ -3998,9 +4003,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }
         }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
-    deleteEntry: function deleteEntry(id) {},
+    deleteEntry: function deleteEntry(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won"t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post('/transportation/driver/delete/' + id).then(function (response) {
+            Swal.fire('Deleted!', response.data.message, 'success');
+            $("#driver-tbl").DataTable().ajax.reload();
+          });
+        }
+      });
+    },
     tdatatable: function tdatatable() {
       var vm = this;
 
@@ -4072,6 +4094,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.btn-edit').click(function () {
               var id = $(this).data('id');
               vm.editEntry(id);
+            });
+            $('.btn-delete').click(function () {
+              var id = $(this).data('id');
+              vm.deleteEntry(id);
             });
           }
         });
@@ -4516,6 +4542,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
+        vm.formFields.id = '';
+        vm.formFields.pictureName = '';
+        vm.formFields.name = '';
+        vm.formFields.description = '';
+        vm.formFields.capacityNumber = '';
+        vm.formFields.templateNumber = '';
+        vm.formFields.serviceProvider = '';
+        vm.formFields.drivers = [];
+
         _this4.image();
 
         $('#kt_select_svc_provider').select2({
@@ -4649,6 +4684,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }
         }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     deleteEntry: function deleteEntry(id) {
