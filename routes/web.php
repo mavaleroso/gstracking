@@ -68,6 +68,7 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
 
     Route::group(['prefix' => 'driver'], function () {
         Route::post('/create', 'TransportationDriverController@create');
+        Route::get('/read', 'TransportationDriverController@index');
     });
 });
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\DriverRequest;
 use App\Services\Tracking\CreateDriver;
+use App\Services\Tracking\GetListingDriver;
 
 class TransportationDriverController extends Controller
 {
@@ -14,9 +15,10 @@ class TransportationDriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingDriver $getListingDriver)
     {
-        //
+        $records = $getListingDriver->execute();
+        return response()->json($records);
     }
 
     /**
