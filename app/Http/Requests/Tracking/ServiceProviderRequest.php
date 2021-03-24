@@ -22,8 +22,8 @@ class ServiceProviderRequest extends FormRequest
         return [
             'id' => 'nullable',
             'type' => 'required',
-            'companyname' => 'required',
-            'vehiclecount' => 'required'
+            'companyName' => 'required',
+            'vehicleCount' => 'required'
 
         ];
     }
@@ -32,8 +32,8 @@ class ServiceProviderRequest extends FormRequest
     {
         return [
             'type' => 'Type',
-            'companyname' => 'Companyname',
-            'vehiclecount' => 'Vehiclecount'
+            'companyName' => 'CompanyName',
+            'vehicleCount' => 'VehicleCount'
         ];
 
     }
@@ -42,8 +42,8 @@ class ServiceProviderRequest extends FormRequest
     {
         return [
             'type.required' => __('main/validations.required'),
-            'companyname.required' => __('main/validations.required'),
-            'vehiclecount.required' => __('main/validations.required')
+            'companyName.required' => __('main/validations.required'),
+            'vehicleCount.required' => __('main/validations.required')
         ];
 
     }
