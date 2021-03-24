@@ -7,6 +7,9 @@
                     <h3 class="card-label">
                     <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                 </div>
+                @php
+                    dd(province);
+                @end
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     <router-link :to="{name: 'requestTravel'}" class="btn btn-primary font-weight-bolder" >
@@ -116,24 +119,24 @@
                             <div class="form-group">
                                 <label>Destination</label>
                                 <br>
-                                <select class="form-control select2 details-input" id="kt_select_region" name="region" disabled="disabled">
+                                <select class="region_class_multi form-control select2 details-input" id="kt_select_region" name="region" disabled="disabled">
                                     <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                 </select>
                                 <span class="form-text text-muted">Region</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
+                                <select class="province_class_multi form-control select2 kt_select2_3 details-input" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
                                     <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                 </select>
                                 <span class="form-text text-muted">Province</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
+                                <select class="city_class_multi form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
                                         <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                     </optgroup>
                                 </select>
                                 <span class="form-text text-muted">City</span>
                                 <br>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
+                                <select class="brgy_class_multi form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
                                         <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                     </optgroup>
@@ -534,9 +537,70 @@ export default {
 
                 $('#kt_select_region').val(data.region);
                 $('#kt_select_region').trigger('change');
-                let ctr_p = 0
-                let ctr_c = 0
-                let ctr_b = 0
+                let ctr_p = 0;
+                let ctr_c = 0;
+                let ctr_b = 0;
+
+                /**
+                 *  ! bug fix start
+                 */
+                var exampleMulti = $(".province_class_multi").select2();
+
+                // $(".province_class_multi").on("select2-loaded", function () {
+                    exampleMulti.val([data.province]).trigger("change");
+                // });
+
+                console.log(exampleMulti);
+                console.log(data.province);
+
+                // $(".province_class_multi").select2('open')
+                // $(".province_class_multi").on('select2-loaded', function (e) {
+                //     if (data.province.length == 1) {
+                //         $(this).val(data.province);
+                //         $(".province_class_multi").select2('close');
+                //     }
+                // });
+
+                // region_class_multi
+                // province_class_multi
+                // city_class_multi
+                // brgy_class_multi
+
+                // var data = {
+                //     id: 1,
+                //     text: 'Barn owl'
+                // };
+
+                // var newOption = new Option(data.text, data.id, false, false);
+                // $('#mySelect2').append(newOption).trigger('change');
+
+                // $('#kt_select_province').val(data.province);
+                // $('#kt_select_province').trigger('change');
+
+                // $('#kt_select_province').select2('destroy');
+                // $('#kt_select_province').empty();
+                // $('#kt_select_province').select2({
+                //     placeholder: 'Slect value',
+                //     allowClear: true,
+                //     data: data.province
+                // });
+                // $('#kt_select_province').trigger('change');
+
+                // setTimeout(() => {
+                //     $('#kt_select_province').val(data.province);
+                //     $('#kt_select_province').trigger('change');
+                // }, 500);
+                // setTimeout(() => {
+                //     $('#kt_select_city').val(data.city);
+                //     $('#kt_select_city').trigger('change');
+                // }, 1000);
+                // setTimeout(() => {
+                //     $('#kt_select_brgy').val(data.brgy);
+                //     $('#kt_select_brgy').trigger('change');
+                // }, 1500);
+                /**
+                 * ! bug fix end
+                 */
 
                 // setTimeout(() => {
                 //     while($('#kt_select_province').val() == '') {
@@ -569,18 +633,18 @@ export default {
                 //     }
                 // }, 500);
                 
-                setTimeout(() => {
-                    $('#kt_select_province').val(data.province);
-                    $('#kt_select_province').trigger('change');
-                }, 500);
-                setTimeout(() => {
-                    $('#kt_select_city').val(data.city);
-                    $('#kt_select_city').trigger('change');
-                }, 1000);
-                setTimeout(() => {
-                    $('#kt_select_brgy').val(data.brgy);
-                    $('#kt_select_brgy').trigger('change');
-                }, 1500);
+                // setTimeout(() => {
+                //     $('#kt_select_province').val(data.province);
+                //     $('#kt_select_province').trigger('change');
+                // }, 500);
+                // setTimeout(() => {
+                //     $('#kt_select_city').val(data.city);
+                //     $('#kt_select_city').trigger('change');
+                // }, 1000);
+                // setTimeout(() => {
+                //     $('#kt_select_brgy').val(data.brgy);
+                //     $('#kt_select_brgy').trigger('change');
+                // }, 1500);
                     
             });
         },

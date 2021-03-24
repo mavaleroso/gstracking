@@ -2572,6 +2572,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2978,7 +2981,60 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_select_region').trigger('change');
         var ctr_p = 0;
         var ctr_c = 0;
-        var ctr_b = 0; // setTimeout(() => {
+        var ctr_b = 0;
+        /**
+         *  ! bug fix start
+         */
+
+        var exampleMulti = $(".province_class_multi").select2(); // $(".province_class_multi").on("select2-loaded", function () {
+
+        exampleMulti.val([data.province]).trigger("change"); // });
+
+        console.log(exampleMulti);
+        console.log(data.province); // $(".province_class_multi").select2('open')
+        // $(".province_class_multi").on('select2-loaded', function (e) {
+        //     if (data.province.length == 1) {
+        //         $(this).val(data.province);
+        //         $(".province_class_multi").select2('close');
+        //     }
+        // });
+        // region_class_multi
+        // province_class_multi
+        // city_class_multi
+        // brgy_class_multi
+        // var data = {
+        //     id: 1,
+        //     text: 'Barn owl'
+        // };
+        // var newOption = new Option(data.text, data.id, false, false);
+        // $('#mySelect2').append(newOption).trigger('change');
+        // $('#kt_select_province').val(data.province);
+        // $('#kt_select_province').trigger('change');
+        // $('#kt_select_province').select2('destroy');
+        // $('#kt_select_province').empty();
+        // $('#kt_select_province').select2({
+        //     placeholder: 'Slect value',
+        //     allowClear: true,
+        //     data: data.province
+        // });
+        // $('#kt_select_province').trigger('change');
+        // setTimeout(() => {
+        //     $('#kt_select_province').val(data.province);
+        //     $('#kt_select_province').trigger('change');
+        // }, 500);
+        // setTimeout(() => {
+        //     $('#kt_select_city').val(data.city);
+        //     $('#kt_select_city').trigger('change');
+        // }, 1000);
+        // setTimeout(() => {
+        //     $('#kt_select_brgy').val(data.brgy);
+        //     $('#kt_select_brgy').trigger('change');
+        // }, 1500);
+
+        /**
+         * ! bug fix end
+         */
+        // setTimeout(() => {
         //     while($('#kt_select_province').val() == '') {
         //         $('#kt_select_province').val(data.province);
         //         $('#kt_select_province').trigger('change');
@@ -3008,19 +3064,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         //         ctr_b++;
         //     }
         // }, 500);
-
-        setTimeout(function () {
-          $('#kt_select_province').val(data.province);
-          $('#kt_select_province').trigger('change');
-        }, 500);
-        setTimeout(function () {
-          $('#kt_select_city').val(data.city);
-          $('#kt_select_city').trigger('change');
-        }, 1000);
-        setTimeout(function () {
-          $('#kt_select_brgy').val(data.brgy);
-          $('#kt_select_brgy').trigger('change');
-        }, 1500);
+        // setTimeout(() => {
+        //     $('#kt_select_province').val(data.province);
+        //     $('#kt_select_province').trigger('change');
+        // }, 500);
+        // setTimeout(() => {
+        //     $('#kt_select_city').val(data.city);
+        //     $('#kt_select_city').trigger('change');
+        // }, 1000);
+        // setTimeout(() => {
+        //     $('#kt_select_brgy').val(data.brgy);
+        //     $('#kt_select_brgy').trigger('change');
+        // }, 1500);
       });
     },
     getPassengers: function getPassengers(id) {
@@ -42743,7 +42798,9 @@ var render = function() {
             { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" },
             [
               _vm._m(0),
-              _vm._v(" "),
+              _vm._v(
+                "\n            @php\n                dd(province);\n            @end\n            "
+              ),
               _c(
                 "div",
                 { staticClass: "card-toolbar" },
@@ -43141,7 +43198,7 @@ var render = function() {
                               "select",
                               {
                                 staticClass:
-                                  "form-control select2 details-input",
+                                  "region_class_multi form-control select2 details-input",
                                 attrs: {
                                   id: "kt_select_region",
                                   name: "region",
@@ -43173,7 +43230,7 @@ var render = function() {
                               "select",
                               {
                                 staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
+                                  "province_class_multi form-control select2 kt_select2_3 details-input",
                                 attrs: {
                                   id: "kt_select_province",
                                   name: "province[]",
@@ -43206,7 +43263,7 @@ var render = function() {
                               "select",
                               {
                                 staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
+                                  "city_class_multi form-control select2 kt_select2_3 details-input",
                                 attrs: {
                                   id: "kt_select_city",
                                   name: "city[]",
@@ -43254,7 +43311,7 @@ var render = function() {
                               "select",
                               {
                                 staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
+                                  "brgy_class_multi form-control select2 kt_select2_3 details-input",
                                 attrs: {
                                   id: "kt_select_brgy",
                                   name: "brgy[]",
