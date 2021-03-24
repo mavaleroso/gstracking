@@ -4231,6 +4231,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4276,6 +4331,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      create: false,
+      edit: false,
+      formFields: {
+        id: '',
+        type: '',
+        companyName: '',
+        vehicleCount: ''
+      },
+      names: ['type', 'companyName', 'vehicleCount']
+    };
+  },
+  created: function created() {},
   mounted: function mounted() {
     this.ini();
   },
@@ -4287,44 +4356,140 @@ __webpack_require__.r(__webpack_exports__);
         _this.tdatatable().init();
       });
     },
+    newEntry: function newEntry() {
+      this.create = true;
+      var vm = this;
+      $(function () {
+        $('#kt_select_svc_type').select2({
+          placeholder: "Select type",
+          minimumResultsForSearch: Infinity
+        });
+        $('#kt_select_svc_type').change(function () {
+          vm.formFields.type = $(this).val();
+        });
+        $('.card-label span').text('Create Service Provider');
+      });
+    },
+    cancelEntry: function cancelEntry() {
+      this.create = false;
+      this.edit = false;
+      this.ini();
+    },
+    saveEntry: function saveEntry() {
+      var _this2 = this;
+
+      var formD = new FormData();
+      var method = null;
+      formD.append('id', this.formFields.id);
+      formD.append('type', this.formFields.type);
+      formD.append('companyName', this.formFields.companyName);
+      formD.append('vehicleCount', this.formFields.vehicleCount);
+      method = this.create ? 'create' : 'edit';
+      axios.post('/transportation/serviceprovider/' + method, formD).then(function (response) {
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+        setTimeout(function () {
+          _this2.cancelEntry();
+        }, 1000);
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ("".concat(key) == 'type') {
+            if ($('#kt_select_svc_type').next().next().length == 0) {
+              $('#kt_select_svc_type').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
+          } else {
+            if ($('[name="svc_' + "".concat(key) + '"]').next().length == 0 || $('[name="svc_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('[name="svc_' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="svc_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            }
+          }
+        }
+
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'type') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if ($('#kt_select_svc_type').next().next().length != 0) {
+                $('#kt_select_svc_type').next().next('.invalid-feedback').remove();
+              }
+            }
+          } else {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              $('[name="svc_' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="svc_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            }
+          }
+        }
+      });
+    },
     tdatatable: function tdatatable() {
+      var vm = this;
+
       var initTable = function initTable() {
-        var table = $('#transportation-tbl');
+        var table = $('#serviceProvider-tbl');
         table.DataTable({
           scrollY: '50vh',
           scrollX: true,
           scrollCollapse: true,
           processing: true,
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + '/transportation/serviceprovider/read',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "type"
+          }, {
+            "data": "company_name"
+          }, {
+            "data": "vehicle_count"
+          }, {
+            "data": "id"
+          }],
           columnDefs: [{
             targets: -1,
-            title: 'Action',
+            title: 'Actions',
             orderable: false,
             width: '125px',
             render: function render(data) {
               return '\
-                            <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
-                                <span class="svg-icon svg-icon-md">\
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                            <rect x="0" y="0" width="24" height="24"/>\
-                                            <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                            <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                        </g>\
-                                    </svg>\
-                                </span>\
-                            </a>\
-                            <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
-                                <span class="svg-icon svg-icon-md">\
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                            <rect x="0" y="0" width="24" height="24"/>\
-                                            <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
-                                            <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
-                                        </g>\
-                                    </svg>\
-                                </span>\
-                            </a>\
-                        ';
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
+                                                    <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                ';
             }
           }]
         });
@@ -46567,81 +46732,289 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "card card-custom gutter-b",
-      attrs: { id: "transportation-page" }
-    },
-    [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-toolbar" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-primary font-weight-bolder",
-              attrs: { href: "#" }
-            },
-            [
-              _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                _c(
-                  "svg",
-                  {
-                    attrs: {
-                      xmlns: "http://www.w3.org/2000/svg",
-                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                      width: "24px",
-                      height: "24px",
-                      viewBox: "0 0 24 24",
-                      version: "1.1"
+  return _c("div", { attrs: { id: "driver-page" } }, [
+    _vm.create == true || _vm.edit == true
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "card card-custom gutter-b animate__animated animate__fadeInRight"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "form",
+                {
+                  staticClass: "form",
+                  attrs: { id: "driver-form" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.saveEntry($event)
                     }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Service Provider:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.type,
+                                  expression: "formFields.type"
+                                }
+                              ],
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select_svc_type",
+                                name: "svc_type"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "type",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Office")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Rental")])
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Company name:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.companyName,
+                                expression: "formFields.companyName"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "text",
+                              name: "svc_companyName",
+                              placeholder: "Enter fullname"
+                            },
+                            domProps: { value: _vm.formFields.companyName },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "companyName",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Vehicle count:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.vehicleCount,
+                                expression: "formFields.vehicleCount"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "number",
+                              name: "svc_vehicleCount",
+                              placeholder: "Enter age"
+                            },
+                            domProps: { value: _vm.formFields.vehicleCount },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "vehicleCount",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-footer" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary mr-2",
+                            attrs: { type: "submit" }
+                          },
+                          [_vm._v("Save")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "reset" },
+                            on: { click: _vm.cancelEntry }
+                          },
+                          [_vm._v("Cancel")]
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      : _c(
+          "div",
+          {
+            staticClass:
+              "card card-custom gutter-b animate__animated animate__fadeIn"
+          },
+          [
+            _c("div", { staticClass: "card-header flex-wrap" }, [
+              _c("div", { staticClass: "card-title" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-toolbar" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-primary font-weight-bolder",
+                    attrs: { href: "#" },
+                    on: { click: _vm.newEntry }
                   },
                   [
-                    _c(
-                      "g",
-                      {
-                        attrs: {
-                          stroke: "none",
-                          "stroke-width": "1",
-                          fill: "none",
-                          "fill-rule": "evenodd"
-                        }
-                      },
-                      [
-                        _c("rect", {
-                          attrs: { x: "0", y: "0", width: "24", height: "24" }
-                        }),
-                        _vm._v(" "),
-                        _c("circle", {
-                          attrs: { fill: "#000000", cx: "9", cy: "15", r: "6" }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
+                    _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                      _c(
+                        "svg",
+                        {
                           attrs: {
-                            d:
-                              "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
-                            fill: "#000000",
-                            opacity: "0.3"
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                            width: "24px",
+                            height: "24px",
+                            viewBox: "0 0 24 24",
+                            version: "1.1"
                           }
-                        })
-                      ]
-                    )
+                        },
+                        [
+                          _c(
+                            "g",
+                            {
+                              attrs: {
+                                stroke: "none",
+                                "stroke-width": "1",
+                                fill: "none",
+                                "fill-rule": "evenodd"
+                              }
+                            },
+                            [
+                              _c("rect", {
+                                attrs: {
+                                  x: "0",
+                                  y: "0",
+                                  width: "24",
+                                  height: "24"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("circle", {
+                                attrs: {
+                                  fill: "#000000",
+                                  cx: "9",
+                                  cy: "15",
+                                  r: "6"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                                  fill: "#000000",
+                                  opacity: "0.3"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v("New Entry")
                   ]
                 )
-              ]),
-              _vm._v("New Record")
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _vm._m(0)
-    ]
-  )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+  ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _c("span"),
+          _vm._v(" "),
+          _c("i", { staticClass: "mr-2" }),
+          _vm._v(" "),
+          _c("small", {}, [_vm._v("Form")])
+        ])
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -46651,7 +47024,7 @@ var staticRenderFns = [
         "table",
         {
           staticClass: "table table-separate table-head-custom table-checkable",
-          attrs: { id: "transportation-tbl" }
+          attrs: { id: "serviceProvider-tbl" }
         },
         [
           _c("thead", [
@@ -46664,25 +47037,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Vehicle count")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Created at")]),
-              _vm._v(" "),
               _c("th", [_vm._v("Action")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Office")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("DSWD")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("14")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("03/12/2020")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Edit")])
             ])
           ])
         ]

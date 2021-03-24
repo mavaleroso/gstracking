@@ -20,4 +20,7 @@ return [
     'driver_updated_successfully' => 'Driver updated succesfully',
     'driver_deleted_successfully' => 'Driver deleted succesfully',
 
+    // Service Provider  Page
+    'serviceProvider_created_successfully' => 'Service Provider created succesfully',
+
 ];
