@@ -4180,10 +4180,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -4198,8 +4194,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     tdatatable: function tdatatable() {
       var initTable = function initTable() {
-        var table = $('#transportation-tbl'); // begin first table
-
+        var table = $('#transportation-tbl');
         table.DataTable({
           scrollY: '50vh',
           scrollX: true,
@@ -42692,7 +42687,7 @@ var render = function() {
                     _c("div", { staticClass: "d-flex flex-column-fluid" }, [
                       _c(
                         "div",
-                        { staticClass: "container" },
+                        { staticClass: "container-fluid" },
                         [_c("router-view")],
                         1
                       )
@@ -46662,6 +46657,8 @@ var staticRenderFns = [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Image")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Company")]),
               _vm._v(" "),
               _c("th", [_vm._v("Provider")]),
@@ -46672,19 +46669,17 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Template No.")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Drivers")]),
+              _c("th", [_vm._v("Driver")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Created")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Updated")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+              _c("th", [_vm._v("Updated")])
             ])
           ]),
           _vm._v(" "),
           _c("tbody", [
             _c("tr", [
               _c("td", [_vm._v("1")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Test")]),
               _vm._v(" "),
               _c("td", [_vm._v("DSWD")]),
               _vm._v(" "),
@@ -46696,13 +46691,9 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("td", [_vm._v("PS 12345")]),
               _vm._v(" "),
-              _c("td", [_vm._v("Show Driver")]),
+              _c("td", [_vm._v("Marwen A. Valeroso")]),
               _vm._v(" "),
-              _c("td", [_vm._v("03/12/2020")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2/19/2021")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Edit")])
+              _c("td", [_vm._v("2/19/2021")])
             ])
           ])
         ]
