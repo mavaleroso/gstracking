@@ -15,7 +15,6 @@ class CreateVehicle
      */
     public function execute($fields)
     {
-
         $file_name = NULL;
         
         if($fields['picture']) {
@@ -25,19 +24,13 @@ class CreateVehicle
         
         $vehicle = Vehicle::create([
             'service_provider_id' => $fields['serviceProvider'],
+            'driver_id' => $fields['driver'],
             (!$file_name)? NULL:'image' => $file_name,
             'name' => $fields['name'],
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
             'capacity' => $fields['capacityNumber'],
         ]);
-
-        if ($vehicle) {
-            $drivers = explode(',', $fields['drivers']);
-            $driver = Driver::whereIn('id', $drivers)->update([
-                'vehicle_id' => $vehicle->id
-            ]);
-        }
 
         if ($fields['picture']) {
             ($vehicle)? $file->storeAs('public/images', $file_name):NULL;

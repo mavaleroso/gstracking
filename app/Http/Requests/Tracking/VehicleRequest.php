@@ -28,7 +28,7 @@ class VehicleRequest extends FormRequest
             'serviceProvider' => 'required',
             'templateNumber' => 'required',
             'capacityNumber' => 'required',
-            'drivers' => 'nullable',
+            'driver' => 'nullable',
         ];
     }
 

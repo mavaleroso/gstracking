@@ -59,8 +59,9 @@
                                     <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
                                 </div>
                                 <div class="form-group my-10">
-                                    <label>Drivers:</label>
-                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers[]" multiple="multiple" v-model="formFields.drivers">
+                                    <label>Driver:</label>
+                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers" v-model="formFields.driver">
+                                        <option label="Label"></option>
                                         <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
                                     </select>
                                 </div>
@@ -137,7 +138,7 @@ export default {
                 serviceProvider: '',
                 templateNumber: '',
                 capacityNumber: '',
-                drivers: []
+                driver: ''
             },
             names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
         }
@@ -176,7 +177,7 @@ export default {
                 vm.formFields.capacityNumber = '';
                 vm.formFields.templateNumber = '';
                 vm.formFields.serviceProvider = '';
-                vm.formFields.drivers = [];
+                vm.formFields.driver = '';
 
                 this.image();
 
@@ -190,7 +191,7 @@ export default {
                     vm.formFields.serviceProvider = $(this).val();
                 });
                 $('#kt_select2_drivers').change(function() {
-                    vm.formFields.drivers = $(this).val();
+                    vm.formFields.driver = $(this).val();
                 });
                 $('.card-label span').text('Create Vehicle');
             });
@@ -200,7 +201,6 @@ export default {
             let vm = this;
             $(() => {
                 axios.get("/transportation/vehicle/show/"+id).then(response => {
-                    let driverLength = 0;
 
                     vm.formFields.id = response.data.vehicles[0].id;
                     vm.formFields.pictureName = response.data.vehicles[0].image;
@@ -209,14 +209,8 @@ export default {
                     vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
                     vm.formFields.templateNumber = response.data.vehicles[0].template;
                     vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
-                    vm.formFields.drivers = [];
-
-                    driverLength = response.data.drivers.length;
-                    
-                    for (let i = 0; i < driverLength; i++) {
-                        vm.formFields.drivers.push(response.data.drivers[i].id);
-                    }
-
+                    vm.formFields.driver = response.data.vehicles[0].driver_id;
+                  
                     let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
                 });
@@ -232,7 +226,7 @@ export default {
                     vm.formFields.serviceProvider = $(this).val();
                 });
                 $('#kt_select2_drivers').change(function() {
-                    vm.formFields.drivers = $(this).val();
+                    vm.formFields.driver = $(this).val();
                 });
                 
                 $('.card-label span').text('Edit Vehicle');
@@ -240,7 +234,7 @@ export default {
                     $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
                     $('#kt_select_svc_provider').trigger('change');
 
-                    $('#kt_select2_drivers').val(vm.formFields.drivers);
+                    $('#kt_select2_drivers').val(vm.formFields.driver);
                     $('#kt_select2_drivers').trigger('change');
                 }, 500);
             });
@@ -262,7 +256,7 @@ export default {
             formD.append('serviceProvider', this.formFields.serviceProvider);
             formD.append('templateNumber', this.formFields.templateNumber);
             formD.append('capacityNumber', this.formFields.capacityNumber);
-            formD.append('drivers', this.formFields.drivers);
+            formD.append('driver', this.formFields.driver);
 
             method = (this.create)? 'create':'edit';
 

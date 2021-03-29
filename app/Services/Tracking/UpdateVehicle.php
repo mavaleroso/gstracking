@@ -20,6 +20,7 @@ class UpdateVehicle
         
         $vehicle = Vehicle::where('id', $fields['id'])->update([
             'service_provider_id' => $fields['serviceProvider'],
+            'driver_id' => $fields['driver'],
             'name' => $fields['name'],
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
@@ -34,18 +35,6 @@ class UpdateVehicle
                 'image' => $file_name
             ]);
             Storage::delete('public/images/'.$fields['pictureName']);
-        }
-
-        if ($vehicle) {
-            if ($fields['drivers']) {
-                $drivers = explode(',', $fields['drivers']);
-                $driver = Driver::where('vehicle_id', $fields['id'])->update([
-                    'vehicle_id' => NULL
-                ]);
-                $driver = Driver::whereIn('id', $drivers)->update([
-                    'vehicle_id' => $fields['id']
-                ]);
-            }
         }
 
         return $vehicle;
