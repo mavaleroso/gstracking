@@ -8,6 +8,7 @@ import Overview from './components/Pages/Transportation/Overview';
 import Vehicle from './components/Pages/Transportation/Vehicle';
 import Drivers from './components/Pages/Transportation/Driver';
 import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
+import ListPo from './components/Pages/ListPo';
 
 const routes = [
     {
@@ -80,6 +81,14 @@ const routes = [
         name: 'transactionLogs',
         meta: {
             title: 'List of Logs'
+        }   
+    },
+    {
+        path: '/list_po',
+        component: ListPo,
+        name: 'listPo',
+        meta: {
+            title: 'List of PO'
         }   
     },
 ]

@@ -37,6 +37,7 @@ Route::get('/list_transportation', 'main\DashboardController@index');
 Route::get('/list_vehicle', 'main\DashboardController@index');
 Route::get('/list_drivers', 'main\DashboardController@index');
 Route::get('/list_service_provider', 'main\DashboardController@index');
+Route::get('/list_po', 'main\DashboardController@index');
 
 
 
