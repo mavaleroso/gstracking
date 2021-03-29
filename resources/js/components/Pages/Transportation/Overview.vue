@@ -1,9 +1,7 @@
 <template>
     <div class="card card-custom gutter-b" id="transportation-page">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-            
-            </div>
+            <div class="card-title"></div>
             <div class="card-toolbar">
                 <!--begin::Button-->
                 <a href="#" class="btn btn-primary font-weight-bolder">
@@ -27,29 +25,27 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Image</th>
                         <th>Company</th>
                         <th>Provider</th>
                         <th>Type</th>
                         <th>Description</th>
                         <th>Template No.</th>
-                        <th>Drivers</th>
-                        <th>Created</th>
+                        <th>Driver</th>
                         <th>Updated</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                        <td>1</td>
+                       <td>Test</td>
                        <td>DSWD</td>
                        <td>Office</td>
                        <td>SUV</td>
                        <td>SUV 123</td>
                        <td>PS 12345</td>
-                       <td>Show Driver</td>
-                       <td>03/12/2020</td>
+                       <td>Marwen A. Valeroso</td>
                        <td>2/19/2021</td>
-                       <td>Edit</td>
                     </tr>
                 </tbody>
             </table>
@@ -72,7 +68,6 @@ export default {
             var initTable = ()=> {
             var table = $('#transportation-tbl');
 
-            // begin first table
                 table.DataTable({
                     scrollY: '50vh',
                     scrollX: true,

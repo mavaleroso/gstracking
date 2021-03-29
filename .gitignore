@@ -1,8 +1,9 @@
 /node_modules
 /public/hot
-/public/storage
 /storage/*.key
-/storage/app/images
+/storage/app/images/*.jpg
+/storage/app/images/*.png
+!/storage/app/images/vehicle-photo-default.jpg
 /vendor
 .env
 .env.backup
