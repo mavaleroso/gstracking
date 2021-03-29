@@ -75,6 +75,7 @@
                             <th>Type</th>
                             <th>Company name</th>
                             <th>Vehicle count</th>
+                            <th>Updated At</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -209,6 +210,7 @@ export default {
                         { "data": "type" },
                         { "data": "company_name" },
                         { "data": "vehicle_count" },
+                        { "data": "updated_at" },
                         { "data": "id" },
                     ],
                     columnDefs: [
@@ -243,6 +245,12 @@ export default {
                                     </a>\
                                 ';
                             },
+                        },
+                        {
+                            targets: 4,
+                            render: data => {
+                                return dateTimeEng(data);
+                            }
                         },
                     ]
                     

@@ -27,7 +27,6 @@
                         <th>ID</th>
                         <th>Image</th>
                         <th>Company</th>
-                        <th>Provider</th>
                         <th>Type</th>
                         <th>Description</th>
                         <th>Template No.</th>
@@ -35,19 +34,6 @@
                         <th>Updated</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                       <td>1</td>
-                       <td>Test</td>
-                       <td>DSWD</td>
-                       <td>Office</td>
-                       <td>SUV</td>
-                       <td>SUV 123</td>
-                       <td>PS 12345</td>
-                       <td>Marwen A. Valeroso</td>
-                       <td>2/19/2021</td>
-                    </tr>
-                </tbody>
             </table>
             <!--end: Datatable-->
         </div>
@@ -65,15 +51,46 @@ export default {
             });
         },
         tdatatable(){
-            var initTable = ()=> {
+            var initTable = () => {
             var table = $('#transportation-tbl');
-
                 table.DataTable({
                     scrollY: '50vh',
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
-                    columnDefs: [],
+                    serverSide: true,
+                    ajax: {
+                        url: BASE_URL + '/transportation/overview/read',
+                        type: 'GET'
+                    },
+                    columns: [
+                        { "data": "id" },
+                        { "data": "image" },
+                        { "data": "company_name" },
+                        { "data": "type" },
+                        { "data": "description" },
+                        { "data": "template" },
+                        { "data": "fullname" },
+                        { "data": "updated_at" }
+                    ],
+                    columnDefs: [
+                        {
+                            targets: 1,
+                            render: data => {
+                                var img_path = (data)? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+                                return '<a class="vehicle-img-viewer" href="'+ img_path +'"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'"></a>';
+                            }
+                        },
+                        {
+                            targets: 7,
+                            render: data => {
+                                return dateTimeEng(data);
+                            }
+                        },
+                    ],
+                    drawCallback: () => {
+                        $(".vehicle-img-viewer").fancybox();
+                    }
                 });
             };
             return {
