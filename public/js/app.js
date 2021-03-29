@@ -4178,20 +4178,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -4212,7 +4198,43 @@ __webpack_require__.r(__webpack_exports__);
           scrollX: true,
           scrollCollapse: true,
           processing: true,
-          columnDefs: []
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + '/transportation/overview/read',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "image"
+          }, {
+            "data": "company_name"
+          }, {
+            "data": "type"
+          }, {
+            "data": "description"
+          }, {
+            "data": "template"
+          }, {
+            "data": "fullname"
+          }, {
+            "data": "updated_at"
+          }],
+          columnDefs: [{
+            targets: 1,
+            render: function render(data) {
+              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+              return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
+            }
+          }, {
+            targets: 7,
+            render: function render(data) {
+              return dateTimeEng(data);
+            }
+          }],
+          drawCallback: function drawCallback() {
+            $(".vehicle-img-viewer").fancybox();
+          }
         });
       };
 
@@ -4250,6 +4272,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
 //
 //
 //
@@ -4465,6 +4488,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "vehicle_count"
           }, {
+            "data": "updated_at"
+          }, {
             "data": "id"
           }],
           columnDefs: [{
@@ -4497,6 +4522,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                         </span>\
                                     </a>\
                                 ';
+            }
+          }, {
+            targets: 4,
+            render: function render(data) {
+              return dateTimeEng(data);
             }
           }]
         });
@@ -46842,8 +46872,6 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Company")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Provider")]),
-              _vm._v(" "),
               _c("th", [_vm._v("Type")]),
               _vm._v(" "),
               _c("th", [_vm._v("Description")]),
@@ -46853,28 +46881,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("Driver")]),
               _vm._v(" "),
               _c("th", [_vm._v("Updated")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("1")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Test")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("DSWD")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Office")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("SUV")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("SUV 123")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("PS 12345")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Marwen A. Valeroso")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("2/19/2021")])
             ])
           ])
         ]
@@ -47208,6 +47214,8 @@ var staticRenderFns = [
               _c("th", [_vm._v("Company name")]),
               _vm._v(" "),
               _c("th", [_vm._v("Vehicle count")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Updated At")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])

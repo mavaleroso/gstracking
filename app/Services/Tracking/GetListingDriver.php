@@ -17,8 +17,6 @@ class GetListingDriver
     {
         $query = Driver::select(['*']);
 
-      
-
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'fullname',

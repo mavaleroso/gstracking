@@ -74,11 +74,16 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
         Route::post('/edit', 'TransportationDriverController@edit');
         Route::post('/delete/{id}', 'TransportationDriverController@destroy');
     });
+
     Route::group(['prefix' => 'serviceprovider'], function () {
         Route::post('/create', 'TransportationServiceProviderController@create');
         Route::get('/read', 'TransportationServiceProviderController@index');
         Route::get('/show/{id}', 'TransportationServiceProviderController@show');
         Route::post('/edit', 'TransportationServiceProviderController@edit');
+    });
+
+    Route::group(['prefix' => 'overview'], function () {
+        Route::get('/read', 'TransportationOverviewController@index');
     });
 });
 
