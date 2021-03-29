@@ -55,8 +55,6 @@ class TransportationVehicleController extends Controller
     public function show($id)
     {
         $data['vehicles'] = Vehicle::where('id', $id)->get();
-        $data['drivers'] = Driver::where('vehicle_id', $id)->get();
-
         return response()->json($data);
     }
 

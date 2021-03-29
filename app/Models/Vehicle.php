@@ -22,6 +22,7 @@ class Vehicle extends Model
      */
     protected $fillable = [
         'service_provider_id',
+        'driver_id',
         'vehicle_type',
         'image',
         'name',
