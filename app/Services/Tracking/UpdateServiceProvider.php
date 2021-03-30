@@ -16,8 +16,8 @@ class UpdateServiceProvider
     {
         $svc = ServiceProvider::where('id', $fields['id'])->update([
             'type' => $fields['type'],
-            'company_name' => $fields['companyname'],
-            'vehicle_count' => $fields['vehiclecount'],
+            'company_name' => $fields['companyName'],
+            'vehicle_count' => $fields['vehicleCount'],
         ]);
 
         return $svc;
