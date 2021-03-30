@@ -221,6 +221,28 @@ export default {
                             }
                         }
                     }
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+            });
+        },
+        deleteEntry(id) {
+             Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won"t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(result => {
+                if (result.value) {
+                    axios.post('/transportation/serviceprovider/delete/'+id).then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            response.data.message,
+                            'success'
+                        );
+                        
+                        $("#serviceProvider-tbl").DataTable().ajax.reload();
+                    });
+                }
             });
         },
         tdatatable() {
@@ -283,7 +305,7 @@ export default {
                             render: data => {
                                 return dateTimeEng(data);
                             }
-                        },
+                        }
                     ],
                     drawCallback: () => {
                         $('.btn-edit').click(function() {
@@ -296,6 +318,7 @@ export default {
                             vm.deleteEntry(id);
                         });
                     } 
+
                 });
             };
             return {

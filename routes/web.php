@@ -80,6 +80,7 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
         Route::get('/read', 'TransportationServiceProviderController@index');
         Route::get('/show/{id}', 'TransportationServiceProviderController@show');
         Route::post('/edit', 'TransportationServiceProviderController@edit');
+        Route::post('/delete/{id}', 'TransportationServiceProviderController@destroy');
     });
 
     Route::group(['prefix' => 'overview'], function () {
