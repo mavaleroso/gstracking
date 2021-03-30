@@ -4135,11 +4135,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
-        vm.formFields.id = '';
-        vm.formFields.fullname = '';
-        vm.formFields.age = '';
-        vm.formFields.gender = '';
-        vm.formFields.contactNumber = '';
         $('#kt_select_gender').select2({
           placeholder: "Select gender",
           minimumResultsForSearch: Infinity
@@ -4175,6 +4170,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     cancelEntry: function cancelEntry() {
+      this.formFields.id = '';
+      this.formFields.fullname = '';
+      this.formFields.age = '';
+      this.formFields.gender = '';
+      this.formFields.contactNumber = '';
       this.create = false;
       this.edit = false;
       this.ini();
@@ -4581,7 +4581,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4622,7 +4621,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.card-label span').text('Create Service Provider');
       });
     },
+    editEntry: function editEntry(id) {
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        $('.card-label span').text('Edit Service Provider');
+        axios.get("/transportation/serviceprovider/show/" + id).then(function (response) {
+          vm.formFields.id = response.data[0].id;
+          vm.formFields.type = response.data[0].type;
+          vm.formFields.companyName = response.data[0].company_name;
+          vm.formFields.vehicleCount = response.data[0].vehicle_count;
+        });
+        $('#kt_select_svc_type').select2({
+          placeholder: "Select type",
+          minimumResultsForSearch: Infinity
+        });
+        $('#kt_select_svc_type').change(function () {
+          vm.formFields.type = $(this).val();
+        });
+        setTimeout(function () {
+          $('#kt_select_svc_type').val(vm.formFields.type);
+          $('#kt_select_svc_type').trigger('change');
+        }, 500);
+      });
+    },
     cancelEntry: function cancelEntry() {
+      this.formFields.id = '';
+      this.formFields.companyName = '';
+      this.formFields.vehicleCount = '';
+      this.formFields.type = '';
       this.create = false;
       this.edit = false;
       this.ini();
@@ -4750,7 +4777,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               return dateTimeEng(data);
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $('.btn-edit').click(function () {
+              var id = $(this).data('id');
+              vm.editEntry(id);
+            });
+            $('.btn-delete').click(function () {
+              var id = $(this).data('id');
+              vm.deleteEntry(id);
+            });
+          }
         });
       };
 
@@ -47464,7 +47501,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "driver-page" } }, [
+  return _c("div", { attrs: { id: "serviceProvider-page" } }, [
     _vm.create == true || _vm.edit == true
       ? _c(
           "div",
@@ -47480,7 +47517,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form",
-                  attrs: { id: "driver-form" },
+                  attrs: { id: "serviceProvider-form" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -47535,9 +47572,13 @@ var render = function() {
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Office")]),
+                              _c("option", { attrs: { value: "Office" } }, [
+                                _vm._v("Office")
+                              ]),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Rental")])
+                              _c("option", { attrs: { value: "Rental" } }, [
+                                _vm._v("Rental")
+                              ])
                             ]
                           )
                         ]),
