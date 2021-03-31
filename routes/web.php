@@ -89,5 +89,6 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Page'], function () 
 
 Route::group(['prefix' => 'po', 'namespace' => 'Page'], function () {
     Route::get('/index', 'PoController@index');
+    Route::post('/create', 'PoController@create');
 });
 

@@ -2458,6 +2458,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2553,12 +2573,16 @@ __webpack_require__.r(__webpack_exports__);
       create: false,
       edit: false,
       formFields: {
-        id: '',
-        type: '',
-        companyName: '',
-        vehicleCount: ''
+        // id: '',
+        // type: '',
+        // companyName: '',
+        // vehicleCount: '',
+        po_no: '',
+        po_amount: '',
+        balance: '',
+        status: ''
       },
-      names: ['type', 'companyName', 'vehicleCount']
+      names: ['po_no', 'po_amount', 'balance', 'status']
     };
   },
   created: function created() {},
@@ -2577,22 +2601,96 @@ __webpack_require__.r(__webpack_exports__);
       this.create = true;
       var vm = this;
       $(function () {
-        $('#kt_select_svc_type').select2({
-          placeholder: "Select type",
+        $('#status').select2({
+          placeholder: "Select status",
           minimumResultsForSearch: Infinity
         });
-        $('#kt_select_svc_type').change(function () {
-          vm.formFields.type = $(this).val();
+        $('#status').change(function () {
+          vm.formFields.status = $(this).val();
         });
-        $('.card-label span').text('Create Service Provider');
+        $('.card-label span').text('Create PO');
       });
     },
     cancelEntry: function cancelEntry() {
+      this.formFields.po_no = '';
+      this.formFields.po_amount = '';
+      this.formFields.balance = '';
+      this.formFields.status = '';
       this.create = false;
       this.edit = false;
       this.ini();
     },
-    saveEntry: function saveEntry() {},
+    saveEntry: function saveEntry() {
+      var _this2 = this;
+
+      var formD = new FormData();
+      var method = null;
+      formD.append('po_no', this.formFields.po_no);
+      formD.append('po_amount', this.formFields.po_amount);
+      formD.append('balance', this.formFields.balance);
+      formD.append('status', this.formFields.status);
+      method = this.create ? 'create' : 'edit';
+      axios.post('/po/' + method, formD).then(function (response) {
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+        setTimeout(function () {
+          _this2.cancelEntry();
+        }, 1000);
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if (key == 'status') {
+            console.log("if status sulod");
+
+            if ($('#status').next().next().length == 0) {
+              $('#status').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
+          } else {
+            console.log("else status sulod");
+
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            }
+          }
+        }
+
+        console.log('this.names===' + _this2.names);
+
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'status') {
+            console.log('this.names[i] if ===');
+
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              console.log('this.names[i] if === -1');
+
+              if ($('#status').next().next().length != 0) {
+                console.log('this.names[i] if === !=0');
+                $('#status').next().next('.invalid-feedback').remove();
+              }
+            }
+          } else {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              console.log('this.names[i]:::' + _this2.names[i]);
+              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            }
+          }
+        }
+      });
+    },
     tdatatable: function tdatatable() {
       var vm = this;
 
@@ -45177,9 +45275,121 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "col-lg-3" }, [
                         _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Service Provider:")]),
+                          _c("label", [_vm._v("PO #:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.po_no,
+                                expression: "formFields.po_no"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "text",
+                              name: "po_no",
+                              placeholder: "PO number"
+                            },
+                            domProps: { value: _vm.formFields.po_no },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "po_no",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Amount :")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.po_amount,
+                                expression: "formFields.po_amount"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              step: "any",
+                              name: "po_amount",
+                              placeholder: "Amount"
+                            },
+                            domProps: { value: _vm.formFields.po_amount },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "po_amount",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Balance :")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.balance,
+                                expression: "formFields.balance"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              step: "any",
+                              name: "balance",
+                              placeholder: "Balance"
+                            },
+                            domProps: { value: _vm.formFields.balance },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "balance",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Status:")]),
                           _vm._v(" "),
                           _c(
                             "select",
@@ -45188,15 +45398,12 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.formFields.type,
-                                  expression: "formFields.type"
+                                  value: _vm.formFields.status,
+                                  expression: "formFields.status"
                                 }
                               ],
                               staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select_svc_type",
-                                name: "svc_type"
-                              },
+                              attrs: { id: "status", name: "status" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -45210,7 +45417,7 @@ var render = function() {
                                     })
                                   _vm.$set(
                                     _vm.formFields,
-                                    "type",
+                                    "status",
                                     $event.target.multiple
                                       ? $$selectedVal
                                       : $$selectedVal[0]
@@ -45221,81 +45428,13 @@ var render = function() {
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Office")]),
+                              _c("option", [_vm._v("Ongoing")]),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Rental")])
+                              _c("option", [_vm._v("Approved")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Completed")])
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Company name:")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.companyName,
-                                expression: "formFields.companyName"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "svc_companyName",
-                              placeholder: "Enter fullname"
-                            },
-                            domProps: { value: _vm.formFields.companyName },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "companyName",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Vehicle count:")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.vehicleCount,
-                                expression: "formFields.vehicleCount"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "number",
-                              name: "svc_vehicleCount",
-                              placeholder: "Enter age"
-                            },
-                            domProps: { value: _vm.formFields.vehicleCount },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "vehicleCount",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
                         ])
                       ])
                     ])

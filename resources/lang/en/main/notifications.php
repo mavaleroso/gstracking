@@ -23,4 +23,6 @@ return [
     // Service Provider  Page
     'serviceProvider_created_successfully' => 'Service Provider created succesfully',
 
+    // PO  Page
+    'po_created_successfully' => 'Purchased Order created succesfully',
 ];
