@@ -22,17 +22,65 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\V1', 'middleware' => 'locale
 });
 
 // AXIOS
-Route::get('/regions_data', 'ajax\RegionController@index');
-Route::get('/provinces_data', 'ajax\ProvinceController@show');
-Route::get('/cities_data', 'ajax\CityController@show');
-Route::get('/brgys_data', 'ajax\BrgyController@show');
-Route::get('/request_data', 'page\TravelController@index');
+Route::get('/logs', 'main\HistoryLogsController@Logs');
 
-Route::get('/destination_details', 'page\ListRequestController@destinations');
-Route::get('/passenger_details', 'page\ListRequestController@passengers');
+Route::group(['namespace' => 'Ajax'], function () {
+    Route::resource('region', 'RegionController', [
+        'names' => [
+            'index' => 'ajax.region.index',
+            'show' => 'ajax.region.show',
+        ]
+    ]);
 
-Route::get('/service_providers', 'ajax\ServiceProviderController@index');
-Route::get('/drivers_data', 'ajax\DriverController@index');
+    Route::resource('province', 'ProvinceController', [
+        'names' => [
+            'index' => 'ajax.province.index',
+            'show' => 'ajax.province.show',
+        ]
+    ]);
 
-Route::get('/logs', 'page\HistoryLogsController@Logs');
+    Route::resource('city', 'CityController', [
+        'names' => [
+            'index' => 'ajax.city.index',
+            'show' => 'ajax.city.show',
+        ]
+    ]);
+
+    Route::resource('brgy', 'BarangayController', [
+        'names' => [
+            'index' => 'ajax.brgy.index',
+            'show' => 'ajax.brgy.show',
+        ]
+    ]);
+
+    Route::resource('destination', 'DestinationController', [
+        'names' => [
+            'index' => 'ajax.destination.index',
+            'show' => 'ajax.destination.show',
+        ]
+    ]);
+
+    Route::resource('passenger', 'PassengerController', [
+        'names' => [
+            'index' => 'ajax.passenger.index',
+            'show' => 'ajax.passenger.show',
+        ]
+    ]);
+
+    Route::resource('driver', 'DriverController', [
+        'names' => [
+            'index' => 'ajax.driver.index',
+            'show' => 'ajax.driver.show',
+        ]
+    ]);
+
+    Route::resource('serviceprovider', 'ServiceProviderController', [
+        'names' => [
+            'index' => 'ajax.serviceprovider.index',
+            'show' => 'ajax.serviceprovider.show',
+        ]
+    ]);
+});
+
+
 

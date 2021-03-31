@@ -2780,7 +2780,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             type: 'remote',
             source: {
               read: {
-                url: HOST_URL + '/api/request_data',
+                url: HOST_URL + '/travel/request',
                 method: 'GET'
               }
             },
@@ -2954,18 +2954,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this3 = this;
 
-      axios.get("/api/regions_data").then(function (response) {
+      axios.get("/api/region").then(function (response) {
         _this3.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this4 = this;
 
-      axios.get("/api/provinces_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/province/" + id).then(function (response) {
         _this4.provinces = response.data;
 
         _this4.provinces.map(function (i) {
@@ -2976,11 +2972,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this5 = this;
 
-      axios.get("/api/cities_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/city/" + id).then(function (response) {
         _this5.cities = response.data;
 
         _this5.cities.map(function (i) {
@@ -2991,11 +2983,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this6 = this;
 
-      axios.get("/api/brgys_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/brgy/" + id).then(function (response) {
         _this6.brgys = response.data;
       });
     },
@@ -3013,11 +3001,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('.details-input').attr('disabled', true);
       this.request_edit = 0;
       $('#kt_select_region').val();
-      axios.get("/api/destination_details", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/destination/" + id).then(function (response) {
         var destination = response.data;
         var data = [];
 
@@ -3091,11 +3075,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getPassengers: function getPassengers(id) {
       var _this7 = this;
 
-      axios.get("/api/passenger_details", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/passenger/" + id).then(function (response) {
         _this7.passengers = response.data;
       });
     },
@@ -3121,7 +3101,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this8 = this;
 
       var requestform = $('#request-form').serialize();
-      axios.put("/travel/store", requestform).then(function (response) {
+      axios.put("/travel/request/" + id, requestform).then(function (response) {
         $('.new-row').remove();
         $('.details-input').attr('disabled', true);
         _this8.request_edit = 0;
@@ -3518,7 +3498,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       var requestform = $('#kt_form').serialize();
-      axios.put("/travel/store", requestform).then(function (response) {
+      axios.post("/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -3595,18 +3575,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this3 = this;
 
-      axios.get("/api/regions_data").then(function (response) {
+      axios.get("/api/region").then(function (response) {
         _this3.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this4 = this;
 
-      axios.get("/api/provinces_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/province/" + id).then(function (response) {
         _this4.provinces = response.data;
 
         _this4.provinces.map(function (i) {
@@ -3617,11 +3593,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this5 = this;
 
-      axios.get("/api/cities_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/city/" + id).then(function (response) {
         _this5.cities = response.data;
 
         _this5.cities.map(function (i) {
@@ -3632,11 +3604,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this6 = this;
 
-      axios.get("/api/brgys_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/brgy/" + id).then(function (response) {
         _this6.brgys = response.data;
       });
     },
@@ -3933,7 +3901,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('.card-label span').text('Edit Driver');
-        axios.get("/transportation/driver/show/" + id).then(function (response) {
+        axios.get("/transportation/driver/" + id).then(function (response) {
           vm.formFields.id = response.data[0].id;
           vm.formFields.fullname = response.data[0].fullname;
           vm.formFields.age = response.data[0].age;
@@ -3962,13 +3930,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('fullname', this.formFields.fullname);
       formD.append('age', this.formFields.age);
       formD.append('gender', this.formFields.gender);
       formD.append('contactNumber', this.formFields.contactNumber);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/driver/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/driver' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4028,7 +4005,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('/transportation/driver/delete/' + id).then(function (response) {
+          axios["delete"]('/transportation/driver/' + id).then(function (response) {
             Swal.fire('Deleted!', response.data.message, 'success');
             $("#driver-tbl").DataTable().ajax.reload();
           });
@@ -4047,7 +4024,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/driver/read',
+            url: BASE_URL + '/transportation/driver',
             type: 'GET'
           },
           columns: [{
@@ -4200,7 +4177,7 @@ __webpack_require__.r(__webpack_exports__);
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/overview/read',
+            url: BASE_URL + '/transportation/overview',
             type: 'GET'
           },
           columns: [{
@@ -4410,12 +4387,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('type', this.formFields.type);
       formD.append('companyName', this.formFields.companyName);
       formD.append('vehicleCount', this.formFields.vehicleCount);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/serviceprovider/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/serviceprovider' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4476,7 +4462,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/serviceprovider/read',
+            url: BASE_URL + '/transportation/serviceprovider',
             type: 'GET'
           },
           columns: [{
@@ -4721,14 +4707,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getServiceProviders: function getServiceProviders() {
       var _this = this;
 
-      axios.get("/api/service_providers").then(function (response) {
+      axios.get("/api/serviceprovider").then(function (response) {
         _this.serviceProviders = response.data;
       });
     },
     getDrivers: function getDrivers() {
       var _this2 = this;
 
-      axios.get("/api/drivers_data").then(function (response) {
+      axios.get("/api/driver").then(function (response) {
         _this2.drivers = response.data;
       });
     },
@@ -4777,7 +4763,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.edit = true;
       var vm = this;
       $(function () {
-        axios.get("/transportation/vehicle/show/" + id).then(function (response) {
+        axios.get("/transportation/vehicle/" + id).then(function (response) {
           vm.formFields.id = response.data.vehicles[0].id;
           vm.formFields.pictureName = response.data.vehicles[0].image;
           vm.formFields.name = response.data.vehicles[0].name;
@@ -4823,6 +4809,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('picture', this.formFields.picture);
       formD.append('pictureName', this.formFields.pictureName);
@@ -4832,8 +4819,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
       formD.append('driver', this.formFields.driver);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/vehicle/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/vehicle' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4893,7 +4888,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('/transportation/vehicle/delete/' + id).then(function (response) {
+          axios["delete"]('/transportation/vehicle/' + id).then(function (response) {
             Swal.fire('Deleted!', response.data.message, 'success');
             $("#vehicle-tbl").DataTable().ajax.reload();
           });
@@ -4912,7 +4907,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/vehicle/read',
+            url: BASE_URL + '/transportation/vehicle',
             type: 'GET'
           },
           columns: [{

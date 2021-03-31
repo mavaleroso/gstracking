@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Travels\TravelStoreRequest;
 use App\Services\Travels\CreateTravel;
@@ -10,6 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class TravelController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:serviceProvider-list', ['only' => ['index']]);
+        $this->middleware('permission:serviceProvider-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:serviceProvider-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:serviceProvider-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:serviceProvider-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *

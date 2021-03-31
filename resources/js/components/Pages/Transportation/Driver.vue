@@ -147,7 +147,7 @@ export default {
             $(() => {
                 $('.card-label span').text('Edit Driver');
 
-                axios.get("/transportation/driver/show/"+id).then(response => {
+                axios.get("/transportation/driver/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
                     vm.formFields.fullname = response.data[0].fullname;
                     vm.formFields.age = response.data[0].age;
@@ -177,6 +177,7 @@ export default {
         saveEntry() {
             let formD = new FormData();
             let method = null;
+            let putParams = null;
 
             formD.append('id', this.formFields.id);
             formD.append('fullname', this.formFields.fullname);
@@ -184,9 +185,10 @@ export default {
             formD.append('gender', this.formFields.gender);
             formD.append('contactNumber', this.formFields.contactNumber);
 
-            method = (this.create)? 'create':'edit';
+            method = (this.create)? 'POST':'PUT';
+            putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios.post('/transportation/driver/' + method, formD).then(response => {
+            axios({method: method,url: '/transportation/driver' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -240,7 +242,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.post('/transportation/driver/delete/'+id).then(response => {
+                    axios.delete('/transportation/driver/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,
@@ -263,7 +265,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/driver/read',
+                        url: BASE_URL + '/transportation/driver',
                         type: 'GET'
                     },
                     columns: [

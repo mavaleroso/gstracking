@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
 use App\Models\Transaction_log;

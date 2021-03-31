@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Ajax;
+namespace App\Http\Controllers\ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Province;
+use App\Models\Passenger;
 
-class ProvinceController extends Controller
+class PassengerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        return response()->json(Province::all());
+        //
     }
 
     /**
@@ -47,7 +47,7 @@ class ProvinceController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Province::where('region_id', $id)->get());
+        return response()->json(Passenger::where('request_id', $id)->get());
     }
 
     /**

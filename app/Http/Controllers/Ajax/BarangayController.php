@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Main;
+namespace App\Http\Controllers\Ajax;
 
-use App\Http\Controllers\Main\BaseController as Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\TransactionLogs;
+use App\Models\Barangay;
 
-class DashboardController extends Controller
+class BarangayController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,18 +15,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        if (auth('users')->check()) {
-            return view('main');
-        }
-        return redirect()->route('main.login');
+        return response()->json(Barangay::all());
     }
-
-    public function logs()
-    {
-        $play = TransactionLogs::orderBy('id','desc')->get();
-        return response()->json($play);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -56,7 +46,7 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Barangay::whereIn('city_id', [$id])->get());
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\DriverRequest;
 use App\Services\Tracking\CreateDriver;
@@ -12,6 +12,19 @@ use App\Models\Driver;
 
 class TransportationDriverController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:driver-list', ['only' => ['index']]);
+        $this->middleware('permission:driver-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:driver-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:driver-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:driver-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *
@@ -28,10 +41,9 @@ class TransportationDriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(DriverRequest $driverRequest, CreateDriver $createDriver)
+    public function create()
     {
-        $result = $createDriver->execute($driverRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
+        
     }
 
     /**
@@ -40,9 +52,10 @@ class TransportationDriverController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DriverRequest $driverRequest, CreateDriver $createDriver)
     {
-        //
+        $result = $createDriver->execute($driverRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -54,7 +67,6 @@ class TransportationDriverController extends Controller
     public function show($id)
     {
         $data = Driver::where('id', $id)->get();
-
         return response()->json($data);
     }
 
@@ -64,10 +76,9 @@ class TransportationDriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(DriverRequest $driverRequest, UpdateDriver $updateDriver)
+    public function edit()
     {
-        $result = $updateDriver->execute($driverRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
+        
     }
 
     /**
@@ -77,9 +88,10 @@ class TransportationDriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, DriverRequest $driverRequest, UpdateDriver $updateDriver)
     {
-        //
+        $result = $updateDriver->execute($id, $driverRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
     }
 
     /**
