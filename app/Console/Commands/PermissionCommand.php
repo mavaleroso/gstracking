@@ -36,7 +36,9 @@ class PermissionCommand extends Command
         'serviceprovider',
         'travel',
         'request',
-        'overview'
+        'listrequest',
+        'overview',
+        'log'
     ];
 
     /**

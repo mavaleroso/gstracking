@@ -30,10 +30,8 @@ Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_service_provider', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 
-Route::get('/travel/index', 'main\TravelController@index');
-
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
-    Route::resource('request', 'TravelController', [
+    Route::resource('request', 'RequestTravelController', [
         'names' => [
             'index' => 'main.request.index',
             'create' => 'main.request.create',
@@ -42,6 +40,18 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'edit' => 'main.request.edit',
             'update' => 'main.request.update',
             'destroy' => 'main.request.destroy',
+        ]
+    ]);
+
+    Route::resource('listrequest', 'ListRequestController', [
+        'names' => [
+            'index' => 'main.listrequest.index',
+            'create' => 'main.listrequest.create',
+            'store' => 'main.listrequest.store',
+            'show' => 'main.listrequest.show',
+            'edit' => 'main.listrequest.edit',
+            'update' => 'main.listrequest.update',
+            'destroy' => 'main.listrequest.destroy',
         ]
     ]);
 });
@@ -92,6 +102,21 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
             'edit' => 'main.overview.edit',
             'update' => 'main.overview.update',
             'destroy' => 'main.overview.destroy',
+        ]
+    ]);
+    
+});
+
+Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
+    Route::resource('log', 'LogController', [
+        'names' => [
+            'index' => 'main.log.index',
+            'create' => 'main.log.create',
+            'store' => 'main.log.store',
+            'show' => 'main.log.show',
+            'edit' => 'main.log.edit',
+            'update' => 'main.log.update',
+            'destroy' => 'main.log.destroy',
         ]
     ]);
 });

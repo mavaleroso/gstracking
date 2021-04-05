@@ -22,7 +22,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\V1', 'middleware' => 'locale
 });
 
 // AXIOS
-Route::get('/logs', 'main\HistoryLogsController@Logs');
 
 Route::group(['namespace' => 'Ajax'], function () {
     Route::resource('region', 'RegionController', [

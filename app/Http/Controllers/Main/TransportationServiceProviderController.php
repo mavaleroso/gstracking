@@ -19,11 +19,11 @@ class TransportationServiceProviderController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:serviceProvider-list', ['only' => ['index']]);
-        $this->middleware('permission:serviceProvider-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:serviceProvider-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:serviceProvider-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:serviceProvider-view', ['only' => ['show']]);
+        $this->middleware('permission:serviceprovider-list', ['only' => ['index']]);
+        $this->middleware('permission:serviceprovider-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:serviceprovider-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:serviceprovider-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:serviceprovider-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.

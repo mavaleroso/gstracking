@@ -299,7 +299,7 @@ export default {
                         type: 'remote',
                         source: {
                             read: {
-                                url: HOST_URL + '/travel/request',
+                                url: HOST_URL + '/travel/listrequest',
                                 method: 'GET',
                             },
                         },
@@ -603,7 +603,7 @@ export default {
         },
         save(id) {
             let requestform = $('#request-form').serialize();
-            axios.put("/travel/request/" + id, requestform).then(response => {
+            axios.put("/travel/listrequest/" + id, requestform).then(response => {
                 $('.new-row').remove();
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;

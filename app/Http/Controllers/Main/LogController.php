@@ -4,36 +4,32 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Travels\TravelStoreRequest;
-use App\Services\Travels\UpdateTravel;
-use Illuminate\Support\Facades\DB;
+use App\Services\Tracking\GetListingLogs;
 
-class ListRequestController extends Controller
+class LogController extends Controller
 {
-    /**
+     /**
      * Initialization
      */
     public function __construct()
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:listrequest-list', ['only' => ['index']]);
-        $this->middleware('permission:listrequest-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:listrequest-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:listrequest-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:listrequest-view', ['only' => ['show']]);
+        $this->middleware('permission:log-list', ['only' => ['index']]);
+        $this->middleware('permission:log-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:log-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:log-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:log-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingLogs $getListingLogs)
     {
-        return response()->json(DB::table('requests')
-            ->select('requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'))
-            ->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
-            ->get());
+        $records = $getListingLogs->execute();
+        return response()->json($records);
     }
 
     /**
@@ -86,10 +82,9 @@ class ListRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id, TravelStoreRequest $travelStoreRequest, UpdateTravel $updateTravel)
+    public function update(Request $request, $id)
     {
-        $result = $updateTravel->execute($id, $travelStoreRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
+        //
     }
 
     /**

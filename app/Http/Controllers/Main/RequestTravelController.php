@@ -8,7 +8,7 @@ use App\Http\Requests\Travels\TravelStoreRequest;
 use App\Services\Travels\CreateTravel;
 use Illuminate\Support\Facades\DB;
 
-class TravelController extends Controller
+class RequestTravelController extends Controller
 {
     /**
      * Initialization
@@ -17,11 +17,11 @@ class TravelController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:serviceProvider-list', ['only' => ['index']]);
-        $this->middleware('permission:serviceProvider-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:serviceProvider-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:serviceProvider-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:serviceProvider-view', ['only' => ['show']]);
+        $this->middleware('permission:request-list', ['only' => ['index']]);
+        $this->middleware('permission:request-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:request-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:request-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:request-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.
@@ -30,10 +30,7 @@ class TravelController extends Controller
      */
     public function index()
     {
-        return response()->json(DB::table('requests')
-            ->select('requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'))
-            ->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
-            ->get());
+        //
     }
 
     /**
@@ -87,7 +84,7 @@ class TravelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
     {
         //
     }
