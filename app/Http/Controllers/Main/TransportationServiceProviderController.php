@@ -79,7 +79,7 @@ class TransportationServiceProviderController extends Controller
     public function edit(ServiceProviderRequest $serviceproviderRequest, UpdateServiceProvider $updateServiceprovider)
     {
         $result = $updateServiceprovider->execute($serviceproviderRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_updated_successfully'), 'result' => $result]);
     }
 
     /**
@@ -102,6 +102,8 @@ class TransportationServiceProviderController extends Controller
      */
     public function destroy($id)
     {
+        $result = ServiceProvider::destroy($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_deleted_successfully'), 'result' => $result]);
         //
     }
 }
