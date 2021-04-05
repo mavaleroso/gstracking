@@ -123,12 +123,6 @@ export default {
             this.create = true;
             let vm = this;
             $(() => {
-                vm.formFields.id = '';
-                vm.formFields.fullname = '';
-                vm.formFields.age = '';
-                vm.formFields.gender = '';
-                vm.formFields.contactNumber = '';
-
                 $('#kt_select_gender').select2({
                     placeholder: "Select gender",
                     minimumResultsForSearch: Infinity
@@ -170,6 +164,11 @@ export default {
             });
         },
         cancelEntry() {
+            this.formFields.id = '';
+            this.formFields.fullname = '';
+            this.formFields.age = '';
+            this.formFields.gender = '';
+            this.formFields.contactNumber = '';
             this.create = false;
             this.edit = false;
             this.ini();
