@@ -15,9 +15,8 @@ class GetListingPo
      */
     public function execute()
     {
-        // $query = Vehicle::select(['*']);
         $query = Procurement::select(['*']);
-       
+        
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'id',

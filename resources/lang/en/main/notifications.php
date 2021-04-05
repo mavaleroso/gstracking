@@ -25,4 +25,6 @@ return [
     'serviceProvider_updated_successfully' => 'Service Provider updated succesfully',
     'serviceProvider_deleted_successfully' => 'Service Provider deleted succesfully',
 
+    // PO  Page
+    'po_created_successfully' => 'Purchased Order created succesfully',
 ];

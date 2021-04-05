@@ -12,25 +12,33 @@
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6">
-
+                            <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Service Provider:</label>
-                                    <select class="form-control select2" id="kt_select_svc_type" name="svc_type" v-model="formFields.type">
-                                        <option label="Label"></option>
-                                         <option>Office</option>
-                                        <option >Rental</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Company name:</label>
-                                     <input type="text" class="form-control required-field" name="svc_companyName" placeholder="Enter fullname" v-model="formFields.companyName"/>
+                                    <label>PO #:</label>
+                                     <input type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Vehicle count:</label>
-                                    <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter age" v-model="formFields.vehicleCount"/>
+                                    <label>Amount :</label>
+                                     <input type="number" min="0" step="any" class="form-control required-field" name="po_amount" placeholder="Amount" v-model="formFields.po_amount"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Balance :</label>
+                                     <input type="number" min="0" step="any" class="form-control required-field" name="balance" placeholder="Balance" v-model="formFields.balance"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Status:</label>
+                                    <select class="form-control select2" id="status" name="status" v-model="formFields.status">
+                                        <option label="Label"></option>
+                                        <option>Ongoing</option>
+                                        <option>Approved</option>
+                                        <option>Completed</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -94,12 +102,16 @@ export default {
             create: false,
             edit: false,
             formFields: {
-                id: '',
-                type: '',
-                companyName: '',
-                vehicleCount: '',
+                // id: '',
+                // type: '',
+                // companyName: '',
+                // vehicleCount: '',
+                po_no: '',
+                po_amount: '',
+                balance: '',
+                status: '',
             },
-            names: ['type', 'companyName', 'vehicleCount']
+            names: ['po_no', 'po_amount', 'balance', 'status']
         }
     },
     created() {
@@ -115,28 +127,103 @@ export default {
             });
         },
         newEntry() {
+
             this.create = true;
             let vm = this;
             $(() => {
-                $('#kt_select_svc_type').select2({
-                    placeholder: "Select type",
+                $('#status').select2({
+                    placeholder: "Select status",
                     minimumResultsForSearch: Infinity
                 });
 
-                $('#kt_select_svc_type').change(function() {
-                    vm.formFields.type = $(this).val();
+                $('#status').change(function() {
+                    vm.formFields.status = $(this).val();
                 });
 
-                $('.card-label span').text('Create Service Provider');
+                $('.card-label span').text('Create PO');
             });
         },
         cancelEntry() {
+
+            this.formFields.po_no = '';
+            this.formFields.po_amount =  '';
+            this.formFields.balance = '';
+            this.formFields.status =  '';
+
             this.create = false;
             this.edit = false;
             this.ini();
         },
         saveEntry() {
-            
+            let formD = new FormData();
+            let method = null;
+
+            formD.append('po_no', this.formFields.po_no);
+            formD.append('po_amount', this.formFields.po_amount);
+            formD.append('balance', this.formFields.balance);
+            formD.append('status', this.formFields.status);
+
+            method = (this.create)? 'create':'edit';
+
+            axios.post('/po/' + method, formD).then(response => {
+                    $('.invalid-feedback').remove();
+                    $('.is-invalid').removeClass('is-invalid');
+                    Swal.fire("Good job!", response.data.message, "success");
+                    showToast(response.data.message, 'success');
+                    setTimeout(() => {
+                        this.cancelEntry();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    let data = error.response.data.errors;
+                    let keys = [];
+                    let values = [];
+
+                    for (const [key, value] of Object.entries(data)) {
+                        keys.push(`${key}`);
+                        values.push(`${value}`);
+                        if(key == 'status'){
+                            console.log("if status sulod");
+                            if ($('#status').next().next().length == 0) {
+                                $('#status').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            }
+                        } else {
+                            console.log("else status sulod");
+                            if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                                $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                                $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            }
+                        }
+                    }
+                    console.log('this.names===' + this.names);
+                    for (let i = 0; i < this.names.length; i++) {
+                        if (this.names[i] == 'status') {
+
+                            console.log('this.names[i] if ===');
+
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+
+                                console.log('this.names[i] if === -1');
+
+                                if ($('#status').next().next().length != 0) {
+
+                                    console.log('this.names[i] if === !=0');
+
+                                    $('#status').next().next('.invalid-feedback').remove();
+                                }
+                            }
+                        } else {
+
+                            if (keys.indexOf(''+this.names[i]+'') == -1) {
+
+                                console.log('this.names[i]:::'+this.names[i]);
+
+                                $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                                $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            }
+                        }
+                    }
+            });
         },
         tdatatable() {
             var vm = this;
