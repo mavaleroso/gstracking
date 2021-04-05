@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Tracking\GetListingOverview;
+use App\Models\Destination;
 
-class TransportationOverviewController extends Controller
+class DestinationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingOverview $getListingOverview)
+    public function index()
     {
-        $records = $getListingOverview->execute();
-        return response()->json($records);
+        //
     }
 
     /**
@@ -48,7 +47,7 @@ class TransportationOverviewController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Destination::where('request_id', $id)->get());
     }
 
     /**

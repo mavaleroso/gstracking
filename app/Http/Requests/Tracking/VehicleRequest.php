@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Tracking;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class VehicleRequest extends FormRequest
 {
