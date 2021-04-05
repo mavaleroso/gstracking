@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Main;
+namespace App\Http\Controllers\Base;
 
-use App\Http\Controllers\Main\BaseController;
+use App\Http\Controllers\Base\BaseController as Controller;
 use App\Http\Requests\Users\UserLoginRequest;
 use App\Traits\ThrottlesRequests;
 use App\Services\Users\LoginUser;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Controller for admin authentication
  */
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     use ThrottlesRequests;
 

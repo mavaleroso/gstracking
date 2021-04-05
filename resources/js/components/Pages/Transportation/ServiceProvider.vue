@@ -169,15 +169,17 @@ export default {
         saveEntry() {
             let formD = new FormData();
             let method = null;
+            let putParams = null;
 
             formD.append('id', this.formFields.id);
             formD.append('type', this.formFields.type);
             formD.append('companyName', this.formFields.companyName);
             formD.append('vehicleCount', this.formFields.vehicleCount);
 
-            method = (this.create)? 'create':'edit';
+            method = (this.create)? 'POST':'PUT';
+            putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios.post('/transportation/serviceprovider/' + method, formD).then(response => {
+            axios({method: method, url: '/transportation/serviceprovider' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -256,7 +258,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/serviceprovider/read',
+                        url: BASE_URL + '/transportation/serviceprovider',
                         type: 'GET'
                     },
                     columns: [

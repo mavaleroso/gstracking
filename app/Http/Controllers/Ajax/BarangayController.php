@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Travels\TravelStoreRequest;
-use App\Services\Travels\CreateTravel;
-use Illuminate\Support\Facades\DB;
+use App\Models\Barangay;
 
-class TravelController extends Controller
+class BarangayController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +15,8 @@ class TravelController extends Controller
      */
     public function index()
     {
-        return response()->json(DB::table('requests')
-            ->select('requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'))
-            ->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
-            ->get());
+        return response()->json(Barangay::all());
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -39,10 +33,9 @@ class TravelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
+    public function store(Request $request)
     {
-        $result = $createTravel->execute($travelStoreRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+        //
     }
 
     /**
@@ -53,7 +46,7 @@ class TravelController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Barangay::whereIn('city_id', [$id])->get());
     }
 
     /**

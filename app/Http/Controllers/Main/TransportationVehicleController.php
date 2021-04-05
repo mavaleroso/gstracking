@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\VehicleRequest;
 use App\Services\Tracking\CreateVehicle;
@@ -13,6 +13,19 @@ use App\Models\Driver;
 
 class TransportationVehicleController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:vehicle-list', ['only' => ['index']]);
+        $this->middleware('permission:vehicle-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:vehicle-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:vehicle-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:vehicle-view', ['only' => ['show']]);
+    }      
     /**
      * Display a listing of the resource.
      *
@@ -29,10 +42,9 @@ class TransportationVehicleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
+    public function create()
     {
-        $result = $createVehicle->execute($vehicleRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+        
     }
 
     /**
@@ -41,9 +53,10 @@ class TransportationVehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
     {
-
+        $result = $createVehicle->execute($vehicleRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -64,10 +77,9 @@ class TransportationVehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(VehicleRequest $vehicleRequest, UpdateVehicle $updateVehicle)
+    public function edit()
     {
-        $result = $updateVehicle->execute($vehicleRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_updated_successfully'), 'result' => $result]);
+       
     }
 
     /**
@@ -77,9 +89,10 @@ class TransportationVehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, VehicleRequest $vehicleRequest, UpdateVehicle $updateVehicle)
     {
-        //
+        $result = $updateVehicle->execute($id, $vehicleRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_updated_successfully'), 'result' => $result]);
     }
 
     /**

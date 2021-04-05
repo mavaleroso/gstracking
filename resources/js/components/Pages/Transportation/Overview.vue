@@ -60,7 +60,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/overview/read',
+                        url: BASE_URL + '/transportation/overview',
                         type: 'GET'
                     },
                     columns: [

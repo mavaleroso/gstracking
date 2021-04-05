@@ -45,7 +45,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/api/logs',
+                        url: BASE_URL + '/history/log',
                         type: 'GET'
                     },
                     columns: [

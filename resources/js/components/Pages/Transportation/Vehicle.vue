@@ -152,12 +152,12 @@ export default {
     },
     methods:{
         getServiceProviders() {
-            axios.get("/api/service_providers").then(response => {
+            axios.get("/api/serviceprovider").then(response => {
                 this.serviceProviders = response.data;
             });
         },
         getDrivers() {
-            axios.get("/api/drivers_data").then(response => {
+            axios.get("/api/driver").then(response => {
                 this.drivers = response.data;
             });
         },
@@ -200,7 +200,7 @@ export default {
             this.edit = true;
             let vm = this;
             $(() => {
-                axios.get("/transportation/vehicle/show/"+id).then(response => {
+                axios.get("/transportation/vehicle/"+id).then(response => {
 
                     vm.formFields.id = response.data.vehicles[0].id;
                     vm.formFields.pictureName = response.data.vehicles[0].image;
@@ -247,6 +247,7 @@ export default {
         saveEntry() {
             let formD = new FormData();
             let method = null;
+            let putParams = null;
 
             formD.append('id', this.formFields.id);
             formD.append('picture', this.formFields.picture);
@@ -258,9 +259,11 @@ export default {
             formD.append('capacityNumber', this.formFields.capacityNumber);
             formD.append('driver', this.formFields.driver);
 
-            method = (this.create)? 'create':'edit';
+            method = (this.create)? 'POST':'PUT';
+            putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios.post('/transportation/vehicle/' + method, formD).then(response => {
+
+            axios({method: method, url: '/transportation/vehicle' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -315,7 +318,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.post('/transportation/vehicle/delete/'+id).then(response => {
+                    axios.delete('/transportation/vehicle/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,
@@ -338,7 +341,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/vehicle/read',
+                        url: BASE_URL + '/transportation/vehicle',
                         type: 'GET'
                     },
                     columns: [

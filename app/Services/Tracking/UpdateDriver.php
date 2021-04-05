@@ -12,9 +12,9 @@ class UpdateDriver
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($fields)
+    public function execute($id, $fields)
     {
-        $driver = Driver::where('id', $fields['id'])->update([
+        $driver = Driver::where('id', $id)->update([
             'fullname' => $fields['fullname'],
             'age' => $fields['age'],
             'sex' => $fields['gender'],
