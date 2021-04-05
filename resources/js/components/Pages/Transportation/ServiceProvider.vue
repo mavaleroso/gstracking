@@ -1,5 +1,5 @@
 <template>
-    <div id="driver-page">
+    <div id="serviceProvider-page">
         <div v-if="create == true || edit == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
             <div class="card-header flex-wrap">
                 <div class="card-title">
@@ -9,17 +9,16 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form" id="driver-form" @submit.prevent="saveEntry">
+                <form class="form" id="serviceProvider-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-
                                 <div class="form-group">
                                     <label>Service Provider:</label>
                                     <select class="form-control select2" id="kt_select_svc_type" name="svc_type" v-model="formFields.type">
                                         <option label="Label"></option>
-                                         <option>Office</option>
-                                        <option >Rental</option>
+                                        <option value="Office">Office</option>
+                                        <option value="Rental">Rental</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -120,16 +119,49 @@ export default {
                 $('#kt_select_svc_type').select2({
                     placeholder: "Select type",
                     minimumResultsForSearch: Infinity
-                });
+                }); 
 
                 $('#kt_select_svc_type').change(function() {
                     vm.formFields.type = $(this).val();
                 });
 
                 $('.card-label span').text('Create Service Provider');
+               
+            });
+        },
+        editEntry(id) {
+            this.edit = true;
+            let vm = this;
+            $(() => {
+                $('.card-label span').text('Edit Service Provider');
+
+                axios.get("/transportation/serviceprovider/show/"+id).then(response => {
+                    vm.formFields.id = response.data[0].id;
+                    vm.formFields.type = response.data[0].type;
+                    vm.formFields.companyName = response.data[0].company_name;
+                    vm.formFields.vehicleCount = response.data[0].vehicle_count;
+                });
+
+                $('#kt_select_svc_type').select2({
+                    placeholder: "Select type",
+                    minimumResultsForSearch: Infinity
+                });
+          
+                $('#kt_select_svc_type').change(function() {
+                    vm.formFields.type = $(this).val();
+                });
+
+                setTimeout(() => {
+                    $('#kt_select_svc_type').val(vm.formFields.type);
+                    $('#kt_select_svc_type').trigger('change');
+                }, 500);
             });
         },
         cancelEntry() {
+            this.formFields.id = '';
+            this.formFields.companyName = '';
+            this.formFields.vehicleCount = '';
+            this.formFields.type = '';
             this.create = false;
             this.edit = false;
             this.ini();
@@ -137,15 +169,17 @@ export default {
         saveEntry() {
             let formD = new FormData();
             let method = null;
+            let putParams = null;
 
             formD.append('id', this.formFields.id);
             formD.append('type', this.formFields.type);
             formD.append('companyName', this.formFields.companyName);
             formD.append('vehicleCount', this.formFields.vehicleCount);
 
-            method = (this.create)? 'create':'edit';
+            method = (this.create)? 'POST':'PUT';
+            putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios.post('/transportation/serviceprovider/' + method, formD).then(response => {
+            axios({method: method, url: '/transportation/serviceprovider' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -189,6 +223,28 @@ export default {
                             }
                         }
                     }
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+            });
+        },
+        deleteEntry(id) {
+             Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won"t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(result => {
+                if (result.value) {
+                    axios.post('/transportation/serviceprovider/delete/'+id).then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            response.data.message,
+                            'success'
+                        );
+                        
+                        $("#serviceProvider-tbl").DataTable().ajax.reload();
+                    });
+                }
             });
         },
         tdatatable() {
@@ -202,7 +258,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/serviceprovider/read',
+                        url: BASE_URL + '/transportation/serviceprovider',
                         type: 'GET'
                     },
                     columns: [
@@ -251,9 +307,20 @@ export default {
                             render: data => {
                                 return dateTimeEng(data);
                             }
-                        },
-                    ]
-                    
+                        }
+                    ],
+                    drawCallback: () => {
+                        $('.btn-edit').click(function() {
+                            let id = $(this).data('id');
+                            vm.editEntry(id);
+                        });
+
+                        $('.btn-delete').click(function() {
+                            let id = $(this).data('id');
+                            vm.deleteEntry(id);
+                        });
+                    } 
+
                 });
             };
             return {

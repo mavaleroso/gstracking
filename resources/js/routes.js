@@ -1,12 +1,12 @@
 import VueRouter from 'vue-router';
 import Dashboard from './components/Pages/Dashboard';
 import RequestTravel from './components/Pages/RequestTravel';
-import ListRequests from './components/Pages/ListRequests';
-import ListTravels from './components/Pages/ListTravels';
-import TransactionLogs from './components/Pages/TransactionLogs';
+import ListRequest from './components/Pages/ListRequests';
+import ListTravel from './components/Pages/ListTravels';
+import Log from './components/Pages/Logs';
 import Overview from './components/Pages/Transportation/Overview';
 import Vehicle from './components/Pages/Transportation/Vehicle';
-import Drivers from './components/Pages/Transportation/Driver';
+import Driver from './components/Pages/Transportation/Driver';
 import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 import ListPo from './components/Pages/ListPo';
 
@@ -29,7 +29,7 @@ const routes = [
     },
     {
         path: '/list_requests',
-        component: ListRequests,
+        component: ListRequest,
         name: 'listRequests',
         meta: {
             title: 'List of Requests'
@@ -37,7 +37,7 @@ const routes = [
     },
     {
         path: '/list_travels',
-        component: ListTravels,
+        component: ListTravel,
         name: 'listTravels',
         meta: {
             title: 'List of Travels'
@@ -61,7 +61,7 @@ const routes = [
     },
     {
         path: '/list_drivers',
-        component: Drivers,
+        component: Driver,
         name: 'listDriver',
         meta: {
             title: 'List of Drivers'
@@ -77,8 +77,8 @@ const routes = [
     },
     {
         path: '/transaction_logs',
-        component: TransactionLogs,
-        name: 'transactionLogs',
+        component: Log,
+        name: 'Logs',
         meta: {
             title: 'List of Logs'
         }   

@@ -251,7 +251,7 @@ export default {
         },
         saveForm() {
             let requestform = $('#kt_form').serialize();
-            axios.put("/travel/store", requestform).then(response => {
+            axios.post("/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
 
@@ -320,24 +320,24 @@ export default {
 
         },
         getRegion() {
-            axios.get("/api/regions_data").then(response => {
+            axios.get("/api/region").then(response => {
                 this.regions = response.data;
             });
         },
         getProvince(id) {
-            axios.get("/api/provinces_data", {params: {id: id}}).then(response => {
+            axios.get("/api/province/" + id).then(response => {
                 this.provinces = response.data;
                 this.provinces.map(i=>i.active="false")
             });
         },
         getCity(id) {
-            axios.get("/api/cities_data", {params: {id: id}}).then(response => {
+            axios.get("/api/city/" + id).then(response => {
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });
         },
         getBrgy(id) {
-            axios.get("/api/brgys_data", {params: {id: id}}).then(response => {
+            axios.get("/api/brgy/" + id).then(response => {
                 this.brgys = response.data;
             });
         },

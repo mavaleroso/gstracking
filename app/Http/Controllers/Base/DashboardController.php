@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Ajax;
+namespace App\Http\Controllers\Base;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Models\Province;
+use App\Models\TransactionLogs;
 
-class ProvinceController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,16 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        return response()->json(Province::all());
+        if (auth('users')->check()) {
+            return view('main');
+        }
+        return redirect()->route('main.login');
+    }
+
+    public function logs()
+    {
+        $play = TransactionLogs::orderBy('id','desc')->get();
+        return response()->json($play);
     }
 
     /**
@@ -47,7 +56,7 @@ class ProvinceController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Province::where('region_id', $id)->get());
+        //
     }
 
     /**

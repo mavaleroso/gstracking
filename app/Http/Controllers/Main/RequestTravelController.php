@@ -2,12 +2,27 @@
 
 namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Main\BaseController as Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Models\TransactionLogs;
+use App\Http\Requests\Travels\TravelStoreRequest;
+use App\Services\Travels\CreateTravel;
+use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class RequestTravelController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:request-list', ['only' => ['index']]);
+        $this->middleware('permission:request-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:request-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:request-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:request-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *
@@ -15,16 +30,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        if (auth('users')->check()) {
-            return view('main');
-        }
-        return redirect()->route('main.login');
-    }
-
-    public function logs()
-    {
-        $play = TransactionLogs::orderBy('id','desc')->get();
-        return response()->json($play);
+        //
     }
 
     /**
@@ -43,9 +49,10 @@ class DashboardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
     {
-        //
+        $result = $createTravel->execute($travelStoreRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -77,7 +84,7 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
     {
         //
     }

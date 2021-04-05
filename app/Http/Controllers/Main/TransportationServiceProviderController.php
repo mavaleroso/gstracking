@@ -1,17 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Tracking\ServiceProviderRequest;
 use App\Services\Tracking\CreateServiceProvider;
-use App\Services\Tracking\UpdateDriver;
+use App\Services\Tracking\UpdateServiceProvider;
 use App\Services\Tracking\GetListingServiceProvider;
 use App\Models\ServiceProvider;
 
 class TransportationServiceProviderController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:serviceprovider-list', ['only' => ['index']]);
+        $this->middleware('permission:serviceprovider-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:serviceprovider-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:serviceprovider-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:serviceprovider-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *
@@ -28,10 +41,9 @@ class TransportationServiceProviderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(ServiceProviderRequest $serviceproviderRequest, CreateServiceProvider $createserviceprovider)
+    public function create()
     {
-        $result = $createserviceprovider->execute($serviceproviderRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_created_successfully'), 'result' => $result]);
+        
     }
 
     /**
@@ -40,9 +52,10 @@ class TransportationServiceProviderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiceProviderRequest $serviceProviderRequest, CreateServiceProvider $createServiceProvider)
     {
-        //
+        $result = $createServiceProvider->execute($serviceProviderRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -54,7 +67,6 @@ class TransportationServiceProviderController extends Controller
     public function show($id)
     {
         $data = ServiceProvider::where('id', $id)->get();
-
         return response()->json($data);
     }
 
@@ -64,10 +76,10 @@ class TransportationServiceProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ServiceProviderRequest $serviceproviderRequest, UpdateDriver $updateDriver)
+    public function edit(ServiceProviderRequest $serviceproviderRequest, UpdateServiceProvider $updateServiceprovider)
     {
-        $result = $updateDriver->execute($driverRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
+        $result = $updateServiceprovider->execute($serviceproviderRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_updated_successfully'), 'result' => $result]);
     }
 
     /**
@@ -90,6 +102,8 @@ class TransportationServiceProviderController extends Controller
      */
     public function destroy($id)
     {
+        $result = ServiceProvider::destroy($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_deleted_successfully'), 'result' => $result]);
         //
     }
 }

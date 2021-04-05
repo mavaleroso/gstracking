@@ -3100,7 +3100,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             type: 'remote',
             source: {
               read: {
-                url: HOST_URL + '/api/request_data',
+                url: HOST_URL + '/travel/listrequest',
                 method: 'GET'
               }
             },
@@ -3274,18 +3274,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this3 = this;
 
-      axios.get("/api/regions_data").then(function (response) {
+      axios.get("/api/region").then(function (response) {
         _this3.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this4 = this;
 
-      axios.get("/api/provinces_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/province/" + id).then(function (response) {
         _this4.provinces = response.data;
 
         _this4.provinces.map(function (i) {
@@ -3296,11 +3292,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this5 = this;
 
-      axios.get("/api/cities_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/city/" + id).then(function (response) {
         _this5.cities = response.data;
 
         _this5.cities.map(function (i) {
@@ -3311,11 +3303,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this6 = this;
 
-      axios.get("/api/brgys_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/brgy/" + id).then(function (response) {
         _this6.brgys = response.data;
       });
     },
@@ -3333,11 +3321,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('.details-input').attr('disabled', true);
       this.request_edit = 0;
       $('#kt_select_region').val();
-      axios.get("/api/destination_details", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/destination/" + id).then(function (response) {
         var destination = response.data;
         var data = [];
 
@@ -3411,11 +3395,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getPassengers: function getPassengers(id) {
       var _this7 = this;
 
-      axios.get("/api/passenger_details", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/passenger/" + id).then(function (response) {
         _this7.passengers = response.data;
       });
     },
@@ -3441,7 +3421,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this8 = this;
 
       var requestform = $('#request-form').serialize();
-      axios.put("/travel/store", requestform).then(function (response) {
+      axios.put("/travel/listrequest/" + id, requestform).then(function (response) {
         $('.new-row').remove();
         $('.details-input').attr('disabled', true);
         _this8.request_edit = 0;
@@ -3548,6 +3528,101 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      create: false
+    };
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var _this = this;
+
+      $(function () {
+        _this.tdatatable().init();
+      });
+    },
+    tdatatable: function tdatatable() {
+      var initTable = function initTable() {
+        var table = $('#logs-tbl'); // begin first table
+
+        table.DataTable({
+          scrollY: '50vh',
+          scrollX: true,
+          scrollCollapse: true,
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + '/history/log',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "user_id"
+          }, {
+            "data": "page"
+          }, {
+            "data": "url"
+          }, {
+            "data": "action"
+          }, {
+            "data": "created_at"
+          }],
+          columnDefs: [{
+            targets: 5,
+            render: function render(data) {
+              return dateTimeEng(data);
+            }
+          }]
+        });
+      };
+
+      return {
+        init: function init() {
+          initTable();
+        }
+      };
     }
   }
 });
@@ -3838,7 +3913,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       var requestform = $('#kt_form').serialize();
-      axios.put("/travel/store", requestform).then(function (response) {
+      axios.post("/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -3915,18 +3990,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this3 = this;
 
-      axios.get("/api/regions_data").then(function (response) {
+      axios.get("/api/region").then(function (response) {
         _this3.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this4 = this;
 
-      axios.get("/api/provinces_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/province/" + id).then(function (response) {
         _this4.provinces = response.data;
 
         _this4.provinces.map(function (i) {
@@ -3937,11 +4008,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this5 = this;
 
-      axios.get("/api/cities_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/city/" + id).then(function (response) {
         _this5.cities = response.data;
 
         _this5.cities.map(function (i) {
@@ -3952,11 +4019,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this6 = this;
 
-      axios.get("/api/brgys_data", {
-        params: {
-          id: id
-        }
-      }).then(function (response) {
+      axios.get("/api/brgy/" + id).then(function (response) {
         _this6.brgys = response.data;
       });
     },
@@ -3985,101 +4048,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.complete = false;
       this.requestCode = null;
       this.createdAt = null;
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      create: false
-    };
-  },
-  mounted: function mounted() {
-    this.ini();
-  },
-  methods: {
-    ini: function ini() {
-      var _this = this;
-
-      $(function () {
-        _this.tdatatable().init();
-      });
-    },
-    tdatatable: function tdatatable() {
-      var initTable = function initTable() {
-        var table = $('#logs-tbl'); // begin first table
-
-        table.DataTable({
-          scrollY: '50vh',
-          scrollX: true,
-          scrollCollapse: true,
-          processing: true,
-          serverSide: true,
-          ajax: {
-            url: BASE_URL + '/api/logs',
-            type: 'GET'
-          },
-          columns: [{
-            "data": "id"
-          }, {
-            "data": "user_id"
-          }, {
-            "data": "page"
-          }, {
-            "data": "url"
-          }, {
-            "data": "action"
-          }, {
-            "data": "created_at"
-          }],
-          columnDefs: [{
-            targets: 5,
-            render: function render(data) {
-              return dateTimeEng(data);
-            }
-          }]
-        });
-      };
-
-      return {
-        init: function init() {
-          initTable();
-        }
-      };
     }
   }
 });
@@ -4233,11 +4201,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
-        vm.formFields.id = '';
-        vm.formFields.fullname = '';
-        vm.formFields.age = '';
-        vm.formFields.gender = '';
-        vm.formFields.contactNumber = '';
         $('#kt_select_gender').select2({
           placeholder: "Select gender",
           minimumResultsForSearch: Infinity
@@ -4253,7 +4216,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('.card-label span').text('Edit Driver');
-        axios.get("/transportation/driver/show/" + id).then(function (response) {
+        axios.get("/transportation/driver/" + id).then(function (response) {
           vm.formFields.id = response.data[0].id;
           vm.formFields.fullname = response.data[0].fullname;
           vm.formFields.age = response.data[0].age;
@@ -4273,6 +4236,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     cancelEntry: function cancelEntry() {
+      this.formFields.id = '';
+      this.formFields.fullname = '';
+      this.formFields.age = '';
+      this.formFields.gender = '';
+      this.formFields.contactNumber = '';
       this.create = false;
       this.edit = false;
       this.ini();
@@ -4282,13 +4250,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('fullname', this.formFields.fullname);
       formD.append('age', this.formFields.age);
       formD.append('gender', this.formFields.gender);
       formD.append('contactNumber', this.formFields.contactNumber);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/driver/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/driver' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4348,7 +4325,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('/transportation/driver/delete/' + id).then(function (response) {
+          axios["delete"]('/transportation/driver/' + id).then(function (response) {
             Swal.fire('Deleted!', response.data.message, 'success');
             $("#driver-tbl").DataTable().ajax.reload();
           });
@@ -4367,7 +4344,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/driver/read',
+            url: BASE_URL + '/transportation/driver',
             type: 'GET'
           },
           columns: [{
@@ -4520,7 +4497,7 @@ __webpack_require__.r(__webpack_exports__);
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/overview/read',
+            url: BASE_URL + '/transportation/overview',
             type: 'GET'
           },
           columns: [{
@@ -4679,7 +4656,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4720,7 +4696,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.card-label span').text('Create Service Provider');
       });
     },
+    editEntry: function editEntry(id) {
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        $('.card-label span').text('Edit Service Provider');
+        axios.get("/transportation/serviceprovider/show/" + id).then(function (response) {
+          vm.formFields.id = response.data[0].id;
+          vm.formFields.type = response.data[0].type;
+          vm.formFields.companyName = response.data[0].company_name;
+          vm.formFields.vehicleCount = response.data[0].vehicle_count;
+        });
+        $('#kt_select_svc_type').select2({
+          placeholder: "Select type",
+          minimumResultsForSearch: Infinity
+        });
+        $('#kt_select_svc_type').change(function () {
+          vm.formFields.type = $(this).val();
+        });
+        setTimeout(function () {
+          $('#kt_select_svc_type').val(vm.formFields.type);
+          $('#kt_select_svc_type').trigger('change');
+        }, 500);
+      });
+    },
     cancelEntry: function cancelEntry() {
+      this.formFields.id = '';
+      this.formFields.companyName = '';
+      this.formFields.vehicleCount = '';
+      this.formFields.type = '';
       this.create = false;
       this.edit = false;
       this.ini();
@@ -4730,12 +4734,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('type', this.formFields.type);
       formD.append('companyName', this.formFields.companyName);
       formD.append('vehicleCount', this.formFields.vehicleCount);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/serviceprovider/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/serviceprovider' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -4782,6 +4795,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }
         }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
+    },
+    deleteEntry: function deleteEntry(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won"t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios.post('/transportation/serviceprovider/delete/' + id).then(function (response) {
+            Swal.fire('Deleted!', response.data.message, 'success');
+            $("#serviceProvider-tbl").DataTable().ajax.reload();
+          });
+        }
       });
     },
     tdatatable: function tdatatable() {
@@ -4796,7 +4827,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/serviceprovider/read',
+            url: BASE_URL + '/transportation/serviceprovider',
             type: 'GET'
           },
           columns: [{
@@ -4848,7 +4879,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               return dateTimeEng(data);
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $('.btn-edit').click(function () {
+              var id = $(this).data('id');
+              vm.editEntry(id);
+            });
+            $('.btn-delete').click(function () {
+              var id = $(this).data('id');
+              vm.deleteEntry(id);
+            });
+          }
         });
       };
 
@@ -5041,14 +5082,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getServiceProviders: function getServiceProviders() {
       var _this = this;
 
-      axios.get("/api/service_providers").then(function (response) {
+      axios.get("/api/serviceprovider").then(function (response) {
         _this.serviceProviders = response.data;
       });
     },
     getDrivers: function getDrivers() {
       var _this2 = this;
 
-      axios.get("/api/drivers_data").then(function (response) {
+      axios.get("/api/driver").then(function (response) {
         _this2.drivers = response.data;
       });
     },
@@ -5097,7 +5138,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.edit = true;
       var vm = this;
       $(function () {
-        axios.get("/transportation/vehicle/show/" + id).then(function (response) {
+        axios.get("/transportation/vehicle/" + id).then(function (response) {
           vm.formFields.id = response.data.vehicles[0].id;
           vm.formFields.pictureName = response.data.vehicles[0].image;
           vm.formFields.name = response.data.vehicles[0].name;
@@ -5143,6 +5184,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('picture', this.formFields.picture);
       formD.append('pictureName', this.formFields.pictureName);
@@ -5152,8 +5194,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
       formD.append('driver', this.formFields.driver);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/transportation/vehicle/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/transportation/vehicle' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -5213,7 +5263,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('/transportation/vehicle/delete/' + id).then(function (response) {
+          axios["delete"]('/transportation/vehicle/' + id).then(function (response) {
             Swal.fire('Deleted!', response.data.message, 'success');
             $("#vehicle-tbl").DataTable().ajax.reload();
           });
@@ -5232,7 +5282,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/vehicle/read',
+            url: BASE_URL + '/transportation/vehicle',
             type: 'GET'
           },
           columns: [{
@@ -5457,7 +5507,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Pages/RequestTravel */ "./resources/js/components/Pages/RequestTravel.vue");
 /* harmony import */ var _components_Pages_ListRequests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Pages/ListRequests */ "./resources/js/components/Pages/ListRequests.vue");
 /* harmony import */ var _components_Pages_ListTravels__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Pages/ListTravels */ "./resources/js/components/Pages/ListTravels.vue");
-/* harmony import */ var _components_Pages_TransactionLogs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Pages/TransactionLogs */ "./resources/js/components/Pages/TransactionLogs.vue");
+/* harmony import */ var _components_Pages_Logs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Pages/Logs */ "./resources/js/components/Pages/Logs.vue");
 /* harmony import */ var _components_Pages_Transportation_Overview__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Pages/Transportation/Overview */ "./resources/js/components/Pages/Transportation/Overview.vue");
 /* harmony import */ var _components_Pages_Transportation_Vehicle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Pages/Transportation/Vehicle */ "./resources/js/components/Pages/Transportation/Vehicle.vue");
 /* harmony import */ var _components_Pages_Transportation_Driver__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Pages/Transportation/Driver */ "./resources/js/components/Pages/Transportation/Driver.vue");
@@ -5532,8 +5582,8 @@ var routes = [{
   }
 }, {
   path: '/transaction_logs',
-  component: _components_Pages_TransactionLogs__WEBPACK_IMPORTED_MODULE_4__.default,
-  name: 'transactionLogs',
+  component: _components_Pages_Logs__WEBPACK_IMPORTED_MODULE_4__.default,
+  name: 'Logs',
   meta: {
     title: 'List of Logs'
   }
@@ -42303,6 +42353,45 @@ component.options.__file = "resources/js/components/Pages/ListTravels.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/Logs.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/Pages/Logs.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Logs.vue?vue&type=template&id=057e54e5& */ "./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5&");
+/* harmony import */ var _Logs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Logs.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Logs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/Logs.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue ***!
@@ -42338,45 +42427,6 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/Pages/RequestTravel.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/Pages/TransactionLogs.vue":
-/*!***********************************************************!*\
-  !*** ./resources/js/components/Pages/TransactionLogs.vue ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TransactionLogs.vue?vue&type=template&id=6a2f16e7& */ "./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7&");
-/* harmony import */ var _TransactionLogs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TransactionLogs.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _TransactionLogs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__.render,
-  _TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Pages/TransactionLogs.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -42649,6 +42699,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Logs.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js& ***!
@@ -42662,22 +42728,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RequestTravel.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
-/***/ "./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js&":
-/*!************************************************************************************!*\
-  !*** ./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionLogs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TransactionLogs.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionLogs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -42966,6 +43016,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Logs.vue?vue&type=template&id=057e54e5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243&":
 /*!****************************************************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243& ***!
@@ -42979,23 +43046,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_template_id_1241b243___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestTravel_vue_vue_type_template_id_1241b243___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./RequestTravel.vue?vue&type=template&id=1241b243& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7& ***!
-  \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TransactionLogs_vue_vue_type_template_id_6a2f16e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TransactionLogs.vue?vue&type=template&id=6a2f16e7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7&");
 
 
 /***/ }),
@@ -46527,6 +46577,75 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "vehicle-page" } }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "card card-custom gutter-b animate__animated animate__fadeIn"
+        },
+        [
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "table",
+              {
+                staticClass:
+                  "table table-separate table-head-custom table-checkable",
+                attrs: { id: "logs-tbl" }
+              },
+              [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("ID")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("User Id")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Page")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Url")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Action")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Create_at")])
+                  ])
+                ])
+              ]
+            )
+          ])
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243& ***!
@@ -46996,75 +47115,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7&":
-/*!*********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TransactionLogs.vue?vue&type=template&id=6a2f16e7& ***!
-  \*********************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "vehicle-page" } }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "card card-custom gutter-b animate__animated animate__fadeIn"
-        },
-        [
-          _c("div", { staticClass: "card-body" }, [
-            _c(
-              "table",
-              {
-                staticClass:
-                  "table table-separate table-head-custom table-checkable",
-                attrs: { id: "logs-tbl" }
-              },
-              [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("ID")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("User Id")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Page")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Url")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Action")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Create_at")])
-                  ])
-                ])
-              ]
-            )
-          ])
-        ]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -47603,7 +47653,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "driver-page" } }, [
+  return _c("div", { attrs: { id: "serviceProvider-page" } }, [
     _vm.create == true || _vm.edit == true
       ? _c(
           "div",
@@ -47619,7 +47669,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form",
-                  attrs: { id: "driver-form" },
+                  attrs: { id: "serviceProvider-form" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -47674,9 +47724,13 @@ var render = function() {
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Office")]),
+                              _c("option", { attrs: { value: "Office" } }, [
+                                _vm._v("Office")
+                              ]),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Rental")])
+                              _c("option", { attrs: { value: "Rental" } }, [
+                                _vm._v("Rental")
+                              ])
                             ]
                           )
                         ]),

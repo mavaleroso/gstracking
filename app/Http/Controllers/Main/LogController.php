@@ -1,21 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Ajax;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Models\Province;
+use App\Services\Tracking\GetListingLogs;
 
-class ProvinceController extends Controller
+class LogController extends Controller
 {
+     /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:log-list', ['only' => ['index']]);
+        $this->middleware('permission:log-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:log-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:log-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:log-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingLogs $getListingLogs)
     {
-        return response()->json(Province::all());
+        $records = $getListingLogs->execute();
+        return response()->json($records);
     }
 
     /**
@@ -47,7 +61,7 @@ class ProvinceController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Province::where('region_id', $id)->get());
+        //
     }
 
     /**
