@@ -135,7 +135,7 @@ export default {
             $(() => {
                 $('.card-label span').text('Edit Service Provider');
 
-                axios.get("/transportation/serviceprovider/show/"+id).then(response => {
+                axios.get("/transportation/serviceprovider/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
                     vm.formFields.type = response.data[0].type;
                     vm.formFields.companyName = response.data[0].company_name;
@@ -235,7 +235,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.post('/transportation/serviceprovider/delete/'+id).then(response => {
+                    axios.delete('/transportation/serviceprovider/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,

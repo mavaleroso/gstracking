@@ -157,15 +157,17 @@ export default {
         saveEntry() {
             let formD = new FormData();
             let method = null;
+            let putParams = null;
 
             formD.append('po_no', this.formFields.po_no);
             formD.append('po_amount', this.formFields.po_amount);
             formD.append('balance', this.formFields.balance);
             formD.append('status', this.formFields.status);
 
-            method = (this.create)? 'create':'edit';
+            method = (this.create)? 'POST':'PUT';
+            putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios.post('/po/' + method, formD).then(response => {
+            axios({method: method, url: '/tracking/po' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -236,7 +238,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/po/index',
+                        url: BASE_URL + '/tracking/po',
                         type: 'GET'
                     },
                     columns: [

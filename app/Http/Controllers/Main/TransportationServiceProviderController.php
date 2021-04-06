@@ -76,10 +76,9 @@ class TransportationServiceProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ServiceProviderRequest $serviceproviderRequest, UpdateServiceProvider $updateServiceprovider)
+    public function edit()
     {
-        $result = $updateServiceprovider->execute($serviceproviderRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_updated_successfully'), 'result' => $result]);
+        
     }
 
     /**
@@ -89,9 +88,10 @@ class TransportationServiceProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiceProviderRequest $serviceproviderRequest, UpdateServiceProvider $updateServiceprovider, $id)
     {
-        //
+        $result = $updateServiceprovider->execute($id, $serviceproviderRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_updated_successfully'), 'result' => $result]);
     }
 
     /**
@@ -104,6 +104,5 @@ class TransportationServiceProviderController extends Controller
     {
         $result = ServiceProvider::destroy($id);
         return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_deleted_successfully'), 'result' => $result]);
-        //
     }
 }
