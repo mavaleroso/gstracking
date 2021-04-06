@@ -2625,12 +2625,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var formD = new FormData();
       var method = null;
+      var putParams = null;
       formD.append('po_no', this.formFields.po_no);
       formD.append('po_amount', this.formFields.po_amount);
       formD.append('balance', this.formFields.balance);
       formD.append('status', this.formFields.status);
-      method = this.create ? 'create' : 'edit';
-      axios.post('/po/' + method, formD).then(function (response) {
+      method = this.create ? 'POST' : 'PUT';
+      putParams = this.create ? '' : '/' + this.formFields.id;
+      axios({
+        method: method,
+        url: '/tracking/po' + putParams,
+        data: formD,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(function (response) {
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -2703,7 +2712,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/po/index',
+            url: BASE_URL + '/tracking/po',
             type: 'GET'
           },
           columns: [{
@@ -4701,7 +4710,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('.card-label span').text('Edit Service Provider');
-        axios.get("/transportation/serviceprovider/show/" + id).then(function (response) {
+        axios.get("/transportation/serviceprovider/" + id).then(function (response) {
           vm.formFields.id = response.data[0].id;
           vm.formFields.type = response.data[0].type;
           vm.formFields.companyName = response.data[0].company_name;
@@ -4808,7 +4817,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('/transportation/serviceprovider/delete/' + id).then(function (response) {
+          axios["delete"]('/transportation/serviceprovider/' + id).then(function (response) {
             Swal.fire('Deleted!', response.data.message, 'success');
             $("#serviceProvider-tbl").DataTable().ajax.reload();
           });
@@ -45052,7 +45061,7 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "menu-link menu-toggle",
-                        attrs: { to: { name: "transactionLogs" } }
+                        attrs: { to: { name: "Logs" } }
                       },
                       [
                         _c("span", { staticClass: "svg-icon menu-icon" }, [

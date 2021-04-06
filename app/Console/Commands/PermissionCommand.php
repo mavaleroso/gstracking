@@ -38,6 +38,7 @@ class PermissionCommand extends Command
         'request',
         'listrequest',
         'overview',
+        'po',
         'log'
     ];
 

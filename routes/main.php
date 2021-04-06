@@ -106,7 +106,6 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
     ]);
     
 });
-
 Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
     Route::resource('log', 'LogController', [
         'names' => [
@@ -117,6 +116,20 @@ Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
             'edit' => 'main.log.edit',
             'update' => 'main.log.update',
             'destroy' => 'main.log.destroy',
+        ]
+    ]);
+});
+
+Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
+    Route::resource('po', 'PoController', [
+        'names' => [
+            'index' => 'main.po.index',
+            'create' => 'main.po.create',
+            'store' => 'main.po.store',
+            'show' => 'main.po.show',
+            'edit' => 'main.po.edit',
+            'update' => 'main.po.update',
+            'destroy' => 'main.po.destroy',
         ]
     ]);
 });
