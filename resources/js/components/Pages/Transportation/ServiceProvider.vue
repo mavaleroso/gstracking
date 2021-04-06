@@ -135,7 +135,7 @@ export default {
             $(() => {
                 $('.card-label span').text('Edit Service Provider');
 
-                axios.get("/transportation/serviceprovider/"+id).then(response => {
+                axios.get(BASE_URL + "/transportation/serviceprovider/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
                     vm.formFields.type = response.data[0].type;
                     vm.formFields.companyName = response.data[0].company_name;
@@ -179,7 +179,7 @@ export default {
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios({method: method, url: '/transportation/serviceprovider' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
+            axios({method: method, url: BASE_URL + '/transportation/serviceprovider' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -235,7 +235,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.delete('/transportation/serviceprovider/'+id).then(response => {
+                    axios.delete(BASE_URL + '/transportation/serviceprovider/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,

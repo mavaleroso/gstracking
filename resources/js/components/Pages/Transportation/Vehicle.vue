@@ -152,12 +152,12 @@ export default {
     },
     methods:{
         getServiceProviders() {
-            axios.get("/api/serviceprovider").then(response => {
+            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
                 this.serviceProviders = response.data;
             });
         },
         getDrivers() {
-            axios.get("/api/driver").then(response => {
+            axios.get(BASE_URL + "/api/driver").then(response => {
                 this.drivers = response.data;
             });
         },
@@ -200,7 +200,7 @@ export default {
             this.edit = true;
             let vm = this;
             $(() => {
-                axios.get("/transportation/vehicle/"+id).then(response => {
+                axios.get(BASE_URL + "/transportation/vehicle/"+id).then(response => {
 
                     vm.formFields.id = response.data.vehicles[0].id;
                     vm.formFields.pictureName = response.data.vehicles[0].image;
@@ -263,7 +263,7 @@ export default {
             putParams = (this.create)? '':'/' + this.formFields.id;
 
 
-            axios({method: method, url: '/transportation/vehicle' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
+            axios({method: method, url: BASE_URL + '/transportation/vehicle' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -318,7 +318,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.delete('/transportation/vehicle/'+id).then(response => {
+                    axios.delete(BASE_URL + '/transportation/vehicle/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,

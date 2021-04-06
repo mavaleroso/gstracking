@@ -141,7 +141,7 @@ export default {
             $(() => {
                 $('.card-label span').text('Edit Driver');
 
-                axios.get("/transportation/driver/"+id).then(response => {
+                axios.get(BASE_URL + "/transportation/driver/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
                     vm.formFields.fullname = response.data[0].fullname;
                     vm.formFields.age = response.data[0].age;
@@ -187,7 +187,7 @@ export default {
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios({method: method,url: '/transportation/driver' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
+            axios({method: method,url: BASE_URL + '/transportation/driver' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -241,7 +241,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then(result => {
                 if (result.value) {
-                    axios.delete('/transportation/driver/'+id).then(response => {
+                    axios.delete(BASE_URL + '/transportation/driver/'+id).then(response => {
                         Swal.fire(
                             'Deleted!',
                             response.data.message,

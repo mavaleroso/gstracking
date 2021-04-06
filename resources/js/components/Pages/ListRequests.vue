@@ -479,24 +479,24 @@ export default {
             };
         },
         getRegion() {
-            axios.get("/api/region").then(response => {
+            axios.get(BASE_URL + "/api/region").then(response => {
                 this.regions = response.data;
             });
         },
         getProvince(id) {
-            axios.get("/api/province/" + id).then(response => {
+            axios.get(BASE_URL + "/api/province/" + id).then(response => {
                 this.provinces = response.data;
                 this.provinces.map(i=>i.active="false")
             });
         },
         getCity(id) {
-            axios.get("/api/city/" + id).then(response => {
+            axios.get(BASE_URL + "/api/city/" + id).then(response => {
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });
         },
         getBrgy(id) {
-            axios.get("/api/brgy/" + id).then(response => {
+            axios.get(BASE_URL + "/api/brgy/" + id).then(response => {
                 this.brgys = response.data;
             });
         },
@@ -510,7 +510,7 @@ export default {
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
             $('#kt_select_region').val();
-            axios.get("/api/destination/" + id).then(response => {
+            axios.get(BASE_URL + "/api/destination/" + id).then(response => {
                 let destination = response.data;
                 let data = [];
 
@@ -579,7 +579,7 @@ export default {
             });
         },
         getPassengers(id) {
-            axios.get("/api/passenger/" + id).then(response => {
+            axios.get(BASE_URL + "/api/passenger/" + id).then(response => {
                 this.passengers = response.data;
             });
         },
@@ -603,7 +603,7 @@ export default {
         },
         save(id) {
             let requestform = $('#request-form').serialize();
-            axios.put("/travel/listrequest/" + id, requestform).then(response => {
+            axios.put(BASE_URL + "/travel/listrequest/" + id, requestform).then(response => {
                 $('.new-row').remove();
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;
