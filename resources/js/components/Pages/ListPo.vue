@@ -82,9 +82,9 @@
                             <th>ID</th>
                             <th>PO Number</th>
                             <th>Amount</th>
-                            <th>Created At</th>
                             <th>balance</th>
                             <th>status</th>
+                            <th>Created At</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -167,7 +167,7 @@ export default {
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 
-            axios({method: method, url: '/tracking/po' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
+            axios({method: method, url: BASE_URL + '/tracking/po' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
@@ -245,12 +245,18 @@ export default {
                         { "data": "id" },
                         { "data": "po_no" },
                         { "data": "po_amount" },
-                        { "data": "created_at" },
                         { "data": "balance" },
                         { "data": "status" },
+                        { "data": "created_at" },
                         { "data": "id" },
                     ],
                     columnDefs: [
+                        {
+                            targets: 5,
+                            render: data => {
+                                return dateTimeEng(data);
+                            }
+                        },
                         {
                             targets: -1,
                             title: 'Actions',
