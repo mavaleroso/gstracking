@@ -42,3 +42,8 @@ dateTimeEng = (nDateTime) => {
     let options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};
     return date.toLocaleDateString('en-US', options);
 }
+
+toParseNum = (num) => {
+    let number = parseFloat(num);
+    return number.toLocaleString(undefined, {minimumFractionDigits: 2});
+}

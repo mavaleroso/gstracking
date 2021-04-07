@@ -45,14 +45,14 @@
     height: 60px;
 }
 
-@media only screen and (max-width: 1500px) {
-    /* #kt_body {
-        zoom: 90%;
-        height: 110vh;
-    }
-    .modal-backdrop {
-        width: 1000vh;
-        height: 1000vh;
-        overflow: hidden;
-    } */
+.DTFC_RightHeadWrapper {
+    top: -14px !important;
+}
+
+.DTFC_RightHeadWrapper table {
+    padding-left: 7px;
+}
+
+.DTFC_RightBodyWrapper {
+    top: -40px !important;
 }

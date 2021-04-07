@@ -20,7 +20,7 @@
 						<!--begin::Entry-->
 						<div class="d-flex flex-column-fluid">
 							<!--begin::Container-->
-							<div class="container-fluid">
+							<div class="container">
 								<router-view></router-view>
 							</div>
 							<!--end::Container-->

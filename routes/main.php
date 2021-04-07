@@ -132,4 +132,16 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'destroy' => 'main.po.destroy',
         ]
     ]);
+
+    Route::resource('listtravel', 'ListTravelController', [
+        'names' => [
+            'index' => 'main.listtravel.index',
+            'create' => 'main.listtravel.create',
+            'store' => 'main.listtravel.store',
+            'show' => 'main.listtravel.show',
+            'edit' => 'main.listtravel.edit',
+            'update' => 'main.listtravel.update',
+            'destroy' => 'main.listtravel.destroy',
+        ]
+    ]);
 });
