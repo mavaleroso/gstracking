@@ -3590,12 +3590,121 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
   },
   methods: {
-    ini: function ini() {}
+    ini: function ini() {
+      var _this = this;
+
+      $(function () {
+        _this.tdatatable().init();
+      });
+    },
+    tdatatable: function tdatatable() {
+      var initTable = function initTable() {
+        var table = $('#list-travel-tbl');
+        table.DataTable({
+          searchDelay: 500,
+          scrollX: true,
+          scrollCollapse: true,
+          processing: true,
+          serverSide: true,
+          fixedColumns: {
+            leftColumns: false,
+            rightColumns: 1
+          },
+          ajax: {
+            url: BASE_URL + '/tracking/listtravel',
+            type: 'GET'
+          },
+          columns: [{
+            "data": "id"
+          }, {
+            "data": "trip_ticket"
+          }, {
+            "data": "company_name"
+          }, {
+            "data": "travel_date"
+          }, {
+            "data": "starting_odo"
+          }, {
+            "data": "ending_odo"
+          }, {
+            "data": "date_submit_proc"
+          }, {
+            "data": "travelled"
+          }, {
+            "data": "po_no"
+          }, {
+            "data": "po_amount"
+          }, {
+            "data": "rate_per_km"
+          }, {
+            "data": "flat_rate"
+          }, {
+            "data": "rate_per_night"
+          }, {
+            "data": "nights_count"
+          }, {
+            "data": "total_cost"
+          }, {
+            "data": "created_at"
+          }, {
+            "data": "id"
+          }],
+          columnDefs: [{
+            targets: 1,
+            render: function render(data) {
+              return '<span class="text-nowrap label label-lg font-weight-bold label-light-warning label-inline">' + data + '</span>';
+            }
+          }, {
+            targets: [9, 10, 11, 12, 14],
+            render: function render(data) {
+              return toParseNum(data);
+            }
+          }, {
+            targets: 13,
+            orderable: false
+          }, {
+            targets: 15,
+            orderable: false,
+            render: function render(data) {
+              return dateTimeEng(data);
+            }
+          }, {
+            targets: -1,
+            orderable: false,
+            render: function render(data) {
+              return '\
+                                    <a href="javascript:;" data-id="' + data + '" class="ml-5 btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                ';
+            }
+          }],
+          drawCallback: function drawCallback() {}
+        });
+      };
+
+      return {
+        init: function init() {
+          initTable();
+        }
+      };
+    }
   }
 });
 
@@ -43243,7 +43352,7 @@ var render = function() {
                     _c("div", { staticClass: "d-flex flex-column-fluid" }, [
                       _c(
                         "div",
-                        { staticClass: "container-fluid" },
+                        { staticClass: "container" },
                         [_c("router-view")],
                         1
                       )
@@ -46661,7 +46770,8 @@ var staticRenderFns = [
             {
               staticClass:
                 "table table-separate table-head-custom table-checkable",
-              attrs: { id: "list-travels-tbl" }
+              staticStyle: { width: "500px !important" },
+              attrs: { id: "list-travel-tbl" }
             },
             [
               _c("thead", [
@@ -46688,9 +46798,15 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("th", [_vm._v("Rate per Km")]),
                   _vm._v(" "),
+                  _c("th", [_vm._v("Flat Rate")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Rate per night")]),
+                  _vm._v(" "),
                   _c("th", [_vm._v("No. of Nights")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Total Cost")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Created at")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Action")])
                 ])
