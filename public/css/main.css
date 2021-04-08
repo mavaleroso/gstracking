@@ -56,3 +56,15 @@
 .DTFC_RightBodyWrapper {
     top: -40px !important;
 }
+
+.travel-vehicle-img {
+    height: 97px;
+}
+
+.mb-n-10 {
+    margin-bottom: -10px !important;
+}
+
+.mt-n-4 {
+    margin-top: -4px !important;
+}

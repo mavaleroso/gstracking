@@ -73,6 +73,13 @@ Route::group(['namespace' => 'Ajax'], function () {
         ]
     ]);
 
+    Route::resource('vehicle', 'VehicleController', [
+        'names' => [
+            'index' => 'ajax.vehicle.index',
+            'show' => 'ajax.vehicle.show',
+        ]
+    ]);
+
     Route::resource('serviceprovider', 'ServiceProviderController', [
         'names' => [
             'index' => 'ajax.serviceprovider.index',

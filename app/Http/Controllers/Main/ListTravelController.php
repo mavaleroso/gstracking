@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\ListTravels\TravelRequest;
 use App\Services\ListTravel\GetListingTravel;
+use App\Services\ListTravel\GetTravelById;
+use App\Services\ListTravel\UpdateTravel;
 
 class ListTravelController extends Controller
 {
@@ -60,9 +63,10 @@ class ListTravelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetTravelById $getTravelById)
     {
-        //
+        $data = $getTravelById->execute($id);
+        return response()->json($data);
     }
 
     /**
@@ -83,9 +87,10 @@ class ListTravelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TravelRequest $travelRequest, UpdateTravel $updateTravel , $id)
     {
-        //
+        $result = $updateTravel->execute($id, $travelRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
     /**

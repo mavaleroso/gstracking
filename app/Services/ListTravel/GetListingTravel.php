@@ -19,7 +19,7 @@ class GetListingTravel
                         ->leftJoin('vehicles', 'transactions.vehicle_id', '=', 'vehicles.id')
                         ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')
                         ->leftJoin('service_providers', 'vehicles.service_provider_id', '=', 'service_providers.id')
-                        ->select(['transactions.id','transactions.trip_ticket', 'service_providers.company_name', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at']);
+                        ->select(['transactions.id','transactions.trip_ticket', 'service_providers.company_name', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks']);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [
@@ -51,7 +51,8 @@ class GetListingTravel
                 'rate_per_km',
                 'flat_rate',
                 'rate_per_night',
-                'total_cost'
+                'total_cost',
+                'is_status'
             ]
         ]);
 

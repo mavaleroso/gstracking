@@ -28,6 +28,7 @@ class CreateTransactionsTable extends Migration
             $table->double('rate_per_night')->default(0);
             $table->integer('nights_count')->default(0);
             $table->double('total_cost')->nullable();
+            $table->mediumText('remarks')->nullable();
             $table->timestamps();
         });
     }

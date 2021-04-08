@@ -472,7 +472,6 @@ export default {
             };
 
             return {
-                // public functions
                 init: function() {
                     initDatatable();
                 }
@@ -529,40 +528,6 @@ export default {
                 let ctr_c = 0;
                 let ctr_b = 0;
 
-
-                // setTimeout(() => {
-                //     while($('#kt_select_province').val() == '') {
-                //         $('#kt_select_province').val(data.province);
-                //         $('#kt_select_province').select2().trigger('change');
-                //         if ($('#kt_select_province').val() != '' || ctr_p == 100) {
-                //             break;
-                //         }
-                //         ctr_p++;
-                //     }
-                // }, 500);
-                // setTimeout(() => {
-                //     while($('#kt_select_city').val() == '') {
-                //         $('#kt_select_city').val(data.city);
-                //         $('#kt_select_city').trigger('change');
-                //         if ($('#kt_select_city').val() != '' || ctr_c == 500) {
-                //             return;
-                //         }
-                //         ctr_c++;
-                //         console.log('city:'+ctr_c);
-                //     }
-                // }, 500);
-                // setTimeout(() => {
-                //     while($('#kt_select_brgy').val() == '') {
-                //         $('#kt_select_brgy').val(data.brgy);
-                //         $('#kt_select_brgy').trigger('change');
-                //         if ($('#kt_select_brgy').val() != '' || ctr_b == 5000) {
-                //             break;
-                //         }
-                //         ctr_b++;
-                //         console.log('brgy:'+ctr_b);
-                //     }
-                // }, 500);
-                
                 setTimeout(() => {
                     $('#kt_select_province').val(data.province);
                     $('#kt_select_province').trigger('change');

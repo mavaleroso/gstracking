@@ -29,8 +29,10 @@ class Transaction extends Model
         'travelled',
         'rate_per_km',
         'flat_rate',
+        'rate_per_night',
         'nights_count',
         'total_cost',
         'created_at',
+        'remarks',
     ];
 }

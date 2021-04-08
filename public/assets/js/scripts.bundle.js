@@ -9112,6 +9112,17 @@ var KTLayoutAsideToggle = function() {
                 KTUtil.removeClass(_body, 'aside-minimizing');
 			});
 
+            // custom code
+            $('.sorting')[0].click();
+            let containerDiv = $('#container-div').children();
+            if (containerDiv.attr('class') == 'container') {
+                containerDiv.removeClass('container');
+                containerDiv.addClass('container-fluid');
+            } else {
+                containerDiv.removeClass('container-fluid');
+                containerDiv.addClass('container');
+            }
+            
             // Update sticky card
             KTLayoutStickyCard.update();
 

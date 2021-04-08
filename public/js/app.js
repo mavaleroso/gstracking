@@ -3279,7 +3279,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
 
       return {
-        // public functions
         init: function init() {
           initDatatable();
         }
@@ -3359,39 +3358,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_select_region').trigger('change');
         var ctr_p = 0;
         var ctr_c = 0;
-        var ctr_b = 0; // setTimeout(() => {
-        //     while($('#kt_select_province').val() == '') {
-        //         $('#kt_select_province').val(data.province);
-        //         $('#kt_select_province').select2().trigger('change');
-        //         if ($('#kt_select_province').val() != '' || ctr_p == 100) {
-        //             break;
-        //         }
-        //         ctr_p++;
-        //     }
-        // }, 500);
-        // setTimeout(() => {
-        //     while($('#kt_select_city').val() == '') {
-        //         $('#kt_select_city').val(data.city);
-        //         $('#kt_select_city').trigger('change');
-        //         if ($('#kt_select_city').val() != '' || ctr_c == 500) {
-        //             return;
-        //         }
-        //         ctr_c++;
-        //         console.log('city:'+ctr_c);
-        //     }
-        // }, 500);
-        // setTimeout(() => {
-        //     while($('#kt_select_brgy').val() == '') {
-        //         $('#kt_select_brgy').val(data.brgy);
-        //         $('#kt_select_brgy').trigger('change');
-        //         if ($('#kt_select_brgy').val() != '' || ctr_b == 5000) {
-        //             break;
-        //         }
-        //         ctr_b++;
-        //         console.log('brgy:'+ctr_b);
-        //     }
-        // }, 500);
-
+        var ctr_b = 0;
         setTimeout(function () {
           $('#kt_select_province').val(data.province);
           $('#kt_select_province').trigger('change');
@@ -3559,6 +3526,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -3593,10 +3573,149 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      id: null,
+      trip_ticket: null,
+      created_at: null,
+      status: null,
+      status_class: null,
+      vehicles: [],
+      vehicle_image: null,
+      formFields: {
+        starting_odo: null,
+        ending_odo: null,
+        date_submitted_proc: null,
+        distance_travelled: null,
+        rate_per_km: null,
+        flat_rate: null,
+        no_nights: null,
+        rate_per_night: null,
+        remarks: null,
+        travel_date: null,
+        travel_time: null,
+        vehicle_id: null,
+        vehicle_name: null,
+        status: null,
+        total_cost: null
+      },
+      names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
+    };
+  },
+  components: {
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  created: function created() {
+    this.getVehicles();
+  },
   mounted: function mounted() {
     this.ini();
   },
+  computed: {},
   methods: {
     ini: function ini() {
       var _this = this;
@@ -3605,7 +3724,16 @@ __webpack_require__.r(__webpack_exports__);
         _this.tdatatable().init();
       });
     },
+    getVehicles: function getVehicles() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + '/api/vehicle').then(function (response) {
+        _this2.vehicles = response.data;
+      });
+    },
     tdatatable: function tdatatable() {
+      var vm = this;
+
       var initTable = function initTable() {
         var table = $('#list-travel-tbl');
         table.DataTable({
@@ -3653,6 +3781,10 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "total_cost"
           }, {
+            "data": "is_status"
+          }, {
+            "data": "remarks"
+          }, {
             "data": "created_at"
           }, {
             "data": "id"
@@ -3660,7 +3792,7 @@ __webpack_require__.r(__webpack_exports__);
           columnDefs: [{
             targets: 1,
             render: function render(data) {
-              return '<span class="text-nowrap label label-lg font-weight-bold label-light-warning label-inline">' + data + '</span>';
+              return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">' + data + '</span>';
             }
           }, {
             targets: [9, 10, 11, 12, 14],
@@ -3668,13 +3800,37 @@ __webpack_require__.r(__webpack_exports__);
               return toParseNum(data);
             }
           }, {
-            targets: 13,
+            targets: [13, 16],
             orderable: false
           }, {
-            targets: 15,
+            targets: 17,
             orderable: false,
             render: function render(data) {
               return dateTimeEng(data);
+            }
+          }, {
+            targets: 15,
+            render: function render(data) {
+              var status = {
+                1: {
+                  'title': 'Pending',
+                  'class': ' label-light-warning'
+                },
+                2: {
+                  'title': 'Approved',
+                  'class': ' label-light-primary'
+                },
+                3: {
+                  'title': 'Completed',
+                  'class': ' label-light-success'
+                }
+              };
+
+              if (typeof status[data] === 'undefined') {
+                return data;
+              }
+
+              return '<span class="label text-nowrap label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
             targets: -1,
@@ -3695,7 +3851,12 @@ __webpack_require__.r(__webpack_exports__);
                                 ';
             }
           }],
-          drawCallback: function drawCallback() {}
+          drawCallback: function drawCallback() {
+            $('.btn-edit').off().on('click', function () {
+              var id = $(this).data('id');
+              vm.show(id);
+            });
+          }
         });
       };
 
@@ -3704,6 +3865,126 @@ __webpack_require__.r(__webpack_exports__);
           initTable();
         }
       };
+    },
+    show: function show(id) {
+      var _this3 = this;
+
+      this.reset();
+      var vm = this;
+      axios.get(BASE_URL + "/tracking/listtravel/" + id).then(function (response) {
+        _this3.id = id;
+        _this3.created_at = dateTimeEng(response.data[0].created_at);
+        _this3.trip_ticket = response.data[0].trip_ticket;
+        _this3.vehicle_image = response.data[0].image;
+        _this3.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
+        _this3.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+
+        _this3.formFields.starting_odo = response.data[0].starting_odo;
+        _this3.formFields.ending_odo = response.data[0].ending_odo;
+        _this3.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+        _this3.formFields.distance_travelled = response.data[0].travelled;
+        _this3.formFields.rate_per_km = response.data[0].rate_per_km;
+        _this3.formFields.flat_rate = response.data[0].flat_rate;
+        _this3.formFields.no_nights = response.data[0].nights_count;
+        _this3.formFields.rate_per_night = response.data[0].rate_per_night;
+        _this3.formFields.remarks = response.data[0].remarks;
+        _this3.formFields.travel_date = response.data[0].travel_date;
+        _this3.formFields.travel_time = response.data[0].depart_time;
+        _this3.formFields.vehicle_id = response.data[0].vehicle_id;
+        _this3.formFields.vehicle_name = response.data[0].vehicle_name;
+        _this3.formFields.status = response.data[0].is_status;
+        response.data[0].is_status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
+        $('#kt_select_vehicle').select2({
+          placeholder: "Select vehicle"
+        });
+        setTimeout(function () {
+          $('#kt_select_vehicle').val(vm.formFields.vehicle_id);
+          $('#kt_select_vehicle').trigger('change');
+        }, 500);
+        $('#kt_select_vehicle').change(function () {
+          vm.formFields.vehicle_id = $(this).val();
+          vm.vehicle_image = $(this).find(':selected').data('img');
+        });
+        $('#is-completed').change(function () {
+          if (this.checked) {
+            $('#modal-status').removeClass('label-primary');
+            $('#modal-status').addClass('label-success');
+            vm.status = 'Completed';
+            this.formFields.status = 3;
+          } else {
+            $('#modal-status').removeClass('label-success');
+            $('#modal-status').addClass('label-primary');
+            vm.status = 'Approved';
+            this.formFields.status = 2;
+          }
+        });
+      });
+      $('#kt_datatable_modal').modal('show');
+      $(".vehicle-img-viewer").fancybox();
+    },
+    update: function update(id) {
+      var _this4 = this;
+
+      axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(function (response) {
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+        setTimeout(function () {
+          _this4.reset();
+
+          _this4.ini();
+        }, 1000);
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+            $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
+            $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+          }
+        }
+
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+            $('[name="' + _this4.names[i] + '"]').removeClass('is-invalid');
+            $('[name="' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
+          }
+        }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
+    },
+    reset: function reset() {
+      this.id = null;
+      this.trip_ticket = null;
+      this.created_at = null;
+      this.status = null;
+      this.status_class = null;
+      this.vehicle_image = null;
+      this.formFields.starting_odo = null;
+      this.formFields.ending_odo = null;
+      this.formFields.date_submitted_proc = null;
+      this.formFields.distance_travelled = null;
+      this.formFields.rate_per_km = null;
+      this.formFields.flat_rate = null;
+      this.formFields.no_nights = null;
+      this.formFields.rate_per_night = null;
+      this.formFields.remarks = null;
+      this.formFields.travel_date = null;
+      this.formFields.travel_time = null;
+      this.formFields.vehicle_id = null;
+      this.formFields.vehicle_name = null;
+      this.formFields.status = null;
     }
   }
 });
@@ -43349,14 +43630,21 @@ var render = function() {
                   [
                     _c("subheader"),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex flex-column-fluid" }, [
-                      _c(
-                        "div",
-                        { staticClass: "container" },
-                        [_c("router-view")],
-                        1
-                      )
-                    ])
+                    _c(
+                      "div",
+                      {
+                        staticClass: "d-flex flex-column-fluid",
+                        attrs: { id: "container-div" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "container" },
+                          [_c("router-view")],
+                          1
+                        )
+                      ]
+                    )
                   ],
                   1
                 ),
@@ -46746,76 +47034,698 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { attrs: { id: "list-travel-page" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("modal", {
+        scopedSlots: _vm._u([
+          {
+            key: "header",
+            fn: function() {
+              return [
+                _c(
+                  "h5",
+                  { class: _vm.status_class, attrs: { id: "modal-status" } },
+                  [_vm._v(_vm._s(_vm.status))]
+                ),
+                _vm._v(" "),
+                _c("h5", { staticClass: "modal-title" }, [
+                  _c("span", { staticClass: "m-title" }, [
+                    _vm._v(_vm._s(_vm.trip_ticket))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Trip Ticket")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("h5", { staticClass: "modal-title ml-auto" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass:
+                        "switch switch-outline switch-icon switch-success"
+                    },
+                    [
+                      _c("label", [
+                        _c("input", {
+                          attrs: {
+                            id: "is-completed",
+                            type: "checkbox",
+                            checked: "checked",
+                            name: "select"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "ml-2 mb-n-10" })
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Completed")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("h3", { staticClass: "modal-date" }, [
+                  _c("span", { staticClass: "m-date" }, [
+                    _vm._v(_vm._s(_vm.created_at))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Date Created")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "ki ki-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "body",
+            fn: function() {
+              return [
+                _c("form", { staticClass: "form" }, [
+                  _c("div", { staticClass: "card-body row" }, [
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("p", [_vm._v("Image:")]),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "vehicle-img-viewer",
+                            attrs: {
+                              href: _vm.vehicle_image
+                                ? "/storage/images/" + _vm.vehicle_image
+                                : "/storage/images/vehicle-photo-default.jpg"
+                            }
+                          },
+                          [
+                            _vm.vehicle_image != null
+                              ? _c("img", {
+                                  staticClass:
+                                    "travel-vehicle-img img-fluid img-thumbnail",
+                                  attrs: {
+                                    src: "/storage/images/" + _vm.vehicle_image,
+                                    alt: ""
+                                  }
+                                })
+                              : _c("img", {
+                                  staticClass:
+                                    "travel-vehicle-img img-fluid img-thumbnail",
+                                  attrs: {
+                                    src:
+                                      "/storage/images/vehicle-photo-default.jpg",
+                                    alt: ""
+                                  }
+                                })
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Vehicle:")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.vehicle_id,
+                                expression: "formFields.vehicle_id"
+                              }
+                            ],
+                            staticClass: "form-control select2",
+                            attrs: { id: "kt_select_vehicle", name: "vehicle" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "vehicle_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { label: "Label" } }),
+                            _vm._v(" "),
+                            _vm._l(_vm.vehicles, function(vehicle) {
+                              return _c(
+                                "option",
+                                {
+                                  key: vehicle.id,
+                                  attrs: { "data-img": vehicle.image },
+                                  domProps: { value: vehicle.id }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(vehicle.name) +
+                                      " (" +
+                                      _vm._s(vehicle.template) +
+                                      ")"
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Starting ODO:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.starting_odo,
+                              expression: "formFields.starting_odo"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "number",
+                            name: "starting_odo",
+                            placeholder: "Enter starting ODO"
+                          },
+                          domProps: { value: _vm.formFields.starting_odo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "starting_odo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Ending ODO:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.ending_odo,
+                              expression: "formFields.ending_odo"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "number",
+                            placeholder: "Enter ending ODO"
+                          },
+                          domProps: { value: _vm.formFields.ending_odo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "ending_odo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Date submitted to procurement:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.date_submitted_proc,
+                              expression: "formFields.date_submitted_proc"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "date",
+                            name: "date_submitted_proc",
+                            placeholder: "Enter date submitted to procurement"
+                          },
+                          domProps: {
+                            value: _vm.formFields.date_submitted_proc
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "date_submitted_proc",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Distance Travelled")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.distance_travelled,
+                              expression: "formFields.distance_travelled"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "number",
+                            placeholder: "Enter distance travelled"
+                          },
+                          domProps: {
+                            value: _vm.formFields.distance_travelled
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "distance_travelled",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "form-group row d-flex" }, [
+                        _c("h4", { staticClass: "col-3" }, [
+                          _vm._v("Total Cost:")
+                        ]),
+                        _vm._v(" "),
+                        _c("h2", { staticClass: "col-9 mt-n-4" }, [
+                          _vm._v("80212.00")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Travel Date:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.travel_date,
+                              expression: "formFields.travel_date"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "date",
+                            name: "travel_date",
+                            placeholder: "Enter travel date"
+                          },
+                          domProps: { value: _vm.formFields.travel_date },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "travel_date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Travel Time:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.travel_time,
+                              expression: "formFields.travel_time"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "time",
+                            placeholder: "Enter travel time"
+                          },
+                          domProps: { value: _vm.formFields.travel_time },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "travel_time",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Rate per KM:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.rate_per_km,
+                              expression: "formFields.rate_per_km"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "number",
+                            name: "rate_per_km",
+                            placeholder: "Enter rate per kilometer"
+                          },
+                          domProps: { value: _vm.formFields.rate_per_km },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "rate_per_km",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Flat Rate:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.flat_rate,
+                              expression: "formFields.flat_rate"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "number",
+                            name: "flat_rate",
+                            placeholder: "Enter flat rate"
+                          },
+                          domProps: { value: _vm.formFields.flat_rate },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "flat_rate",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("No. of Nights:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.no_nights,
+                              expression: "formFields.no_nights"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "number",
+                            placeholder: "Enter number of nights"
+                          },
+                          domProps: { value: _vm.formFields.no_nights },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "no_nights",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Rate per Night:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.rate_per_night,
+                              expression: "formFields.rate_per_night"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "number",
+                            placeholder: "Enter rate per night"
+                          },
+                          domProps: { value: _vm.formFields.rate_per_night },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "rate_per_night",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Remarks:")]),
+                        _vm._v(" "),
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.remarks,
+                              expression: "formFields.remarks"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "", id: "", cols: "30", rows: "3" },
+                          domProps: { value: _vm.formFields.remarks },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "remarks",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn-save btn btn-sm btn-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.update(_vm.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Save")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card card-custom gutter-b",
-        attrs: { id: "transportation-page" }
-      },
-      [
-        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-          _c("div", { staticClass: "card-title" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "table",
-            {
-              staticClass:
-                "table table-separate table-head-custom table-checkable",
-              staticStyle: { width: "500px !important" },
-              attrs: { id: "list-travel-tbl" }
-            },
-            [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [_vm._v("ID")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Trip Ticket")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Service Provider")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Date of Travel")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Starting ODO")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Ending Odo")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Date Submitted to Procurement")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Distance Travelled")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("PO Number")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("PO Amount")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Rate per Km")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Flat Rate")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Rate per night")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("No. of Nights")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Total Cost")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Created at")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Action")])
-                ])
+    return _c("div", { staticClass: "card card-custom gutter-b" }, [
+      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+        _c("div", { staticClass: "card-title" })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "table",
+          {
+            staticClass:
+              "table table-separate table-head-custom table-checkable",
+            staticStyle: { width: "500px !important" },
+            attrs: { id: "list-travel-tbl" }
+          },
+          [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("ID")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Trip Ticket")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Service Provider")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date of Travel")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Starting ODO")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Ending Odo")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date Submitted to Procurement")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Distance Travelled")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PO Number")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PO Amount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Rate per Km")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Flat Rate")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Rate per night")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("No. of Nights")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Total Cost")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Remarks")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Created at")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Action")])
               ])
-            ]
-          )
-        ])
-      ]
-    )
+            ])
+          ]
+        )
+      ])
+    ])
   }
 ]
 render._withStripped = true
