@@ -9,6 +9,7 @@ import Vehicle from './components/Pages/Transportation/Vehicle';
 import Driver from './components/Pages/Transportation/Driver';
 import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 import ListPo from './components/Pages/ListPo';
+import ListUsers from './components/Pages/ListUsers';
 
 const routes = [
     {
@@ -89,6 +90,14 @@ const routes = [
         name: 'listPo',
         meta: {
             title: 'List of PO'
+        }   
+    },
+    {
+        path: '/list_users',
+        component: ListUsers,
+        name: 'listUsers',
+        meta: {
+            title: 'List of Users'
         }   
     },
 ]
