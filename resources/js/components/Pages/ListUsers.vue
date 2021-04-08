@@ -4,9 +4,7 @@
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label font-weight-bolder text-dark">Employees</span>
-
                 </h3>
-
             </div>
             <div class="card-body py-0">
                 <!--begin::Table-->
@@ -25,8 +23,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-
+                             <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
+                            <tr >
                                 <td class="pl-0">
                                     <div class="symbol symbol-50 symbol-light mt-1">
                                         <span class="symbol-label">
@@ -48,20 +46,14 @@
                                 </td>
                                 <td>
                                       <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Accounting Section</span>
-
                                 </td>
                                 <td >
-                                      <!-- <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Active</span> -->
-                                      <!-- <span class="navi-text"> -->
 									<span class="label label-xl label-inline label-light-success ">Active</span>
-														<!-- </span> -->
-
                                 </td>
                                 <td class="text-left pr-0">
 
                                     <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                                         <span class="svg-icon svg-icon-md svg-icon-primary">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
@@ -69,10 +61,8 @@
                                                     <path d="M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
                                                 </g>
                                             </svg>
-                                            <!--end::Svg Icon-->
                                         </span>
                                     </a>
-
                                 </td>
                             </tr>
                         </tbody>
@@ -83,4 +73,36 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            users: [],
+        }
+    },  
+    created() {
+        this.getUsers();
+    },
+    mounted() {
+        // this.ini();
+    },
+    methods: {
+        // ini() {
+
+        // },
+        getUsers() {
+            axios.get(BASE_URL + "/users").then(response => {
+                this.regions = response.data;
+            });
+        }
+    },
+}
+
+
+
+
+
+
+</script>
 
