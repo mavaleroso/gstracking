@@ -24,25 +24,21 @@
                         <tbody>
                             <tr v-for="user in users" :key="user.id" :value="user.id">   
                                 <td class="pl-0">
-                                  <v-if =user.gender="Male" >
-                                        <h1>This is Male</h1
-                     
-                                  <v-else>
-                                        <h1>This is female</h1>
-
+                                    <div class="symbol symbol-50 symbol-light mt-1">
+                                        <span class="symbol-label">
+                                            <img src="assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
+                                        </span>
+                                    </div>
                                 </td> 
                                 <td class="pl-0">
                                     <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.username }}</a>
                                     <span class="text-muted font-weight-bold text-muted d-block">{{ user.position }}</span>
                                 </td>
                                 <td>
-                                    
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.gender }}</span>
-                                   
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.division }}</span>
-                               
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.section }}</span>
@@ -64,7 +60,6 @@
                                             <!--end::Svg Icon-->
                                         </span>
                                     </a>
-
                                 </td>
                             </tr>
                         </tbody>

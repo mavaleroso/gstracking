@@ -3812,11 +3812,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -47375,12 +47370,14 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", { staticClass: "pl-0" }, [
-      _vm._v(
-        ' =user.gender="Male" >\n                                        '
-      ),
-      _c("h1", [_vm._v("This is Male")]),
-      _vm._v(" "),
-      _c("h1", [_vm._v("This is female")])
+      _c("div", { staticClass: "symbol symbol-50 symbol-light mt-1" }, [
+        _c("span", { staticClass: "symbol-label" }, [
+          _c("img", {
+            staticClass: "h-75 align-self-end",
+            attrs: { src: "assets/media/svg/avatars/001-boy.svg", alt: "" }
+          })
+        ])
+      ])
     ])
   }
 ]
