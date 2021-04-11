@@ -3812,6 +3812,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -47161,7 +47165,34 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.users, function(user) {
                   return _c("tr", { key: user.id, attrs: { value: user.id } }, [
-                    _vm._m(2, true),
+                    _c("td", { staticClass: "pl-0" }, [
+                      _c(
+                        "div",
+                        { staticClass: "symbol symbol-50 symbol-light mt-1" },
+                        [
+                          user.gender == "Male"
+                            ? _c("span", { staticClass: "symbol-label" }, [
+                                _c("img", {
+                                  staticClass: "h-75 align-self-end",
+                                  attrs: {
+                                    src: "assets/media/svg/avatars/001-boy.svg",
+                                    alt: ""
+                                  }
+                                })
+                              ])
+                            : _c("span", { staticClass: "symbol-label" }, [
+                                _c("img", {
+                                  staticClass: "h-75 align-self-end",
+                                  attrs: {
+                                    src:
+                                      "assets/media/svg/avatars/002-girl.svg",
+                                    alt: ""
+                                  }
+                                })
+                              ])
+                        ]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "pl-0" }, [
                       _c(
@@ -47171,7 +47202,11 @@ var render = function() {
                             "text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg",
                           attrs: { href: "#" }
                         },
-                        [_vm._v(_vm._s(user.username))]
+                        [
+                          _vm._v(
+                            _vm._s(user.firstname) + " " + _vm._s(user.lastname)
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c(
@@ -47218,14 +47253,23 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "label label-xl label-inline label-light-success "
-                        },
-                        [_vm._v(_vm._s(user.status))]
-                      )
+                      user.status == "Active"
+                        ? _c(
+                            "span",
+                            {
+                              staticClass:
+                                "label label-xl label-inline label-light-success "
+                            },
+                            [_vm._v(_vm._s(user.status))]
+                          )
+                        : _c(
+                            "span",
+                            {
+                              staticClass:
+                                "label label-xl label-inline label-light-danger "
+                            },
+                            [_vm._v(_vm._s(user.status))]
+                          )
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-left pr-0" }, [
@@ -47362,21 +47406,6 @@ var staticRenderFns = [
           { staticClass: "pr-0", staticStyle: { "min-width": "90px" } },
           [_vm._v("Actions")]
         )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "pl-0" }, [
-      _c("div", { staticClass: "symbol symbol-50 symbol-light mt-1" }, [
-        _c("span", { staticClass: "symbol-label" }, [
-          _c("img", {
-            staticClass: "h-75 align-self-end",
-            attrs: { src: "assets/media/svg/avatars/001-boy.svg", alt: "" }
-          })
-        ])
       ])
     ])
   }

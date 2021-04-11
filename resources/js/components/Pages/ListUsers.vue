@@ -25,13 +25,16 @@
                             <tr v-for="user in users" :key="user.id" :value="user.id">   
                                 <td class="pl-0">
                                     <div class="symbol symbol-50 symbol-light mt-1">
-                                        <span class="symbol-label">
+                                        <span v-if="user.gender=='Male'" class="symbol-label">
                                             <img src="assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
+                                        </span>
+                                        <span v-else class="symbol-label">
+                                            <img src="assets/media/svg/avatars/002-girl.svg" class="h-75 align-self-end" alt="" />
                                         </span>
                                     </div>
                                 </td> 
                                 <td class="pl-0">
-                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.username }}</a>
+                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.firstname }} {{ user.lastname }}</a>
                                     <span class="text-muted font-weight-bold text-muted d-block">{{ user.position }}</span>
                                 </td>
                                 <td>
@@ -44,7 +47,8 @@
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.section }}</span>
                                 </td>
                                 <td >
-									<span class="label label-xl label-inline label-light-success ">{{ user.status }}</span>
+									<span v-if="user.status=='Active'" class="label label-xl label-inline label-light-success ">{{ user.status }}</span>
+                                    <span v-else class="label label-xl label-inline label-light-danger ">{{ user.status }}</span>
                                 </td>
                                 <td class="text-left pr-0">
                                     <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
