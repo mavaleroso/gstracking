@@ -29,7 +29,7 @@ Route::get('/list_vehicle', 'base\DashboardController@index');
 Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_service_provider', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
-Route::get('/list_users', 'base\DashboardController@index');
+// Route::get('/list_users', 'base\DashboardController@index');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
@@ -143,6 +143,20 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'edit' => 'main.listtravel.edit',
             'update' => 'main.listtravel.update',
             'destroy' => 'main.listtravel.destroy',
+        ]
+    ]);
+});
+
+Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
+    Route::resource('listUsers', 'ListUserController', [
+        'names' => [
+            'index' => 'main.log.index',
+            'create' => 'main.log.create',
+            'store' => 'main.log.store',
+            'show' => 'main.log.show',
+            'edit' => 'main.log.edit',
+            'update' => 'main.log.update',
+            'destroy' => 'main.log.destroy',
         ]
     ]);
 });

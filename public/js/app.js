@@ -3815,6 +3815,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3824,16 +3826,13 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getUsers();
   },
-  mounted: function mounted() {// this.ini();
-  },
+  mounted: function mounted() {},
   methods: {
-    // ini() {
-    // },
     getUsers: function getUsers() {
       var _this = this;
 
-      axios.get(BASE_URL + "/users").then(function (response) {
-        _this.regions = response.data;
+      axios.get(BASE_URL + "/users/listUsers").then(function (response) {
+        _this.users = response.data;
       });
     }
   }
@@ -47165,27 +47164,74 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                [
-                  _vm._l(_vm.regions, function(region) {
-                    return _c(
-                      "option",
-                      { key: region.id, domProps: { value: region.id } },
-                      [_vm._v(_vm._s(region.region_name))]
-                    )
-                  }),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _vm._m(2),
+                _vm._l(_vm.users, function(user) {
+                  return _c("tr", { key: user.id, attrs: { value: user.id } }, [
+                    _vm._m(2, true),
                     _vm._v(" "),
-                    _vm._m(3),
+                    _c("td", { staticClass: "pl-0" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v(_vm._s(user.username))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-muted font-weight-bold text-muted d-block"
+                        },
+                        [_vm._v(_vm._s(user.position))]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _vm._m(4),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-dark-75 font-weight-bolder d-block font-size-lg"
+                        },
+                        [_vm._v(_vm._s(user.gender))]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _vm._m(5),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-dark-75 font-weight-bolder d-block font-size-lg"
+                        },
+                        [_vm._v(_vm._s(user.division))]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _vm._m(6),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-dark-75 font-weight-bolder d-block font-size-lg"
+                        },
+                        [_vm._v(_vm._s(user.section))]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _vm._m(7),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "label label-xl label-inline label-light-success "
+                        },
+                        [_vm._v(_vm._s(user.status))]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-left pr-0" }, [
                       _c(
@@ -47267,8 +47313,8 @@ var render = function() {
                       )
                     ])
                   ])
-                ],
-                2
+                }),
+                0
               )
             ]
           )
@@ -47329,84 +47375,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", { staticClass: "pl-0" }, [
-      _c("div", { staticClass: "symbol symbol-50 symbol-light mt-1" }, [
-        _c("span", { staticClass: "symbol-label" }, [
-          _c("img", {
-            staticClass: "h-75 align-self-end",
-            attrs: { src: "assets/media/svg/avatars/001-boy.svg", alt: "" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "pl-0" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg",
-          attrs: { href: "#" }
-        },
-        [_vm._v("Gemark Almacen")]
+      _vm._v(
+        ' =user.gender="Male" >\n                                        '
       ),
+      _c("h1", [_vm._v("This is Male")]),
       _vm._v(" "),
-      _c(
-        "span",
-        { staticClass: "text-muted font-weight-bold text-muted d-block" },
-        [_vm._v("Programmer II")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "span",
-        { staticClass: "text-dark-75 font-weight-bolder d-block font-size-lg" },
-        [_vm._v("Male")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "span",
-        { staticClass: "text-dark-75 font-weight-bolder d-block font-size-lg" },
-        [_vm._v("Finance Management Division")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "span",
-        { staticClass: "text-dark-75 font-weight-bolder d-block font-size-lg" },
-        [_vm._v("Accounting Section")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "span",
-        { staticClass: "label label-xl label-inline label-light-success " },
-        [_vm._v("Active")]
-      )
+      _c("h1", [_vm._v("This is female")])
     ])
   }
 ]
