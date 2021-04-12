@@ -3812,10 +3812,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -47204,7 +47200,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            _vm._s(user.firstname) + " " + _vm._s(user.lastname)
+                            _vm._s(user.first_name) +
+                              " " +
+                              _vm._s(user.last_name)
                           )
                         ]
                       ),
@@ -47253,14 +47251,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      user.status == "Active"
+                      user.is_active == "1"
                         ? _c(
                             "span",
                             {
                               staticClass:
                                 "label label-xl label-inline label-light-success "
                             },
-                            [_vm._v(_vm._s(user.status))]
+                            [_vm._v("Active")]
                           )
                         : _c(
                             "span",
@@ -47268,7 +47266,7 @@ var render = function() {
                               staticClass:
                                 "label label-xl label-inline label-light-danger "
                             },
-                            [_vm._v(_vm._s(user.status))]
+                            [_vm._v("Inactive")]
                           )
                     ]),
                     _vm._v(" "),

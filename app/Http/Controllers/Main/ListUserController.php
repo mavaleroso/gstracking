@@ -8,7 +8,7 @@ use App\Http\Requests\Tracking\ServiceProviderRequest;
 use App\Services\Tracking\CreateServiceProvider;
 use App\Services\Tracking\UpdateServiceProvider;
 use App\Services\Tracking\GetListingServiceProvider;
-use App\Models\User;
+use App\Models\UserDetail;
 
 class ListUserController extends Controller
 {
@@ -32,7 +32,7 @@ class ListUserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(UserDetail::all());
     }
 
     /**
