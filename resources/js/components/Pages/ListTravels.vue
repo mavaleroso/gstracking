@@ -88,9 +88,9 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="form-group row d-flex">
-                                <h4 class="col-3">Total Cost:</h4>
-                                <h2 class="col-9 mt-n-4">80212.00</h2>
+                            <div class="form-group d-flex jumbotron-mini">
+                                <h4 class="ml-5 mt-3">Total Cost:</h4>
+                                <h2 class="ml-auto mt-2 mr-5">{{ totalCost }}</h2>
                             </div>
                             <hr>
                             <div class="form-group">
@@ -176,14 +176,16 @@ export default {
         this.ini();
     },
     computed: {
-
+        totalCost() {
+            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + this.formFields.flat_rate + (this.formFields.no_nights * this.formFields.rate_per_night));;
+            this.formFields.total_cost = result;
+            return result.toLocaleString(undefined, {minimumFractionDigits: 2});
+        }
     },
     methods:{
         ini() {
             $(()=>{
                 this.tdatatable().init();
-
-                
             });
         },
         getVehicles() {
@@ -352,12 +354,12 @@ export default {
                         $('#modal-status').removeClass('label-primary');
                         $('#modal-status').addClass('label-success');
                         vm.status = 'Completed';
-                        this.formFields.status = 3;
+                        vm.formFields.status = 3;
                     } else {
                         $('#modal-status').removeClass('label-success');
                         $('#modal-status').addClass('label-primary');
                         vm.status = 'Approved';
-                        this.formFields.status = 2;
+                        vm.formFields.status = 2;
                     }
                 })
 
@@ -371,10 +373,8 @@ export default {
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
-                setTimeout(() => {
-                    this.reset();
-                    this.ini();
-                }, 1000);
+                this.show(id);
+                $('#list-travel-tbl').DataTable().ajax.reload();
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -417,8 +417,7 @@ export default {
             this.formFields.vehicle_id = null;
             this.formFields.vehicle_name = null;
             this.formFields.status = null;
-        }
-
+        },
     }
 
 }

@@ -21,6 +21,7 @@ class TravelRequest extends FormRequest
     {
         return [
             'starting_odo' => 'required',
+            'ending_odo' => 'nullable',
             'date_submitted_proc' => 'required',
             'distance_travelled' => 'nullable',
             'rate_per_km' => 'required',
@@ -31,7 +32,8 @@ class TravelRequest extends FormRequest
             'travel_date' => 'required',
             'travel_time' => 'nullable',
             'vehicle_id' => 'nullable',
-            'total_cost' => 'nullable'
+            'total_cost' => 'nullable',
+            'status' => 'nullable'
         ];
     }
 

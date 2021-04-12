@@ -3715,7 +3715,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   mounted: function mounted() {
     this.ini();
   },
-  computed: {},
+  computed: {
+    totalCost: function totalCost() {
+      var result = this.formFields.distance_travelled * this.formFields.rate_per_km + this.formFields.flat_rate + this.formFields.no_nights * this.formFields.rate_per_night;
+      ;
+      this.formFields.total_cost = result;
+      return result.toLocaleString(undefined, {
+        minimumFractionDigits: 2
+      });
+    }
+  },
   methods: {
     ini: function ini() {
       var _this = this;
@@ -3910,12 +3919,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('#modal-status').removeClass('label-primary');
             $('#modal-status').addClass('label-success');
             vm.status = 'Completed';
-            this.formFields.status = 3;
+            vm.formFields.status = 3;
           } else {
             $('#modal-status').removeClass('label-success');
             $('#modal-status').addClass('label-primary');
             vm.status = 'Approved';
-            this.formFields.status = 2;
+            vm.formFields.status = 2;
           }
         });
       });
@@ -3930,11 +3939,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
-        setTimeout(function () {
-          _this4.reset();
 
-          _this4.ini();
-        }, 1000);
+        _this4.show(id);
+
+        $('#list-travel-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -47372,15 +47380,19 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group row d-flex" }, [
-                        _c("h4", { staticClass: "col-3" }, [
-                          _vm._v("Total Cost:")
-                        ]),
-                        _vm._v(" "),
-                        _c("h2", { staticClass: "col-9 mt-n-4" }, [
-                          _vm._v("80212.00")
-                        ])
-                      ]),
+                      _c(
+                        "div",
+                        { staticClass: "form-group d-flex jumbotron-mini" },
+                        [
+                          _c("h4", { staticClass: "ml-5 mt-3" }, [
+                            _vm._v("Total Cost:")
+                          ]),
+                          _vm._v(" "),
+                          _c("h2", { staticClass: "ml-auto mt-2 mr-5" }, [
+                            _vm._v(_vm._s(_vm.totalCost))
+                          ])
+                        ]
+                      ),
                       _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),

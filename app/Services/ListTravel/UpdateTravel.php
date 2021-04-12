@@ -1,8 +1,8 @@
 <?php
 namespace App\Services\ListTravel;
 
-use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Request;
 
 class UpdateTravel
 {
@@ -16,6 +16,7 @@ class UpdateTravel
     {
         $transaction = Transaction::find($id);
         $transaction->update([
+            'vehicle_id' => $fields['vehicle_id'],
             'starting_odo' => $fields['starting_odo'],
             'ending_odo' => $fields['ending_odo'],
             'date_submit_proc' => $fields['date_submitted_proc'],
@@ -27,13 +28,14 @@ class UpdateTravel
             'total_cost' => $fields['total_cost'],
             'remarks' => $fields['remarks'],
         ]);
-        // $driver = Driver::where('id', $id)->update([
-        //     'fullname' => $fields['fullname'],
-        //     'age' => $fields['age'],
-        //     'sex' => $fields['gender'],
-        //     'contact' => $fields['contactNumber'],
-        // ]);
 
-        // return $driver;
+        $request = Request::find($transaction->request_id);
+        $request->update([
+            'travel_date' => $fields['travel_date'],
+            'depart_time' => $fields['travel_time'],
+            'is_status' => $fields['status'],
+        ]);
+
+        return $transaction;
     }
 }   

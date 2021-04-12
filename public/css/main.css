@@ -68,3 +68,9 @@
 .mt-n-4 {
     margin-top: -4px !important;
 }
+
+.jumbotron-mini {
+    background: #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
