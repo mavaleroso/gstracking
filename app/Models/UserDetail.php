@@ -23,5 +23,10 @@ class UserDetail extends Model
         'mobile',
         'address',        
         'is_active',
+        'gender',
+        'division',
+        'section',
+        'position',
+        
     ];
 }

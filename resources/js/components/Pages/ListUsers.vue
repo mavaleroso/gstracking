@@ -33,7 +33,7 @@
                                     </div>
                                 </td> 
                                 <td class="pl-0">
-                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.firstname }} {{ user.lastname }}</a>
+                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.first_name }} {{ user.last_name }}</a>
                                     <span class="text-muted font-weight-bold text-muted d-block">{{ user.position }}</span>
                                 </td>
                                 <td>
@@ -46,8 +46,8 @@
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.section }}</span>
                                 </td>
                                 <td >
-									<span v-if="user.status=='Active'" class="label label-xl label-inline label-light-success ">{{ user.status }}</span>
-                                    <span v-else class="label label-xl label-inline label-light-danger ">{{ user.status }}</span>
+									<span v-if="user.is_active=='1'" class="label label-xl label-inline label-light-success ">Active</span>
+                                    <span v-else class="label label-xl label-inline label-light-danger ">Inactive</span>
                                 </td>
                                 <td class="text-left pr-0">
                                     <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
