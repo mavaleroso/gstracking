@@ -20,6 +20,7 @@ class User extends Authenticatable
 
     protected $guard = 'users';
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,7 +29,14 @@ class User extends Authenticatable
     protected $fillable = [     
         'username',
         'email',
-        'password'
+        'password',
+        'firstsname',
+        'lastname',
+        'gender',
+        'position',
+        'division',
+        'section',
+        'status'
     ];
 
     /**

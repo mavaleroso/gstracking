@@ -8,7 +8,7 @@ use App\Http\Requests\Tracking\ServiceProviderRequest;
 use App\Services\Tracking\CreateServiceProvider;
 use App\Services\Tracking\UpdateServiceProvider;
 use App\Services\Tracking\GetListingServiceProvider;
-use App\Models\ServiceProvider;
+use App\Models\User;
 
 class ListUserController extends Controller
 {
@@ -30,10 +30,9 @@ class ListUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingServiceProvider $getListingServiceProvider)
+    public function index()
     {
-        $records = $getListingServiceProvider->execute();
-        return response()->json($records);
+        return response()->json(User::all());
     }
 
     /**
@@ -43,7 +42,7 @@ class ListUserController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**

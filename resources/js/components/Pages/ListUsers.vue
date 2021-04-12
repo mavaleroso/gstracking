@@ -4,12 +4,9 @@
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label font-weight-bolder text-dark">Employees</span>
-
                 </h3>
-
             </div>
             <div class="card-body py-0">
-                <!--begin::Table-->
                 <div class="table-responsive">
                     <table class="table table-head-custom table-vertical-center" id="kt_advance_table_widget_3">
                         <thead>
@@ -21,47 +18,40 @@
                                 <th style="min-width: 120px">Section</th>
                                 <th style="min-width: 120px">Status</th>
                                 <th class="pr-0" style="min-width: 90px">Actions</th>
-                                
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-
+                            <tr v-for="user in users" :key="user.id" :value="user.id">   
                                 <td class="pl-0">
                                     <div class="symbol symbol-50 symbol-light mt-1">
-                                        <span class="symbol-label">
+                                        <span v-if="user.gender=='Male'" class="symbol-label">
                                             <img src="assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
                                         </span>
+                                        <span v-else class="symbol-label">
+                                            <img src="assets/media/svg/avatars/002-girl.svg" class="h-75 align-self-end" alt="" />
+                                        </span>
                                     </div>
-                                </td>
+                                </td> 
                                 <td class="pl-0">
-                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">Gemark Almacen</a>
-                                    <span class="text-muted font-weight-bold text-muted d-block">Programmer II</span>
+                                    <a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ user.firstname }} {{ user.lastname }}</a>
+                                    <span class="text-muted font-weight-bold text-muted d-block">{{ user.position }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Male</span>
-                                   
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.gender }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Finance Management Division</span>
-                               
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.division }}</span>
                                 </td>
                                 <td>
-                                      <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Accounting Section</span>
-
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ user.section }}</span>
                                 </td>
                                 <td >
-                                      <!-- <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Active</span> -->
-                                      <!-- <span class="navi-text"> -->
-									<span class="label label-xl label-inline label-light-success ">Active</span>
-														<!-- </span> -->
-
+									<span v-if="user.status=='Active'" class="label label-xl label-inline label-light-success ">{{ user.status }}</span>
+                                    <span v-else class="label label-xl label-inline label-light-danger ">{{ user.status }}</span>
                                 </td>
                                 <td class="text-left pr-0">
-
                                     <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                                         <span class="svg-icon svg-icon-md svg-icon-primary">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
@@ -69,18 +59,38 @@
                                                     <path d="M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
                                                 </g>
                                             </svg>
-                                            <!--end::Svg Icon-->
                                         </span>
                                     </a>
-
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <!--end::Table-->
             </div>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            users: [],
+        }
+    },  
+    created() {
+        this.getUsers();
+    },
+    mounted() {
+
+    },
+    methods: {
+        getUsers() {
+            axios.get(BASE_URL + "/users/listUsers").then(response => {
+                this.users = response.data;
+            });
+        },
+    },
+}
+</script>
 
