@@ -18,7 +18,7 @@
                             <subheader></subheader>
 						<!--end::Subheader-->
 						<!--begin::Entry-->
-						<div class="d-flex flex-column-fluid">
+						<div id="container-div" class="d-flex flex-column-fluid">
 							<!--begin::Container-->
 							<div class="container">
 								<router-view></router-view>

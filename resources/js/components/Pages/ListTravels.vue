@@ -1,41 +1,186 @@
 <template>
-    <div class="card card-custom gutter-b" id="transportation-page">
-        <div class="card-header flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title"></div>
+    <div id="list-travel-page">
+        <div class="card card-custom gutter-b" >
+            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title"></div>
+            </div>
+            <div class="card-body">
+                <!--begin: Datatable-->
+                <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Trip Ticket</th>
+                            <th>Service Provider</th>
+                            <th>Date of Travel</th>
+                            <th>Starting ODO</th>
+                            <th>Ending Odo</th>
+                            <th>Date Submitted to Procurement</th>
+                            <th>Distance Travelled</th>
+                            <th>PO Number</th>
+                            <th>PO Amount</th>
+                            <th>Rate per Km</th>
+                            <th>Flat Rate</th>
+                            <th>Rate per night</th>
+                            <th>No. of Nights</th>
+                            <th>Total Cost</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>Created at</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+                <!--end: Datatable-->
+            </div>
         </div>
-        <div class="card-body">
-            <!--begin: Datatable-->
-            <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Trip Ticket</th>
-                        <th>Service Provider</th>
-                        <th>Date of Travel</th>
-                        <th>Starting ODO</th>
-                        <th>Ending Odo</th>
-                        <th>Date Submitted to Procurement</th>
-                        <th>Distance Travelled</th>
-                        <th>PO Number</th>
-                        <th>PO Amount</th>
-                        <th>Rate per Km</th>
-                        <th>Flat Rate</th>
-                        <th>Rate per night</th>
-                        <th>No. of Nights</th>
-                        <th>Total Cost</th>
-                        <th>Created at</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-            <!--end: Datatable-->
-        </div>
+        <modal>
+            <template v-slot:header>
+                <h5 id="modal-status" :class="status_class">{{ status }}</h5>
+                <h5 class="modal-title"><span class="m-title">{{ trip_ticket }}</span>
+                <span class="d-block text-muted font-size-sm">Trip Ticket</span></h5>
+                <h5 class="modal-title ml-auto"><span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input id="is-completed" type="checkbox" checked="checked" name="select"/>
+                        <span class="ml-2 mb-n-10"></span>
+                    </label>
+                </span>
+                <span class="d-block text-muted font-size-sm">Completed</span></h5>
+                <h3 class="modal-date"><span class="m-date">{{ created_at }}</span>
+                <span class="d-block text-muted font-size-sm">Date Created</span></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </template>
+            <template v-slot:body>
+                <form class="form">
+                    <div class="card-body row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <p>Image:</p>
+                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
+                                    <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
+                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="form-group">
+                                <label>Vehicle:</label>
+                                <select class="form-control select2" id="kt_select_vehicle" name="vehicle" v-model="formFields.vehicle_id">
+                                    <option label="Label"></option>
+                                    <option v-for="vehicle in vehicles" :data-img="vehicle.image" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} ({{ vehicle.template }})</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Starting ODO:</label>
+                                <input type="number" name="starting_odo" class="form-control required-field" placeholder="Enter starting ODO" v-model="formFields.starting_odo"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Ending ODO:</label>
+                                <input type="number" class="form-control" placeholder="Enter ending ODO" v-model="formFields.ending_odo"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Date submitted to procurement:</label>
+                                <input type="date" name="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Distance Travelled</label>
+                                <input type="number" class="form-control" placeholder="Enter distance travelled" v-model="formFields.distance_travelled"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group d-flex jumbotron-mini">
+                                <h4 class="ml-5 mt-3">Total Cost:</h4>
+                                <h2 class="ml-auto mt-2 mr-5">{{ totalCost }}</h2>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <label>Travel Date:</label>
+                                <input type="date" name="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Travel Time:</label>
+                                <input type="time" class="form-control" placeholder="Enter travel time" v-model="formFields.travel_time"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Rate per KM:</label>
+                                <input type="number" name="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Flat Rate:</label>
+                                <input type="number" name="flat_rate" class="form-control required-field" placeholder="Enter flat rate" v-model="formFields.flat_rate"/>
+                            </div>
+                            <div class="form-group">
+                                <label>No. of Nights:</label>
+                                <input type="number" class="form-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Rate per Night:</label>
+                                <input type="number" class="form-control" placeholder="Enter rate per night" v-model="formFields.rate_per_night"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Remarks:</label>
+                                <textarea class="form-control" name="" id="" cols="30" rows="3" v-model="formFields.remarks"></textarea>
+                            </div>
+                        </div>
+                     </div>
+                </form>
+            </template>
+            <template v-slot:footer>
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
+                <button @click="update(id)" type="button" class="btn-save btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
+            </template>
+        </modal>
     </div>
 </template>
 <script>
+import Modal from '../../components/Layouts/Modal';
 export default {
+    data() {
+        return {
+            id: null,
+            trip_ticket: null,
+            created_at: null,
+            status: null,
+            status_class: null,
+            vehicles: [],
+            vehicle_image: null,
+            formFields: {
+                starting_odo: null,
+                ending_odo: null,
+                date_submitted_proc: null,
+                distance_travelled: null,
+                rate_per_km: null,
+                flat_rate: null,
+                no_nights: null,
+                rate_per_night: null,
+                remarks: null,
+                travel_date: null,
+                travel_time: null,
+                vehicle_id: null,
+                vehicle_name: null,
+                status: null,
+                total_cost: null
+            },
+            names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
+        }
+    },
+    components: {
+        Modal
+    },
+    created() {
+        this.getVehicles();
+    },
     mounted() {
         this.ini();
+    },
+    computed: {
+        totalCost() {
+            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + this.formFields.flat_rate + (this.formFields.no_nights * this.formFields.rate_per_night));;
+            this.formFields.total_cost = result;
+            return result.toLocaleString(undefined, {minimumFractionDigits: 2});
+        }
     },
     methods:{
         ini() {
@@ -43,7 +188,13 @@ export default {
                 this.tdatatable().init();
             });
         },
+        getVehicles() {
+            axios.get(BASE_URL + '/api/vehicle').then(response => {
+                this.vehicles = response.data;
+            });
+        },
         tdatatable() {
+            let vm = this;
             var initTable = () => {
             var table = $('#list-travel-tbl');
                 table.DataTable({
@@ -76,6 +227,8 @@ export default {
                         { "data": "rate_per_night" },
                         { "data": "nights_count" },
                         { "data": "total_cost" },
+                        { "data": "is_status" },
+                        { "data": "remarks" },
                         { "data": "created_at" },
                         { "data": "id" }
                         
@@ -84,7 +237,7 @@ export default {
                         {
                             targets: 1,
                             render: data => {
-                                return '<span class="text-nowrap label label-lg font-weight-bold label-light-warning label-inline">'+data+'</span>';
+                                return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">'+data+'</span>';
                             }
                         },
                         {
@@ -94,15 +247,29 @@ export default {
                             }
                         },
                         {
-                            targets: 13,
+                            targets: [13, 16],
                             orderable: false,
                         },
                         {
-                            targets: 15,
+                            targets: 17,
                             orderable: false,
                             render: data => {
                                 return dateTimeEng(data);
                             }
+                        },
+                        {
+                            targets: 15,
+                            render: data => {
+                                var status = {
+                                    1: {'title': 'Pending', 'class': ' label-light-warning'},
+                                    2: {'title': 'Approved', 'class': ' label-light-primary'},
+                                    3: {'title': 'Completed', 'class': ' label-light-success'},
+                                };
+                                if (typeof status[data] === 'undefined') {
+                                    return data;
+                                }
+                                return '<span class="label text-nowrap label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                            },
                         },
                         {
                             targets: -1,
@@ -125,6 +292,10 @@ export default {
                         }
                     ],
                     drawCallback: () => {
+                        $('.btn-edit').off().on('click', function() {
+                            let id = $(this).data('id');
+                            vm.show(id);
+                        });
                     }
                 });
             };
@@ -133,8 +304,120 @@ export default {
                     initTable();
                 },
             };
-        }
+        },
+        show(id) {
+            this.reset();
+            let vm = this;
+            axios.get(BASE_URL + "/tracking/listtravel/" + id).then(response => {
 
+                this.id = id;
+                this.created_at = dateTimeEng(response.data[0].created_at);
+                this.trip_ticket = response.data[0].trip_ticket;
+                this.vehicle_image = response.data[0].image;
+                this.status = (response.data[0].is_status == 2)? 'Approved':'Completed';
+                this.status_class = (response.data[0].is_status == 2)? 'modal-status label label-primary label-inline mr-5':'modal-status label label-success label-inline mr-5';
+
+                // formFields
+                this.formFields.starting_odo = response.data[0].starting_odo;
+                this.formFields.ending_odo = response.data[0].ending_odo;
+                this.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+                this.formFields.distance_travelled = response.data[0].travelled;
+                this.formFields.rate_per_km = response.data[0].rate_per_km;
+                this.formFields.flat_rate = response.data[0].flat_rate;
+                this.formFields.no_nights = response.data[0].nights_count;
+                this.formFields.rate_per_night = response.data[0].rate_per_night;
+                this.formFields.remarks = response.data[0].remarks;
+                this.formFields.travel_date = response.data[0].travel_date;
+                this.formFields.travel_time = response.data[0].depart_time;
+                this.formFields.vehicle_id = response.data[0].vehicle_id;
+                this.formFields.vehicle_name = response.data[0].vehicle_name;
+                this.formFields.status = response.data[0].is_status;
+
+                (response.data[0].is_status == 3)? $('#is-completed').prop('checked', true):$('#is-completed').prop('checked', false);
+
+                $('#kt_select_vehicle').select2({
+                    placeholder: "Select vehicle",
+                });
+
+                setTimeout(() => {
+                    $('#kt_select_vehicle').val(vm.formFields.vehicle_id);
+                    $('#kt_select_vehicle').trigger('change');
+                }, 500);
+
+                $('#kt_select_vehicle').change(function() {
+                    vm.formFields.vehicle_id = $(this).val();
+                    vm.vehicle_image = $(this).find(':selected').data('img')
+                });
+
+                $('#is-completed').change(function() {
+                    if (this.checked) {
+                        $('#modal-status').removeClass('label-primary');
+                        $('#modal-status').addClass('label-success');
+                        vm.status = 'Completed';
+                        vm.formFields.status = 3;
+                    } else {
+                        $('#modal-status').removeClass('label-success');
+                        $('#modal-status').addClass('label-primary');
+                        vm.status = 'Approved';
+                        vm.formFields.status = 2;
+                    }
+                })
+
+            });
+            $('#kt_datatable_modal').modal('show');
+            $(".vehicle-img-viewer").fancybox();
+        },
+        update(id) {
+            axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(response => {
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+                Swal.fire("Good job!", response.data.message, "success");
+                showToast(response.data.message, 'success');
+                this.show(id);
+                $('#list-travel-tbl').DataTable().ajax.reload();
+            }).catch(error => {
+                let data = error.response.data.errors;
+                let keys = [];
+                let values = [];
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    values.push(`${value}`);
+                    if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                        $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                        $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                    }
+                }
+                for (let i = 0; i < this.names.length; i++) {
+                    if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                        $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                    }
+                }
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+            });
+        },
+        reset() {
+            this.id = null;
+            this.trip_ticket = null;
+            this.created_at = null;
+            this.status = null;
+            this.status_class = null;
+            this.vehicle_image = null;
+            this.formFields.starting_odo = null;
+            this.formFields.ending_odo = null;
+            this.formFields.date_submitted_proc = null;
+            this.formFields.distance_travelled = null;
+            this.formFields.rate_per_km = null;
+            this.formFields.flat_rate = null;
+            this.formFields.no_nights = null;
+            this.formFields.rate_per_night = null;
+            this.formFields.remarks = null;
+            this.formFields.travel_date = null;
+            this.formFields.travel_time = null;
+            this.formFields.vehicle_id = null;
+            this.formFields.vehicle_name = null;
+            this.formFields.status = null;
+        },
     }
 
 }

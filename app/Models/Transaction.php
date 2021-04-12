@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
-use App\Traits\WithPaginate;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Request;
 use Ccore\Core\Traits\ExtendedEloquentTrait;
+use App\Traits\WithPaginate;
 
 class Transaction extends Model
 {
+    use HasApiTokens, Notifiable, HasRoles, WithPaginate;
     use ExtendedEloquentTrait;
-    use WithPaginate;
 
     protected $table = 'transactions';
 
@@ -29,8 +36,10 @@ class Transaction extends Model
         'travelled',
         'rate_per_km',
         'flat_rate',
+        'rate_per_night',
         'nights_count',
         'total_cost',
         'created_at',
+        'remarks',
     ];
 }
