@@ -19,11 +19,11 @@ class ListUserController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:serviceprovider-list', ['only' => ['index']]);
-        $this->middleware('permission:serviceprovider-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:serviceprovider-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:serviceprovider-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:serviceprovider-view', ['only' => ['show']]);
+        $this->middleware('permission:listuser-list', ['only' => ['index']]);
+        $this->middleware('permission:listuser-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:listuser-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:listuser-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:listuser-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.

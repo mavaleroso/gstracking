@@ -4101,14 +4101,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      users: []
+      users: [],
+      roles: [],
+      edit: false
     };
   },
   created: function created() {
     this.getUsers();
+    this.getRoles();
   },
   mounted: function mounted() {},
   methods: {
@@ -4117,6 +4166,35 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(BASE_URL + "/users/listUsers").then(function (response) {
         _this.users = response.data;
+      });
+    },
+    getRoles: function getRoles() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + "/api/role").then(function (response) {
+        _this2.roles = response.data;
+      });
+    },
+    editEntry: function editEntry(id) {
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        // $('.card-label span').text('Edit Service Provider');
+        axios.get(BASE_URL + "/api/role/" + id).then(function (response) {
+          vm.formFields.id = response.data[0].id;
+          vm.formFields.name = response.data[0].name;
+        });
+        $('#kt_select_svc_name').select2({
+          placeholder: "Select roles",
+          minimumResultsForSearch: Infinity
+        });
+        $('#kt_select_svc_name').change(function () {
+          vm.formFields.name = $(this).val();
+        });
+        setTimeout(function () {
+          $('#kt_select_svc_name').val(vm.formFields.name);
+          $('#kt_select_svc_name').trigger('change');
+        }, 500);
       });
     }
   }
@@ -48065,8 +48143,89 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "list-users-page" } }, [
+    _vm.edit == true
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "card card-custom gutter-b animate__animated animate__fadeInRight"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "form",
+                {
+                  staticClass: "form",
+                  attrs: { id: "serviceProvider-form" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.saveEntry($event)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Name:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control select2 details-input",
+                              attrs: { id: "kt_select_svc_name", name: "name" }
+                            },
+                            _vm._l(_vm.roles, function(role) {
+                              return _c(
+                                "option",
+                                { key: role.id, domProps: { value: role.id } },
+                                [_vm._v(_vm._s(role.name))]
+                              )
+                            }),
+                            0
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-footer" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary mr-2",
+                            attrs: { type: "submit" }
+                          },
+                          [_vm._v("Save")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "reset" },
+                            on: { click: _vm.cancelEntry }
+                          },
+                          [_vm._v("Cancel")]
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _vm._m(0),
+      _vm._m(1),
       _vm._v(" "),
       _c("div", { staticClass: "card-body py-0" }, [
         _c("div", { staticClass: "table-responsive" }, [
@@ -48077,7 +48236,7 @@ var render = function() {
               attrs: { id: "kt_advance_table_widget_3" }
             },
             [
-              _vm._m(1),
+              _vm._m(2),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -48198,7 +48357,12 @@ var render = function() {
                         {
                           staticClass:
                             "btn btn-icon btn-light btn-hover-primary btn-sm mx-3",
-                          attrs: { href: "#" }
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.editEntry(user.id)
+                            }
+                          }
                         },
                         [
                           _c(
@@ -48283,6 +48447,22 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _c("span"),
+          _vm._v(" "),
+          _c("i", { staticClass: "mr-2" }),
+          _vm._v(" "),
+          _c("small", {}, [_vm._v("Form")])
+        ])
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

@@ -1,5 +1,51 @@
 <template>
     <div id="list-users-page">
+        <div v-if=" edit == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+            <div class="card-header flex-wrap">
+                <div class="card-title">
+                    <h3 class="card-label"><span></span>
+                    <i class="mr-2"></i>
+                    <small class="">Form</small></h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form" id="serviceProvider-form" @submit.prevent="saveEntry">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Name:</label>
+
+                                <select class="form-control select2 details-input" id="kt_select_svc_name" name="name">
+                                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                                </select>
+
+
+
+
+                                    <!-- <select class="form-control select2" id="kt_select_svc_name" name="svc_type" v-model="formFields.name">
+                                        <option label="Label"></option>
+
+                                    </select> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                <button @click="cancelEntry" type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
         <div class="card card-custom gutter-b">
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
@@ -50,7 +96,7 @@
                                     <span v-else class="label label-xl label-inline label-light-danger ">Inactive</span>
                                 </td>
                                 <td class="text-left pr-0">
-                                    <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+                                    <a href="#" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" @click="editEntry(user.id)">
                                         <span class="svg-icon svg-icon-md svg-icon-primary">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -76,10 +122,16 @@ export default {
     data() {
         return {
             users: [],
+            roles: [],
+            edit: false,
         }
     },  
     created() {
         this.getUsers();
+        this.getRoles ();
+
+        
+
     },
     mounted() {
 
@@ -88,6 +140,39 @@ export default {
         getUsers() {
             axios.get(BASE_URL + "/users/listUsers").then(response => {
                 this.users = response.data;
+            });
+        },
+        getRoles() {
+            axios.get(BASE_URL + "/api/role").then(response => {
+                this.roles = response.data;
+            });
+        },
+
+
+        editEntry(id) {
+            this.edit = true;
+            let vm = this;
+            $(() => {
+                // $('.card-label span').text('Edit Service Provider');
+
+                axios.get(BASE_URL + "/api/role/"+id).then(response => {
+                    vm.formFields.id = response.data[0].id;
+                    vm.formFields.name = response.data[0].name;
+                });
+
+                $('#kt_select_svc_name').select2({
+                    placeholder: "Select roles",
+                    minimumResultsForSearch: Infinity
+                });
+          
+                $('#kt_select_svc_name').change(function() {
+                    vm.formFields.name = $(this).val();
+                });
+
+                setTimeout(() => {
+                    $('#kt_select_svc_name').val(vm.formFields.name);
+                    $('#kt_select_svc_name').trigger('change');
+                }, 500);
             });
         },
     },
