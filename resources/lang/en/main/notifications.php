@@ -27,4 +27,5 @@ return [
 
     // PO  Page
     'po_created_successfully' => 'Purchased Order created succesfully',
+    'po_updated_successfully' => 'Purchased Order updated succesfully',
 ];

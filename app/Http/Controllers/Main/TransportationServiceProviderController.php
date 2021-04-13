@@ -10,7 +10,7 @@ use App\Services\Tracking\UpdateServiceProvider;
 use App\Services\Tracking\GetListingServiceProvider;
 use App\Models\ServiceProvider;
 
-class ListUserController extends Controller
+class TransportationServiceProviderController extends Controller
 {
     /**
      * Initialization
