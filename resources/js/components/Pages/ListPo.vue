@@ -102,10 +102,7 @@ export default {
             create: false,
             edit: false,
             formFields: {
-                // id: '',
-                // type: '',
-                // companyName: '',
-                // vehicleCount: '',
+                id: '',
                 po_no: '',
                 po_amount: '',
                 balance: '',
@@ -114,37 +111,50 @@ export default {
             names: ['po_no', 'po_amount', 'balance', 'status']
         }
     },
-    created() {
-        
-    },
     mounted() {
-        this.ini();
+        this.ini().init();
     },
     methods: {
         ini() {
-            $(()=>{
-                this.tdatatable().init();
-            });
+            let vm = this;
+            var datatbl = () => {
+                $(()=>{
+                    this.tdatatable().init();
+                });
+            }
+
+            var select_ini = (lbl) => {
+                $(() => {
+                    $('#status').select2({
+                        placeholder: "Select status",
+                        minimumResultsForSearch: Infinity
+                    });
+
+                    $('#status').change(function() {
+                        vm.formFields.status = $(this).val();
+                    });
+
+                    $('.card-label span').text(lbl);
+                });
+            }
+
+            return {
+                init: () => {
+                    datatbl();
+                },
+                select_ini: (lbl) => {
+                    select_ini(lbl);
+                } 
+            };
         },
         newEntry() {
-
             this.create = true;
             let vm = this;
-            $(() => {
-                $('#status').select2({
-                    placeholder: "Select status",
-                    minimumResultsForSearch: Infinity
-                });
-
-                $('#status').change(function() {
-                    vm.formFields.status = $(this).val();
-                });
-
-                $('.card-label span').text('Create PO');
-            });
+            vm.ini().select_ini('Create PO');
         },
         cancelEntry() {
 
+            this.formFields.id = '';
             this.formFields.po_no = '';
             this.formFields.po_amount =  '';
             this.formFields.balance = '';
@@ -152,7 +162,7 @@ export default {
 
             this.create = false;
             this.edit = false;
-            this.ini();
+            this.ini().init();
         },
         saveEntry() {
             let formD = new FormData();
@@ -197,7 +207,7 @@ export default {
                             }
                         }
                     }
-                    console.log('this.names===' + this.names);
+                    
                     for (let i = 0; i < this.names.length; i++) {
                         if (this.names[i] == 'status') {
 
@@ -225,6 +235,25 @@ export default {
                             }
                         }
                     }
+            });
+        },
+        show(id) {
+            let vm = this;
+            vm.edit = true;
+            vm.ini().select_ini('Edit PO');
+
+            axios.get(BASE_URL + "/tracking/po/" + id).then(response => {
+                vm.formFields.id = response.data[0].id;
+                vm.formFields.po_no = response.data[0].po_no;
+                vm.formFields.po_amount = response.data[0].po_amount;
+                vm.formFields.balance = response.data[0].balance;
+                vm.formFields.status = response.data[0].status;
+                
+                setTimeout(() => {
+                    $('#status').val(vm.formFields.status);
+                    $('#status').trigger('change');
+                }, 500);
+
             });
         },
         tdatatable() {
@@ -289,7 +318,13 @@ export default {
                                 ';
                             },
                         },
-                    ]
+                    ],
+                    drawCallback: () => {
+                        $('.btn-edit').off().on('click', function() {
+                            let id = $(this).data('id');
+                            vm.show(id);
+                        });
+                    }
                     
                 });
             };

@@ -2591,10 +2591,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       create: false,
       edit: false,
       formFields: {
-        // id: '',
-        // type: '',
-        // companyName: '',
-        // vehicleCount: '',
+        id: '',
         po_no: '',
         po_amount: '',
         balance: '',
@@ -2603,40 +2600,57 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       names: ['po_no', 'po_amount', 'balance', 'status']
     };
   },
-  created: function created() {},
   mounted: function mounted() {
-    this.ini();
+    this.ini().init();
   },
   methods: {
     ini: function ini() {
       var _this = this;
 
-      $(function () {
-        _this.tdatatable().init();
-      });
+      var vm = this;
+
+      var datatbl = function datatbl() {
+        $(function () {
+          _this.tdatatable().init();
+        });
+      };
+
+      var _select_ini = function select_ini(lbl) {
+        $(function () {
+          $('#status').select2({
+            placeholder: "Select status",
+            minimumResultsForSearch: Infinity
+          });
+          $('#status').change(function () {
+            vm.formFields.status = $(this).val();
+          });
+          $('.card-label span').text(lbl);
+        });
+      };
+
+      return {
+        init: function init() {
+          datatbl();
+        },
+        select_ini: function select_ini(lbl) {
+          _select_ini(lbl);
+        }
+      };
     },
     newEntry: function newEntry() {
       this.create = true;
       var vm = this;
-      $(function () {
-        $('#status').select2({
-          placeholder: "Select status",
-          minimumResultsForSearch: Infinity
-        });
-        $('#status').change(function () {
-          vm.formFields.status = $(this).val();
-        });
-        $('.card-label span').text('Create PO');
-      });
+      vm.ini().select_ini('Create PO');
     },
     cancelEntry: function cancelEntry() {
+      this.formFields.id = '';
       this.formFields.po_no = '';
       this.formFields.po_amount = '';
       this.formFields.balance = '';
       this.formFields.status = '';
       this.create = false;
       this.edit = false;
-      this.ini();
+      this.ini().init();
     },
     saveEntry: function saveEntry() {
       var _this2 = this;
@@ -2694,8 +2708,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        console.log('this.names===' + _this2.names);
-
         for (var i = 0; i < _this2.names.length; i++) {
           if (_this2.names[i] == 'status') {
             console.log('this.names[i] if ===');
@@ -2716,6 +2728,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }
         }
+      });
+    },
+    show: function show(id) {
+      var vm = this;
+      vm.edit = true;
+      vm.ini().select_ini('Edit PO');
+      axios.get(BASE_URL + "/tracking/po/" + id).then(function (response) {
+        vm.formFields.id = response.data[0].id;
+        vm.formFields.po_no = response.data[0].po_no;
+        vm.formFields.po_amount = response.data[0].po_amount;
+        vm.formFields.balance = response.data[0].balance;
+        vm.formFields.status = response.data[0].status;
+        setTimeout(function () {
+          $('#status').val(vm.formFields.status);
+          $('#status').trigger('change');
+        }, 500);
       });
     },
     tdatatable: function tdatatable() {
@@ -2784,7 +2812,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                     </a>\
                                 ';
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $('.btn-edit').off().on('click', function () {
+              var id = $(this).data('id');
+              vm.show(id);
+            });
+          }
         });
       };
 
