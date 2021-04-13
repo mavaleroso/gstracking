@@ -2746,6 +2746,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, 500);
       });
     },
+    "delete": function _delete(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won"t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          axios["delete"](BASE_URL + '/tracking/po/' + id).then(function (response) {
+            Swal.fire('Deleted!', response.data.message, 'success');
+            $("#po-list-tbl").DataTable().ajax.reload();
+          });
+        }
+      });
+    },
     tdatatable: function tdatatable() {
       var vm = this;
 
@@ -2817,6 +2833,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.btn-edit').off().on('click', function () {
               var id = $(this).data('id');
               vm.show(id);
+            });
+            $('.btn-delete').off().on('click', function () {
+              var id = $(this).data('id');
+              vm["delete"](id);
             });
           }
         });

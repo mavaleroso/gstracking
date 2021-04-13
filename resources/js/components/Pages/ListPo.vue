@@ -256,6 +256,27 @@ export default {
 
             });
         },
+        delete(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won"t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(result => {
+                if (result.value) {
+                    axios.delete(BASE_URL + '/tracking/po/'+id).then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            response.data.message,
+                            'success'
+                        );
+                        
+                        $("#po-list-tbl").DataTable().ajax.reload();
+                    });
+                }
+            });
+        },
         tdatatable() {
             var vm = this;
             var initTable = () => {
@@ -323,6 +344,11 @@ export default {
                         $('.btn-edit').off().on('click', function() {
                             let id = $(this).data('id');
                             vm.show(id);
+                        });
+
+                        $('.btn-delete').off().on('click', function() {
+                            let id = $(this).data('id');
+                            vm.delete(id);
                         });
                     }
                     
