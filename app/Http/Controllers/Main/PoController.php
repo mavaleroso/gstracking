@@ -9,6 +9,7 @@ use App\Services\Po\GetListingPo;
 use App\Services\Po\CreatePo;
 use App\Services\Po\UpdatePo;
 use App\Services\Po\GetPoById;
+use App\Services\Po\DeletePo;
 
 class PoController extends Controller
 {
@@ -101,8 +102,9 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, DeletePo $deletePo)
     {
-        //
+        $result = $deletePo->execute($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.po_deleted_successfully'), 'result' => $result]);
     }
 }
