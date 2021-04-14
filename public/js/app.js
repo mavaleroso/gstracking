@@ -4017,6 +4017,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
 //
 //
 //
@@ -4090,22 +4091,138 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      users: []
+      users: [],
+      roles: [],
+      edit: false,
+      formFields: {
+        id: '',
+        roles_id: '',
+        user_id: '',
+        name: '',
+        status: '',
+        active: ''
+      }
     };
+  },
+  components: {
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
   created: function created() {
     this.getUsers();
+    this.getRoles();
   },
   mounted: function mounted() {},
   methods: {
+    handleActionButton: function handleActionButton(id) {
+      $('.modal-dialog').removeClass('modal-xl');
+      $('.modal-dialog').addClass('modal-sm');
+      var vm = this;
+      $('#kt_datatable_modal').modal('show');
+      '';
+      $('#kt_select_svc_name').select2({
+        placeholder: "Select roles",
+        minimumResultsForSearch: Infinity
+      });
+      $('#kt_select_svc_name').change(function () {
+        vm.formFields.roles_id = $(this).val();
+      });
+      $('#kt_select_svc_status').select2({
+        placeholder: "Select Status",
+        minimumResultsForSearch: Infinity
+      });
+      $('#kt_select_svc_status').change(function () {
+        vm.formFields.status = $(this).val();
+      });
+      this.editEntry(id);
+    },
     getUsers: function getUsers() {
       var _this = this;
 
       axios.get(BASE_URL + "/users/listUsers").then(function (response) {
         _this.users = response.data;
+      });
+    },
+    getRoles: function getRoles() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + "/api/role").then(function (response) {
+        _this2.roles = response.data;
+      });
+    },
+    editEntry: function editEntry(id) {
+      this.edit = true;
+      var vm = this;
+      $(function () {
+        axios.get(BASE_URL + "/users/listUsers/" + id).then(function (response) {
+          vm.formFields.id = response.data[0].id;
+          vm.formFields.roles_id = response.data[0].roles_id;
+          vm.formFields.active = response.data[0].is_active;
+        });
+        $('#kt_select_svc_name').select2({
+          placeholder: "Select roles",
+          minimumResultsForSearch: Infinity
+        });
+        setTimeout(function () {
+          $('#kt_select_svc_name').val(vm.formFields.roles_id);
+          $('#kt_select_svc_name').trigger('change');
+          $('#kt_select_svc_status').val(vm.formFields.active);
+          $('#kt_select_svc_status').trigger('change');
+        }, 500);
+      });
+    },
+    update: function update(id) {
+      var _this3 = this;
+
+      axios.put(BASE_URL + "/users/listUsers/" + id, this.formFields).then(function (response) {
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+
+        _this3.getUsers();
       });
     }
   }
@@ -44700,7 +44817,7 @@ var render = function() {
             "div",
             {
               staticClass: "modal-content",
-              staticStyle: { "min-height": "590px" }
+              staticStyle: { "min-height": "100px" }
             },
             [
               _c(
@@ -48023,223 +48140,432 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "list-users-page" } }, [
-    _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body py-0" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c(
-            "table",
-            {
-              staticClass: "table table-head-custom table-vertical-center",
-              attrs: { id: "kt_advance_table_widget_3" }
+  return _c(
+    "div",
+    { attrs: { id: "list-users-page" } },
+    [
+      _c("modal", {
+        scopedSlots: _vm._u([
+          {
+            key: "header",
+            fn: function() {
+              return [
+                _c("h6", [
+                  _c("span", { staticClass: "d-block text-muted  bold h5" }, [
+                    _vm._v("Roles update")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "ki ki-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ]
             },
-            [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.users, function(user) {
-                  return _c("tr", { key: user.id, attrs: { value: user.id } }, [
-                    _c("td", { staticClass: "pl-0" }, [
-                      _c(
-                        "div",
-                        { staticClass: "symbol symbol-50 symbol-light mt-1" },
-                        [
-                          user.gender == "Male"
-                            ? _c("span", { staticClass: "symbol-label" }, [
-                                _c("img", {
-                                  staticClass: "h-75 align-self-end",
-                                  attrs: {
-                                    src: "assets/media/svg/avatars/001-boy.svg",
-                                    alt: ""
-                                  }
-                                })
-                              ])
-                            : _c("span", { staticClass: "symbol-label" }, [
-                                _c("img", {
-                                  staticClass: "h-75 align-self-end",
-                                  attrs: {
-                                    src:
-                                      "assets/media/svg/avatars/002-girl.svg",
-                                    alt: ""
-                                  }
-                                })
-                              ])
-                        ]
-                      )
+            proxy: true
+          },
+          {
+            key: "body",
+            fn: function() {
+              return [
+                _c("form", { staticClass: "form" }, [
+                  _c("div", { staticClass: "card-body row" }, [
+                    _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Name:")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.roles_id,
+                                expression: "formFields.roles_id"
+                              }
+                            ],
+                            staticClass: "form-control select2 details-input",
+                            attrs: { id: "kt_select_svc_name", name: "name" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "roles_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          _vm._l(_vm.roles, function(role) {
+                            return _c(
+                              "option",
+                              { key: role.id, domProps: { value: role.id } },
+                              [_vm._v(_vm._s(role.name))]
+                            )
+                          }),
+                          0
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "pl-0" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg",
-                          attrs: { href: "#" }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(user.first_name) +
-                              " " +
-                              _vm._s(user.last_name)
+                    _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Status:")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.status,
+                                expression: "formFields.status"
+                              }
+                            ],
+                            staticClass: "form-control select2 details-input",
+                            attrs: {
+                              id: "kt_select_svc_status",
+                              name: "status"
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "status",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "0" } }, [
+                              _vm._v("Inactive")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "1" } }, [
+                              _vm._v("Active")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn-save btn btn-sm btn-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.update(_vm.formFields.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Save")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card card-custom gutter-b" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body py-0" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "table",
+              {
+                staticClass: "table table-head-custom table-vertical-center",
+                attrs: { id: "kt_advance_table_widget_3" }
+              },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.users, function(user) {
+                    return _c(
+                      "tr",
+                      { key: user.id, attrs: { value: user.id } },
+                      [
+                        _c("td", { staticClass: "pl-0" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "symbol symbol-50 symbol-light mt-1"
+                            },
+                            [
+                              user.gender == "Male"
+                                ? _c("span", { staticClass: "symbol-label" }, [
+                                    _c("img", {
+                                      staticClass: "h-75 align-self-end",
+                                      attrs: {
+                                        src:
+                                          "assets/media/svg/avatars/001-boy.svg",
+                                        alt: ""
+                                      }
+                                    })
+                                  ])
+                                : _c("span", { staticClass: "symbol-label" }, [
+                                    _c("img", {
+                                      staticClass: "h-75 align-self-end",
+                                      attrs: {
+                                        src:
+                                          "assets/media/svg/avatars/002-girl.svg",
+                                        alt: ""
+                                      }
+                                    })
+                                  ])
+                            ]
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-muted font-weight-bold text-muted d-block"
-                        },
-                        [_vm._v(_vm._s(user.position))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-dark-75 font-weight-bolder d-block font-size-lg"
-                        },
-                        [_vm._v(_vm._s(user.gender))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-dark-75 font-weight-bolder d-block font-size-lg"
-                        },
-                        [_vm._v(_vm._s(user.division))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "text-dark-75 font-weight-bolder d-block font-size-lg"
-                        },
-                        [_vm._v(_vm._s(user.section))]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      user.is_active == "1"
-                        ? _c(
-                            "span",
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "pl-0" }, [
+                          _c(
+                            "a",
                             {
                               staticClass:
-                                "label label-xl label-inline label-light-success "
+                                "text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg",
+                              attrs: { href: "#" }
                             },
-                            [_vm._v("Active")]
-                          )
-                        : _c(
-                            "span",
-                            {
-                              staticClass:
-                                "label label-xl label-inline label-light-danger "
-                            },
-                            [_vm._v("Inactive")]
-                          )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-left pr-0" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "btn btn-icon btn-light btn-hover-primary btn-sm mx-3",
-                          attrs: { href: "#" }
-                        },
-                        [
+                            [
+                              _vm._v(
+                                _vm._s(user.first_name) +
+                                  " " +
+                                  _vm._s(user.last_name)
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
                           _c(
                             "span",
                             {
                               staticClass:
-                                "svg-icon svg-icon-md svg-icon-primary"
+                                "text-muted font-weight-bold text-muted d-block"
+                            },
+                            [_vm._v(_vm._s(user.position))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "text-dark-75 font-weight-bolder d-block font-size-lg"
+                            },
+                            [_vm._v(_vm._s(user.role_name))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "text-dark-75 font-weight-bolder d-block font-size-lg"
+                            },
+                            [_vm._v(_vm._s(user.gender))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "text-dark-75 font-weight-bolder d-block font-size-lg"
+                            },
+                            [_vm._v(_vm._s(user.division))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "text-dark-75 font-weight-bolder d-block font-size-lg"
+                            },
+                            [_vm._v(_vm._s(user.section))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          user.is_active == "1"
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "label label-xl label-inline label-light-success "
+                                },
+                                [_vm._v("Active")]
+                              )
+                            : _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "label label-xl label-inline label-light-danger "
+                                },
+                                [_vm._v("Inactive")]
+                              )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-left pr-0" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn btn-icon btn-light btn-hover-primary btn-sm mx-3",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.handleActionButton(user.id)
+                                }
+                              }
                             },
                             [
                               _c(
-                                "svg",
+                                "span",
                                 {
-                                  attrs: {
-                                    xmlns: "http://www.w3.org/2000/svg",
-                                    "xmlns:xlink":
-                                      "http://www.w3.org/1999/xlink",
-                                    width: "24px",
-                                    height: "24px",
-                                    viewBox: "0 0 24 24",
-                                    version: "1.1"
-                                  }
+                                  staticClass:
+                                    "svg-icon svg-icon-md svg-icon-primary"
                                 },
                                 [
                                   _c(
-                                    "g",
+                                    "svg",
                                     {
                                       attrs: {
-                                        stroke: "none",
-                                        "stroke-width": "1",
-                                        fill: "none",
-                                        "fill-rule": "evenodd"
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        "xmlns:xlink":
+                                          "http://www.w3.org/1999/xlink",
+                                        width: "24px",
+                                        height: "24px",
+                                        viewBox: "0 0 24 24",
+                                        version: "1.1"
                                       }
                                     },
                                     [
-                                      _c("rect", {
-                                        attrs: {
-                                          x: "0",
-                                          y: "0",
-                                          width: "24",
-                                          height: "24"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("path", {
-                                        attrs: {
-                                          d:
-                                            "M12.2674799,18.2323597 L12.0084872,5.45852451 C12.0004303,5.06114792 12.1504154,4.6768183 12.4255037,4.38993949 L15.0030167,1.70195304 L17.5910752,4.40093695 C17.8599071,4.6812911 18.0095067,5.05499603 18.0083938,5.44341307 L17.9718262,18.2062508 C17.9694575,19.0329966 17.2985816,19.701953 16.4718324,19.701953 L13.7671717,19.701953 C12.9505952,19.701953 12.2840328,19.0487684 12.2674799,18.2323597 Z",
-                                          fill: "#000000",
-                                          "fill-rule": "nonzero",
-                                          transform:
-                                            "translate(14.701953, 10.701953) rotate(-135.000000) translate(-14.701953, -10.701953)"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("path", {
-                                        attrs: {
-                                          d:
-                                            "M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z",
-                                          fill: "#000000",
-                                          "fill-rule": "nonzero",
-                                          opacity: "0.3"
-                                        }
-                                      })
+                                      _c(
+                                        "g",
+                                        {
+                                          attrs: {
+                                            stroke: "none",
+                                            "stroke-width": "1",
+                                            fill: "none",
+                                            "fill-rule": "evenodd"
+                                          }
+                                        },
+                                        [
+                                          _c("rect", {
+                                            attrs: {
+                                              x: "0",
+                                              y: "0",
+                                              width: "24",
+                                              height: "24"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("path", {
+                                            attrs: {
+                                              d:
+                                                "M12.2674799,18.2323597 L12.0084872,5.45852451 C12.0004303,5.06114792 12.1504154,4.6768183 12.4255037,4.38993949 L15.0030167,1.70195304 L17.5910752,4.40093695 C17.8599071,4.6812911 18.0095067,5.05499603 18.0083938,5.44341307 L17.9718262,18.2062508 C17.9694575,19.0329966 17.2985816,19.701953 16.4718324,19.701953 L13.7671717,19.701953 C12.9505952,19.701953 12.2840328,19.0487684 12.2674799,18.2323597 Z",
+                                              fill: "#000000",
+                                              "fill-rule": "nonzero",
+                                              transform:
+                                                "translate(14.701953, 10.701953) rotate(-135.000000) translate(-14.701953, -10.701953)"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c("path", {
+                                            attrs: {
+                                              d:
+                                                "M12.9,2 C13.4522847,2 13.9,2.44771525 13.9,3 C13.9,3.55228475 13.4522847,4 12.9,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,13 C20,12.4477153 20.4477153,12 21,12 C21.5522847,12 22,12.4477153 22,13 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,6 C2,3.790861 3.790861,2 6,2 L12.9,2 Z",
+                                              fill: "#000000",
+                                              "fill-rule": "nonzero",
+                                              opacity: "0.3"
+                                            }
+                                          })
+                                        ]
+                                      )
                                     ]
                                   )
                                 ]
                               )
                             ]
                           )
-                        ]
-                      )
-                    ])
-                  ])
-                }),
-                0
-              )
-            ]
-          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
         ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -48265,6 +48591,8 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("th", { staticStyle: { "min-width": "120px" } }),
+        _vm._v(" "),
+        _c("th", { staticStyle: { "min-width": "120px" } }, [_vm._v("Roles")]),
         _vm._v(" "),
         _c("th", { staticStyle: { "min-width": "120px" } }, [_vm._v("Gender")]),
         _vm._v(" "),

@@ -86,6 +86,13 @@ Route::group(['namespace' => 'Ajax'], function () {
             'show' => 'ajax.serviceprovider.show',
         ]
     ]);
+
+    Route::resource('role', 'RoleController', [
+        'names' => [
+            'index' => 'ajax.role.index',
+            'show' => 'ajax.role.show',
+        ]
+    ]);
 });
 
 

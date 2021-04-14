@@ -40,7 +40,8 @@ class PermissionCommand extends Command
         'overview',
         'po',
         'log',
-        'listtravel'
+        'listtravel',
+        'listuser'
     ];
 
     /**
