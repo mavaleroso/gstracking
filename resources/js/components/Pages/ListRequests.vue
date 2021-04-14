@@ -48,14 +48,14 @@
         </div>
         <!--end::Card-->
         <!--begin::Modal-->
-        <modal>
+        <modal :status="status">
             <template v-slot:header>
                 <h5 :class="request_status_lbl">{{ request_status }}</h5>
                 <h5 class="modal-title"><span class="m-title">{{ request_title }}</span>
                 <span class="d-block text-muted font-size-sm">Reference Code</span></h5>
                 <h3 class="modal-date"><span class="m-date">{{ dateTimeEng }}</span>
                 <span class="d-block text-muted font-size-sm">Date Created</span></h3>
-                <button @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
+                <button v-if="status == 1" @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
                     <i class="la la-edit icon-md"></i>
                     <span>Edit</span>
                 </button>
@@ -161,6 +161,31 @@
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="save(request_id)" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
             </template>
+            <template v-slot:adminbody>
+                <div class="card-body row">
+                    <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Vehicle</label>
+                            <select class="form-control select2" id="vehicle-select">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Po Number</label>
+                            <select class="form-control select2" id="po-select">
+                                <option>test</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template v-slot:adminfooter>
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
+            </template>
         </modal>
         <!--end::Modal-->
     </div>
@@ -171,6 +196,7 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            status: null,
             request_id: null,
             request_status: null,
             request_status_lbl: null,
@@ -191,7 +217,6 @@ export default {
             passengers: [],
             request_edit: 0,
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-            ktdatatable: null,
             dateTimeEng: null
         }
     },  
@@ -228,7 +253,7 @@ export default {
                     placeholder: "Select a Region",
                     allowClear: true
                 });
-
+                
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
@@ -390,12 +415,21 @@ export default {
                 vm.request_travelDate = response.data[0].travel_date;
                 vm.request_departTime = response.data[0].depart_time;
                 vm.request_dept = response.data[0].department;
+                vm.status = response.data[0].is_status;
 
                 vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
                 vm.getDetails(vm.request_id);
                 vm.getPassengers(vm.request_id);
 
                 $('#kt_datatable_modal').modal('show');
+
+                $('#vehicle-select').select2({
+                    placeholder: "Select a vehicle",
+                });
+
+                $('#po-select').select2({
+                    placeholder: "Select a PO",
+                });
             });
         },
         getRegion() {
