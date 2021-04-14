@@ -150,7 +150,7 @@
                         password: this.password
                     }
 					$('#login-btn').addClass('spinner spinner-white spinner-right');
-                    this.req.post('/login', data).then(response => {
+                    this.req.post(BASE_URL + '/login', data).then(response => {
 						if (response.data[0].type == 'error') {
                         	this.errors.push(response.data[0].message);
 							$('#login-btn').removeClass('spinner spinner-white spinner-right');

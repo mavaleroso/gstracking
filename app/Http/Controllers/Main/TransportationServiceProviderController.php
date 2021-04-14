@@ -68,6 +68,7 @@ class TransportationServiceProviderController extends Controller
     {
         $data = ServiceProvider::where('id', $id)->get();
         return response()->json($data);
+        
     }
 
     /**

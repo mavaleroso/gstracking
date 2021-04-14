@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Traits\WithPaginate;
 use Ccore\Core\Traits\ExtendedEloquentTrait;
-
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role as Roles;
 
 class Role extends Roles
@@ -15,6 +15,7 @@ class Role extends Roles
     /**
      * Mass assignment column
      */
+    protected $table = 'roles';
     protected $fillable = [
         'name',               
     ];    

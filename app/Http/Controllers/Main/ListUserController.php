@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Tracking\ServiceProviderRequest;
 use App\Services\Tracking\CreateServiceProvider;
-use App\Services\Tracking\UpdateServiceProvider;
+use App\Services\Tracking\UpdateRoles;
 use App\Services\Tracking\GetListingServiceProvider;
 use App\Models\UserDetail;
+use App\Models\User;
 
 class ListUserController extends Controller
 {
@@ -19,11 +19,11 @@ class ListUserController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:serviceprovider-list', ['only' => ['index']]);
-        $this->middleware('permission:serviceprovider-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:serviceprovider-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:serviceprovider-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:serviceprovider-view', ['only' => ['show']]);
+        $this->middleware('permission:listuser-list', ['only' => ['index']]);
+        $this->middleware('permission:listuser-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:listuser-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:listuser-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:listuser-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.
@@ -32,7 +32,8 @@ class ListUserController extends Controller
      */
     public function index()
     {
-        return response()->json(UserDetail::all());
+        return response()->json(UserDetail::leftJoin('users','users_details.user_id','=','users.id')->leftJoin('roles','users.roles_id','=','roles.id')
+        ->select(['users_details.*' , "roles.name AS role_name"])->get());
     }
 
     /**
@@ -51,10 +52,9 @@ class ListUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ServiceProviderRequest $serviceProviderRequest, CreateServiceProvider $createServiceProvider)
+    public function store()
     {
-        $result = $createServiceProvider->execute($serviceProviderRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_created_successfully'), 'result' => $result]);
+
     }
 
     /**
@@ -65,10 +65,9 @@ class ListUserController extends Controller
      */
     public function show($id)
     {
-        $data = ServiceProvider::where('id', $id)->get();
+        $data = User::leftJoin('users_details','users_details.user_id','=','users.id')->where('users.id', $id)->get();
         return response()->json($data);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -79,7 +78,6 @@ class ListUserController extends Controller
     {
         
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -87,11 +85,13 @@ class ListUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceProviderRequest $serviceproviderRequest, UpdateServiceProvider $updateServiceprovider, $id)
+    public function update(Request $request, UpdateRoles $updateRoles , $id)
     {
-        $result = $updateServiceprovider->execute($id, $serviceproviderRequest->validated());
-        return json_encode(['type' => 'success','message' => __('main/notifications.serviceProvider_updated_successfully'), 'result' => $result]);
+        $result = $updateRoles->execute($id, $request);
+        return json_encode(['type' => 'success','message' => __('main/notifications.user_roles_updated_successfully'), 'result' => $result]);
     }
+
+    
 
     /**
      * Remove the specified resource from storage.

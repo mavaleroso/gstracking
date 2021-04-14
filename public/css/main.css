@@ -74,6 +74,18 @@
     padding: 10px;
     border-radius: 5px;
 }
+<<<<<<< HEAD
 .mobile-logo{
     height:20px;
+=======
+
+.modal-dialog.modal-xxl {
+    max-width: 1700px;
+}
+
+.dashed-border {
+    width: 95%;
+    margin: auto;
+    border-top: 2px dashed #666;
+>>>>>>> develop
 }
