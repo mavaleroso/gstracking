@@ -27,12 +27,11 @@ return [
 
     // PO  Page
     'po_created_successfully' => 'Purchased Order created succesfully',
-<<<<<<< HEAD
+    'po_updated_successfully' => 'Purchased Order updated succesfully',
+    'po_deleted_successfully' => 'Purchased Order deleted succesfully',
 
     // Users Page
     'user_roles_updated_successfully' => 'User Roles updated succesfully',
-=======
     'po_updated_successfully' => 'Purchased Order updated succesfully',
-    'po_deleted_successfully' => 'Purchased Order deleted succesfully',
->>>>>>> develop
+    'po_deleted_successfully' => 'Purchased Order deleted succesfully'
 ];
