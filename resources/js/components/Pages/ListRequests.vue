@@ -25,40 +25,24 @@
                 </div>
             </div>
             <div class="card-body">
-                <!--begin: Search Form-->
-                <!--begin::Search Form-->
-                <div class="mb-7">
-                    <div class="row align-items-center">
-                        <div class="col-lg-9 col-xl-6">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 my-2 my-md-0">
-                                    <div class="input-icon">
-                                        <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
-                                        <span>
-                                            <i class="flaticon2-search-1 text-muted"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 my-2 my-md-0">
-                                    <div class="d-flex align-items-center">
-                                        <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
-                                        <select class="form-control" id="kt_datatable_search_status">
-                                            <option value="">All</option>
-                                            <option value="1">Pending</option>
-                                            <option value="2">Approved</option>
-                                            <option value="3">Completed</option>
-                                            <option value="4">Declined</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end::Search Form-->
-                <!--end: Search Form-->
                 <!--begin: Datatable-->
-                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                <table class="table table-separate table-head-custom table-checkable" id="request-tbl">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Code</th>
+                            <th>Vehicle Type</th>
+                            <th>Department</th>
+                            <th>Purpose</th>
+                            <th>Travel Date</th>
+                            <th>Depart Time</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                            <th>Request By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
                 <!--end: Datatable-->
             </div>
         </div>
@@ -222,22 +206,29 @@ export default {
     },
     methods: {
         ini() {
-            // LOAD SCRIPTS
-            var scripts = [
-                "/assets/js/pages/crud/forms/widgets/select2.js"
-            ];
-            scripts.forEach(script => {
-                let tag = document.createElement("script");
-                tag.setAttribute("src", script);
-                document.getElementById("list-requests-page").appendChild(tag);
-            });
-
-
             $(()=>{
+                this.tdatatable().init();
+
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
-                
-                this.KTDatatableModal().init();
+
+                $('#kt_select_province').select2({
+                    placeholder: "Select a Province",
+                });
+
+                $('#kt_select_city').select2({
+                    placeholder: "Select a City",
+                });
+
+                $('#kt_select_brgy').select2({
+                    placeholder: "Select a Barangay",
+                });
+
+                $('#kt_select_region').select2({
+                    placeholder: "Select a Region",
+                    allowClear: true
+                });
+
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
@@ -287,195 +278,125 @@ export default {
                 });
             });
         },
-        KTDatatableModal() {
-            var initDatatable = () => {
-                var el = $('#kt_datatable');
-                var count = 0;
-                var vm = this;
-
-                var datatable = el.KTDatatable({
-                    // datasource definition
-                    data: {
-                        type: 'remote',
-                        source: {
-                            read: {
-                                url: HOST_URL + '/travel/listrequest',
-                                method: 'GET',
-                            },
-                        },
-                        pageSize: 10, // display 20 records per page
-                        
+        tdatatable() {
+            let vm = this;
+            var initTable = () => {
+            var table = $('#request-tbl');
+                table.DataTable({
+                    scrollY: '50vh',
+                    scrollX: true,
+                    scrollCollapse: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: BASE_URL + '/travel/listrequest',
+                        type: 'GET'
                     },
-
-                    // layout definition
-                    layout: {
-                        theme: 'default',
-                        scroll: true,
-                        height: null,
-                        footer: false,
-                    },
-
-                    // column sorting
-                    sortable: true,
-
-                    pagination: true,
-
-                    search: {
-                        input: $('#kt_datatable_search_query'),
-                        key: 'generalSearch'
-                    },
-
-                    // columns definition
-                    columns: [{
-                        field: 'id',
-                        title: 'ID',
-                        width: 35,
-                        autoHide: false,
-                        // template: () => {
-                        //     count += 1;
-                        //     return count;
-                        // }
-                    }, {
-                        field: 'serial_code',
-                        title: 'code',
-                        textAlign: 'center',
-                        autoHide: false,
-                    }, {
-                        field: 'type_vehicle',
-                        title: 'Vehicle Type',
-                        autoHide: false,
-                    }, {
-                        field: 'department',
-                        title: 'Department',
-                    }, {
-                        field: 'purpose',
-                        title: 'Purpose',
-                        autoHide: false,
-                    }, {
-                        field: 'travel_date',
-                        title: 'Travel Date',
-                        autoHide: false,
-                        textAlign: 'center',
-                        template: (row) => {
-                            return dateEng(row.travel_date);
-                        }
-                    }, {
-                        field: 'depart_time',
-                        title: 'Depart Time',
-                        textAlign: 'center',
-                        autoHide: false,
-                        template: (row) => {
-                            return timeEng(row.depart_time);
-                        }
-                    }, {
-                        field: 'is_status',
-                        title: 'Status',
-                        autoHide: false,
-                        // callback function support for column rendering
-                        template: (row) => {
-                            var status = {
-                                1: {
-                                    'title': 'Pending',
-                                    'class': ' label-light-warning'
-                                },
-                                2: {
-                                    'title': 'Approved',
-                                    'class': ' label-light-info'
-                                },
-                                3: {
-                                    'title': 'Completed',
-                                    'class': ' label-light-success'
-                                },
-                                4: {
-                                    'title': 'Declined',
-                                    'class': ' label-light-danger'
-                                }
-                            };
-                            return '<span class="label label-lg font-weight-bold ' + status[row.is_status].class + ' label-inline">' + status[row.is_status].title + '</span>';
+                    columns: [
+                        { "data": "id" },
+                        { "data": "serial_code" },
+                        { "data": "type_vehicle" },
+                        { "data": "department" },
+                        { "data": "purpose" },
+                        { "data": "travel_date" },
+                        { "data": "depart_time" },
+                        { "data": "is_status" },
+                        { "data": "created_at" },
+                        { "data": "fullname" },
+                        { "data": "id" },
+                    ],
+                    columnDefs: [
+                        {
+                            targets: 7,
+                            render: data => {
+                                var status = {
+                                    1: {
+                                        'title': 'Pending',
+                                        'class': ' label-light-warning'
+                                    },
+                                    2: {
+                                        'title': 'Approved',
+                                        'class': ' label-light-info'
+                                    },
+                                    3: {
+                                        'title': 'Completed',
+                                        'class': ' label-light-success'
+                                    },
+                                    4: {
+                                        'title': 'Declined',
+                                        'class': ' label-light-danger'
+                                    }
+                                };
+                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                            }
                         },
-                    }, {
-                        field: 'created_at',
-                        title: 'Date Created',
-                        order: 'desc',
-                        width: 130,
-                        textAlign: 'center',
-                        template: (row) => {
-                            return dateTimeEng(row.created_at);
-                        }
-                    }, {
-                        field: 'fullname',
-                        title: 'Requested By',
-                    },{
-                        field: 'Actions',
-                        width: 130,
-                        title: 'Actions',
-                        sortable: false,
-                        overflow: 'visible',
-                        textAlign: 'left',
-                        autoHide: false,
-                        template: (row) => {
-                            return '\
-                                <button data-record-id="' + row.id + '" class="btn btn-sm btn-clean btn-details" title="View records">\
-                                    <i class="flaticon2-document"></i> Details\
-                                </button>';
+                        {
+                            targets: 8,
+                            render: data => {
+                                return dateTimeEng(data);
+                            }
                         },
-                    }],
-                });
-
-                vm.ktdatatable = datatable;
-
-                $('#kt_datatable_search_status').on('change', function() {
-                    datatable.search($(this).val().toLowerCase(), 'is_status');
-                });
-
-                datatable.on('click', '[data-record-id]', function() {
-                    let recordID = $(this).data('record-id');
-                    let recordData = $.grep(datatable.dataSet, v => {
-                        return v.id === recordID;
-                    });
-
-                    switch (recordData[0].is_status) {
-                        case 1:
-                                vm.request_status = 'Pending';
-                                vm.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
-                            break;
-                        case 2:
-                                vm.request_status = 'Approved';
-                                vm.request_status_lbl = 'modal-status label label-primary label-inline mr-5';
-                            break;
-                        case 3:
-                                vm.request_status = 'Completed';
-                                vm.request_status_lbl = 'modal-status label label-success label-inline mr-5';
-                            break;
-                        case 4:
-                                vm.request_status = 'Rejected';
-                                vm.request_status_lbl = 'modal-status label label-danger label-inline mr-5';
-                            break; 
+                        {
+                            targets: -1,
+                            sortable: false,
+                            render: data => {
+                                return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
+                                            <i class="flaticon2-document"></i> Details\
+                                        </button>';
+                            }
+                        }
+                    ],
+                    drawCallback: () => {
+                        $('.btn-details').off().on('click', function() {
+                            let id = $(this).data('record-id');
+                            vm.show(id);
+                        });
                     }
-
-                    vm.request_id = recordData[0].id;
-                    vm.request_title = recordData[0].serial_code;
-                    vm.request_createdAt = recordData[0].created_at;
-                    vm.request_vehicle = recordData[0].type_vehicle;
-                    vm.request_travelPurpose = recordData[0].purpose;
-                    vm.request_travelDate = recordData[0].travel_date;
-                    vm.request_departTime = recordData[0].depart_time;
-                    vm.request_dept = recordData[0].department;
-
-                    vm.dateTimeEng = dateTimeEng(recordData[0].created_at);
-                    vm.getDetails(vm.request_id);
-                    vm.getPassengers(vm.request_id);
-
-                    $('#kt_datatable_modal').modal('show');
                 });
-
             };
-
             return {
                 init: function() {
-                    initDatatable();
-                }
+                    initTable();
+                },
             };
+        },
+        show(id) {
+            let vm = this;
+            axios.get(BASE_URL + '/travel/listrequest/' + id).then(response => {
+                switch (response.data[0].is_status) {
+                    case 1:
+                            vm.request_status = 'Pending';
+                            vm.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
+                        break;
+                    case 2:
+                            vm.request_status = 'Approved';
+                            vm.request_status_lbl = 'modal-status label label-primary label-inline mr-5';
+                        break;
+                    case 3:
+                            vm.request_status = 'Completed';
+                            vm.request_status_lbl = 'modal-status label label-success label-inline mr-5';
+                        break;
+                    case 4:
+                            vm.request_status = 'Rejected';
+                            vm.request_status_lbl = 'modal-status label label-danger label-inline mr-5';
+                        break; 
+                }
+
+                vm.request_id = response.data[0].id;
+                vm.request_title = response.data[0].serial_code;
+                vm.request_createdAt = response.data[0].created_at;
+                vm.request_vehicle = response.data[0].type_vehicle;
+                vm.request_travelPurpose = response.data[0].purpose;
+                vm.request_travelDate = response.data[0].travel_date;
+                vm.request_departTime = response.data[0].depart_time;
+                vm.request_dept = response.data[0].department;
+
+                vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
+                vm.getDetails(vm.request_id);
+                vm.getPassengers(vm.request_id);
+
+                $('#kt_datatable_modal').modal('show');
+            });
         },
         getRegion() {
             axios.get(BASE_URL + "/api/region").then(response => {
