@@ -44632,7 +44632,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("a", { attrs: { href: "index.html" } }, [
       _c("img", {
-        attrs: { alt: "Logo", src: "assets/media/logos/logo-light.png" }
+        staticClass: "mobile-logo",
+        attrs: { alt: "Logo", src: "assets/media/logos/logo-gstracking.png" }
       })
     ])
   },
@@ -45890,15 +45891,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "brand-logo", attrs: { href: "index.html" } },
-      [
-        _c("img", {
-          attrs: { alt: "Logo", src: "assets/media/logos/logo-gstracking.png" }
-        })
-      ]
-    )
+    return _c("a", { staticClass: "brand-logo", attrs: { href: "#" } }, [
+      _c("img", {
+        attrs: { alt: "Logo", src: "assets/media/logos/logo-gstracking.png" }
+      })
+    ])
   },
   function() {
     var _vm = this
