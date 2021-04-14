@@ -150,15 +150,6 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
 Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
     Route::resource('listUsers', 'ListUserController', [
         'names' => [
-<<<<<<< HEAD
-            'index' => 'main.users.index',
-            'create' => 'main.users.create',
-            'store' => 'main.users.store',
-            'show' => 'main.users.show',
-            'edit' => 'main.users.edit',
-            'update' => 'main.users.update',
-            'destroy' => 'main.users.destroy',
-=======
             'index' => 'main.listUsers.index',
             'create' => 'main.listUsers.create',
             'store' => 'main.listUsers.store',
@@ -166,7 +157,6 @@ Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
             'edit' => 'main.listUsers.edit',
             'update' => 'main.listUsers.update',
             'destroy' => 'main.listUsers.destroy',
->>>>>>> develop
         ]
     ]);
 });
