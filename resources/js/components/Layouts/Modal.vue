@@ -11,7 +11,21 @@
                 <div class="modal-footer">
                     <slot name="footer"></slot>
                 </div>
+                <hr v-if="status == 1" class="dashed-border">
+                <div v-if="status == 1" class="modal-body">
+                    <slot name="adminbody"></slot>
+                </div>
+                <div v-if="status == 1" class="modal-footer">
+                    <slot name="adminfooter"></slot>
+                </div>
             </div>
         </div>
     </div>
 </template>
+<script>
+export default {
+    props: [
+        'status'
+    ],
+}
+</script>

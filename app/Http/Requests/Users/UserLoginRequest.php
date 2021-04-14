@@ -26,7 +26,6 @@ class UserLoginRequest extends FormRequest
         return [
             'email' => 'required',
             'password' => 'required',
-            'remember' => ''
         ];
     }
 
