@@ -6,6 +6,8 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Travels\TravelStoreRequest;
 use App\Services\Travels\UpdateTravel;
+use App\Services\ListRequest\GetListingRequest;
+use App\Services\ListRequest\GetRequestById;
 use Illuminate\Support\Facades\DB;
 
 class ListRequestController extends Controller
@@ -28,12 +30,10 @@ class ListRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingRequest $getListingRequest)
     {
-        return response()->json(DB::table('requests')
-            ->select('requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'))
-            ->leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
-            ->get());
+        $records = $getListingRequest->execute();
+        return response()->json($records);
     }
 
     /**
@@ -63,9 +63,10 @@ class ListRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetRequestById $geRequestById)
     {
-        //
+        $data = $geRequestById->execute($id);
+        return response()->json($data);
     }
 
     /**
