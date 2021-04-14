@@ -27,4 +27,7 @@ return [
 
     // PO  Page
     'po_created_successfully' => 'Purchased Order created succesfully',
+
+    // Users Page
+    'user_roles_updated_successfully' => 'User Roles updated succesfully',
 ];

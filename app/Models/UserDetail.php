@@ -26,7 +26,6 @@ class UserDetail extends Model
         'gender',
         'division',
         'section',
-        'position',
-        
+        'position'
     ];
 }
