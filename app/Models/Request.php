@@ -4,11 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ccore\Core\Traits\ExtendedEloquentTrait;
 use App\Models\Destination;
 use App\Models\Passenger;
+use App\Traits\WithPaginate;
+
 
 class Request extends Model
 {
+    use ExtendedEloquentTrait;
+    use WithPaginate;
+    
     protected $table = 'requests';
 
     /**

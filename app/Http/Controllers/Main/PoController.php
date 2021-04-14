@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Po\PoRequest;
 use App\Services\Po\GetListingPo;
 use App\Services\Po\CreatePo;
+use App\Services\Po\UpdatePo;
+use App\Services\Po\GetPoById;
+use App\Services\Po\DeletePo;
 
 class PoController extends Controller
 {
@@ -63,9 +66,10 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetPoById $getPoById)
     {
-        //
+        $data = $getPoById->execute($id);
+        return response()->json($data);
     }
 
     /**
@@ -86,9 +90,10 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PoRequest $poRequest, UpdatePo $updatePo, $id)
     {
-        //
+        $result = $updatePo->execute($id, $poRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.po_updated_successfully'), 'result' => $result]);
     }
 
     /**
@@ -97,8 +102,9 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, DeletePo $deletePo)
     {
-        //
+        $result = $deletePo->execute($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.po_deleted_successfully'), 'result' => $result]);
     }
 }
