@@ -3111,6 +3111,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3136,7 +3139,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       passengers: [],
       request_edit: 0,
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-      dateTimeEng: null
+      dateTimeEng: null,
+      vehicles: [],
+      procurements: [],
+      staff: {
+        id: null,
+        vehicle: null,
+        po: null
+      }
     };
   },
   components: {
@@ -3144,6 +3154,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   created: function created() {
     this.getRegion();
+    this.getVehicle();
+    this.getPo();
   },
   mounted: function mounted() {
     this.ini();
@@ -3152,6 +3164,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     ini: function ini() {
       var _this = this;
 
+      var vm = this;
       $(function () {
         _this.tdatatable().init();
 
@@ -3223,7 +3236,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $('#kt_datatable_modal').on('hidden.bs.modal', function (e) {
           $('.details-input').attr('disabled', true);
-          this.request_edit = 0;
+          vm.request_edit = 0;
           $('.btn-edit span').text('Edit');
         });
       });
@@ -3356,12 +3369,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.getDetails(vm.request_id);
         vm.getPassengers(vm.request_id);
         $('#kt_datatable_modal').modal('show');
-        $('#vehicle-select').select2({
-          placeholder: "Select a vehicle"
-        });
-        $('#po-select').select2({
-          placeholder: "Select a PO"
-        });
+        setTimeout(function () {
+          $('#vehicle-select').select2({
+            placeholder: "Select a vehicle"
+          });
+          $('#po-select').select2({
+            placeholder: "Select a PO"
+          });
+          $('#vehicle-select').on('change', function () {
+            vm.staff.vehicle = $(this).val();
+          });
+          $('#po-select').on('change', function () {
+            vm.staff.po = $(this).val();
+          });
+        }, 500);
+        vm.staff.id = vm.request_id;
       });
     },
     getRegion: function getRegion() {
@@ -3558,6 +3580,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
+    approved: function approved() {
+      axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {})["catch"](function (error) {});
+    },
     addRow: function addRow(event) {
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
@@ -3589,6 +3614,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+    },
+    getVehicle: function getVehicle() {
+      var _this8 = this;
+
+      axios.get(BASE_URL + '/api/vehicle').then(function (response) {
+        _this8.vehicles = response.data;
+      });
+    },
+    getPo: function getPo() {
+      var _this9 = this;
+
+      axios.get(BASE_URL + '/api/po').then(function (response) {
+        _this9.procurements = response.data;
+      });
+    },
+    parseNum: function parseNum(data) {
+      return toParseNum(data);
     }
   }
 });
@@ -3886,7 +3928,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: [9, 10, 11, 12, 14],
             render: function render(data) {
-              return toParseNum(data);
+              var values = data ? toParseNum(data) : '';
+              return values;
+            }
+          }, {
+            targets: [7, 13],
+            render: function render(data) {
+              var values = data ? data : '';
+              return values;
             }
           }, {
             targets: [13, 16],
@@ -47476,7 +47525,27 @@ var render = function() {
                             staticClass: "form-control select2",
                             attrs: { id: "vehicle-select" }
                           },
-                          [_c("option", [_vm._v("test")])]
+                          [
+                            _c("option", { attrs: { label: "Label" } }),
+                            _vm._v(" "),
+                            _vm._l(_vm.vehicles, function(vehicle) {
+                              return _c(
+                                "option",
+                                {
+                                  key: vehicle.id,
+                                  domProps: { value: vehicle.id }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(vehicle.name) +
+                                      " - " +
+                                      _vm._s(vehicle.fullname)
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
                         )
                       ])
                     ]),
@@ -47491,7 +47560,24 @@ var render = function() {
                             staticClass: "form-control select2",
                             attrs: { id: "po-select" }
                           },
-                          [_c("option", [_vm._v("test")])]
+                          [
+                            _c("option", { attrs: { label: "Label" } }),
+                            _vm._v(" "),
+                            _vm._l(_vm.procurements, function(po) {
+                              return _c(
+                                "option",
+                                { key: po.id, domProps: { value: po.id } },
+                                [
+                                  _vm._v(
+                                    _vm._s(po.po_no) +
+                                      " - ₱ " +
+                                      _vm._s(_vm.parseNum(po.balance))
+                                  )
+                                ]
+                              )
+                            })
+                          ],
+                          2
                         )
                       ])
                     ])
@@ -47508,6 +47594,16 @@ var render = function() {
                     "button",
                     {
                       staticClass:
+                        "btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("Reject")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
                         "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
@@ -47519,7 +47615,8 @@ var render = function() {
                     {
                       staticClass:
                         "btn btn-sm btn-primary font-weight-bold text-uppercase",
-                      attrs: { type: "button" }
+                      attrs: { type: "button" },
+                      on: { click: _vm.approved }
                     },
                     [_vm._v("Approved")]
                   )

@@ -55,6 +55,18 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'destroy' => 'main.listrequest.destroy',
         ]
     ]);
+
+    Route::resource('listrequeststaff', 'ListRequestStaffController', [
+        'names' => [
+            'index' => 'main.listrequeststaff.index',
+            'create' => 'main.listrequeststaff.create',
+            'store' => 'main.listrequeststaff.store',
+            'show' => 'main.listrequeststaff.show',
+            'edit' => 'main.listrequeststaff.edit',
+            'update' => 'main.listrequeststaff.update',
+            'destroy' => 'main.listrequeststaff.destroy',
+        ]
+    ]);
 });
 
 Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () {

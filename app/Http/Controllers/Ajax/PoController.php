@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\ajax;
+namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Vehicle;
+use App\Models\Procurement;
 
-class VehicleController extends Controller
+class PoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return response()->json(Vehicle::leftJoin('drivers','vehicles.driver_id','=','drivers.id')->select(['vehicles.*', 'drivers.fullname'])->get());
+        return response()->json(Procurement::all());
     }
 
     /**

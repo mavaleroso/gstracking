@@ -1,13 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\ajax;
+namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Models\Vehicle;
+use App\Http\Requests\ListRequests\TravelRequestStaff;
+use App\Services\ListRequest\CreateTransaction;
 
-class VehicleController extends Controller
+class ListRequestStaffController extends Controller
 {
+    /**
+     * Initialization
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        // permissions
+        $this->middleware('permission:listrequeststaff-list', ['only' => ['index']]);
+        $this->middleware('permission:listrequeststaff-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:listrequeststaff-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:listrequeststaff-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:listrequeststaff-view', ['only' => ['show']]);
+    } 
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +29,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return response()->json(Vehicle::leftJoin('drivers','vehicles.driver_id','=','drivers.id')->select(['vehicles.*', 'drivers.fullname'])->get());
+        //
     }
 
     /**
@@ -34,9 +48,10 @@ class VehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TravelRequestStaff $travelRequestStaff, CreateTransaction $createTransaction)
     {
-        //
+        $result = $createTransaction->execute($travelRequestStaff->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.request_created_successfully'), 'result' => $result]);
     }
 
     /**

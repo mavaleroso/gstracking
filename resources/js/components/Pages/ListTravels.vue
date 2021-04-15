@@ -243,7 +243,15 @@ export default {
                         {
                             targets: [9, 10, 11, 12, 14],
                             render: data => {
-                                return toParseNum(data);
+                                let values = (data)? toParseNum(data):'';
+                                return values;
+                            }
+                        },
+                        {
+                            targets: [7, 13],
+                            render: data => {
+                                let values = (data)? data:'';
+                                return values;
                             }
                         },
                         {

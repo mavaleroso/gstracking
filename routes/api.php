@@ -93,6 +93,13 @@ Route::group(['namespace' => 'Ajax'], function () {
             'show' => 'ajax.role.show',
         ]
     ]);
+
+    Route::resource('po', 'PoController', [
+        'names' => [
+            'index' => 'ajax.po.index',
+            'show' => 'ajax.po.show',
+        ]
+    ]);
 });
 
 
