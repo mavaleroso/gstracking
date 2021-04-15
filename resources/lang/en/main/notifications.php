@@ -10,6 +10,11 @@ return [
     'travel_updated_successfully' => 'Travel updated succesfully',
     'travel_deleted_successfully' => 'Travel deleted succesfully',
 
+    // Request Page
+    'request_created_successfully' => 'Request created succesfully',
+    'request_updated_successfully' => 'Request updated succesfully',
+    'request_deleted_successfully' => 'Request deleted succesfully',
+
     // Transportation Vehicle Page
     'vehicle_created_successfully' => 'Vehicle created succesfully',
     'vehicle_updated_successfully' => 'Vehicle updated succesfully',

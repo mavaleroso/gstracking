@@ -61,6 +61,8 @@ class CreateTravel
             ]);
         }
 
+        ($request)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
+
         return $request->fresh();
     }
 }

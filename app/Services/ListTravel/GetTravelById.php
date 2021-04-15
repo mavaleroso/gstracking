@@ -14,7 +14,7 @@ class GetTravelById
     public function execute(int $id)
     {
         
-        $trans = Transaction::find($id);
+        $trans = Transaction::where('transactions.id', $id);
         $data = $trans->leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
                 ->leftJoin('vehicles', 'transactions.vehicle_id', '=', 'vehicles.id')
                 ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')

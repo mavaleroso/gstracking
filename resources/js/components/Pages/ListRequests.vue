@@ -168,7 +168,8 @@
                         <div class="form-group">
                             <label>Vehicle</label>
                             <select class="form-control select2" id="vehicle-select">
-                                <option>test</option>
+                                <option label="Label"></option>
+                                <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
                             </select>
                         </div>
                     </div>
@@ -176,15 +177,17 @@
                         <div class="form-group">
                             <label>Po Number</label>
                             <select class="form-control select2" id="po-select">
-                                <option>test</option>
+                                <option label="Label"></option>
+                                <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.balance) }}</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </template>
             <template v-slot:adminfooter>
+                <button type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
+                <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
         </modal>
         <!--end::Modal-->
@@ -217,7 +220,14 @@ export default {
             passengers: [],
             request_edit: 0,
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-            dateTimeEng: null
+            dateTimeEng: null,
+            vehicles: [],
+            procurements: [],
+            staff: {
+                id: null,
+                vehicle: null,
+                po: null
+            },
         }
     },  
     components: {
@@ -225,12 +235,15 @@ export default {
     },
     created() {
         this.getRegion();
+        this.getVehicle();
+        this.getPo();
     },
     mounted() {
         this.ini();
     },
     methods: {
         ini() {
+            let vm = this;
             $(()=>{
                 this.tdatatable().init();
 
@@ -298,9 +311,10 @@ export default {
 
                 $('#kt_datatable_modal').on('hidden.bs.modal', function (e) {
                     $('.details-input').attr('disabled',true);
-                    this.request_edit = 0;
+                    vm.request_edit = 0;
                     $('.btn-edit span').text('Edit');
                 });
+
             });
         },
         tdatatable() {
@@ -423,13 +437,25 @@ export default {
 
                 $('#kt_datatable_modal').modal('show');
 
-                $('#vehicle-select').select2({
-                    placeholder: "Select a vehicle",
-                });
+                setTimeout(() => {
+                    $('#vehicle-select').select2({
+                        placeholder: "Select a vehicle",
+                    });
 
-                $('#po-select').select2({
-                    placeholder: "Select a PO",
-                });
+                    $('#po-select').select2({
+                        placeholder: "Select a PO",
+                    });
+
+                    $('#vehicle-select').on('change', function() {
+                        vm.staff.vehicle = $(this).val();
+                    });
+
+                    $('#po-select').on('change', function() {
+                        vm.staff.po = $(this).val();
+                    });
+                }, 500);
+
+                vm.staff.id = vm.request_id;
             });
         },
         getRegion() {
@@ -590,6 +616,13 @@ export default {
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
+        approved() {
+            axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(response => {
+
+            }).catch(error => {
+
+            });
+        },
         addRow(event){
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
@@ -617,6 +650,19 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },
+        getVehicle() {
+            axios.get(BASE_URL + '/api/vehicle').then(response => {
+                this.vehicles = response.data;
+            });
+        },
+        getPo() {
+            axios.get(BASE_URL + '/api/po').then(response => {
+                this.procurements = response.data;
+            });
+        },
+        parseNum(data) {
+            return toParseNum(data);
         }
     },
 }
