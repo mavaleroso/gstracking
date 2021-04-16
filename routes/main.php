@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_service_provider', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
+Route::get('/travel_calendar', 'base\DashboardController@index');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
@@ -155,6 +157,18 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'edit' => 'main.listtravel.edit',
             'update' => 'main.listtravel.update',
             'destroy' => 'main.listtravel.destroy',
+        ]
+    ]);
+
+    Route::resource('travelcalendar', 'TravelCalendarController', [
+        'names' => [
+            'index' => 'main.travelcalendar.index',
+            'create' => 'main.travelcalendar.create',
+            'store' => 'main.travelcalendar.store',
+            'show' => 'main.travelcalendar.show',
+            'edit' => 'main.travelcalendar.edit',
+            'update' => 'main.travelcalendar.update',
+            'destroy' => 'main.travelcalendar.destroy',
         ]
     ]);
 });

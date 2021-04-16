@@ -2481,6 +2481,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -6202,6 +6214,205 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var _this = this;
+
+      $(function () {
+        _this.ktcalendar().init();
+      });
+    },
+    ktcalendar: function ktcalendar() {
+      return {
+        //main function to initiate the module
+        init: function init() {
+          var todayDate = moment().startOf('day');
+          var YM = todayDate.format('YYYY-MM');
+          var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+          var TODAY = todayDate.format('YYYY-MM-DD');
+          var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+          var calendarEl = document.getElementById('kt_calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid', 'list'],
+            themeSystem: 'bootstrap',
+            isRTL: KTUtil.isRTL(),
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            height: 800,
+            contentHeight: 780,
+            aspectRatio: 3,
+            // see: https://fullcalendar.io/docs/aspectRatio
+            nowIndicator: true,
+            now: TODAY + 'T09:25:00',
+            // just for demo
+            views: {
+              dayGridMonth: {
+                buttonText: 'month'
+              },
+              timeGridWeek: {
+                buttonText: 'week'
+              },
+              timeGridDay: {
+                buttonText: 'day'
+              }
+            },
+            defaultView: 'dayGridMonth',
+            defaultDate: TODAY,
+            editable: true,
+            eventLimit: true,
+            // allow "more" link when too many events
+            navLinks: true,
+            events: BASE_URL + '/tracking/travelcalendar',
+            // [
+            //     {
+            //         title: 'All Day Event',
+            //         start: YM + '-01',
+            //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
+            //         className: "fc-event-danger fc-event-solid-warning"
+            //     },
+            //     {
+            //         title: 'Reporting',
+            //         start: YM + '-14T13:30:00',
+            //         description: 'Lorem ipsum dolor incid idunt ut labore',
+            //         end: YM + '-14',
+            //         className: "fc-event-success"
+            //     },
+            //     {
+            //         title: 'Company Trip',
+            //         start: YM + '-02',
+            //         description: 'Lorem ipsum dolor sit tempor incid',
+            //         end: YM + '-03',
+            //         className: "fc-event-primary"
+            //     },
+            //     {
+            //         title: 'ICT Expo 2017 - Product Release',
+            //         start: YM + '-03',
+            //         description: 'Lorem ipsum dolor sit tempor inci',
+            //         end: YM + '-05',
+            //         className: "fc-event-light fc-event-solid-primary"
+            //     },
+            //     {
+            //         title: 'Dinner',
+            //         start: YM + '-12',
+            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
+            //         end: YM + '-10'
+            //     },
+            //     {
+            //         id: 999,
+            //         title: 'Repeating Event',
+            //         start: YM + '-09T16:00:00',
+            //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
+            //         className: "fc-event-danger"
+            //     },
+            //     {
+            //         id: 1000,
+            //         title: 'Repeating Event',
+            //         description: 'Lorem ipsum dolor sit amet, labore',
+            //         start: YM + '-16T16:00:00'
+            //     },
+            //     {
+            //         title: 'Conference',
+            //         start: YESTERDAY,
+            //         end: TOMORROW,
+            //         description: 'Lorem ipsum dolor eius mod tempor labore',
+            //         className: "fc-event-primary"
+            //     },
+            //     {
+            //         title: 'Meeting',
+            //         start: TODAY + 'T10:30:00',
+            //         end: TODAY + 'T12:30:00',
+            //         description: 'Lorem ipsum dolor eiu idunt ut labore'
+            //     },
+            //     {
+            //         title: 'Lunch',
+            //         start: TODAY + 'T12:00:00',
+            //         className: "fc-event-info",
+            //         description: 'Lorem ipsum dolor sit amet, ut labore'
+            //     },
+            //     {
+            //         title: 'Meeting',
+            //         start: TODAY + 'T14:30:00',
+            //         className: "fc-event-warning",
+            //         description: 'Lorem ipsum conse ctetur adipi scing'
+            //     },
+            //     {
+            //         title: 'Happy Hour',
+            //         start: TODAY + 'T17:30:00',
+            //         className: "fc-event-info",
+            //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
+            //     },
+            //     {
+            //         title: 'Dinner',
+            //         start: TOMORROW + 'T05:00:00',
+            //         className: "fc-event-solid-danger fc-event-light",
+            //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
+            //     },
+            //     {
+            //         title: 'Birthday Party',
+            //         start: TOMORROW + 'T07:00:00',
+            //         className: "fc-event-primary",
+            //         description: 'Lorem ipsum dolor sit amet, scing'
+            //     },
+            //     {
+            //         title: 'Click for Google',
+            //         url: 'http://google.com/',
+            //         start: YM + '-28',
+            //         className: "fc-event-solid-info fc-event-light",
+            //         description: 'Lorem ipsum dolor sit amet, labore'
+            //     }
+            // ],
+            eventRender: function eventRender(info) {
+              var element = $(info.el);
+
+              if (info.event.extendedProps && info.event.extendedProps.description) {
+                if (element.hasClass('fc-day-grid-event')) {
+                  element.data('content', info.event.extendedProps.description);
+                  element.data('placement', 'top');
+                  KTApp.initPopover(element);
+                } else if (element.hasClass('fc-time-grid-event')) {
+                  element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                  element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                }
+              }
+            }
+          });
+          calendar.render();
+        }
+      };
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -6304,7 +6515,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Pages/Dashboard */ "./resources/js/components/Pages/Dashboard.vue");
 /* harmony import */ var _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Pages/RequestTravel */ "./resources/js/components/Pages/RequestTravel.vue");
 /* harmony import */ var _components_Pages_ListRequests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Pages/ListRequests */ "./resources/js/components/Pages/ListRequests.vue");
@@ -6316,6 +6527,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pages_Transportation_ServiceProvider__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Pages/Transportation/ServiceProvider */ "./resources/js/components/Pages/Transportation/ServiceProvider.vue");
 /* harmony import */ var _components_Pages_ListPo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Pages/ListPo */ "./resources/js/components/Pages/ListPo.vue");
 /* harmony import */ var _components_Pages_ListUsers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Pages/ListUsers */ "./resources/js/components/Pages/ListUsers.vue");
+/* harmony import */ var _components_Pages_travelCalendar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/Pages/travelCalendar */ "./resources/js/components/Pages/travelCalendar.vue");
+
 
 
 
@@ -6405,8 +6618,15 @@ var routes = [{
   meta: {
     title: 'List of Users'
   }
+}, {
+  path: '/travel_calendar',
+  component: _components_Pages_travelCalendar__WEBPACK_IMPORTED_MODULE_11__.default,
+  name: 'travelCalendar',
+  meta: {
+    title: 'Travel Calendar'
+  }
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_11__.default({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_12__.default({
   routes: routes,
   mode: 'history'
 });
@@ -43441,6 +43661,45 @@ component.options.__file = "resources/js/components/Pages/Transportation/Vehicle
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/travelCalendar.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Pages/travelCalendar.vue ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./travelCalendar.vue?vue&type=template&id=4ffb5d8e& */ "./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&");
+/* harmony import */ var _travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./travelCalendar.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/travelCalendar.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/Index.vue?vue&type=script&lang=js&":
 /*!*********************************************************!*\
   !*** ./resources/js/Index.vue?vue&type=script&lang=js& ***!
@@ -43694,6 +43953,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Vehicle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Vehicle.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Transportation/Vehicle.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Vehicle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./travelCalendar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -44033,6 +44308,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Vehicle_vue_vue_type_template_id_128bb7c2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Vehicle_vue_vue_type_template_id_128bb7c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Vehicle.vue?vue&type=template&id=128bb7c2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Transportation/Vehicle.vue?vue&type=template&id=128bb7c2&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./travelCalendar.vue?vue&type=template&id=4ffb5d8e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&");
 
 
 /***/ }),
@@ -45647,6 +45939,88 @@ var render = function() {
                         _vm._v(" "),
                         _c("span", { staticClass: "menu-text" }, [
                           _vm._v("List of Travels")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass: "menu-item menu-item-submenu",
+                    attrs: {
+                      "aria-haspopup": "true",
+                      "data-menu-toggle": "hover"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.active("menu")
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "menu-link menu-toggle",
+                        attrs: { to: { name: "travelCalendar" } }
+                      },
+                      [
+                        _c("span", { staticClass: "svg-icon menu-icon" }, [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("polygon", {
+                                    attrs: { points: "0 0 24 0 24 24 0 24" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M18.5,8 C17.1192881,8 16,6.88071187 16,5.5 C16,4.11928813 17.1192881,3 18.5,3 C19.8807119,3 21,4.11928813 21,5.5 C21,6.88071187 19.8807119,8 18.5,8 Z M18.5,21 C17.1192881,21 16,19.8807119 16,18.5 C16,17.1192881 17.1192881,16 18.5,16 C19.8807119,16 21,17.1192881 21,18.5 C21,19.8807119 19.8807119,21 18.5,21 Z M5.5,21 C4.11928813,21 3,19.8807119 3,18.5 C3,17.1192881 4.11928813,16 5.5,16 C6.88071187,16 8,17.1192881 8,18.5 C8,19.8807119 6.88071187,21 5.5,21 Z",
+                                      fill: "#000000",
+                                      opacity: "0.3"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M5.5,8 C4.11928813,8 3,6.88071187 3,5.5 C3,4.11928813 4.11928813,3 5.5,3 C6.88071187,3 8,4.11928813 8,5.5 C8,6.88071187 6.88071187,8 5.5,8 Z M11,4 L13,4 C13.5522847,4 14,4.44771525 14,5 C14,5.55228475 13.5522847,6 13,6 L11,6 C10.4477153,6 10,5.55228475 10,5 C10,4.44771525 10.4477153,4 11,4 Z M11,18 L13,18 C13.5522847,18 14,18.4477153 14,19 C14,19.5522847 13.5522847,20 13,20 L11,20 C10.4477153,20 10,19.5522847 10,19 C10,18.4477153 10.4477153,18 11,18 Z M5,10 C5.55228475,10 6,10.4477153 6,11 L6,13 C6,13.5522847 5.55228475,14 5,14 C4.44771525,14 4,13.5522847 4,13 L4,11 C4,10.4477153 4.44771525,10 5,10 Z M19,10 C19.5522847,10 20,10.4477153 20,11 L20,13 C20,13.5522847 19.5522847,14 19,14 C18.4477153,14 18,13.5522847 18,13 L18,11 C18,10.4477153 18.4477153,10 19,10 Z",
+                                      fill: "#000000"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "menu-text" }, [
+                          _vm._v("Travel Calendar")
                         ])
                       ]
                     )
@@ -50814,6 +51188,44 @@ var staticRenderFns = [
           ])
         ]
       )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("div", { staticClass: "card card-custom" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "kt_calendar" } })
+        ])
+      ])
     ])
   }
 ]

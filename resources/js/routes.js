@@ -10,6 +10,7 @@ import Driver from './components/Pages/Transportation/Driver';
 import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 import ListPo from './components/Pages/ListPo';
 import ListUsers from './components/Pages/ListUsers';
+import travelCalendar from './components/Pages/travelCalendar';
 
 const routes = [
     {
@@ -98,6 +99,14 @@ const routes = [
         name: 'listUsers',
         meta: {
             title: 'List of Users'
+        }   
+    },
+    {
+        path: '/travel_calendar',
+        component: travelCalendar,
+        name: 'travelCalendar',
+        meta: {
+            title: 'Travel Calendar'
         }   
     },
 ]

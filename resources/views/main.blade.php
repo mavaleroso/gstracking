@@ -10,10 +10,7 @@
         <!--end::Fonts-->
         <!--begin::Page Custom Styles(used by this page)-->
         <link href="{{ asset('css/app.css') }}"  rel="stylesheet" type="text/css"/>
-		{{-- <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" /> --}}
-
-		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-        <!--end::Page Custom Styles-->
+	
         <!--begin::Global Theme Styles(used by all pages)-->
         <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -27,6 +24,7 @@
         <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" type="text/css"/>
         <link href="{{ asset('plugins/fancybox/jquery.fancybox.css') }}" rel="stylesheet" type="text/css"/>
+		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
