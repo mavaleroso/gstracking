@@ -19,13 +19,15 @@ class GetListingTravel
                             ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name'])->get();
         
         foreach ($query as $key) {
-            $data[] = array(
-                'title' => $key['trip_ticket'], 
-                'start' => $key['travel_date'] . ' ' . $key['depart_time'], 
-                'description' => $key['purpose'], 
+            $data['list'][] = array(
+                'title' => $key['purpose'] . ' ( ' . $key['name'] . ' )', 
+                'description' => $key['trip_ticket'], 
+                'start' => $key['travel_date'], 
                 'className' => 'fc-event-light fc-event-solid-primary', 
             );
         }
+        
+        $data['records'] = $query;
 
         return $data;
     }

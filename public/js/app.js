@@ -2930,6 +2930,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3129,7 +3131,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
+    return _defineProperty({
       status: null,
       request_id: null,
       request_status: null,
@@ -3159,7 +3161,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vehicle: null,
         po: null
       }
-    };
+    }, "names", ['po', 'vehicle']);
   },
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
@@ -3593,7 +3595,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     approved: function approved() {
-      axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {})["catch"](function (error) {});
+      var _this8 = this;
+
+      axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {
+        $('.invalid-feedback').remove();
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i2 = 0, _Object$entries2 = Object.entries(data); _i2 < _Object$entries2.length; _i2++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ($('#' + "".concat(key) + '-select').next().attr('class').search('invalid-feedback') == -1) {
+            $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          }
+        }
+
+        ;
+
+        for (var i = 0; i < _this8.names.length; i++) {
+          if (keys.indexOf('' + _this8.names[i] + '') == -1) {
+            if ($('#' + _this8.names[i] + '-select').next().next().attr('class').search('invalid-feedback') != -1) {
+              $('#' + _this8.names[i] + '-select').next().next('.invalid-feedback').remove();
+            }
+          }
+        }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
     },
     addRow: function addRow(event) {
       event.preventDefault();
@@ -3628,17 +3665,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
     getVehicle: function getVehicle() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + '/api/vehicle').then(function (response) {
-        _this8.vehicles = response.data;
+        _this9.vehicles = response.data;
       });
     },
     getPo: function getPo() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get(BASE_URL + '/api/po').then(function (response) {
-        _this9.procurements = response.data;
+        _this10.procurements = response.data;
       });
     },
     parseNum: function parseNum(data) {
@@ -6234,21 +6271,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      vehicle: {
+        list: [],
+        records: []
+      }
+    };
+  },
+  created: function created() {
+    this.getVehicles();
+  },
   mounted: function mounted() {
     this.ini();
   },
   methods: {
     ini: function ini() {
-      var _this = this;
-
-      $(function () {
-        _this.ktcalendar().init();
-      });
+      $(function () {});
     },
     ktcalendar: function ktcalendar() {
+      var vm = this;
       return {
-        //main function to initiate the module
         init: function init() {
           var todayDate = moment().startOf('day');
           var YM = todayDate.format('YYYY-MM');
@@ -6285,109 +6368,11 @@ __webpack_require__.r(__webpack_exports__);
             },
             defaultView: 'dayGridMonth',
             defaultDate: TODAY,
-            editable: true,
+            editable: false,
             eventLimit: true,
             // allow "more" link when too many events
             navLinks: true,
-            events: BASE_URL + '/tracking/travelcalendar',
-            // [
-            //     {
-            //         title: 'All Day Event',
-            //         start: YM + '-01',
-            //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-            //         className: "fc-event-danger fc-event-solid-warning"
-            //     },
-            //     {
-            //         title: 'Reporting',
-            //         start: YM + '-14T13:30:00',
-            //         description: 'Lorem ipsum dolor incid idunt ut labore',
-            //         end: YM + '-14',
-            //         className: "fc-event-success"
-            //     },
-            //     {
-            //         title: 'Company Trip',
-            //         start: YM + '-02',
-            //         description: 'Lorem ipsum dolor sit tempor incid',
-            //         end: YM + '-03',
-            //         className: "fc-event-primary"
-            //     },
-            //     {
-            //         title: 'ICT Expo 2017 - Product Release',
-            //         start: YM + '-03',
-            //         description: 'Lorem ipsum dolor sit tempor inci',
-            //         end: YM + '-05',
-            //         className: "fc-event-light fc-event-solid-primary"
-            //     },
-            //     {
-            //         title: 'Dinner',
-            //         start: YM + '-12',
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-            //         end: YM + '-10'
-            //     },
-            //     {
-            //         id: 999,
-            //         title: 'Repeating Event',
-            //         start: YM + '-09T16:00:00',
-            //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
-            //         className: "fc-event-danger"
-            //     },
-            //     {
-            //         id: 1000,
-            //         title: 'Repeating Event',
-            //         description: 'Lorem ipsum dolor sit amet, labore',
-            //         start: YM + '-16T16:00:00'
-            //     },
-            //     {
-            //         title: 'Conference',
-            //         start: YESTERDAY,
-            //         end: TOMORROW,
-            //         description: 'Lorem ipsum dolor eius mod tempor labore',
-            //         className: "fc-event-primary"
-            //     },
-            //     {
-            //         title: 'Meeting',
-            //         start: TODAY + 'T10:30:00',
-            //         end: TODAY + 'T12:30:00',
-            //         description: 'Lorem ipsum dolor eiu idunt ut labore'
-            //     },
-            //     {
-            //         title: 'Lunch',
-            //         start: TODAY + 'T12:00:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, ut labore'
-            //     },
-            //     {
-            //         title: 'Meeting',
-            //         start: TODAY + 'T14:30:00',
-            //         className: "fc-event-warning",
-            //         description: 'Lorem ipsum conse ctetur adipi scing'
-            //     },
-            //     {
-            //         title: 'Happy Hour',
-            //         start: TODAY + 'T17:30:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
-            //     },
-            //     {
-            //         title: 'Dinner',
-            //         start: TOMORROW + 'T05:00:00',
-            //         className: "fc-event-solid-danger fc-event-light",
-            //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
-            //     },
-            //     {
-            //         title: 'Birthday Party',
-            //         start: TOMORROW + 'T07:00:00',
-            //         className: "fc-event-primary",
-            //         description: 'Lorem ipsum dolor sit amet, scing'
-            //     },
-            //     {
-            //         title: 'Click for Google',
-            //         url: 'http://google.com/',
-            //         start: YM + '-28',
-            //         className: "fc-event-solid-info fc-event-light",
-            //         description: 'Lorem ipsum dolor sit amet, labore'
-            //     }
-            // ],
+            events: vm.vehicle.list,
             eventRender: function eventRender(info) {
               var element = $(info.el);
 
@@ -6407,6 +6392,16 @@ __webpack_require__.r(__webpack_exports__);
           calendar.render();
         }
       };
+    },
+    getVehicles: function getVehicles() {
+      var _this = this;
+
+      axios.get(BASE_URL + '/tracking/travelcalendar').then(function (response) {
+        _this.vehicle.list = response.data.list;
+        _this.vehicle.records = response.data.records;
+
+        _this.ktcalendar().init();
+      });
     }
   }
 });
@@ -47893,7 +47888,7 @@ var render = function() {
                         _c(
                           "select",
                           {
-                            staticClass: "form-control select2",
+                            staticClass: "form-control select2 staff-required",
                             attrs: { id: "vehicle-select" }
                           },
                           [
@@ -47928,7 +47923,7 @@ var render = function() {
                         _c(
                           "select",
                           {
-                            staticClass: "form-control select2",
+                            staticClass: "form-control select2 staff-required",
                             attrs: { id: "po-select" }
                           },
                           [
@@ -51213,17 +51208,127 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", {}, [
+    _c("div", { staticClass: "card card-custom" }, [
+      _c("div", { staticClass: "card-body row" }, [
+        _c("div", { staticClass: "col-lg-3" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body pt-8" },
+            _vm._l(_vm.vehicle.records, function(vehicle) {
+              return _c(
+                "div",
+                {
+                  key: vehicle.id,
+                  staticClass: "btn btn-primary d-flex align-items-center mb-2"
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "symbol symbol-40 symbol-light-primary mr-5"
+                    },
+                    [
+                      _c("span", { staticClass: "symbol-label" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "svg-icon svg-icon-lg svg-icon-primary"
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                  width: "24px",
+                                  height: "24px",
+                                  viewBox: "0 0 24 24",
+                                  version: "1.1"
+                                }
+                              },
+                              [
+                                _c(
+                                  "g",
+                                  {
+                                    attrs: {
+                                      stroke: "none",
+                                      "stroke-width": "1",
+                                      fill: "none",
+                                      "fill-rule": "evenodd"
+                                    }
+                                  },
+                                  [
+                                    _c("rect", {
+                                      attrs: {
+                                        x: "0",
+                                        y: "0",
+                                        width: "24",
+                                        height: "24"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z",
+                                        fill: "#000000",
+                                        "fill-rule": "nonzero"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "d-flex flex-column font-weight-bold" },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-dark text-hover-primary mb-1 font-size-lg text-white",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v(_vm._s(vehicle.purpose))]
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-muted" }, [
+                        _vm._v(_vm._s(vehicle.trip_ticket))
+                      ])
+                    ]
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-9", attrs: { id: "kt_calendar" } })
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "card card-custom" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "kt_calendar" } })
+    return _c("div", { staticClass: "card-header border-0 pt-5" }, [
+      _c("h5", { staticClass: "card-title align-items-start flex-column" }, [
+        _c("span", { staticClass: "card-label font-weight-bolder text-dark" }, [
+          _vm._v("Travels")
         ])
       ])
     ])

@@ -167,7 +167,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label>Vehicle</label>
-                            <select class="form-control select2" id="vehicle-select">
+                            <select class="form-control select2 staff-required" id="vehicle-select">
                                 <option label="Label"></option>
                                 <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
                             </select>
@@ -176,7 +176,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label>Po Number</label>
-                            <select class="form-control select2" id="po-select">
+                            <select class="form-control select2 staff-required" id="po-select">
                                 <option label="Label"></option>
                                 <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.balance) }}</option>
                             </select>
@@ -228,6 +228,7 @@ export default {
                 vehicle: null,
                 po: null
             },
+            names: ['po', 'vehicle']
         }
     },  
     components: {
@@ -618,9 +619,29 @@ export default {
         },
         approved() {
             axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(response => {
-
+                $('.invalid-feedback').remove();
+                Swal.fire("Good job!", response.data.message, "success");
+                showToast(response.data.message, 'success');
             }).catch(error => {
-
+                let data = error.response.data.errors;
+                let keys = [];
+                let values = [];
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    values.push(`${value}`);
+                    if ($('#'+`${key}`+'-select').next().attr('class').search('invalid-feedback') == -1) {
+                        $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                    }
+                };
+                for (let i = 0; i < this.names.length; i++) {
+                    if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        if ($('#'+this.names[i]+'-select').next().next().attr('class').search('invalid-feedback') != -1) {
+                            $('#'+this.names[i]+'-select').next().next('.invalid-feedback').remove();
+                        }
+                    }
+                   
+                }
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         addRow(event){
