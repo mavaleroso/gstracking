@@ -8,6 +8,8 @@ use App\Http\Requests\ListTravels\TravelRequest;
 use App\Services\ListTravel\GetListingTravel;
 use App\Services\ListTravel\GetTravelById;
 use App\Services\ListTravel\UpdateTravel;
+use App\Exports\TravelExport; 
+use Excel;
 
 class ListTravelController extends Controller
 {
@@ -34,6 +36,15 @@ class ListTravelController extends Controller
     {
         $records = $getListingTravel->execute();
         return response()->json($records);
+    }
+
+    public function exportExcel(){
+        return Excel:: download(new TravelExport,'travel.xlsx');
+        // dd("xlsx");
+    }
+    public function exportCsv(){
+        return Excel:: download(new TravelExport,'travel.csv');
+        // dd("csv");
     }
 
     /**

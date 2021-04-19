@@ -3876,6 +3876,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.tdatatable().init();
       });
     },
+    togglexl: function togglexl() {// alert("fasfasf");
+      // axios.get('/export_csv/');
+    },
     getVehicles: function getVehicles() {
       var _this2 = this;
 
@@ -48092,7 +48095,35 @@ var render = function() {
     "div",
     { attrs: { id: "list-travel-page" } },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "card card-custom gutter-b" }, [
+        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+          _c("div", { staticClass: "card-title" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-toolbar" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.togglexl()
+                  }
+                }
+              },
+              [_vm._v("Export xlsx")]
+            ),
+            _vm._v("    \n                "),
+            _c(
+              "button",
+              { staticClass: "btn btn-success", attrs: { type: "button" } },
+              [_vm._v("Export csv")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
       _vm._v(" "),
       _c("modal", {
         scopedSlots: _vm._u([
@@ -48724,79 +48755,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-toolbar" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", attrs: { type: "button" } },
-            [_vm._v("Export xlsx")]
-          ),
-          _vm._v("    \n                "),
-          _c(
-            "button",
-            { staticClass: "btn btn-success", attrs: { type: "button" } },
-            [_vm._v("Export csv")]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-separate table-head-custom table-checkable",
-            staticStyle: { width: "500px !important" },
-            attrs: { id: "list-travel-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Trip Ticket")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Service Provider")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date of Travel")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Starting ODO")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Ending Odo")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date Submitted to Procurement")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Distance Travelled")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Amount")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per Km")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Flat Rate")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per night")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("No. of Nights")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Total Cost")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Status")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Remarks")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Created at")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Action")])
-              ])
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          staticStyle: { width: "500px !important" },
+          attrs: { id: "list-travel-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Trip Ticket")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Service Provider")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date of Travel")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Starting ODO")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ending Odo")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Submitted to Procurement")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Distance Travelled")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Number")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Amount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per Km")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Flat Rate")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per night")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("No. of Nights")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Cost")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created at")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]
-        )
-      ])
+          ])
+        ]
+      )
     ])
   }
 ]

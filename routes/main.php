@@ -32,6 +32,8 @@ Route::get('/list_service_provider', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
 Route::get('/travel_calendar', 'base\DashboardController@index');
+Route::get('/export_excel', 'Main\ListTravelController@exportExcel');
+Route::get('/export_csv', 'Main\ListTravelController@exportCsv');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
@@ -186,6 +188,9 @@ Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
         ]
     ]);
 });
+
+
+
 
 Route::get('/{path}', function (string $path) {
     try {

@@ -5,7 +5,7 @@
                 <div class="card-title"></div>
                 <div class="card-toolbar">
                     
-                    <button type="button" class="btn btn-primary">Export xlsx</button> &nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" @click="togglexl()">Export xlsx</button> &nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn btn-success">Export csv</button>
                 </div>
                 
@@ -199,6 +199,12 @@ export default {
             $(()=>{
                 this.tdatatable().init();
             });
+        },
+
+        togglexl(){
+            // alert("fasfasf");
+            // axios.get('/export_csv/');
+            
         },
         getVehicles() {
             axios.get(BASE_URL + '/api/vehicle').then(response => {
