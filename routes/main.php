@@ -186,3 +186,13 @@ Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
         ]
     ]);
 });
+
+Route::get('/{path}', function (string $path) {
+    try {
+        return response()->file(storage_path('app/build/'.$path));
+    } catch (\Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException $e) {
+        abort(404);
+    }
+})
+  ->where('path', '^(js|css)/.*\.(js|css)$')
+  ->middleware('auth');

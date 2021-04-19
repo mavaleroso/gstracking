@@ -3809,6 +3809,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -48717,7 +48726,21 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card card-custom gutter-b" }, [
       _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" })
+        _c("div", { staticClass: "card-title" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-toolbar" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", attrs: { type: "button" } },
+            [_vm._v("Export xlsx")]
+          ),
+          _vm._v("    \n                "),
+          _c(
+            "button",
+            { staticClass: "btn btn-success", attrs: { type: "button" } },
+            [_vm._v("Export csv")]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -50434,7 +50457,7 @@ var render = function() {
                             attrs: {
                               type: "number",
                               name: "svc_vehicleCount",
-                              placeholder: "Enter age"
+                              placeholder: "Enter number"
                             },
                             domProps: { value: _vm.formFields.vehicleCount },
                             on: {

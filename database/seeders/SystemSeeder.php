@@ -26,13 +26,18 @@ class SystemSeeder extends Seeder
         ],
         [
             'id' => '4',
-            'handler' => 'YEAR',
-            'value' => '2021'
+            'handler' => 'MONTH',
+            'value' => '04'
         ],
         [
             'id' => '5',
+            'handler' => 'YEAR',
+            'value' => '2021'
+        ],
+        [  
+            'id' => '6',
             'handler' => 'RQT_CODE',
-            'value' => 'RQT-21-0003'
+            'value' => 'RQT-21-04-0001'
         ]
 
             

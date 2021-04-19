@@ -29,7 +29,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Vehicle count:</label>
-                                    <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter age" v-model="formFields.vehicleCount"/>
+                                    <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter number" v-model="formFields.vehicleCount"/>
                                 </div>
                             </div>
                         </div>

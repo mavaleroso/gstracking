@@ -3,8 +3,16 @@
         <div class="card card-custom gutter-b" >
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title"></div>
+                <div class="card-toolbar">
+                    
+                    <button type="button" class="btn btn-primary">Export xlsx</button> &nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-success">Export csv</button>
+                </div>
+                
             </div>
+           
             <div class="card-body">
+        
                 <!--begin: Datatable-->
                 <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
                     <thead>
@@ -134,7 +142,11 @@
         </modal>
     </div>
 </template>
+
 <script>
+
+
+
 import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
