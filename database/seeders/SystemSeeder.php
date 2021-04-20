@@ -11,38 +11,29 @@ class SystemSeeder extends Seeder
 
     private $system = [
         [
-            'id' => '1',
             'handler' => 'NAME',
             'value' => 'GSTracking'           
         ],
         [
-            'id' => '2',
             'handler' => 'DESCRIPTION',
             'value' => 'General Services Tracking System'
         ],
         [
-            'id' => '3',
             'handler' => 'VERSION',
             'value' => '01'
         ],
         [
-            'id' => '4',
-            'handler' => 'Month',
+            'handler' => 'MONTH',
             'value' => '01'
         ],
         [
-            'id' => '5',
             'handler' => 'YEAR',
             'value' => '2021'
         ],
         [
-            'id' => '6',
             'handler' => 'RQT_CODE',
-            'value' => 'RQT-21-04-0001'
+            'value' => 'RQT-21-04-0000'
         ]
-
-            
-
     ];
     /**
      * Run the database seeds.
