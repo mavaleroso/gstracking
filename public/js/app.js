@@ -2930,6 +2930,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3129,7 +3131,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
+    return _defineProperty({
       status: null,
       request_id: null,
       request_status: null,
@@ -3159,7 +3161,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vehicle: null,
         po: null
       }
-    };
+    }, "names", ['po', 'vehicle']);
   },
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
@@ -3593,7 +3595,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     approved: function approved() {
-      axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {})["catch"](function (error) {});
+      var _this8 = this;
+
+      axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {
+        $('.invalid-feedback').remove();
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i2 = 0, _Object$entries2 = Object.entries(data); _i2 < _Object$entries2.length; _i2++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ($('#' + "".concat(key) + '-select').next().attr('class').search('invalid-feedback') == -1) {
+            $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          }
+        }
+
+        ;
+
+        for (var i = 0; i < _this8.names.length; i++) {
+          if (keys.indexOf('' + _this8.names[i] + '') == -1) {
+            if ($('#' + _this8.names[i] + '-select').next().next().attr('class').search('invalid-feedback') != -1) {
+              $('#' + _this8.names[i] + '-select').next().next('.invalid-feedback').remove();
+            }
+          }
+        }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
     },
     addRow: function addRow(event) {
       event.preventDefault();
@@ -3628,17 +3665,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
     getVehicle: function getVehicle() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + '/api/vehicle').then(function (response) {
-        _this8.vehicles = response.data;
+        _this9.vehicles = response.data;
       });
     },
     getPo: function getPo() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get(BASE_URL + '/api/po').then(function (response) {
-        _this9.procurements = response.data;
+        _this10.procurements = response.data;
       });
     },
     parseNum: function parseNum(data) {
@@ -6234,21 +6271,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      vehicle: {
+        list: [],
+        records: [],
+        data: []
+      }
+    };
+  },
+  created: function created() {
+    this.getVehicles();
+  },
   mounted: function mounted() {
     this.ini();
   },
   methods: {
     ini: function ini() {
-      var _this = this;
-
-      $(function () {
-        _this.ktcalendar().init();
-      });
+      $(function () {});
     },
     ktcalendar: function ktcalendar() {
+      var vm = this;
       return {
-        //main function to initiate the module
         init: function init() {
           var todayDate = moment().startOf('day');
           var YM = todayDate.format('YYYY-MM');
@@ -6285,109 +6374,11 @@ __webpack_require__.r(__webpack_exports__);
             },
             defaultView: 'dayGridMonth',
             defaultDate: TODAY,
-            editable: true,
+            editable: false,
             eventLimit: true,
             // allow "more" link when too many events
             navLinks: true,
-            events: BASE_URL + '/tracking/travelcalendar',
-            // [
-            //     {
-            //         title: 'All Day Event',
-            //         start: YM + '-01',
-            //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-            //         className: "fc-event-danger fc-event-solid-warning"
-            //     },
-            //     {
-            //         title: 'Reporting',
-            //         start: YM + '-14T13:30:00',
-            //         description: 'Lorem ipsum dolor incid idunt ut labore',
-            //         end: YM + '-14',
-            //         className: "fc-event-success"
-            //     },
-            //     {
-            //         title: 'Company Trip',
-            //         start: YM + '-02',
-            //         description: 'Lorem ipsum dolor sit tempor incid',
-            //         end: YM + '-03',
-            //         className: "fc-event-primary"
-            //     },
-            //     {
-            //         title: 'ICT Expo 2017 - Product Release',
-            //         start: YM + '-03',
-            //         description: 'Lorem ipsum dolor sit tempor inci',
-            //         end: YM + '-05',
-            //         className: "fc-event-light fc-event-solid-primary"
-            //     },
-            //     {
-            //         title: 'Dinner',
-            //         start: YM + '-12',
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-            //         end: YM + '-10'
-            //     },
-            //     {
-            //         id: 999,
-            //         title: 'Repeating Event',
-            //         start: YM + '-09T16:00:00',
-            //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
-            //         className: "fc-event-danger"
-            //     },
-            //     {
-            //         id: 1000,
-            //         title: 'Repeating Event',
-            //         description: 'Lorem ipsum dolor sit amet, labore',
-            //         start: YM + '-16T16:00:00'
-            //     },
-            //     {
-            //         title: 'Conference',
-            //         start: YESTERDAY,
-            //         end: TOMORROW,
-            //         description: 'Lorem ipsum dolor eius mod tempor labore',
-            //         className: "fc-event-primary"
-            //     },
-            //     {
-            //         title: 'Meeting',
-            //         start: TODAY + 'T10:30:00',
-            //         end: TODAY + 'T12:30:00',
-            //         description: 'Lorem ipsum dolor eiu idunt ut labore'
-            //     },
-            //     {
-            //         title: 'Lunch',
-            //         start: TODAY + 'T12:00:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, ut labore'
-            //     },
-            //     {
-            //         title: 'Meeting',
-            //         start: TODAY + 'T14:30:00',
-            //         className: "fc-event-warning",
-            //         description: 'Lorem ipsum conse ctetur adipi scing'
-            //     },
-            //     {
-            //         title: 'Happy Hour',
-            //         start: TODAY + 'T17:30:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
-            //     },
-            //     {
-            //         title: 'Dinner',
-            //         start: TOMORROW + 'T05:00:00',
-            //         className: "fc-event-solid-danger fc-event-light",
-            //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
-            //     },
-            //     {
-            //         title: 'Birthday Party',
-            //         start: TOMORROW + 'T07:00:00',
-            //         className: "fc-event-primary",
-            //         description: 'Lorem ipsum dolor sit amet, scing'
-            //     },
-            //     {
-            //         title: 'Click for Google',
-            //         url: 'http://google.com/',
-            //         start: YM + '-28',
-            //         className: "fc-event-solid-info fc-event-light",
-            //         description: 'Lorem ipsum dolor sit amet, labore'
-            //     }
-            // ],
+            events: vm.vehicle.list,
             eventRender: function eventRender(info) {
               var element = $(info.el);
 
@@ -6407,6 +6398,20 @@ __webpack_require__.r(__webpack_exports__);
           calendar.render();
         }
       };
+    },
+    getVehicles: function getVehicles() {
+      var _this = this;
+
+      axios.get(BASE_URL + '/tracking/travelcalendar').then(function (response) {
+        _this.vehicle.list = response.data.list;
+        _this.vehicle.records = response.data.records;
+        _this.vehicle.data = response.data.data;
+
+        _this.ktcalendar().init();
+      });
+    },
+    dateFormat: function dateFormat(date) {
+      return dateEng2(date);
     }
   }
 });
@@ -47893,7 +47898,7 @@ var render = function() {
                         _c(
                           "select",
                           {
-                            staticClass: "form-control select2",
+                            staticClass: "form-control select2 staff-required",
                             attrs: { id: "vehicle-select" }
                           },
                           [
@@ -47928,7 +47933,7 @@ var render = function() {
                         _c(
                           "select",
                           {
-                            staticClass: "form-control select2",
+                            staticClass: "form-control select2 staff-required",
                             attrs: { id: "po-select" }
                           },
                           [
@@ -51213,15 +51218,152 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-lg-3" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "div",
+            {
+              staticClass: "accordion accordion-solid accordion-toggle-plus",
+              attrs: { id: "accordionExample6" }
+            },
+            _vm._l(_vm.vehicle.data, function(v) {
+              return _c("div", { key: v.id, staticClass: "card" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-header",
+                    attrs: { id: "headingOne" + v.id }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-title collapsed",
+                        attrs: {
+                          "data-toggle": "collapse",
+                          "data-target": "#collapseOne" + v.id
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "flaticon2-lorry" }),
+                        _vm._v(" " + _vm._s(v.name) + " "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "mt-0 mb-0 ml-5 label label-primary label-inline"
+                          },
+                          [_vm._v(_vm._s(v.template))]
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "collapse",
+                    attrs: {
+                      id: "collapseOne" + v.id,
+                      "data-parent": "#accordionExample6"
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-body" },
+                      _vm._l(
+                        _vm.vehicle.records.filter(function(i) {
+                          return i.vehicle_id == v.id
+                        }),
+                        function(r) {
+                          return _c(
+                            "div",
+                            {
+                              key: r.id,
+                              staticClass: "timeline timeline-5 mt-1"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "timeline-item align-items-start"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.dateFormat(r.travel_date))
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(1, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-content text-dark-50"
+                                    },
+                                    [_vm._v(_vm._s(r.purpose))]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        }
+                      ),
+                      0
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "card card-custom" }, [
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [_vm._v("Vehicles")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-9" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
         _c("div", { staticClass: "card-body" }, [
           _c("div", { attrs: { id: "kt_calendar" } })
         ])

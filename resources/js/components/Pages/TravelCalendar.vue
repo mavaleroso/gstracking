@@ -1,26 +1,81 @@
 <template>
-    <div>
-        <div class="card card-custom">
-            <div class="card-body">
-                <div id="kt_calendar"></div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card card-custom card-stretch">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Vehicles</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+                        <div class="card" v-for="v in vehicle.data" :key="v.id">
+                            <div class="card-header" :id="'headingOne' + v.id">
+                                <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseOne' + v.id">
+                                    <i class="flaticon2-lorry"></i> {{ v.name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.template }}</span>
+                                </div>
+                            </div>
+                            <div :id="'collapseOne' + v.id" class="collapse" data-parent="#accordionExample6">
+                                <div class="card-body">
+                                    <div v-for="r in vehicle.records.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
+                                        <!-- cities.filter(i=>i.province_id == activeProv.id) -->
+                                        <!--begin::Item-->
+                                        <div class="timeline-item align-items-start">
+                                            <!--begin::Label-->
+                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateFormat(r.travel_date) }}</div>
+                                            <!--end::Label-->
+                                            <!--begin::Badge-->
+                                            <div class="timeline-badge">
+                                                <i class="fa fa-genderless text-success icon-xxl"></i>
+                                            </div>
+                                            <!--end::Badge-->
+                                            <!--begin::Text-->
+                                            <div class="timeline-content text-dark-50">{{ r.purpose }}</div>
+                                            <!--end::Text-->
+                                        </div>
+                                        <!--end::Item-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card card-custom card-stretch">
+                <div class="card-body">
+                    <div id="kt_calendar"></div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
+    data() {
+        return {
+            vehicle: {
+                list: [],
+                records: [],
+                data: []
+            }
+        }
+    },
+    created() {
+        this.getVehicles();
+    },
     mounted() {
         this.ini();
     },
     methods: {
         ini() {
             $(() => {
-                this.ktcalendar().init();
             });
         },
         ktcalendar() {
+            let vm = this;
             return {
-                //main function to initiate the module
                 init: function() {
                     var todayDate = moment().startOf('day');
                     var YM = todayDate.format('YYYY-MM');
@@ -53,112 +108,13 @@ export default {
                             timeGridWeek: { buttonText: 'week' },
                             timeGridDay: { buttonText: 'day' }
                         },
-
+  
                         defaultView: 'dayGridMonth',
                         defaultDate: TODAY,
-
-                        editable: true,
+                        editable: false,
                         eventLimit: true, // allow "more" link when too many events
                         navLinks: true,
-                        events: BASE_URL + '/tracking/travelcalendar',
-                        // [
-                        //     {
-                        //         title: 'All Day Event',
-                        //         start: YM + '-01',
-                        //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-                        //         className: "fc-event-danger fc-event-solid-warning"
-                        //     },
-                        //     {
-                        //         title: 'Reporting',
-                        //         start: YM + '-14T13:30:00',
-                        //         description: 'Lorem ipsum dolor incid idunt ut labore',
-                        //         end: YM + '-14',
-                        //         className: "fc-event-success"
-                        //     },
-                        //     {
-                        //         title: 'Company Trip',
-                        //         start: YM + '-02',
-                        //         description: 'Lorem ipsum dolor sit tempor incid',
-                        //         end: YM + '-03',
-                        //         className: "fc-event-primary"
-                        //     },
-                        //     {
-                        //         title: 'ICT Expo 2017 - Product Release',
-                        //         start: YM + '-03',
-                        //         description: 'Lorem ipsum dolor sit tempor inci',
-                        //         end: YM + '-05',
-                        //         className: "fc-event-light fc-event-solid-primary"
-                        //     },
-                        //     {
-                        //         title: 'Dinner',
-                        //         start: YM + '-12',
-                        //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-                        //         end: YM + '-10'
-                        //     },
-                        //     {
-                        //         id: 999,
-                        //         title: 'Repeating Event',
-                        //         start: YM + '-09T16:00:00',
-                        //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
-                        //         className: "fc-event-danger"
-                        //     },
-                        //     {
-                        //         id: 1000,
-                        //         title: 'Repeating Event',
-                        //         description: 'Lorem ipsum dolor sit amet, labore',
-                        //         start: YM + '-16T16:00:00'
-                        //     },
-                        //     {
-                        //         title: 'Conference',
-                        //         start: YESTERDAY,
-                        //         end: TOMORROW,
-                        //         description: 'Lorem ipsum dolor eius mod tempor labore',
-                        //         className: "fc-event-primary"
-                        //     },
-                        //     {
-                        //         title: 'Meeting',
-                        //         start: TODAY + 'T10:30:00',
-                        //         end: TODAY + 'T12:30:00',
-                        //         description: 'Lorem ipsum dolor eiu idunt ut labore'
-                        //     },
-                        //     {
-                        //         title: 'Lunch',
-                        //         start: TODAY + 'T12:00:00',
-                        //         className: "fc-event-info",
-                        //         description: 'Lorem ipsum dolor sit amet, ut labore'
-                        //     },
-                        //     {
-                        //         title: 'Meeting',
-                        //         start: TODAY + 'T14:30:00',
-                        //         className: "fc-event-warning",
-                        //         description: 'Lorem ipsum conse ctetur adipi scing'
-                        //     },
-                        //     {
-                        //         title: 'Happy Hour',
-                        //         start: TODAY + 'T17:30:00',
-                        //         className: "fc-event-info",
-                        //         description: 'Lorem ipsum dolor sit amet, conse ctetur'
-                        //     },
-                        //     {
-                        //         title: 'Dinner',
-                        //         start: TOMORROW + 'T05:00:00',
-                        //         className: "fc-event-solid-danger fc-event-light",
-                        //         description: 'Lorem ipsum dolor sit ctetur adipi scing'
-                        //     },
-                        //     {
-                        //         title: 'Birthday Party',
-                        //         start: TOMORROW + 'T07:00:00',
-                        //         className: "fc-event-primary",
-                        //         description: 'Lorem ipsum dolor sit amet, scing'
-                        //     },
-                        //     {
-                        //         title: 'Click for Google',
-                        //         url: 'http://google.com/',
-                        //         start: YM + '-28',
-                        //         className: "fc-event-solid-info fc-event-light",
-                        //         description: 'Lorem ipsum dolor sit amet, labore'
-                        //     }
-                        // ],
+                        events: vm.vehicle.list,
 
                         eventRender: function(info) {
                             var element = $(info.el);
@@ -180,6 +136,17 @@ export default {
                     calendar.render();
                 }
             };
+        },
+        getVehicles() {
+            axios.get(BASE_URL + '/tracking/travelcalendar').then(response => {
+                this.vehicle.list = response.data.list;
+                this.vehicle.records = response.data.records;
+                this.vehicle.data = response.data.data;
+                this.ktcalendar().init();
+            });
+        },
+        dateFormat(date) {
+            return dateEng2(date);
         }
     },
 }

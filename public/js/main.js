@@ -37,6 +37,12 @@ dateEng = (nDate) => {
     return date.toLocaleDateString('en-US', options);
 }
 
+dateEng2 = (nDate) => {
+    let date = new Date(nDate);
+    let options = {month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
 dateTimeEng = (nDateTime) => {
     let date = new Date(nDateTime);
     let options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric'};

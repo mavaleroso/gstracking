@@ -4,39 +4,36 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\System;
+use Carbon\Carbon;
 
 class SystemSeeder extends Seeder
 {
 
     private $system = [
         [
-            'id' => '1',
             'handler' => 'NAME',
             'value' => 'GSTracking'           
         ],
         [
-            'id' => '2',
             'handler' => 'DESCRIPTION',
             'value' => 'General Services Tracking System'
         ],
         [
-            'id' => '3',
             'handler' => 'VERSION',
             'value' => '01'
         ],
         [
-            'id' => '4',
+            'handler' => 'MONTH',
+            'value' => '01'
+        ],
+        [
             'handler' => 'YEAR',
             'value' => '2021'
         ],
         [
-            'id' => '5',
             'handler' => 'RQT_CODE',
-            'value' => 'RQT-21-0003'
+            'value' => 'RQT-21-04-0000'
         ]
-
-            
-
     ];
     /**
      * Run the database seeds.
