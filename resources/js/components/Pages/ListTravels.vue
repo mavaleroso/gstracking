@@ -198,6 +198,27 @@ export default {
             var initTable = () => {
             var table = $('#list-travel-tbl');
                 table.DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+            {
+                extend: 'collection',
+                text: 'Table control',
+                buttons: [
+                    {
+                        text: 'Toggle start date',
+                        action: function ( e, dt, node, config ) {
+                            dt.column( -2 ).visible( ! dt.column( -2 ).visible() );
+                        }
+                    },
+                    {
+                        text: 'Toggle salary',
+                        action: function ( e, dt, node, config ) {
+                            dt.column( -1 ).visible( ! dt.column( -1 ).visible() );
+                        }
+                    }
+                ]
+            }
+        ],
                     searchDelay: 500,
                     scrollX: true,
                     scrollCollapse: true,
