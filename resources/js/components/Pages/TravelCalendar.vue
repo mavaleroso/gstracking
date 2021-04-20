@@ -1,47 +1,52 @@
 <template>
-    <div class>
-        
-        <div class="card card-custom">
-            <div class="card-body row">
-                <div class="col-lg-3">
-                    <div class="card-header border-0 pt-5">
-                        <h5 class="card-title align-items-start flex-column">
-                            <span class="card-label font-weight-bolder text-dark">Travels</span>
-                        </h5>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card card-custom card-stretch">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Vehicles</h3>
                     </div>
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body pt-8">
-                        <!--begin::Item-->
-                        <div v-for="vehicle in vehicle.records" :key="vehicle.id" class="btn btn-primary d-flex align-items-center mb-2">
-                            <!--begin::Symbol-->
-                            <div class="symbol symbol-40 symbol-light-primary mr-5">
-                                <span class="symbol-label">
-                                    <span class="svg-icon svg-icon-lg svg-icon-primary">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"/>
-                                                <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="#000000" fill-rule="nonzero"/>
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                </span>
-                            </div>
-                            <!--end::Symbol-->
-                            <!--begin::Text-->
-                            <div class="d-flex flex-column font-weight-bold">
-                                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg text-white">{{ vehicle.purpose }}</a>
-                                <span class="text-muted">{{ vehicle.trip_ticket }}</span>
-                            </div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end::Item-->
-                    </div>
-                    <!--end::Body-->
                 </div>
-                <div id="kt_calendar" class="col-lg-9"></div>
+                <div class="card-body">
+                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample6">
+                        <div class="card" v-for="v in vehicle.data" :key="v.id">
+                            <div class="card-header" :id="'headingOne' + v.id">
+                                <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseOne' + v.id">
+                                    <i class="flaticon2-lorry"></i> {{ v.name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.template }}</span>
+                                </div>
+                            </div>
+                            <div :id="'collapseOne' + v.id" class="collapse" data-parent="#accordionExample6">
+                                <div class="card-body">
+                                    <div v-for="r in vehicle.records.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
+                                        <!-- cities.filter(i=>i.province_id == activeProv.id) -->
+                                        <!--begin::Item-->
+                                        <div class="timeline-item align-items-start">
+                                            <!--begin::Label-->
+                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateFormat(r.travel_date) }}</div>
+                                            <!--end::Label-->
+                                            <!--begin::Badge-->
+                                            <div class="timeline-badge">
+                                                <i class="fa fa-genderless text-success icon-xxl"></i>
+                                            </div>
+                                            <!--end::Badge-->
+                                            <!--begin::Text-->
+                                            <div class="timeline-content text-dark-50">{{ r.purpose }}</div>
+                                            <!--end::Text-->
+                                        </div>
+                                        <!--end::Item-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card card-custom card-stretch">
+                <div class="card-body">
+                    <div id="kt_calendar"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -52,7 +57,8 @@ export default {
         return {
             vehicle: {
                 list: [],
-                records: []
+                records: [],
+                data: []
             }
         }
     },
@@ -135,8 +141,12 @@ export default {
             axios.get(BASE_URL + '/tracking/travelcalendar').then(response => {
                 this.vehicle.list = response.data.list;
                 this.vehicle.records = response.data.records;
+                this.vehicle.data = response.data.data;
                 this.ktcalendar().init();
             });
+        },
+        dateFormat(date) {
+            return dateEng2(date);
         }
     },
 }

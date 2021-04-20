@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\System;
+use Carbon\Carbon;
 
 class SystemSeeder extends Seeder
 {
@@ -26,13 +27,18 @@ class SystemSeeder extends Seeder
         ],
         [
             'id' => '4',
+            'handler' => 'Month',
+            'value' => '01'
+        ],
+        [
+            'id' => '5',
             'handler' => 'YEAR',
             'value' => '2021'
         ],
         [
-            'id' => '5',
+            'id' => '6',
             'handler' => 'RQT_CODE',
-            'value' => 'RQT-21-0003'
+            'value' => 'RQT-21-04-0001'
         ]
 
             

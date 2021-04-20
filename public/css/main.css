@@ -88,3 +88,12 @@
     margin: auto;
     border-top: 2px dashed #666;
 }
+
+.timeline.timeline-5:before {
+    z-index: 1;
+    background-color: #ccc !important;
+}
+
+.timeline.timeline-5 {
+    height: 40px !important;
+}

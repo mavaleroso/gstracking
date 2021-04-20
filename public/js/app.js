@@ -6310,12 +6310,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       vehicle: {
         list: [],
-        records: []
+        records: [],
+        data: []
       }
     };
   },
@@ -6399,9 +6405,13 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(BASE_URL + '/tracking/travelcalendar').then(function (response) {
         _this.vehicle.list = response.data.list;
         _this.vehicle.records = response.data.records;
+        _this.vehicle.data = response.data.data;
 
         _this.ktcalendar().init();
       });
+    },
+    dateFormat: function dateFormat(date) {
+      return dateEng2(date);
     }
   }
 });
@@ -51208,116 +51218,125 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
-    _c("div", { staticClass: "card card-custom" }, [
-      _c("div", { staticClass: "card-body row" }, [
-        _c("div", { staticClass: "col-lg-3" }, [
-          _vm._m(0),
-          _vm._v(" "),
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-lg-3" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
           _c(
             "div",
-            { staticClass: "card-body pt-8" },
-            _vm._l(_vm.vehicle.records, function(vehicle) {
-              return _c(
-                "div",
-                {
-                  key: vehicle.id,
-                  staticClass: "btn btn-primary d-flex align-items-center mb-2"
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "symbol symbol-40 symbol-light-primary mr-5"
-                    },
-                    [
-                      _c("span", { staticClass: "symbol-label" }, [
+            {
+              staticClass: "accordion accordion-solid accordion-toggle-plus",
+              attrs: { id: "accordionExample6" }
+            },
+            _vm._l(_vm.vehicle.data, function(v) {
+              return _c("div", { key: v.id, staticClass: "card" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-header",
+                    attrs: { id: "headingOne" + v.id }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card-title collapsed",
+                        attrs: {
+                          "data-toggle": "collapse",
+                          "data-target": "#collapseOne" + v.id
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "flaticon2-lorry" }),
+                        _vm._v(" " + _vm._s(v.name) + " "),
                         _c(
                           "span",
                           {
-                            staticClass: "svg-icon svg-icon-lg svg-icon-primary"
+                            staticClass:
+                              "mt-0 mb-0 ml-5 label label-primary label-inline"
                           },
-                          [
-                            _c(
-                              "svg",
-                              {
-                                attrs: {
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                  width: "24px",
-                                  height: "24px",
-                                  viewBox: "0 0 24 24",
-                                  version: "1.1"
-                                }
-                              },
-                              [
-                                _c(
-                                  "g",
-                                  {
-                                    attrs: {
-                                      stroke: "none",
-                                      "stroke-width": "1",
-                                      fill: "none",
-                                      "fill-rule": "evenodd"
-                                    }
-                                  },
-                                  [
-                                    _c("rect", {
-                                      attrs: {
-                                        x: "0",
-                                        y: "0",
-                                        width: "24",
-                                        height: "24"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("path", {
-                                      attrs: {
-                                        d:
-                                          "M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z",
-                                        fill: "#000000",
-                                        "fill-rule": "nonzero"
-                                      }
-                                    })
-                                  ]
-                                )
-                              ]
-                            )
-                          ]
+                          [_vm._v(_vm._s(v.template))]
                         )
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "d-flex flex-column font-weight-bold" },
-                    [
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-dark text-hover-primary mb-1 font-size-lg text-white",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v(_vm._s(vehicle.purpose))]
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "collapse",
+                    attrs: {
+                      id: "collapseOne" + v.id,
+                      "data-parent": "#accordionExample6"
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-body" },
+                      _vm._l(
+                        _vm.vehicle.records.filter(function(i) {
+                          return i.vehicle_id == v.id
+                        }),
+                        function(r) {
+                          return _c(
+                            "div",
+                            {
+                              key: r.id,
+                              staticClass: "timeline timeline-5 mt-1"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "timeline-item align-items-start"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.dateFormat(r.travel_date))
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(1, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-content text-dark-50"
+                                    },
+                                    [_vm._v(_vm._s(r.purpose))]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        }
                       ),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-muted" }, [
-                        _vm._v(_vm._s(vehicle.trip_ticket))
-                      ])
-                    ]
-                  )
-                ]
-              )
+                      0
+                    )
+                  ]
+                )
+              ])
             }),
             0
           )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-9", attrs: { id: "kt_calendar" } })
+        ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -51325,10 +51344,28 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header border-0 pt-5" }, [
-      _c("h5", { staticClass: "card-title align-items-start flex-column" }, [
-        _c("span", { staticClass: "card-label font-weight-bolder text-dark" }, [
-          _vm._v("Travels")
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [_vm._v("Vehicles")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-lg-9" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "kt_calendar" } })
         ])
       ])
     ])

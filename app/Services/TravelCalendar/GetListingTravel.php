@@ -4,6 +4,7 @@ namespace App\Services\TravelCalendar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Vehicle;
 
 class GetListingTravel 
 {
@@ -28,6 +29,11 @@ class GetListingTravel
         }
         
         $data['records'] = $query;
+
+        $data['data'] = Vehicle::join('transactions','transactions.vehicle_id','=','vehicles.id')
+                        ->select(['vehicles.*'])
+                        ->groupBy('vehicles.id')
+                        ->get();
 
         return $data;
     }
