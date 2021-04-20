@@ -198,6 +198,10 @@ export default {
             var initTable = () => {
             var table = $('#list-travel-tbl');
                 table.DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
                     searchDelay: 500,
                     scrollX: true,
                     scrollCollapse: true,
