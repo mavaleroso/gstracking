@@ -3917,6 +3917,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var initTable = function initTable() {
         var table = $('#list-travel-tbl');
         table.DataTable({
+          dom: 'Bfrtip',
+          buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
           searchDelay: 500,
           scrollX: true,
           scrollCollapse: true,
