@@ -622,6 +622,8 @@ export default {
                 $('.invalid-feedback').remove();
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
+                $('#kt_datatable_modal').modal('toggle');
+                $('#request-tbl').DataTable().ajax.reload();
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];

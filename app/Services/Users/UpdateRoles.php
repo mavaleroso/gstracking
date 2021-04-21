@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\Users;
 
 use Illuminate\Http\Request;
 use App\Models\User;

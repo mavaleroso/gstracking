@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Tracking\VehicleRequest;
-use App\Services\Tracking\CreateVehicle;
-use App\Services\Tracking\UpdateVehicle;
-use App\Services\Tracking\GetListingVehicle;
+use App\Http\Requests\TransportationVehicle\VehicleRequest;
+use App\Services\TransportationVehicle\CreateVehicle;
+use App\Services\TransportationVehicle\UpdateVehicle;
+use App\Services\TransportationVehicle\GetListingVehicle;
 use App\Models\Vehicle;
 use App\Models\Driver;
 

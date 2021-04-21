@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Tracking\ServiceProviderRequest;
-use App\Services\Tracking\CreateServiceProvider;
-use App\Services\Tracking\UpdateServiceProvider;
-use App\Services\Tracking\GetListingServiceProvider;
+use App\Http\Requests\TransportationServiceProvider\ServiceProviderRequest;
+use App\Services\TransportationServiceProvider\CreateServiceProvider;
+use App\Services\TransportationServiceProvider\UpdateServiceProvider;
+use App\Services\TransportationServiceProvider\GetListingServiceProvider;
 use App\Models\ServiceProvider;
 
 class TransportationServiceProviderController extends Controller

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Controllers\Base\BaseController as Controller;
 use App\Http\Requests\Po\PoRequest;
 use App\Services\Po\GetListingPo;
 use App\Services\Po\CreatePo;

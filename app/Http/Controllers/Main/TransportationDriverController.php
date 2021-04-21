@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Tracking\DriverRequest;
-use App\Services\Tracking\CreateDriver;
-use App\Services\Tracking\UpdateDriver;
-use App\Services\Tracking\GetListingDriver;
+use App\Http\Requests\TransportationDriver\DriverRequest;
+use App\Services\TransportationDriver\CreateDriver;
+use App\Services\TransportationDriver\UpdateDriver;
+use App\Services\TransportationDriver\GetListingDriver;
 use App\Models\Driver;
 
 class TransportationDriverController extends Controller
