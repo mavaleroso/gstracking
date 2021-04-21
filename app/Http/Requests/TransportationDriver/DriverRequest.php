@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Tracking;
+namespace App\Http\Requests\TransportationDriver;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;

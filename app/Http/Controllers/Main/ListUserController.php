@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Services\Tracking\CreateServiceProvider;
-use App\Services\Tracking\UpdateRoles;
-use App\Services\Tracking\GetListingServiceProvider;
+use App\Services\TransportationServiceProvider\CreateServiceProvider;
+use App\Services\Users\UpdateRoles;
+use App\Services\TransportationServiceProvider\GetListingServiceProvider;
 use App\Models\UserDetail;
 use App\Models\User;
 

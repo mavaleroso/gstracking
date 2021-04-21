@@ -2632,12 +2632,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2647,10 +2641,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         id: '',
         po_no: '',
         po_amount: '',
-        balance: '',
         status: ''
       },
-      names: ['po_no', 'po_amount', 'balance', 'status']
+      names: ['po_no', 'po_amount', 'status']
     };
   },
   mounted: function mounted() {
@@ -2699,7 +2692,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.id = '';
       this.formFields.po_no = '';
       this.formFields.po_amount = '';
-      this.formFields.balance = '';
       this.formFields.status = '';
       this.create = false;
       this.edit = false;
@@ -2713,7 +2705,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var putParams = null;
       formD.append('po_no', this.formFields.po_no);
       formD.append('po_amount', this.formFields.po_amount);
-      formD.append('balance', this.formFields.balance);
       formD.append('status', this.formFields.status);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
@@ -2736,6 +2727,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
+        $('.invalid-feedback').remove();
+        $('.is-invalid').removeClass('is-invalid');
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
           var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
@@ -2746,14 +2739,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           values.push("".concat(value));
 
           if (key == 'status') {
-            console.log("if status sulod");
-
             if ($('#status').next().next().length == 0) {
               $('#status').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
             }
           } else {
-            console.log("else status sulod");
-
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
@@ -2763,24 +2752,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         for (var i = 0; i < _this2.names.length; i++) {
           if (_this2.names[i] == 'status') {
-            console.log('this.names[i] if ===');
-
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              console.log('this.names[i] if === -1');
-
               if ($('#status').next().next().length != 0) {
-                console.log('this.names[i] if === !=0');
                 $('#status').next().next('.invalid-feedback').remove();
               }
             }
           } else {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              console.log('this.names[i]:::' + _this2.names[i]);
               $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
               $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     show: function show(id) {
@@ -2791,7 +2776,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.id = response.data[0].id;
         vm.formFields.po_no = response.data[0].po_no;
         vm.formFields.po_amount = response.data[0].po_amount;
-        vm.formFields.balance = response.data[0].balance;
         vm.formFields.status = response.data[0].status;
         setTimeout(function () {
           $('#status').val(vm.formFields.status);
@@ -2826,6 +2810,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           scrollCollapse: true,
           processing: true,
           serverSide: true,
+          responsive: true,
           ajax: {
             url: BASE_URL + '/tracking/po',
             type: 'GET'
@@ -2846,6 +2831,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
+            targets: [2, 3],
+            render: function render(data) {
+              return toParseNum(data);
+            }
+          }, {
+            targets: 4,
+            render: function render(data) {
+              return '<span class="label label-inline label-primary">' + data + '</span>';
+            }
+          }, {
             targets: 5,
             render: function render(data) {
               return dateTimeEng(data);
@@ -3601,6 +3596,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         $('.invalid-feedback').remove();
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
+        $('#kt_datatable_modal').modal('toggle');
+        $('#request-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -3861,11 +3858,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         starting_odo: null,
         ending_odo: null,
         date_submitted_proc: null,
-        distance_travelled: null,
-        rate_per_km: null,
-        flat_rate: null,
-        no_nights: null,
-        rate_per_night: null,
+        distance_travelled: 0,
+        rate_per_km: 0,
+        flat_rate: 0,
+        no_nights: 0,
+        rate_per_night: 0,
         remarks: null,
         travel_date: null,
         travel_time: null,
@@ -3888,8 +3885,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   computed: {
     totalCost: function totalCost() {
-      var result = this.formFields.distance_travelled * this.formFields.rate_per_km + this.formFields.flat_rate + this.formFields.no_nights * this.formFields.rate_per_night;
-      ;
+      var result = this.formFields.distance_travelled * this.formFields.rate_per_km + this.formFields.no_nights * this.formFields.rate_per_night + parseInt(this.formFields.flat_rate);
       this.formFields.total_cost = result;
       return result.toLocaleString(undefined, {
         minimumFractionDigits: 2
@@ -5039,6 +5035,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5540,7 +5539,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#kt_select_svc_type').select2({
-          placeholder: "Select type",
+          placeholder: "Select service provider type",
           minimumResultsForSearch: Infinity
         });
         $('#kt_select_svc_type').change(function () {
@@ -6000,7 +5999,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.templateNumber = response.data.vehicles[0].template;
           vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
           vm.formFields.driver = response.data.vehicles[0].driver_id;
-          var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+          var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
           $('#kt_image_5').css('background-image', 'url(' + img + ')');
         });
 
@@ -6194,7 +6193,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 1,
             render: function render(data) {
-              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.png';
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
@@ -46747,7 +46746,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-3" }, [
+                      _c("div", { staticClass: "col-lg-4" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("PO #:")]),
                           _vm._v(" "),
@@ -46783,7 +46782,7 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-3" }, [
+                      _c("div", { staticClass: "col-lg-4" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Amount :")]),
                           _vm._v(" "),
@@ -46821,45 +46820,7 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-3" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Balance :")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.balance,
-                                expression: "formFields.balance"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "number",
-                              min: "0",
-                              step: "any",
-                              name: "balance",
-                              placeholder: "Balance"
-                            },
-                            domProps: { value: _vm.formFields.balance },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "balance",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-3" }, [
+                      _c("div", { staticClass: "col-lg-4" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Status:")]),
                           _vm._v(" "),
@@ -46956,7 +46917,6 @@ var render = function() {
                   "a",
                   {
                     staticClass: "btn btn-primary font-weight-bolder",
-                    attrs: { href: "#" },
                     on: { click: _vm.newEntry }
                   },
                   [
@@ -48196,7 +48156,7 @@ var render = function() {
                             attrs: {
                               href: _vm.vehicle_image
                                 ? "/storage/images/" + _vm.vehicle_image
-                                : "/storage/images/vehicle-photo-default.jpg"
+                                : "/storage/images/vehicle-photo-default.png"
                             }
                           },
                           [
@@ -48214,7 +48174,7 @@ var render = function() {
                                     "travel-vehicle-img img-fluid img-thumbnail",
                                   attrs: {
                                     src:
-                                      "/storage/images/vehicle-photo-default.jpg",
+                                      "/storage/images/vehicle-photo-default.png",
                                     alt: ""
                                   }
                                 })
@@ -50010,35 +49970,39 @@ var render = function() {
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Contact Number:")]),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.contactNumber,
-                                expression: "formFields.contactNumber"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "driver_contactNumber",
-                              placeholder: "Enter contact number"
-                            },
-                            domProps: { value: _vm.formFields.contactNumber },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                          _c("div", { staticClass: "input-group" }, [
+                            _vm._m(1),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.contactNumber,
+                                  expression: "formFields.contactNumber"
                                 }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "contactNumber",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control required-field",
+                              attrs: {
+                                type: "text",
+                                name: "driver_contactNumber",
+                                placeholder: "Enter contact number"
+                              },
+                              domProps: { value: _vm.formFields.contactNumber },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "contactNumber",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          ])
                         ])
                       ])
                     ])
@@ -50088,7 +50052,6 @@ var render = function() {
                   "a",
                   {
                     staticClass: "btn btn-primary font-weight-bolder",
-                    attrs: { href: "#" },
                     on: { click: _vm.newEntry }
                   },
                   [
@@ -50154,7 +50117,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(2)
           ]
         )
   ])
@@ -50173,6 +50136,16 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("small", {}, [_vm._v("Form")])
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [
+        _c("i", { staticClass: "la la-mobile-phone icon-lg" })
       ])
     ])
   },
@@ -50405,7 +50378,7 @@ var render = function() {
                             attrs: {
                               type: "text",
                               name: "svc_companyName",
-                              placeholder: "Enter fullname"
+                              placeholder: "Enter company name"
                             },
                             domProps: { value: _vm.formFields.companyName },
                             on: {
@@ -50441,7 +50414,7 @@ var render = function() {
                             attrs: {
                               type: "number",
                               name: "svc_vehicleCount",
-                              placeholder: "Enter age"
+                              placeholder: "Enter number of vehicles"
                             },
                             domProps: { value: _vm.formFields.vehicleCount },
                             on: {
@@ -50686,7 +50659,7 @@ var render = function() {
                                 "image-input image-input-empty image-input-outline",
                               staticStyle: {
                                 "background-image":
-                                  "url(storage/images/vehicle-photo-default.jpg)"
+                                  "url(storage/images/vehicle-photo-default.png)"
                               },
                               attrs: { id: "kt_image_5" }
                             },

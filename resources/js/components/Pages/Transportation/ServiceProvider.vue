@@ -23,13 +23,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Company name:</label>
-                                     <input type="text" class="form-control required-field" name="svc_companyName" placeholder="Enter fullname" v-model="formFields.companyName"/>
+                                     <input type="text" class="form-control required-field" name="svc_companyName" placeholder="Enter company name" v-model="formFields.companyName"/>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Vehicle count:</label>
-                                    <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter age" v-model="formFields.vehicleCount"/>
+                                    <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter number of vehicles" v-model="formFields.vehicleCount"/>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ export default {
             let vm = this;
             $(() => {
                 $('#kt_select_svc_type').select2({
-                    placeholder: "Select type",
+                    placeholder: "Select service provider type",
                     minimumResultsForSearch: Infinity
                 }); 
 

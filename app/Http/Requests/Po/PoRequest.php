@@ -21,11 +21,10 @@ class PoRequest extends FormRequest
     {
         return [
             'id' => 'nullable',
-            'po_no' => 'required',
+            'po_no' => 'required|unique:procurements',
             'po_amount' => 'required',
             'created_at' => 'nullable',
             'updated_at' => 'nullable',
-            'balance' => 'required',
             'status' => 'required',
         ];
     }
@@ -38,7 +37,6 @@ class PoRequest extends FormRequest
             'po_amount' => 'Amount',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'balance' => 'Balance',
             'status' => 'Status',
         ];
 
@@ -48,8 +46,8 @@ class PoRequest extends FormRequest
     {
         return [
             'po_no.required' => __('main/validations.required'),
+            'po_no.unique' => __('main/validations.unique'),
             'po_amount.required' => __('main/validations.required'),
-            'balance.required' => __('main/validations.required'),
             'status.required' => __('main/validations.required'),
         ];
 

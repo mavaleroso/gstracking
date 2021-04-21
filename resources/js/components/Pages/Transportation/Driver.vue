@@ -34,7 +34,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number:</label>
-                                    <input type="text" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber"/>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text"><i class="la la-mobile-phone icon-lg"></i></span></div>
+                                        <input type="text" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +58,7 @@
                 <div class="card-title"></div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a href="#" class="btn btn-primary font-weight-bolder" @click="newEntry">
+                    <a class="btn btn-primary font-weight-bolder" @click="newEntry">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

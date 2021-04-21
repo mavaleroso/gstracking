@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationVehicle;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;

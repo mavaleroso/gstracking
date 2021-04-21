@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationServiceProvider;
 
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;

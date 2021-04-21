@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\Logs;
 
 use Ccore\Core\Datatable;
 use Illuminate\Support\Facades\DB;

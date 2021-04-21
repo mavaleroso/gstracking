@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationDriver;
 
 use Illuminate\Http\Request;
 use App\Models\Driver;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationVehicle;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;

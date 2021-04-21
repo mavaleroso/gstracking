@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Tracking;
+namespace App\Http\Requests\TransportationVehicle;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RolesRequests extends FormRequest
+class VehicleRequest extends FormRequest
 {
      /**
      * Determine if the user is authorized to make this request.

@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationServiceProvider;
 
 use App\Models\ServiceProvider;
 

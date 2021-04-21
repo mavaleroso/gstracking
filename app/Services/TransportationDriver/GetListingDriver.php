@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Tracking;
+namespace App\Services\TransportationDriver;
 
 use Ccore\Core\Datatable;
 use Illuminate\Support\Facades\DB;

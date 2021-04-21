@@ -16,6 +16,7 @@ class UpdateMigrationForTableProcurement extends Migration
         Schema::table('procurements', function (Blueprint $table) {
             $table->double('balance', 2)->default(0);
             $table->string('status', 50)->nullable();
+            $table->SoftDeletes()->after('status');
         });
     }
 

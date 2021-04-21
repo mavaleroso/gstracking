@@ -58,9 +58,9 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <p>Image:</p>
-                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
+                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.png'">
                                     <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
-                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
+                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.png" alt="">
                                 </a>
                             </div>
                             <div class="form-group">
@@ -150,11 +150,11 @@ export default {
                 starting_odo: null,
                 ending_odo: null,
                 date_submitted_proc: null,
-                distance_travelled: null,
-                rate_per_km: null,
-                flat_rate: null,
-                no_nights: null,
-                rate_per_night: null,
+                distance_travelled: 0,
+                rate_per_km: 0,
+                flat_rate: 0,
+                no_nights: 0,
+                rate_per_night: 0,
                 remarks: null,
                 travel_date: null,
                 travel_time: null,
@@ -167,7 +167,7 @@ export default {
         }
     },
     components: {
-        Modal
+        Modal,
     },
     created() {
         this.getVehicles();
@@ -177,7 +177,7 @@ export default {
     },
     computed: {
         totalCost() {
-            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + this.formFields.flat_rate + (this.formFields.no_nights * this.formFields.rate_per_night));;
+            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
             this.formFields.total_cost = result;
             return result.toLocaleString(undefined, {minimumFractionDigits: 2});
         }
