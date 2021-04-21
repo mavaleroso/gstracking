@@ -3698,6 +3698,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+/* harmony import */ var _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pages/Dialog */ "./resources/js/components/Pages/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3846,6 +3847,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3874,11 +3923,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
+      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    VdiaLog: _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
     this.getVehicles();
@@ -3904,6 +3955,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.tdatatable().init();
       });
     },
+    dialog: function dialog() {
+      var vm = this;
+      vm.dialogshow = true;
+      $("#dialog").dialog({
+        width: 600,
+        height: 500
+      });
+      setTimeout(function () {
+        $('#kt_select_trip_ticket').select2({
+          placeholder: "Trip Ticket",
+          minimumResultsForSearch: Infinity
+        });
+      }, 500);
+      setTimeout(function () {
+        $('#kt_select_service_provider').select2({
+          placeholder: "Trip Ticket",
+          minimumResultsForSearch: Infinity
+        });
+      }, 500);
+    },
     getVehicles: function getVehicles() {
       var _this2 = this;
 
@@ -3918,21 +3989,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var table = $('#list-travel-tbl');
         table.DataTable({
           dom: 'Bfrtip',
-          buttons: [{
-            extend: 'collection',
-            text: 'Table control',
-            buttons: [{
-              text: 'Toggle start date',
-              action: function action(e, dt, node, config) {
-                dt.column(-2).visible(!dt.column(-2).visible());
-              }
-            }, {
-              text: 'Toggle salary',
-              action: function action(e, dt, node, config) {
-                dt.column(-1).visible(!dt.column(-1).visible());
-              }
-            }]
-          }],
+          buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
           searchDelay: 500,
           scrollX: true,
           scrollCollapse: true,
@@ -43292,6 +43349,43 @@ component.options.__file = "resources/js/components/Pages/Dashboard.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/Dialog.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Pages/Dialog.vue ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dialog.vue?vue&type=template&id=0fbb887e& */ "./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  script,
+  _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/Dialog.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/ListPo.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/Pages/ListPo.vue ***!
@@ -44159,6 +44253,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=template&id=7365c9ce& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=template&id=7365c9ce&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dialog.vue?vue&type=template&id=0fbb887e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&");
 
 
 /***/ }),
@@ -46718,6 +46829,38 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { attrs: { id: "dialog", title: "Advanced Filter" } },
+      [_vm._t("body")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=template&id=729893f3&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=template&id=729893f3& ***!
@@ -48104,7 +48247,82 @@ var render = function() {
     "div",
     { attrs: { id: "list-travel-page" } },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "card card-custom gutter-b" }, [
+        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+          _c("div", { staticClass: "card-title" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-toolbar" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary font-weight-bolder",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    return _vm.dialog()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                        width: "24px",
+                        height: "24px",
+                        viewBox: "0 0 24 24",
+                        version: "1.1"
+                      }
+                    },
+                    [
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd"
+                          }
+                        },
+                        [
+                          _c("rect", {
+                            attrs: { x: "0", y: "0", width: "24", height: "24" }
+                          }),
+                          _vm._v(" "),
+                          _c("circle", {
+                            attrs: {
+                              fill: "#000000",
+                              cx: "9",
+                              cy: "15",
+                              r: "6"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v("Advance Filter")
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
       _vm._v(" "),
       _c("modal", {
         scopedSlots: _vm._u([
@@ -48692,40 +48910,78 @@ var render = function() {
               ]
             },
             proxy: true
-          },
-          {
-            key: "footer",
-            fn: function() {
-              return [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn-save btn btn-sm btn-primary font-weight-bold text-uppercase",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.update(_vm.id)
-                      }
-                    }
-                  },
-                  [_vm._v("Save")]
-                )
-              ]
-            },
-            proxy: true
           }
         ])
+      }),
+      _vm._v(" "),
+      _c("vdiaLog", {
+        scopedSlots: _vm._u(
+          [
+            _vm.dialogshow == true
+              ? {
+                  key: "body",
+                  fn: function() {
+                    return [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c("label", { staticClass: "col-3" }, [
+                          _vm._v("Trip ticket")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-9" }, [
+                          _c("div", { staticClass: "checkbox-inline" }, [
+                            _c(
+                              "select",
+                              {
+                                staticClass:
+                                  "form-control select2 details-input",
+                                attrs: {
+                                  id: "kt_select_trip_ticket",
+                                  name: "trp_ticket"
+                                }
+                              },
+                              [
+                                _c("option", [_vm._v("Data")]),
+                                _vm._v(" "),
+                                _c("option", [_vm._v("Data one")])
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("label", { staticClass: "col-3" }, [
+                          _vm._v("Service Provider")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-9" }, [
+                          _c("div", { staticClass: "checkbox-inline" }, [
+                            _c(
+                              "select",
+                              {
+                                staticClass:
+                                  "form-control select2 details-input",
+                                attrs: {
+                                  id: "kt_select_service_provider",
+                                  name: "trp_ticket"
+                                }
+                              },
+                              [
+                                _c("option", [_vm._v("Data ")]),
+                                _vm._v(" "),
+                                _c("option", [_vm._v("Data 2")])
+                              ]
+                            )
+                          ])
+                        ])
+                      ])
+                    ]
+                  },
+                  proxy: true
+                }
+              : null
+          ],
+          null,
+          true
+        )
       })
     ],
     1
@@ -48736,65 +48992,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-separate table-head-custom table-checkable",
-            staticStyle: { width: "500px !important" },
-            attrs: { id: "list-travel-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Trip Ticket")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Service Provider")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date of Travel")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Starting ODO")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Ending Odo")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date Submitted to Procurement")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Distance Travelled")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Amount")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per Km")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Flat Rate")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per night")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("No. of Nights")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Total Cost")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Status")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Remarks")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Created at")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Action")])
-              ])
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          staticStyle: { width: "500px !important" },
+          attrs: { id: "list-travel-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Trip Ticket")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Service Provider")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date of Travel")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Starting ODO")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ending Odo")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Submitted to Procurement")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Distance Travelled")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Number")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Amount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per Km")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Flat Rate")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per night")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("No. of Nights")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Cost")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created at")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]
-        )
-      ])
+          ])
+        ]
+      )
     ])
   }
 ]

@@ -28,6 +28,8 @@
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet" type="text/css"/>
+ 
     </head>
     <body>
         <div id="app" class="animate__animated animate__fadeIn">
@@ -47,5 +49,6 @@
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('plugins/fancybox/jquery.fancybox.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui.js') }}"></script>
     </body>
 </html>

@@ -1,11 +1,31 @@
-<template>
+    <template>
     <div id="list-travel-page">
         <div class="card card-custom gutter-b" >
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                <div class="card-title"></div>
+                <div class="card-title">
+                </div>
+                <div class="card-toolbar">
+                    <!--begin::Button-->
+                    <a href="#" class="btn btn-primary font-weight-bolder" @click="dialog()">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>Advance Filter</a>
+                    <!--end::Button-->
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body"> 
+            
+
                 <!--begin: Datatable-->
+          
                 <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
                     <thead>
                         <tr>
@@ -34,6 +54,7 @@
                 <!--end: Datatable-->
             </div>
         </div>
+        
         <modal>
             <template v-slot:header>
                 <h5 id="modal-status" :class="status_class">{{ status }}</h5>
@@ -127,15 +148,42 @@
                      </div>
                 </form>
             </template>
-            <template v-slot:footer>
-                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
-                <button @click="update(id)" type="button" class="btn-save btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
-            </template>
+
         </modal>
+        <vdiaLog>
+            <template v-slot:body v-if="dialogshow == true">
+                <div class="form-group row">
+                <label class="col-3">Trip ticket</label>
+                <div class="col-9">
+                    <div class="checkbox-inline">
+                        <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" >
+                            <option>Data</option>
+                            <option>Data one</option>
+                        </select>
+                    </div>
+                </div>
+                 <label class="col-3">Service Provider</label>
+                <div class="col-9">
+                    <div class="checkbox-inline">
+                        <select class="form-control select2 details-input" id="kt_select_service_provider" name="trp_ticket" >
+                            <option>Data </option>
+                            <option>Data 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                
+                </div>
+            </template>
+        </vdiaLog>
     </div>
+
 </template>
+
+
 <script>
 import Modal from '../../components/Layouts/Modal';
+import VdiaLog from '../../components/Pages/Dialog';
 export default {
     data() {
         return {
@@ -163,14 +211,17 @@ export default {
                 status: null,
                 total_cost: null
             },
+            dialogshow: false,
             names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
         }
     },
     components: {
-        Modal
+        Modal,
+        VdiaLog
     },
     created() {
         this.getVehicles();
+      
     },
     mounted() {
         this.ini();
@@ -188,6 +239,25 @@ export default {
                 this.tdatatable().init();
             });
         },
+        dialog(){
+ 
+            let vm = this;
+            vm.dialogshow = true;
+            $( "#dialog" ).dialog({ width: 600, height: 500 });
+
+            setTimeout(()=>{
+                $('#kt_select_trip_ticket').select2({
+                placeholder: "Trip Ticket",
+                minimumResultsForSearch: Infinity
+            });
+            },500);
+            setTimeout(()=>{
+                $('#kt_select_service_provider').select2({
+                placeholder: "Trip Ticket",
+                minimumResultsForSearch: Infinity
+            });
+            },500);
+        },
         getVehicles() {
             axios.get(BASE_URL + '/api/vehicle').then(response => {
                 this.vehicles = response.data;
@@ -200,25 +270,8 @@ export default {
                 table.DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-            {
-                extend: 'collection',
-                text: 'Table control',
-                buttons: [
-                    {
-                        text: 'Toggle start date',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( -2 ).visible( ! dt.column( -2 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle salary',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( -1 ).visible( ! dt.column( -1 ).visible() );
-                        }
-                    }
-                ]
-            }
-        ],
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
                     searchDelay: 500,
                     scrollX: true,
                     scrollCollapse: true,
