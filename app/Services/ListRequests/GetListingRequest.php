@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListRequest;
+namespace App\Services\ListRequests;
 
 use Ccore\Core\Datatable;
 use Illuminate\Support\Facades\DB;

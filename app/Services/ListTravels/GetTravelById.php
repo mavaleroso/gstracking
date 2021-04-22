@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListTravel;
+namespace App\Services\ListTravels;
 
 use App\Models\Transaction;
 

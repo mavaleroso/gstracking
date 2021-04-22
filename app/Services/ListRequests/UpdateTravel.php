@@ -1,15 +1,14 @@
 <?php
-namespace App\Services\Travels;
+namespace App\Services\ListRequests;
 
 use App\Models\Request;
 use App\Models\Destination;
 use App\Models\Passenger;
 use App\Models\System;
 use Illuminate\Support\Arr;
-use App\Services\Travels\UpdateTravel;
-use App\Services\Travels\GetBrgy;
-use App\Services\Travels\GetCity;
-use App\Services\Travels\GenerateCode;
+use App\Services\Api\GetBrgy;
+use App\Services\Api\GetCity;
+use App\Services\Core\GenerateCode;
 
 class UpdateTravel
 {

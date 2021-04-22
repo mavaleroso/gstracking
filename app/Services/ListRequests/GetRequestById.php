@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListRequest;
+namespace App\Services\ListRequests;
 
 use App\Models\Request;
 

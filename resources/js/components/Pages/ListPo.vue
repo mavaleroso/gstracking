@@ -15,7 +15,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>PO #:</label>
-                                     <input type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
+                                    <input v-if="create == true" type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
+                                    <input v-else type="text" class="form-control disabled bg-gray-400" name="po_no" placeholder="PO number" v-model="formFields.po_no" disabled/>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -276,7 +277,7 @@ export default {
                         { "data": "id" },
                         { "data": "po_no" },
                         { "data": "po_amount" },
-                        { "data": "balance" },
+                        { "data": "totalBalance" },
                         { "data": "status" },
                         { "data": "created_at" },
                         { "data": "id" },
