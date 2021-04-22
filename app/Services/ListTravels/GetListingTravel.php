@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListTravel;
+namespace App\Services\ListTravels;
 
 use Ccore\Core\Datatable;
 use Illuminate\Support\Facades\DB;

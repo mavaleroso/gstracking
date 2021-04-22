@@ -1,9 +1,10 @@
 <?php
-namespace App\Services\Travels;
+namespace App\Services\Api;
 
 use App\Models\Barangay;
+use App\Models\City;
 
-class GetBrgy 
+class GetCity 
 {
     /**
      * Get user by email
@@ -13,6 +14,7 @@ class GetBrgy
      */
     public function execute(string $id)
     {
-        return Barangay::where('id', $id)->first();
+        $cityId = Barangay::where('id', $id)->first();
+        return City::where('id', $cityId->city_id)->first();
     }
 }

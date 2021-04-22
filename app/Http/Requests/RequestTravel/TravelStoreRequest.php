@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Travels;
+namespace App\Http\Requests\RequestTravel;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;

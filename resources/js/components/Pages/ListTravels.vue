@@ -134,6 +134,16 @@
         </modal>
     </div>
 </template>
+
+<style>
+    @media print {
+        table, table tr, table td {
+            border: #000 solid 1px;
+        }
+    } 
+</style>
+
+
 <script>
 import Modal from '../../components/Layouts/Modal';
 export default {
@@ -200,7 +210,63 @@ export default {
                 table.DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5', 
+                            orientation: 'landscape', 
+                            pageSize: 'Legal',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        }, 
+                        {
+                            extend: "print",
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            },
+                            customize: function(win)
+                            {
+                
+                                var last = null;
+                                var current = null;
+                                var bod = [];
+                
+                                var css = '@page { size: landscape; }',
+                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                    style = win.document.createElement('style');
+                
+                                style.type = 'text/css';
+                                style.media = 'print';
+                
+                                if (style.styleSheet)
+                                {
+                                style.styleSheet.cssText = css;
+                                }
+                                else
+                                {
+                                style.appendChild(win.document.createTextNode(css));
+                                }
+                
+                                head.appendChild(style);
+                            }
+                        }
                     ],
                     searchDelay: 500,
                     scrollX: true,
@@ -242,6 +308,12 @@ export default {
                             targets: 1,
                             render: data => {
                                 return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">'+data+'</span>';
+                            }
+                        },
+                        {
+                            targets: 3,
+                            render: data => {
+                                return dateEng(data);
                             }
                         },
                         {
@@ -434,3 +506,4 @@ export default {
 
 }
 </script>
+

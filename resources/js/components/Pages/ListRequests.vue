@@ -178,7 +178,7 @@
                             <label>Po Number</label>
                             <select class="form-control select2 staff-required" id="po-select">
                                 <option label="Label"></option>
-                                <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.balance) }}</option>
+                                <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.totalBalance) }}</option>
                             </select>
                         </div>
                     </div>

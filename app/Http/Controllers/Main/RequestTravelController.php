@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Travels\TravelStoreRequest;
-use App\Services\Travels\CreateTravel;
+use App\Http\Requests\RequestTravel\TravelStoreRequest;
+use App\Services\RequestTravel\CreateTravel;
 use Illuminate\Support\Facades\DB;
 
 class RequestTravelController extends Controller

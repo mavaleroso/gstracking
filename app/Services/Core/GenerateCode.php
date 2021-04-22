@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Travels;
+namespace App\Services\Core;
 
 use App\Models\System;
 

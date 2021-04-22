@@ -36,7 +36,6 @@ class PoController extends Controller
     {
         $records = $getListingPo->execute();
         return response()->json($records);
-        // dd($request);
     }
 
     /**
@@ -91,9 +90,9 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PoRequest $poRequest, UpdatePo $updatePo, $id)
+    public function update(Request $request, UpdatePo $updatePo, $id)
     {
-        $result = $updatePo->execute($id, $poRequest->validated());
+        $result = $updatePo->execute($id, $request);
         return json_encode(['type' => 'success','message' => __('main/notifications.po_updated_successfully'), 'result' => $result]);
     }
 

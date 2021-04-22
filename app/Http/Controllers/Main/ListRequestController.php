@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Travels\TravelStoreRequest;
-use App\Services\Travels\UpdateTravel;
-use App\Services\ListRequest\GetListingRequest;
-use App\Services\ListRequest\GetRequestById;
+use App\Http\Requests\RequestTravel\TravelStoreRequest;
+use App\Services\ListRequests\UpdateTravel;
+use App\Services\ListRequests\GetListingRequest;
+use App\Services\ListRequests\GetRequestById;
 use Illuminate\Support\Facades\DB;
 
 class ListRequestController extends Controller
