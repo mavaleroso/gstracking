@@ -233,7 +233,8 @@ export default {
         active(type = null){
             (type == 'menu')? $('#dropdown-transpo').removeClass('menu-item-open') : null;
             $('.menu-item').removeClass('menu-item-active');
-            $('.router-link-active').parent().addClass('menu-item-active');
+            $('.router-link-active').parent().addClass('menu-item-active'); 
+            // $(this).parents("#dialog").dialog('close');
         }
     },
 }

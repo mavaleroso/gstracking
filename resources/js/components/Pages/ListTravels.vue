@@ -152,29 +152,92 @@
         </modal>
         <vdiaLog>
             <template v-slot:body v-if="dialogshow == true">
-                <div class="form-group row">
-                <label class="col-3">Trip ticket</label>
-                <div class="col-9">
-                    <div class="checkbox-inline">
-                        <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" >
-                            <option>Data</option>
-                            <option>Data one</option>
-                        </select>
+                <form id="request-form" class="form">
+                    <div class="form-group row">
+                    <label class="col-3">Trip ticket</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" v-model="filterActive.tripTicket">
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.tripTicket" :key="svc.id" :value="svc.id">{{ svc.trip_ticket }}</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                 <label class="col-3">Service Provider</label>
-                <div class="col-9">
-                    <div class="checkbox-inline">
-                        <select class="form-control select2 details-input" id="kt_select_service_provider" name="trp_ticket" >
-                            <option>Data </option>
-                            <option>Data 2</option>
-                        </select>
+                    <label class="col-3">Service Provider</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.id">{{ svc.company_name }} ({{ svc.type }})</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-
-                
-                </div>
+                    <label class="col-3">Date Travel</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_date_travel" name="date_travel" class="form-control details-input"  v-model="filterActive.dateTravel" />
+                        </div>
+                    </div>
+                    <label class="col-3">Procurement Date </label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_procurement_sub" name="date_travel" class="form-control details-input"  v-model="filterActive.procurementSub" />
+                        </div>
+                    </div>
+                    <label class="col-3">Distance Traveled</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_distance_traveled" name="distance_traveled" class="form-control details-input"  v-model="filterActive.distanceTravelled"  />
+                        </div>
+                    </div>
+                    <label class="col-3">Po number</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_po_number" name="po_number" v-model="filterActive.poNumber">
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.poNumber" :key="svc.id" :value="svc.id">{{ svc.po_no }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Po amount</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field"  id="kt_po_amount" name="svc_po_amount" placeholder="Po amount" v-model="filterActive.poAmount"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Rate per KM</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field"  id="kt_rate_per_km" name="svc_rate_per_km" placeholder="Enter number" v-model="filterActive.rateperKm"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Flat Rate</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_flat_rate" placeholder="Enter number" v-model="filterActive.flatRate"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Rate per Night</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_rate_per_night" placeholder="Enter number" v-model="filterActive.rateperNight"/>
+                        </div>
+                    </div>
+                    <label class="col-3">No of nights</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter number" v-model="filterActive.numberofNights"/>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success mr-2" @click="ini()">Search</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                    </div>
+                </form>
             </template>
+            
         </vdiaLog>
     </div>
 
@@ -211,6 +274,25 @@ export default {
                 status: null,
                 total_cost: null
             },
+            
+            filterDropdown: {
+                tripTicket : [],
+                serviceProvider: [],
+                poNumber: '',
+            },
+            filterActive: {
+                tripTicket: null,
+                serviceProviders: null,
+                dateTravel:null,
+                procurementSub:null,
+                distanceTravelled: null,
+                poNumber: null,
+                poAmount: null,
+                rateperKm: null,
+                flatRate: null,
+                rateperNight: null,
+                numberofNights: null,
+            },
             dialogshow: false,
             names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
         }
@@ -221,6 +303,9 @@ export default {
     },
     created() {
         this.getVehicles();
+        this.getTripTicket();
+        this.getServiceProviders();
+        this.getPoNumber();
       
     },
     mounted() {
@@ -236,33 +321,70 @@ export default {
     methods:{
         ini() {
             $(()=>{
+                $("#list-travel-tbl").DataTable().destroy();
                 this.tdatatable().init();
             });
         },
         dialog(){
- 
             let vm = this;
             vm.dialogshow = true;
-            $( "#dialog" ).dialog({ width: 600, height: 500 });
+            $( "#dialog" ).dialog({ width: 600, height: 700 });
+            setTimeout(()=>{
+            $('#kt_select_trip_ticket').select2({
+                placeholder: "Trip Ticket",
+                allowClear: true
+            });
+            $('#kt_select_service_provider').select2({
+                placeholder: "Service provider",
+                allowClear: true
+            });
+            $('#kt_select_po_number').select2({
+                placeholder: "Po number",
+                allowClear: true
+            });
+            $('#kt_select_service_provider').change(function() {
+                vm.filterActive.serviceProviders = $(this).val();
+            });
+            $('#kt_select_trip_ticket').change(function() {
+                vm.filterActive.tripTicket = $(this).val();
+            });
+            $('#kt_select_po_number').change(function() {
+                vm.filterActive.poNumber = $(this).val();
+            });
+            $('#kt_date_travel').change(function() {
+                vm.filterActive.dateTravel = $(this).val();
+            });
+            $('#kt_procurement_sub').change(function() {
+                vm.filterActive.procurementSub = $(this).val();
+            });
+            $('#kt_distance_traveled').change(function() {
+                vm.filterActive.distanceTravelled = $(this).val();
+            });
+            },500);
 
-            setTimeout(()=>{
-                $('#kt_select_trip_ticket').select2({
-                placeholder: "Trip Ticket",
-                minimumResultsForSearch: Infinity
-            });
-            },500);
-            setTimeout(()=>{
-                $('#kt_select_service_provider').select2({
-                placeholder: "Trip Ticket",
-                minimumResultsForSearch: Infinity
-            });
-            },500);
+
         },
         getVehicles() {
             axios.get(BASE_URL + '/api/vehicle').then(response => {
                 this.vehicles = response.data;
             });
         },
+        getTripTicket() {
+            axios.get(BASE_URL + "/api/tripticket").then(response => {
+                this.filterDropdown.tripTicket = response.data;
+            });
+        },
+        getServiceProviders() {
+            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
+                this.filterDropdown.serviceProvider = response.data;
+            });
+        },
+        getPoNumber() {
+            axios.get(BASE_URL + "/api/ponumber").then(response => {
+                this.filterDropdown.poNumber = response.data;
+            });
+        },
+
         tdatatable() {
             let vm = this;
             var initTable = () => {
@@ -283,7 +405,9 @@ export default {
                     },
                     ajax: {
                         url: BASE_URL + '/tracking/listtravel',
-                        type: 'GET'
+                        type: 'GET',
+                        data: vm.filterActive
+
                     },
                     columns: [
                         { "data": "id" },
