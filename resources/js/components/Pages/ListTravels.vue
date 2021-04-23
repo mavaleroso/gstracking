@@ -159,7 +159,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" v-model="filterActive.tripTicket">
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.tripTicket" :key="svc.id" :value="svc.id">{{ svc.trip_ticket }}</option>
+                                <option v-for="svc in filterDropdown.tripTicket" :key="svc.id" :value="svc.trip_ticket">{{ svc.trip_ticket }}</option>
                             </select>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.id">{{ svc.company_name }} ({{ svc.type }})</option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.company_name">{{ svc.company_name }} ({{ svc.type }})</option>
                             </select>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_po_number" name="po_number" v-model="filterActive.poNumber">
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.poNumber" :key="svc.id" :value="svc.id">{{ svc.po_no }}</option>
+                                <option v-for="svc in filterDropdown.poNumber" :key="svc.id" :value="svc.po_no">{{ svc.po_no }}</option>
                             </select>
                         </div>
                     </div>

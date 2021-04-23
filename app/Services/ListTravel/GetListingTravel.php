@@ -26,8 +26,8 @@ class GetListingTravel
                             // ['requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%'],
                             // ['transactions.date_submit_proc', 'like' , '%'.$fields['procurementSub'].'%'],
                             // ['transactions.travelled', 'like' , '%'.$fields['distanceTravelled'].'%'],
-                            // ['procurements.po_no', 'like' , '%'.$fields['poNumber'].'%'],
-                            // ['procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%'],
+                            ['procurements.po_no', 'like' , '%'.$fields['poNumber'].'%'],
+                            ['procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%']
                             // ['transactions.rate_per_km', 'like' , '%'.$fields['rateperKm'].'%'],
                             // ['transactions.flat_rate', 'like' , '%'.$fields['flatRate'].'%'],
                             // ['transactions.rate_per_night', 'like' , '%'.$fields['rateperNight'].'%'],

@@ -49111,7 +49111,7 @@ var render = function() {
                                           "option",
                                           {
                                             key: svc.id,
-                                            domProps: { value: svc.id }
+                                            domProps: { value: svc.trip_ticket }
                                           },
                                           [_vm._v(_vm._s(svc.trip_ticket))]
                                         )
@@ -49181,7 +49181,9 @@ var render = function() {
                                           "option",
                                           {
                                             key: svc.id,
-                                            domProps: { value: svc.id }
+                                            domProps: {
+                                              value: svc.company_name
+                                            }
                                           },
                                           [
                                             _vm._v(
@@ -49377,7 +49379,7 @@ var render = function() {
                                           "option",
                                           {
                                             key: svc.id,
-                                            domProps: { value: svc.id }
+                                            domProps: { value: svc.po_no }
                                           },
                                           [_vm._v(_vm._s(svc.po_no))]
                                         )
