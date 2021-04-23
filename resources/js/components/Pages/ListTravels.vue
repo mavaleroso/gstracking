@@ -243,8 +243,6 @@
 
 </template>
 
-<<<<<<< HEAD
-=======
 <style>
     @media print {
         table, table tr, table td {
@@ -253,7 +251,6 @@
     } 
 </style>
 
->>>>>>> develop
 
 <script>
 import Modal from '../../components/Layouts/Modal';
@@ -310,10 +307,7 @@ export default {
     },
     components: {
         Modal,
-<<<<<<< HEAD
         VdiaLog
-=======
->>>>>>> develop
     },
     created() {
         this.getVehicles();
