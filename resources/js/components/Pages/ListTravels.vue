@@ -79,9 +79,9 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <p>Image:</p>
-                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
+                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.png'">
                                     <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
-                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
+                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.png" alt="">
                                 </a>
                             </div>
                             <div class="form-group">
@@ -243,6 +243,17 @@
 
 </template>
 
+<<<<<<< HEAD
+=======
+<style>
+    @media print {
+        table, table tr, table td {
+            border: #000 solid 1px;
+        }
+    } 
+</style>
+
+>>>>>>> develop
 
 <script>
 import Modal from '../../components/Layouts/Modal';
@@ -261,11 +272,11 @@ export default {
                 starting_odo: null,
                 ending_odo: null,
                 date_submitted_proc: null,
-                distance_travelled: null,
-                rate_per_km: null,
-                flat_rate: null,
-                no_nights: null,
-                rate_per_night: null,
+                distance_travelled: 0,
+                rate_per_km: 0,
+                flat_rate: 0,
+                no_nights: 0,
+                rate_per_night: 0,
                 remarks: null,
                 travel_date: null,
                 travel_time: null,
@@ -299,7 +310,10 @@ export default {
     },
     components: {
         Modal,
+<<<<<<< HEAD
         VdiaLog
+=======
+>>>>>>> develop
     },
     created() {
         this.getVehicles();
@@ -313,7 +327,7 @@ export default {
     },
     computed: {
         totalCost() {
-            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + this.formFields.flat_rate + (this.formFields.no_nights * this.formFields.rate_per_night));;
+            let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
             this.formFields.total_cost = result;
             return result.toLocaleString(undefined, {minimumFractionDigits: 2});
         }
@@ -392,7 +406,63 @@ export default {
                 table.DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5', 
+                            orientation: 'landscape', 
+                            pageSize: 'Legal',
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            }
+                        }, 
+                        {
+                            extend: "print",
+                            exportOptions: {
+                                columns: ':not(:last-child)',
+                            },
+                            customize: function(win)
+                            {
+                
+                                var last = null;
+                                var current = null;
+                                var bod = [];
+                
+                                var css = '@page { size: landscape; }',
+                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                    style = win.document.createElement('style');
+                
+                                style.type = 'text/css';
+                                style.media = 'print';
+                
+                                if (style.styleSheet)
+                                {
+                                style.styleSheet.cssText = css;
+                                }
+                                else
+                                {
+                                style.appendChild(win.document.createTextNode(css));
+                                }
+                
+                                head.appendChild(style);
+                            }
+                        }
                     ],
                     searchDelay: 500,
                     scrollX: true,
@@ -436,6 +506,12 @@ export default {
                             targets: 1,
                             render: data => {
                                 return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">'+data+'</span>';
+                            }
+                        },
+                        {
+                            targets: 3,
+                            render: data => {
+                                return dateEng(data);
                             }
                         },
                         {
@@ -628,3 +704,4 @@ export default {
 
 }
 </script>
+

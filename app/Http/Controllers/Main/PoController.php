@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Main;
 
-use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Controllers\Base\BaseController as Controller;
 use App\Http\Requests\Po\PoRequest;
 use App\Services\Po\GetListingPo;
 use App\Services\Po\CreatePo;
@@ -35,7 +36,6 @@ class PoController extends Controller
     {
         $records = $getListingPo->execute();
         return response()->json($records);
-        // dd($request);
     }
 
     /**
@@ -90,9 +90,9 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PoRequest $poRequest, UpdatePo $updatePo, $id)
+    public function update(Request $request, UpdatePo $updatePo, $id)
     {
-        $result = $updatePo->execute($id, $poRequest->validated());
+        $result = $updatePo->execute($id, $request);
         return json_encode(['type' => 'success','message' => __('main/notifications.po_updated_successfully'), 'result' => $result]);
     }
 

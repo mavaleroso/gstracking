@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Procurement;
 
@@ -15,7 +16,11 @@ class PoController extends Controller
      */
     public function index()
     {
-        return response()->json(Procurement::all());
+        $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
+        ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
+        ->groupBy('procurements.id','procurements.po_no')
+        ->get();
+        return response()->json($query);
     }
 
     /**

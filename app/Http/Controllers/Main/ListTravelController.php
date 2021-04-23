@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListTravels\TravelRequest;
-use App\Services\ListTravel\GetListingTravel;
-use App\Services\ListTravel\GetTravelById;
-use App\Services\ListTravel\UpdateTravel;
+use App\Services\ListTravels\GetListingTravel;
+use App\Services\ListTravels\GetTravelById;
+use App\Services\ListTravels\UpdateTravel;
 
 class ListTravelController extends Controller
 {

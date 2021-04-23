@@ -15,7 +15,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <p>Image:</p>
-                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.jpg)">
+                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
                                         <div class="image-input-wrapper"></div>
 
                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
@@ -211,7 +211,7 @@ export default {
                     vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
                     vm.formFields.driver = response.data.vehicles[0].driver_id;
                   
-                    let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+                    let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
                 });
 
@@ -395,7 +395,7 @@ export default {
                         {
                             targets: 1,
                             render: data => {
-                                var img_path = (data)? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.jpg';
+                                var img_path = (data)? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.png';
                                 return '<a class="vehicle-img-viewer" href="'+ img_path +'"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path +'"></a>';
                             }
                         },

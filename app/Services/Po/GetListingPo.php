@@ -15,7 +15,9 @@ class GetListingPo
      */
     public function execute()
     {
-        $query = Procurement::select(['*']);
+        $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
+                ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
+                ->groupBy('procurements.id','procurements.po_no');
         
         $result = Datatable::of($query, request(), [
             'searchable' => [
@@ -23,15 +25,14 @@ class GetListingPo
                 'po_no',
                 'po_amount',
                 'created_at',
-                'balance',
                 'status',
             ],
             'orderable' => [
                 'id',
                 'po_no',
                 'po_amount',
+                'totalBalance',
                 'created_at',
-                'balance',
                 'status',
             ]
         ]);

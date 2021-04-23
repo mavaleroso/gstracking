@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Services\Tracking\GetListingLogs;
+use App\Services\Logs\GetListingLogs;
 
 class LogController extends Controller
 {

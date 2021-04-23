@@ -14,8 +14,8 @@ class UpdateMigrationForTableProcurement extends Migration
     public function up()
     {
         Schema::table('procurements', function (Blueprint $table) {
-            $table->double('balance', 2)->default(0);
             $table->string('status', 50)->nullable();
+            $table->SoftDeletes()->after('status');
         });
     }
 
@@ -27,7 +27,6 @@ class UpdateMigrationForTableProcurement extends Migration
     public function down()
     {
         Schema::table('procurements', function (Blueprint $table) {
-            $table->dropColumn('balance');
             $table->dropColumn('status');
         });
     }

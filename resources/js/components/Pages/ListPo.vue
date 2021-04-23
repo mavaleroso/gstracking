@@ -12,25 +12,20 @@
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>PO #:</label>
-                                     <input type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
+                                    <input v-if="create == true" type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
+                                    <input v-else type="text" class="form-control disabled bg-gray-400" name="po_no" placeholder="PO number" v-model="formFields.po_no" disabled/>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Amount :</label>
                                      <input type="number" min="0" step="any" class="form-control required-field" name="po_amount" placeholder="Amount" v-model="formFields.po_amount"/>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>Balance :</label>
-                                     <input type="number" min="0" step="any" class="form-control required-field" name="balance" placeholder="Balance" v-model="formFields.balance"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Status:</label>
                                     <select class="form-control select2" id="status" name="status" v-model="formFields.status">
@@ -59,7 +54,7 @@
                 <div class="card-title"></div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a href="#" class="btn btn-primary font-weight-bolder" @click="newEntry">
+                    <a class="btn btn-primary font-weight-bolder" @click="newEntry">
                     <span class="svg-icon svg-icon-md">
                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -105,10 +100,9 @@ export default {
                 id: '',
                 po_no: '',
                 po_amount: '',
-                balance: '',
                 status: '',
             },
-            names: ['po_no', 'po_amount', 'balance', 'status']
+            names: ['po_no', 'po_amount', 'status']
         }
     },
     mounted() {
@@ -157,7 +151,6 @@ export default {
             this.formFields.id = '';
             this.formFields.po_no = '';
             this.formFields.po_amount =  '';
-            this.formFields.balance = '';
             this.formFields.status =  '';
 
             this.create = false;
@@ -171,7 +164,6 @@ export default {
 
             formD.append('po_no', this.formFields.po_no);
             formD.append('po_amount', this.formFields.po_amount);
-            formD.append('balance', this.formFields.balance);
             formD.append('status', this.formFields.status);
 
             method = (this.create)? 'POST':'PUT';
@@ -191,16 +183,17 @@ export default {
                     let keys = [];
                     let values = [];
 
+                    $('.invalid-feedback').remove();
+                    $('.is-invalid').removeClass('is-invalid');
+
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
                         if(key == 'status'){
-                            console.log("if status sulod");
                             if ($('#status').next().next().length == 0) {
                                 $('#status').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
                             }
                         } else {
-                            console.log("else status sulod");
                             if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                                 $('[name="'+`${key}`+'"]').addClass('is-invalid');
                                 $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
@@ -210,31 +203,20 @@ export default {
                     
                     for (let i = 0; i < this.names.length; i++) {
                         if (this.names[i] == 'status') {
-
-                            console.log('this.names[i] if ===');
-
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-
-                                console.log('this.names[i] if === -1');
-
                                 if ($('#status').next().next().length != 0) {
-
-                                    console.log('this.names[i] if === !=0');
-
                                     $('#status').next().next('.invalid-feedback').remove();
                                 }
                             }
                         } else {
-
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-
-                                console.log('this.names[i]:::'+this.names[i]);
-
                                 $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
                                 $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
                             }
                         }
                     }
+
+                    showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         show(id) {
@@ -246,7 +228,6 @@ export default {
                 vm.formFields.id = response.data[0].id;
                 vm.formFields.po_no = response.data[0].po_no;
                 vm.formFields.po_amount = response.data[0].po_amount;
-                vm.formFields.balance = response.data[0].balance;
                 vm.formFields.status = response.data[0].status;
                 
                 setTimeout(() => {
@@ -287,6 +268,7 @@ export default {
                     scrollCollapse: true,
                     processing: true,
                     serverSide: true,
+                    responsive: true,
                     ajax: {
                         url: BASE_URL + '/tracking/po',
                         type: 'GET'
@@ -295,12 +277,24 @@ export default {
                         { "data": "id" },
                         { "data": "po_no" },
                         { "data": "po_amount" },
-                        { "data": "balance" },
+                        { "data": "totalBalance" },
                         { "data": "status" },
                         { "data": "created_at" },
                         { "data": "id" },
                     ],
                     columnDefs: [
+                        {
+                            targets: [2, 3],
+                            render: data => {
+                                return toParseNum(data);
+                            }
+                        },
+                        {
+                            targets: 4,
+                            render: data => {
+                                return '<span class="label label-inline label-primary">'+ data +'</span>';
+                            }
+                        },
                         {
                             targets: 5,
                             render: data => {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListRequests\TravelRequestStaff;
-use App\Services\ListRequest\CreateTransaction;
+use App\Services\ListRequests\CreateTransaction;
 
 class ListRequestStaffController extends Controller
 {
