@@ -15,13 +15,13 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->default('');
-            $table->string('serial_code')->default('');
-            $table->string('type_vehicle')->default('');
-            $table->string('department')->default('');
-            $table->string('purpose')->default('');
-            $table->date('travel_date')->default('');
-            $table->time('depart_time')->default('');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('serial_code')->nullable();
+            $table->string('type_vehicle')->nullable();
+            $table->string('department')->nullable();
+            $table->string('purpose')->nullable();
+            $table->date('travel_date')->nullable();
+            $table->time('depart_time')->nullable();
             $table->smallInteger('is_status')->default(1);
             $table->timestamps();
         });
