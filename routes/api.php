@@ -100,6 +100,18 @@ Route::group(['namespace' => 'Ajax'], function () {
             'show' => 'ajax.po.show',
         ]
     ]);
+    Route::resource('tripticket', 'TripTicketController', [
+        'names' => [
+            'index' => 'ajax.tripticket.index',
+            'show' => 'ajax.tripticket.show',
+        ]
+    ]);
+    Route::resource('ponumber', 'PoController', [
+        'names' => [
+            'index' => 'ajax.ponumber.index',
+            'show' => 'ajax.ponumber.show',
+        ]
+    ]);
 });
 
 
