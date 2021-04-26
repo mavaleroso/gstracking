@@ -279,7 +279,7 @@ export default {
                     },
                     ajax: {
                         url: BASE_URL + '/tracking/listtravel',
-                        type: 'GET'
+                        type: 'GET',
                     },
                     columns: [
                         { "data": "id" },
