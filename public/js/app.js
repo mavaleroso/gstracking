@@ -2512,6 +2512,10 @@ __webpack_require__.r(__webpack_exports__);
       type == 'menu' ? $('#dropdown-transpo').removeClass('menu-item-open') : null;
       $('.menu-item').removeClass('menu-item-active');
       $('.router-link-active').parent().addClass('menu-item-active');
+
+      try {
+        $('#dialog').dialog('destroy');
+      } catch (error) {}
     }
   }
 });
@@ -3962,7 +3966,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4044,10 +4047,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $("#list-travel-tbl").DataTable().destroy();
 
         _this.tdatatable().init();
+
+        if (_this.dialogshow == true) {
+          showToast('Filtered successfully!', 'success');
+        }
       });
     },
     dialog: function dialog() {
       var vm = this;
+      vm.dialogshow = false;
       vm.dialogshow = true;
       $("#dialog").dialog({
         width: 600,
@@ -49726,15 +49734,6 @@ var render = function() {
                                   }
                                 },
                                 [_vm._v("Search")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-secondary",
-                                  attrs: { type: "reset" }
-                                },
-                                [_vm._v("Cancel")]
                               )
                             ])
                           ])

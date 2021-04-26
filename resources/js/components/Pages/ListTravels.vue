@@ -232,7 +232,6 @@
                     
                     <div class="card-footer">
                         <button type="button" class="btn btn-success mr-2" @click="ini()">Search</button>
-                        <button type="reset" class="btn btn-secondary">Cancel</button>
                     </div>
                     </div>
                 </form>
@@ -331,10 +330,15 @@ export default {
             $(()=>{
                 $("#list-travel-tbl").DataTable().destroy();
                 this.tdatatable().init();
+                if (this.dialogshow ==true){
+                    showToast('Filtered successfully!', 'success');
+                }
             });
         },
         dialog(){
+            
             let vm = this;
+            vm.dialogshow = false;
             vm.dialogshow = true;
             $( "#dialog" ).dialog({ width: 600, height: 700 });
             setTimeout(()=>{
