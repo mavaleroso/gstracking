@@ -41,5 +41,8 @@ return [
     'po_deleted_successfully' => 'Purchased Order deleted succesfully',
 
     // List Requests Page
-    'list_requests_updated_successfully' => 'Requests has been declined!'
+    'list_requests_updated_successfully' => 'Requests has been declined!',
+
+    // List travel Page
+    'list_travel_updated_successfully' => 'Transaction has been disapproved!'  
 ];

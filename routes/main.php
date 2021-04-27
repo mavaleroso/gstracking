@@ -171,6 +171,7 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'destroy' => 'main.travelcalendar.destroy',
         ]
     ]);
+    Route::put('listtravel/undo/{id}', 'ListTravelController@undo');
 });
 
 Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {

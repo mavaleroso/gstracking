@@ -1,31 +1,11 @@
-    <template>
+<template>
     <div id="list-travel-page">
         <div class="card card-custom gutter-b" >
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                <div class="card-title">
-                </div>
-                <div class="card-toolbar">
-                    <!--begin::Button-->
-                    <a href="#" class="btn btn-primary font-weight-bolder" @click="dialog()">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <circle fill="#000000" cx="9" cy="15" r="6" />
-                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>Advance Filter</a>
-                    <!--end::Button-->
-                </div>
+                <div class="card-title"></div>
             </div>
-            <div class="card-body"> 
-            
-
+            <div class="card-body">
                 <!--begin: Datatable-->
-          
                 <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
                     <thead>
                         <tr>
@@ -54,7 +34,6 @@
                 <!--end: Datatable-->
             </div>
         </div>
-        
         <modal>
             <template v-slot:header>
                 <h5 id="modal-status" :class="status_class">{{ status }}</h5>
@@ -132,7 +111,7 @@
                             </div>
                             <div class="form-group">
                                 <label>No. of Nights:</label>
-                                <input type="number" class="form-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
+                                <input type="number" class="f orm-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
                             </div>
                             <div class="form-group">
                                 <label>Rate per Night:</label>
@@ -148,98 +127,14 @@
                      </div>
                 </form>
             </template>
-
-        </modal>
-        <vdiaLog>
-            <template v-slot:body v-if="dialogshow == true">
-                <form id="request-form" class="form">
-                    <div class="form-group row">
-                    <label class="col-3">Trip ticket</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" v-model="filterActive.tripTicket">
-                                <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.tripTicket" :key="svc.id" :value="svc.trip_ticket">{{ svc.trip_ticket }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label class="col-3">Service Provider</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
-                                <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.company_name">{{ svc.company_name }} ({{ svc.type }})</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label class="col-3">Date Travel</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="date" id="kt_date_travel" name="date_travel" class="form-control details-input"  v-model="filterActive.dateTravel" />
-                        </div>
-                    </div>
-                    <label class="col-3">Procurement Date </label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="date" id="kt_procurement_sub" name="date_travel" class="form-control details-input"  v-model="filterActive.procurementSub" />
-                        </div>
-                    </div>
-                    <label class="col-3">Distance Traveled</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="date" id="kt_distance_traveled" name="distance_traveled" class="form-control details-input"  v-model="filterActive.distanceTravelled"  />
-                        </div>
-                    </div>
-                    <label class="col-3">Po number</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <select class="form-control select2 details-input" id="kt_select_po_number" name="po_number" v-model="filterActive.poNumber">
-                                <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.poNumber" :key="svc.id" :value="svc.po_no">{{ svc.po_no }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label class="col-3">Po amount</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="number" class="form-control required-field"  id="kt_po_amount" name="svc_po_amount" placeholder="Po amount" v-model="filterActive.poAmount"/>
-                        </div>
-                    </div>
-                    <label class="col-3">Rate per KM</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="number" class="form-control required-field"  id="kt_rate_per_km" name="svc_rate_per_km" placeholder="Enter number" v-model="filterActive.rateperKm"/>
-                        </div>
-                    </div>
-                    <label class="col-3">Flat Rate</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="number" class="form-control required-field" name="svc_flat_rate" placeholder="Enter number" v-model="filterActive.flatRate"/>
-                        </div>
-                    </div>
-                    <label class="col-3">Rate per Night</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="number" class="form-control required-field" name="svc_rate_per_night" placeholder="Enter number" v-model="filterActive.rateperNight"/>
-                        </div>
-                    </div>
-                    <label class="col-3">No of nights</label>
-                    <div class="col-9">
-                        <div class="checkbox-inline">
-                            <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter number" v-model="filterActive.numberofNights"/>
-                        </div>
-                    </div>
-                    
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success mr-2" @click="ini()">Search</button>
-                    </div>
-                    </div>
-                </form>
+            <template v-slot:footer>
+                <button @click="undo(id)" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Undo</button>
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
+                <button @click="update(id)" type="button" class="btn-save btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
+                
             </template>
-            
-        </vdiaLog>
+        </modal>
     </div>
-
 </template>
 
 <style>
@@ -253,7 +148,6 @@
 
 <script>
 import Modal from '../../components/Layouts/Modal';
-import VdiaLog from '../../components/Pages/Dialog';
 export default {
     data() {
         return {
@@ -281,39 +175,14 @@ export default {
                 status: null,
                 total_cost: null
             },
-            
-            filterDropdown: {
-                tripTicket : [],
-                serviceProvider: [],
-                poNumber: '',
-            },
-            filterActive: {
-                tripTicket: null,
-                serviceProviders: null,
-                dateTravel:null,
-                procurementSub:null,
-                distanceTravelled: null,
-                poNumber: null,
-                poAmount: null,
-                rateperKm: null,
-                flatRate: null,
-                rateperNight: null,
-                numberofNights: null,
-            },
-            dialogshow: false,
             names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
         }
     },
     components: {
         Modal,
-        VdiaLog
     },
     created() {
         this.getVehicles();
-        this.getTripTicket();
-        this.getServiceProviders();
-        this.getPoNumber();
-      
     },
     mounted() {
         this.ini();
@@ -328,75 +197,14 @@ export default {
     methods:{
         ini() {
             $(()=>{
-                $("#list-travel-tbl").DataTable().destroy();
                 this.tdatatable().init();
-                if (this.dialogshow ==true){
-                    showToast('Filtered successfully!', 'success');
-                }
             });
-        },
-        dialog(){
-            
-            let vm = this;
-            vm.dialogshow = false;
-            vm.dialogshow = true;
-            $( "#dialog" ).dialog({ width: 600, height: 700 });
-            setTimeout(()=>{
-            $('#kt_select_trip_ticket').select2({
-                placeholder: "Trip Ticket",
-                allowClear: true
-            });
-            $('#kt_select_service_provider').select2({
-                placeholder: "Service provider",
-                allowClear: true
-            });
-            $('#kt_select_po_number').select2({
-                placeholder: "Po number",
-                allowClear: true
-            });
-            $('#kt_select_service_provider').change(function() {
-                vm.filterActive.serviceProviders = $(this).val();
-            });
-            $('#kt_select_trip_ticket').change(function() {
-                vm.filterActive.tripTicket = $(this).val();
-            });
-            $('#kt_select_po_number').change(function() {
-                vm.filterActive.poNumber = $(this).val();
-            });
-            $('#kt_date_travel').change(function() {
-                vm.filterActive.dateTravel = $(this).val();
-            });
-            $('#kt_procurement_sub').change(function() {
-                vm.filterActive.procurementSub = $(this).val();
-            });
-            $('#kt_distance_traveled').change(function() {
-                vm.filterActive.distanceTravelled = $(this).val();
-            });
-            },500);
-
-
         },
         getVehicles() {
             axios.get(BASE_URL + '/api/vehicle').then(response => {
                 this.vehicles = response.data;
             });
         },
-        getTripTicket() {
-            axios.get(BASE_URL + "/api/tripticket").then(response => {
-                this.filterDropdown.tripTicket = response.data;
-            });
-        },
-        getServiceProviders() {
-            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
-                this.filterDropdown.serviceProvider = response.data;
-            });
-        },
-        getPoNumber() {
-            axios.get(BASE_URL + "/api/po").then(response => {
-                this.filterDropdown.poNumber = response.data;
-            });
-        },
-
         tdatatable() {
             let vm = this;
             var initTable = () => {
@@ -474,8 +282,6 @@ export default {
                     ajax: {
                         url: BASE_URL + '/tracking/listtravel',
                         type: 'GET',
-                        data: vm.filterActive
-
                     },
                     columns: [
                         { "data": "id" },
@@ -544,6 +350,7 @@ export default {
                                     1: {'title': 'Pending', 'class': ' label-light-warning'},
                                     2: {'title': 'Approved', 'class': ' label-light-primary'},
                                     3: {'title': 'Completed', 'class': ' label-light-success'},
+                                    4: {'title': 'Declined', 'class': ' label-light-danger'},
                                 };
                                 if (typeof status[data] === 'undefined') {
                                     return data;
@@ -698,8 +505,32 @@ export default {
             this.formFields.vehicle_name = null;
             this.formFields.status = null;
         },
+        undo(id){
+           
+
+                 Swal.fire({
+                    title: "Are you sure?",
+                    text: "Undo Transaction",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Undo it!"
+                }).then(function(result) {
+                    if (result.value) {
+                        axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
+                        Swal.fire(
+                            "Good job!",
+                            response.data.message,
+                            "success" 
+                        )
+                            showToast(response.data.message, 'success');
+                            $('#kt_datatable_modal').modal('toggle');
+                            $('#list-travel-tbl').DataTable().ajax.reload();
+                        });
+                    }
+                });
+            
+        }
     }
 
 }
 </script>
-
