@@ -6,6 +6,7 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListRequests\TravelRequestStaff;
 use App\Services\ListRequests\CreateTransaction;
+use App\Services\ListRequests\UpdateRequests;
 
 class ListRequestStaffController extends Controller
 {
@@ -83,9 +84,11 @@ class ListRequestStaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+    public function update($id, UpdateRequests $updateRequests)
     {
-        //
+        $result = $updateRequests->execute($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
 
     /**

@@ -4590,6 +4590,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     parseNum: function parseNum(data) {
       return toParseNum(data);
+    },
+    reject: function reject() {
+      axios.put(BASE_URL + '/travel/listrequeststaff/' + this.request_id).then(function (response) {
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+        $('#kt_datatable_modal').modal('toggle');
+        $('#request-tbl').DataTable().ajax.reload();
+      }); // axios.put(BASE_URL + '/travel/listrequeststaff', this.request_id).then(response => {
+      // $('.invalid-feedback').remove();
+      // Swal.fire("Good job!", response.data.message, "success");
+      // showToast(response.data.message, 'success');
+      // $('#kt_datatable_modal').modal('toggle');
+      // $('#request-tbl').DataTable().ajax.reload();
+      // });
     }
   }
 });
@@ -49905,7 +49919,8 @@ var render = function() {
                     {
                       staticClass:
                         "btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto",
-                      attrs: { type: "button" }
+                      attrs: { type: "button" },
+                      on: { click: _vm.reject }
                     },
                     [_vm._v("Reject")]
                   ),

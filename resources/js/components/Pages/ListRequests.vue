@@ -185,7 +185,7 @@
                 </div>
             </template>
             <template v-slot:adminfooter>
-                <button type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
+                <button @click="reject" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
@@ -686,6 +686,24 @@ export default {
         },
         parseNum(data) {
             return toParseNum(data);
+        },
+        reject(){
+            axios.put(BASE_URL + '/travel/listrequeststaff/' + this.request_id).then(response => {
+                Swal.fire("Good job!", response.data.message, "success");
+                showToast(response.data.message, 'success');
+                $('#kt_datatable_modal').modal('toggle');
+                $('#request-tbl').DataTable().ajax.reload();
+            })
+
+
+
+            // axios.put(BASE_URL + '/travel/listrequeststaff', this.request_id).then(response => {
+                // $('.invalid-feedback').remove();
+                // Swal.fire("Good job!", response.data.message, "success");
+                // showToast(response.data.message, 'success');
+                // $('#kt_datatable_modal').modal('toggle');
+                // $('#request-tbl').DataTable().ajax.reload();
+            // });
         }
     },
 }

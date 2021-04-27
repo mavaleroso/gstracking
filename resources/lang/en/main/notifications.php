@@ -38,5 +38,8 @@ return [
     // Users Page
     'user_roles_updated_successfully' => 'User Roles updated succesfully',
     'po_updated_successfully' => 'Purchased Order updated succesfully',
-    'po_deleted_successfully' => 'Purchased Order deleted succesfully'
+    'po_deleted_successfully' => 'Purchased Order deleted succesfully',
+
+    // List Requests Page
+    'list_requests_updated_successfully' => 'Requests has been declined!'
 ];
