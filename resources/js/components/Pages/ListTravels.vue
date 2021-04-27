@@ -392,7 +392,7 @@ export default {
             });
         },
         getPoNumber() {
-            axios.get(BASE_URL + "/api/ponumber").then(response => {
+            axios.get(BASE_URL + "/api/po").then(response => {
                 this.filterDropdown.poNumber = response.data;
             });
         },

@@ -1911,6 +1911,19 @@ __webpack_require__.r(__webpack_exports__);
     Subheader: _components_Layouts_Subheader__WEBPACK_IMPORTED_MODULE_4__.default,
     Navfooter: _components_Layouts_Footer__WEBPACK_IMPORTED_MODULE_5__.default,
     Rightpanel: _components_Layouts_Rightpanel__WEBPACK_IMPORTED_MODULE_6__.default
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var scripts = ["/assets/plugins/global/plugins.bundle.js", "/assets/plugins/custom/datatables/datatables.bundle.js", "/plugins/fancybox/jquery.fancybox.js"];
+      scripts.forEach(function (script) {
+        var tag = document.createElement("script");
+        tag.setAttribute("src", script);
+        document.getElementById("kt_body").appendChild(tag);
+      });
+    }
   }
 });
 
@@ -2522,6 +2535,768 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      years: [],
+      system: []
+    };
+  },
+  created: function created() {
+    this.getYear();
+    this.getSystem();
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var _this = this;
+
+      var year = function year() {
+        $(function () {
+          var system = JSON.parse(JSON.stringify(_this.system));
+          $('#year').val(system[4].value);
+        });
+      };
+
+      return {
+        init: function init() {},
+        setYear: function setYear() {
+          year();
+        }
+      };
+    },
+    getYear: function getYear() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + '/api/config/year').then(function (res) {
+        _this2.years = res.data;
+
+        _this2.ini().setYear();
+      });
+    },
+    getSystem: function getSystem() {
+      var _this3 = this;
+
+      axios.get(BASE_URL + '/api/config/system').then(function (res) {
+        _this3.system = res.data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      overview: {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+        completed: 0
+      },
+      travel: {
+        month: [],
+        count: []
+      },
+      po: {
+        no: [],
+        amount: [],
+        balance: [],
+        balance_percent: []
+      },
+      activities: {
+        upcoming: [],
+        recent: []
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.ini().init();
+    this.ini().events();
+  },
+  methods: {
+    dashData: function dashData() {
+      var _this = this;
+
+      var year = $('#year').val();
+      axios.get(BASE_URL + '/api/dash/' + year).then(function (res) {
+        for (var i = 0; i < res.data.overview.length; i++) {
+          switch (res.data.overview[i]['is_status']) {
+            case 1:
+              _this.overview.pending = res.data.overview[i]['count_status'];
+              break;
+
+            case 2:
+              _this.overview.approved = res.data.overview[i]['count_status'];
+              break;
+
+            case 3:
+              _this.overview.completed = res.data.overview[i]['count_status'];
+              break;
+
+            case 4:
+              _this.overview.rejected = res.data.overview[i]['count_status'];
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        for (var _i = 0; _i < res.data.travel.length; _i++) {
+          _this.travel.month.push(res.data.travel[_i]['travel_month']);
+
+          _this.travel.count.push(res.data.travel[_i]['travel_count']);
+        }
+
+        for (var _i2 = 0; _i2 < res.data.procurement.length; _i2++) {
+          var amount = res.data.procurement[_i2]['po_amount'];
+          var balance = res.data.procurement[_i2]['totalBalance'] ? res.data.procurement[_i2]['totalBalance'] : res.data.procurement[_i2]['po_amount'];
+          var percent = balance / amount * 100;
+
+          _this.po.no.push(res.data.procurement[_i2]['po_no']);
+
+          _this.po.amount.push(amount);
+
+          _this.po.balance.push(balance);
+
+          _this.po.balance_percent.push(percent.toFixed(2));
+        }
+
+        _this.activities.upcoming = res.data.activities.upcoming;
+        _this.activities.recent = res.data.activities.recent;
+
+        _this.KTApexCharts().init();
+      });
+    },
+    ini: function ini() {
+      var vm = this;
+
+      var charts = function charts() {
+        $(function () {
+          setTimeout(function () {
+            vm.dashData();
+          }, 500);
+        });
+      };
+
+      var _events = function events() {
+        $(function () {
+          $('#year').change(function () {
+            vm.overview.pending = 0;
+            vm.overview.approved = 0;
+            vm.overview.rejected = 0;
+            vm.overview.completed = 0;
+            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#chart_2').children().remove();
+            $('#chart_3').children().remove();
+            $('#chart_12').children().remove();
+            $('#travel-stats').children().remove();
+            vm.ini().init();
+          });
+        });
+      };
+
+      return {
+        init: function init() {
+          charts();
+        },
+        events: function events() {
+          _events();
+        }
+      };
+    },
+    KTApexCharts: function KTApexCharts() {
+      var vm = this;
+      var primary = '#6993FF';
+      var success = '#1BC5BD';
+      var info = '#8950FC';
+      var warning = '#FFA800';
+      var danger = '#F64E60';
+
+      var LineChart = function LineChart() {
+        var apexChart = "#chart_2";
+        var options = {
+          series: [{
+            name: "Travels",
+            data: JSON.parse(JSON.stringify(vm.travel.count))
+          }],
+          chart: {
+            height: 350,
+            type: 'area',
+            redrawOnParentResize: true,
+            zoom: {
+              enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          grid: {
+            row: {
+              colors: ['#f3f3f3', 'transparent'],
+              // takes an array which will be repeated on columns
+              opacity: 0.5
+            }
+          },
+          xaxis: {
+            categories: JSON.parse(JSON.stringify(vm.travel.month))
+          },
+          colors: [primary]
+        };
+        var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart.render();
+      };
+
+      var TravelStat = function TravelStat() {
+        var element = document.getElementById("travel-stats");
+        var height = parseInt(KTUtil.css(element, 'height'));
+
+        if (!element) {
+          return;
+        }
+
+        var strokeColor = '#D13647';
+        var options = {
+          series: [{
+            name: 'Monthly Travel',
+            data: JSON.parse(JSON.stringify(vm.travel.count))
+          }],
+          chart: {
+            type: 'area',
+            height: height,
+            toolbar: {
+              show: false
+            },
+            zoom: {
+              enabled: false
+            },
+            sparkline: {
+              enabled: true
+            },
+            dropShadow: {
+              enabled: true,
+              enabledOnSeries: undefined,
+              top: 5,
+              left: 0,
+              blur: 3,
+              color: strokeColor,
+              opacity: 0.5
+            }
+          },
+          plotOptions: {},
+          legend: {
+            show: false
+          },
+          dataLabels: {
+            enabled: false
+          },
+          fill: {
+            type: 'solid',
+            opacity: 0
+          },
+          stroke: {
+            curve: 'smooth',
+            show: true,
+            width: 3,
+            colors: [strokeColor]
+          },
+          xaxis: {
+            categories: JSON.parse(JSON.stringify(vm.travel.month)),
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false
+            },
+            labels: {
+              show: false,
+              style: {
+                colors: ['#B5B5C3'],
+                fontSize: '12px',
+                fontFamily: "Poppins"
+              }
+            },
+            crosshairs: {
+              show: false,
+              position: 'front',
+              stroke: {
+                color: ['#E5EAEE'],
+                width: 1,
+                dashArray: 3
+              }
+            }
+          },
+          yaxis: {
+            min: 0,
+            labels: {
+              show: false,
+              style: {
+                colors: ['#B5B5C3'],
+                fontSize: '12px',
+                fontFamily: "Poppins"
+              }
+            }
+          },
+          states: {
+            normal: {
+              filter: {
+                type: 'none',
+                value: 0
+              }
+            },
+            hover: {
+              filter: {
+                type: 'none',
+                value: 0
+              }
+            },
+            active: {
+              allowMultipleDataPointsSelection: false,
+              filter: {
+                type: 'none',
+                value: 0
+              }
+            }
+          },
+          tooltip: {
+            style: {
+              fontSize: '12px',
+              fontFamily: KTApp.getSettings()['font-family']
+            },
+            y: {
+              formatter: function formatter(val) {
+                return "" + val + " Travels";
+              }
+            },
+            marker: {
+              show: false
+            }
+          },
+          colors: ['transparent'],
+          markers: {
+            colors: "#FFE2E5",
+            strokeColor: [strokeColor],
+            strokeWidth: 3
+          }
+        };
+        var chart = new ApexCharts(element, options);
+        chart.render();
+      };
+
+      var BarChart = function BarChart() {
+        var apexChart = "#chart_3";
+        var options = {
+          series: [{
+            name: 'Amount',
+            data: JSON.parse(JSON.stringify(vm.po.amount))
+          }, {
+            name: 'Balance',
+            data: JSON.parse(JSON.stringify(vm.po.balance))
+          }],
+          chart: {
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+              endingShape: 'rounded'
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+          },
+          xaxis: {
+            categories: JSON.parse(JSON.stringify(vm.po.no))
+          },
+          yaxis: {
+            title: {
+              text: '₱ (thousands)'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function formatter(val) {
+                return "₱ " + toParseNum(val);
+              }
+            }
+          },
+          colors: [primary, success, warning]
+        };
+        var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart.render();
+      };
+
+      var PieChart = function PieChart() {
+        var apexChart = "#chart_12";
+        var options = {
+          series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
+          chart: {
+            height: 350,
+            type: 'radialBar'
+          },
+          plotOptions: {
+            radialBar: {
+              dataLabels: {
+                name: {
+                  fontSize: '22px'
+                },
+                value: {
+                  fontSize: '16px'
+                },
+                total: {
+                  show: true,
+                  label: 'Total Balance',
+                  formatter: function formatter(w) {
+                    var total = 0;
+
+                    for (var i = 0; i < vm.po.balance_percent.length; i++) {
+                      total += parseInt(vm.po.balance_percent[i]);
+                    }
+
+                    return (total / vm.po.balance_percent.length).toFixed(2) + ' %';
+                  }
+                }
+              }
+            }
+          },
+          labels: JSON.parse(JSON.stringify(vm.po.amount)),
+          colors: [primary, success, warning, danger]
+        };
+        var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart.render();
+      };
+
+      return {
+        init: function init() {
+          TravelStat();
+          LineChart();
+          BarChart();
+          PieChart();
+        }
+      };
+    },
+    dateEngShort: function dateEngShort(date) {
+      return dateEng2(date);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=script&lang=js& ***!
@@ -2918,6 +3693,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+/* harmony import */ var _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pages/Dialog */ "./resources/js/components/Pages/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3128,6 +3904,114 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3164,7 +4048,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, "names", ['po', 'vehicle']);
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    VdiaLog: _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
     this.getRegion();
@@ -3180,6 +4065,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var vm = this;
       $(function () {
+        $("#list-travel-tbl").DataTable().destroy();
+
         _this.tdatatable().init();
 
         $('.menu-item').removeClass('menu-item-active');
@@ -3253,6 +4140,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           vm.request_edit = 0;
           $('.btn-edit span').text('Edit');
         });
+      });
+    },
+    getTripTicket: function getTripTicket() {
+      var _this3 = this;
+
+      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
+        _this3.filterDropdown.tripTicket = response.data;
+      });
+    },
+    getServiceProviders: function getServiceProviders() {
+      var _this4 = this;
+
+      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
+        _this4.filterDropdown.serviceProvider = response.data;
+      });
+    },
+    getPoNumber: function getPoNumber() {
+      var _this5 = this;
+
+      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
+        _this5.filterDropdown.poNumber = response.data;
       });
     },
     tdatatable: function tdatatable() {
@@ -3700,7 +4608,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-/* harmony import */ var _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pages/Dialog */ "./resources/js/components/Pages/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3859,114 +4766,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3995,37 +4794,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
-      filterDropdown: {
-        tripTicket: [],
-        serviceProvider: [],
-        poNumber: ''
-      },
-      filterActive: {
-        tripTicket: null,
-        serviceProviders: null,
-        dateTravel: null,
-        procurementSub: null,
-        distanceTravelled: null,
-        poNumber: null,
-        poAmount: null,
-        rateperKm: null,
-        flatRate: null,
-        rateperNight: null,
-        numberofNights: null
-      },
-      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
-    VdiaLog: _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
   created: function created() {
     this.getVehicles();
-    this.getTripTicket();
-    this.getServiceProviders();
-    this.getPoNumber();
   },
   mounted: function mounted() {
     this.ini();
@@ -4044,82 +4820,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
-        $("#list-travel-tbl").DataTable().destroy();
-
         _this.tdatatable().init();
-
-        if (_this.dialogshow == true) {
-          showToast('Filtered successfully!', 'success');
-        }
       });
-    },
-    dialog: function dialog() {
-      var vm = this;
-      vm.dialogshow = false;
-      vm.dialogshow = true;
-      $("#dialog").dialog({
-        width: 600,
-        height: 700
-      });
-      setTimeout(function () {
-        $('#kt_select_trip_ticket').select2({
-          placeholder: "Trip Ticket",
-          allowClear: true
-        });
-        $('#kt_select_service_provider').select2({
-          placeholder: "Service provider",
-          allowClear: true
-        });
-        $('#kt_select_po_number').select2({
-          placeholder: "Po number",
-          allowClear: true
-        });
-        $('#kt_select_service_provider').change(function () {
-          vm.filterActive.serviceProviders = $(this).val();
-        });
-        $('#kt_select_trip_ticket').change(function () {
-          vm.filterActive.tripTicket = $(this).val();
-        });
-        $('#kt_select_po_number').change(function () {
-          vm.filterActive.poNumber = $(this).val();
-        });
-        $('#kt_date_travel').change(function () {
-          vm.filterActive.dateTravel = $(this).val();
-        });
-        $('#kt_procurement_sub').change(function () {
-          vm.filterActive.procurementSub = $(this).val();
-        });
-        $('#kt_distance_traveled').change(function () {
-          vm.filterActive.distanceTravelled = $(this).val();
-        });
-      }, 500);
     },
     getVehicles: function getVehicles() {
       var _this2 = this;
 
       axios.get(BASE_URL + '/api/vehicle').then(function (response) {
         _this2.vehicles = response.data;
-      });
-    },
-    getTripTicket: function getTripTicket() {
-      var _this3 = this;
-
-      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
-        _this3.filterDropdown.tripTicket = response.data;
-      });
-    },
-    getServiceProviders: function getServiceProviders() {
-      var _this4 = this;
-
-      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
-        _this4.filterDropdown.serviceProvider = response.data;
-      });
-    },
-    getPoNumber: function getPoNumber() {
-      var _this5 = this;
-
-      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
-        _this5.filterDropdown.poNumber = response.data;
       });
     },
     tdatatable: function tdatatable() {
@@ -4186,8 +4894,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           ajax: {
             url: BASE_URL + '/tracking/listtravel',
-            type: 'GET',
-            data: vm.filterActive
+            type: 'GET'
           },
           columns: [{
             "data": "id"
@@ -4318,32 +5025,32 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     show: function show(id) {
-      var _this6 = this;
+      var _this3 = this;
 
       this.reset();
       var vm = this;
       axios.get(BASE_URL + "/tracking/listtravel/" + id).then(function (response) {
-        _this6.id = id;
-        _this6.created_at = dateTimeEng(response.data[0].created_at);
-        _this6.trip_ticket = response.data[0].trip_ticket;
-        _this6.vehicle_image = response.data[0].image;
-        _this6.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
-        _this6.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+        _this3.id = id;
+        _this3.created_at = dateTimeEng(response.data[0].created_at);
+        _this3.trip_ticket = response.data[0].trip_ticket;
+        _this3.vehicle_image = response.data[0].image;
+        _this3.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
+        _this3.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
 
-        _this6.formFields.starting_odo = response.data[0].starting_odo;
-        _this6.formFields.ending_odo = response.data[0].ending_odo;
-        _this6.formFields.date_submitted_proc = response.data[0].date_submit_proc;
-        _this6.formFields.distance_travelled = response.data[0].travelled;
-        _this6.formFields.rate_per_km = response.data[0].rate_per_km;
-        _this6.formFields.flat_rate = response.data[0].flat_rate;
-        _this6.formFields.no_nights = response.data[0].nights_count;
-        _this6.formFields.rate_per_night = response.data[0].rate_per_night;
-        _this6.formFields.remarks = response.data[0].remarks;
-        _this6.formFields.travel_date = response.data[0].travel_date;
-        _this6.formFields.travel_time = response.data[0].depart_time;
-        _this6.formFields.vehicle_id = response.data[0].vehicle_id;
-        _this6.formFields.vehicle_name = response.data[0].vehicle_name;
-        _this6.formFields.status = response.data[0].is_status;
+        _this3.formFields.starting_odo = response.data[0].starting_odo;
+        _this3.formFields.ending_odo = response.data[0].ending_odo;
+        _this3.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+        _this3.formFields.distance_travelled = response.data[0].travelled;
+        _this3.formFields.rate_per_km = response.data[0].rate_per_km;
+        _this3.formFields.flat_rate = response.data[0].flat_rate;
+        _this3.formFields.no_nights = response.data[0].nights_count;
+        _this3.formFields.rate_per_night = response.data[0].rate_per_night;
+        _this3.formFields.remarks = response.data[0].remarks;
+        _this3.formFields.travel_date = response.data[0].travel_date;
+        _this3.formFields.travel_time = response.data[0].depart_time;
+        _this3.formFields.vehicle_id = response.data[0].vehicle_id;
+        _this3.formFields.vehicle_name = response.data[0].vehicle_name;
+        _this3.formFields.status = response.data[0].is_status;
         response.data[0].is_status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
         $('#kt_select_vehicle').select2({
           placeholder: "Select vehicle"
@@ -4374,7 +5081,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(".vehicle-img-viewer").fancybox();
     },
     update: function update(id) {
-      var _this7 = this;
+      var _this4 = this;
 
       axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(function (response) {
         $('.invalid-feedback').remove();
@@ -4382,7 +5089,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
 
-        _this7.show(id);
+        _this4.show(id);
 
         $('#list-travel-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
@@ -4404,10 +5111,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this7.names.length; i++) {
-          if (keys.indexOf('' + _this7.names[i] + '') == -1) {
-            $('[name="' + _this7.names[i] + '"]').removeClass('is-invalid');
-            $('[name="' + _this7.names[i] + '"]').next('.invalid-feedback').remove();
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+            $('[name="' + _this4.names[i] + '"]').removeClass('is-invalid');
+            $('[name="' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -4944,15 +5651,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     ini: function ini() {
       var _this = this;
 
-      // LOAD SCRIPTS
-      var scripts = ["/assets/js/pages/crud/forms/widgets/select2.js"];
-      scripts.forEach(function (script) {
-        var tag = document.createElement("script");
-        tag.setAttribute("src", script);
-        document.getElementById("kt_page_sticky_card").appendChild(tag);
-      }); // EVENT HANDLING AFTER MOUNT
-
       $(function () {
+        $('#kt_select_province').select2({
+          placeholder: "Select a Province"
+        }); // multi select
+
+        $('#kt_select_city').select2({
+          placeholder: "Select a City"
+        }); // multi select
+
+        $('#kt_select_brgy').select2({
+          placeholder: "Select a Barangay"
+        }); // basic
+
+        $('#kt_select_region').select2({
+          placeholder: "Select a Region",
+          allowClear: true
+        });
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_region').on('change', function () {
@@ -43535,15 +44250,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Subheader_vue_vue_type_template_id_bf7aeb68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Subheader.vue?vue&type=template&id=bf7aeb68& */ "./resources/js/components/Layouts/Subheader.vue?vue&type=template&id=bf7aeb68&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Subheader_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Subheader.vue?vue&type=script&lang=js& */ "./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Subheader_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _Subheader_vue_vue_type_template_id_bf7aeb68___WEBPACK_IMPORTED_MODULE_0__.render,
   _Subheader_vue_vue_type_template_id_bf7aeb68___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -43572,15 +44289,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=template&id=7365c9ce& */ "./resources/js/components/Pages/Dashboard.vue?vue&type=template&id=7365c9ce&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__.render,
   _Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -44158,6 +44877,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Sidebar.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Subheader_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Subheader.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Subheader.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Subheader_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -47054,13 +47805,43 @@ var render = function() {
                   "subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"
               })
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex align-items-center" }, [
+            _c("div", { staticClass: "input-group" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "select",
+                { staticClass: "form-control", attrs: { id: "year" } },
+                _vm._l(_vm.years, function(year) {
+                  return _c(
+                    "option",
+                    { key: year.id, domProps: { value: year.travel_year } },
+                    [_vm._v(_vm._s(year.travel_year))]
+                  )
+                }),
+                0
+              )
+            ])
+          ])
         ]
       )
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [
+        _c("i", { staticClass: "la la-calendar-alt" })
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -47083,41 +47864,779 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    This is Dashboard\n")])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e& ***!
-  \************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { attrs: { id: "dialog", title: "Advanced Filter" } },
-      [_vm._t("body")],
-      2
-    )
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c(
+        "div",
+        { staticClass: "card card-custom bg-gray-100 card-stretch gutter-b" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body p-0 position-relative overflow-hidden" },
+            [
+              _c("div", {
+                staticClass: "card-rounded-bottom bg-danger",
+                staticStyle: { height: "200px" },
+                attrs: { id: "travel-stats" }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-spacer mt-n25" }, [
+                _c("div", { staticClass: "row m-0" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col bg-light-warning px-6 py-8 rounded-xl mr-7 mb-7"
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "svg-icon svg-icon-3x svg-icon-warning d-block my-2"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("rect", {
+                                    attrs: {
+                                      x: "0",
+                                      y: "0",
+                                      width: "24",
+                                      height: "24"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("rect", {
+                                    attrs: {
+                                      fill: "#000000",
+                                      opacity: "0.3",
+                                      x: "13",
+                                      y: "4",
+                                      width: "3",
+                                      height: "16",
+                                      rx: "1.5"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("rect", {
+                                    attrs: {
+                                      fill: "#000000",
+                                      x: "8",
+                                      y: "9",
+                                      width: "3",
+                                      height: "11",
+                                      rx: "1.5"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("rect", {
+                                    attrs: {
+                                      fill: "#000000",
+                                      x: "18",
+                                      y: "11",
+                                      width: "3",
+                                      height: "9",
+                                      rx: "1.5"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("rect", {
+                                    attrs: {
+                                      fill: "#000000",
+                                      x: "3",
+                                      y: "13",
+                                      width: "3",
+                                      height: "7",
+                                      rx: "1.5"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "float-right text-warning font-weight-bold"
+                            },
+                            [_vm._v(_vm._s(_vm.overview.pending))]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-warning font-weight-bold font-size-h6",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("Pending")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col bg-light-primary px-6 py-8 rounded-xl mb-7"
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "svg-icon svg-icon-3x svg-icon-primary d-block my-2"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("polygon", {
+                                    attrs: { points: "0 0 24 0 24 24 0 24" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero",
+                                      opacity: "0.3"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "float-right text-primary font-weight-bold"
+                            },
+                            [_vm._v(_vm._s(_vm.overview.approved))]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-primary font-weight-bold font-size-h6 mt-2",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("Approved")]
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row m-0" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col bg-light-danger px-6 py-8 rounded-xl mr-7"
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "svg-icon svg-icon-3x svg-icon-danger d-block my-2"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("polygon", {
+                                    attrs: { points: "0 0 24 0 24 24 0 24" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z",
+                                      fill: "#000000",
+                                      opacity: "0.3"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "float-right text-danger font-weight-bold"
+                            },
+                            [_vm._v(_vm._s(_vm.overview.rejected))]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-danger font-weight-bold font-size-h6 mt-2",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("Rejected")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col bg-light-success px-6 py-8 rounded-xl"
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "svg-icon svg-icon-3x svg-icon-success d-block my-2"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("rect", {
+                                    attrs: {
+                                      x: "0",
+                                      y: "0",
+                                      width: "24",
+                                      height: "24"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z",
+                                      fill: "#000000",
+                                      opacity: "0.3"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z",
+                                      fill: "#000000"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "h1",
+                            {
+                              staticClass:
+                                "float-right text-success font-weight-bold"
+                            },
+                            [_vm._v(_vm._s(_vm.overview.completed))]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-success font-weight-bold font-size-h6 mt-2",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("Completed")]
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _vm._m(2),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "tab-content" }, [
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade show active p-10",
+                attrs: {
+                  id: "kt_tab_pane_4_1",
+                  role: "tabpanel",
+                  "aria-labelledby": "kt_tab_pane_4_1"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "timeline timeline-5 mt-3" },
+                  _vm._l(_vm.activities.upcoming, function(activity) {
+                    return _c(
+                      "div",
+                      {
+                        key: activity.id,
+                        staticClass: "timeline-item align-items-start"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.dateEngShort(activity.travel_date))
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(3, true),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "timeline-content text-dark-50" },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-primary label-inline mr-2"
+                              },
+                              [_vm._v(_vm._s(activity.trip_ticket))]
+                            ),
+                            _vm._v(" " + _vm._s(activity.purpose))
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade p-10",
+                attrs: {
+                  id: "kt_tab_pane_4_2",
+                  role: "tabpanel",
+                  "aria-labelledby": "kt_tab_pane_4_2"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "timeline timeline-5 mt-3" },
+                  _vm._l(_vm.activities.recent, function(activity) {
+                    return _c(
+                      "div",
+                      {
+                        key: activity.id,
+                        staticClass: "timeline-item align-items-start"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.dateEngShort(activity.travel_date))
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(4, true),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "timeline-content text-dark-50" },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-success label-inline mr-2"
+                              },
+                              [_vm._v(_vm._s(activity.trip_ticket))]
+                            ),
+                            _vm._v(" " + _vm._s(activity.purpose))
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(5),
+    _vm._v(" "),
+    _vm._m(6)
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header border-0 bg-danger py-5" }, [
+      _c("h3", { staticClass: "card-title font-weight-bolder text-white" }, [
+        _vm._v("Overview")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-toolbar" }, [
+        _c("div", { staticClass: "dropdown dropdown-inline" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5",
+              attrs: {
+                href: "#",
+                "data-toggle": "dropdown",
+                "aria-haspopup": "true",
+                "aria-expanded": "false"
+              }
+            },
+            [_vm._v("Export")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "dropdown-menu dropdown-menu-sm dropdown-menu-right"
+            },
+            [
+              _c("ul", { staticClass: "navi navi-hover" }, [
+                _c("li", { staticClass: "navi-header pb-1" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass:
+                        "text-primary text-uppercase font-weight-bold font-size-sm"
+                    },
+                    [_vm._v("Add new:")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "navi-item" }, [
+                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
+                    _c("span", { staticClass: "navi-icon" }, [
+                      _c("i", { staticClass: "flaticon2-shopping-cart-1" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "navi-text" }, [_vm._v("Order")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "navi-item" }, [
+                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
+                    _c("span", { staticClass: "navi-icon" }, [
+                      _c("i", { staticClass: "flaticon2-calendar-8" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "navi-text" }, [_vm._v("Event")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "navi-item" }, [
+                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
+                    _c("span", { staticClass: "navi-icon" }, [
+                      _c("i", { staticClass: "flaticon2-graph-1" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "navi-text" }, [_vm._v("Report")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "navi-item" }, [
+                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
+                    _c("span", { staticClass: "navi-icon" }, [
+                      _c("i", { staticClass: "flaticon2-rocket-1" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "navi-text" }, [_vm._v("Post")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("li", { staticClass: "navi-item" }, [
+                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
+                    _c("span", { staticClass: "navi-icon" }, [
+                      _c("i", { staticClass: "flaticon2-writing" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "navi-text" }, [_vm._v("File")])
+                  ])
+                ])
+              ])
+            ]
+          )
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "chart_2" } })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [_vm._v("Activities")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-toolbar" }, [
+        _c("ul", { staticClass: "nav nav-light-success nav-bold nav-pills" }, [
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link active",
+                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_4_1" }
+              },
+              [
+                _c("span", { staticClass: "nav-icon" }, [
+                  _c("i", { staticClass: "flaticon-event-calendar-symbol" })
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "nav-text" }, [_vm._v("Upcoming")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_4_2" }
+              },
+              [
+                _c("span", { staticClass: "nav-icon" }, [
+                  _c("i", { staticClass: "flaticon-list-1" })
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "nav-text" }, [_vm._v("Recent")])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { staticClass: "fa fa-genderless text-primary icon-xxl" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-8 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [_vm._v("PO Stat")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "chart_3" } })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [_vm._v("PO Balance")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", {
+            staticClass: "d-flex justify-content-center",
+            attrs: { id: "chart_12" }
+          })
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

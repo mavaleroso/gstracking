@@ -15,7 +15,7 @@
 					<!--begin::Content-->
 					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 						<!--begin::Subheader-->
-                            <subheader></subheader>
+						<subheader></subheader>
 						<!--end::Subheader-->
 						<!--begin::Entry-->
 						<div id="container-div" class="d-flex flex-column-fluid">
@@ -61,5 +61,22 @@ export default {
         Navfooter,
         Rightpanel
     },
+	mounted() {
+		this.ini();
+	},
+	methods: {
+		ini() {
+			var scripts = [
+                "/assets/plugins/global/plugins.bundle.js",
+                "/assets/plugins/custom/datatables/datatables.bundle.js",
+                "/plugins/fancybox/jquery.fancybox.js",
+            ];
+            scripts.forEach(script => {
+                let tag = document.createElement("script");
+                tag.setAttribute("src", script);
+                document.getElementById("kt_body").appendChild(tag);
+            });
+		}
+	},
 }
 </script>
