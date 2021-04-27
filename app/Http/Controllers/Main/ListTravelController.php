@@ -30,9 +30,9 @@ class ListTravelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingTravel $getListingTravel)
+    public function index(GetListingTravel $getListingTravel, Request $request)
     {
-        $records = $getListingTravel->execute();
+        $records = $getListingTravel->execute($request);
         return response()->json($records);
     }
 

@@ -101,6 +101,13 @@ Route::group(['namespace' => 'Ajax'], function () {
         ]
     ]);
 
+    Route::resource('tripticket', 'TripTicketController', [
+        'names' => [
+            'index' => 'ajax.tripticket.index',
+            'show' => 'ajax.tripticket.show',
+        ]
+    ]);
+
     Route::resource('dash', 'DashboardController', [
         'names' => [
             'index' => 'ajax.po.index',

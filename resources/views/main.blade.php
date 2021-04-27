@@ -27,7 +27,10 @@
 		<link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
+        <link href="{{ asset('css/jquery-ui.css') }}" rel="stylesheet" type="text/css"/>
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
+
+        
 
     </head>
     <body>
@@ -48,6 +51,7 @@
         <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('plugins/fancybox/jquery.fancybox.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
    
     </body>

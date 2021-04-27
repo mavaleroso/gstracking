@@ -234,6 +234,10 @@ export default {
             (type == 'menu')? $('#dropdown-transpo').removeClass('menu-item-open') : null;
             $('.menu-item').removeClass('menu-item-active');
             $('.router-link-active').parent().addClass('menu-item-active');
+            try {$('#dialog').dialog('destroy');
+            } catch (error) {    
+            }
+           
         }
     },
 }
