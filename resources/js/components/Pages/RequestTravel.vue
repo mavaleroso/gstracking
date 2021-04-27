@@ -158,19 +158,30 @@ export default {
     },
     methods: {
         ini() {
-            // LOAD SCRIPTS
-            var scripts = [
-                "/assets/js/pages/crud/forms/widgets/select2.js",
-            ];
-            scripts.forEach(script => {
-                let tag = document.createElement("script");
-                tag.setAttribute("src", script);
-                document.getElementById("kt_page_sticky_card").appendChild(tag);
-            });
 
-
-            // EVENT HANDLING AFTER MOUNT
             $(() => { 
+
+                $('#kt_select_province').select2({
+                    placeholder: "Select a Province",
+                });
+
+                // multi select
+                $('#kt_select_city').select2({
+                    placeholder: "Select a City",
+                });
+
+                // multi select
+                $('#kt_select_brgy').select2({
+                    placeholder: "Select a Barangay",
+                });
+
+                // basic
+                $('#kt_select_region').select2({
+                    placeholder: "Select a Region",
+                    allowClear: true
+                });
+
+
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
 

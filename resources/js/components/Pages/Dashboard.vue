@@ -83,9 +83,10 @@
                                             <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5" />
                                         </g>
                                     </svg>
+                                    <h1 class="float-right text-warning font-weight-bold">{{ overview.pending }}</h1>
                                     <!--end::Svg Icon-->
                                 </span>
-                                <a href="#" class="text-warning font-weight-bold font-size-h6">On-going</a>
+                                <a href="#" class="text-warning font-weight-bold font-size-h6">Pending</a>
                             </div>
                             <div class="col bg-light-primary px-6 py-8 rounded-xl mb-7">
                                 <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
@@ -97,6 +98,7 @@
                                             <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
                                         </g>
                                     </svg>
+                                    <h1 class="float-right text-primary font-weight-bold">{{ overview.approved }}</h1>
                                     <!--end::Svg Icon-->
                                 </span>
                                 <a href="#" class="text-primary font-weight-bold font-size-h6 mt-2">Approved</a>
@@ -115,6 +117,7 @@
                                             <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
                                         </g>
                                     </svg>
+                                    <h1 class="float-right text-danger font-weight-bold">{{ overview.rejected }}</h1>
                                     <!--end::Svg Icon-->
                                 </span>
                                 <a href="#" class="text-danger font-weight-bold font-size-h6 mt-2">Rejected</a>
@@ -129,6 +132,7 @@
                                             <path d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z" fill="#000000" />
                                         </g>
                                     </svg>
+                                    <h1 class="float-right text-success font-weight-bold">{{ overview.completed }}</h1>
                                     <!--end::Svg Icon-->
                                 </span>
                                 <a href="#" class="text-success font-weight-bold font-size-h6 mt-2">Completed</a>
@@ -161,226 +165,59 @@
         <div class="col-xl-4 col-lg-6">
             <!--begin::List Widget 9-->
             <div class="card card-custom card-stretch gutter-b">
-                <!--begin::Header-->
                 <div class="card-header">
-                    <h3 class="card-title">
-                        <h3 class="card-label">Recent Travels</h3>
-                    </h3>
+                    <div class="card-title">
+                        <h3 class="card-label">Activities</h3>
+                    </div>
                     <div class="card-toolbar">
-                        <div class="dropdown dropdown-inline">
-                            <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="ki ki-bold-more-ver"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-                                <!--begin::Navigation-->
-                                <ul class="navi navi-hover">
-                                    <li class="navi-header font-weight-bold py-4">
-                                        <span class="font-size-lg">Choose Label:</span>
-                                        <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                                    </li>
-                                    <li class="navi-separator mb-3 opacity-70"></li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-text">
-                                                <span class="label label-xl label-inline label-light-success">Customer</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-text">
-                                                <span class="label label-xl label-inline label-light-danger">Partner</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-text">
-                                                <span class="label label-xl label-inline label-light-warning">Suplier</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-text">
-                                                <span class="label label-xl label-inline label-light-primary">Member</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link">
-                                            <span class="navi-text">
-                                                <span class="label label-xl label-inline label-light-dark">Staff</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-separator mt-3 opacity-70"></li>
-                                    <li class="navi-footer py-4">
-                                        <a class="btn btn-clean font-weight-bold btn-sm" href="#">
-                                        <i class="ki ki-plus icon-sm"></i>Add new</a>
-                                    </li>
-                                </ul>
-                                <!--end::Navigation-->
-                            </div>
-                        </div>
+                        <ul class="nav nav-light-success nav-bold nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_4_1">
+                                    <span class="nav-icon"><i class="flaticon-event-calendar-symbol"></i></span>
+                                    <span class="nav-text">Upcoming</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4_2">
+                                    <span class="nav-icon"><i class="flaticon-list-1"></i></span>
+                                    <span class="nav-text">Recent</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <!--end::Header-->
-                <!--begin::Body-->
-                <div class="card-body pt-4">
-                    <div class="timeline timeline-5 mt-3">
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">08:42</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-success icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Text-->
-                            <div class="timeline-content text-dark-50">Outlines of the recent activities that happened last weekend</div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">3 hr</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-danger icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Content-->
-                            <div class="timeline-content d-flex">
-                                <span class="mr-4 font-weight-bolder text-dark-75">AEOL meeting with</span>
-                                <!--begin::Section-->
-                                <div class="d-flex align-items-start mt-n2">
-                                    <!--begin::Symbol-->
-                                    <a href="#" class="symbol symbol-35 symbol-light-success mr-2">
-                                        <span class="symbol-label">
-                                            <img src="assets/media/svg/avatars/004-boy-1.svg" class="h-75 align-self-end" alt="" />
-                                        </span>
-                                    </a>
-                                    <!--end::Symbol-->
-                                    <!--begin::Symbol-->
-                                    <a href="#" class="symbol symbol-35 symbol-light-success">
-                                        <span class="symbol-label">
-                                            <img src="assets/media/svg/avatars/002-girl.svg" class="h-75 align-self-end" alt="" />
-                                        </span>
-                                    </a>
-                                    <!--end::Symbol-->
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active p-10" id="kt_tab_pane_4_1" role="tabpanel" aria-labelledby="kt_tab_pane_4_1">
+                            <div class="timeline timeline-5 mt-3">
+                                <div v-for="activity in activities.upcoming" :key="activity.id" class="timeline-item align-items-start">
+                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
+                                    <div class="timeline-badge">
+                                        <i class="fa fa-genderless text-primary icon-xxl"></i>
+                                    </div>
+                                    <div class="timeline-content text-dark-50"><span class="label label-primary label-inline mr-2">{{ activity.trip_ticket }}</span> {{ activity.purpose }}</div>
                                 </div>
-                                <!--end::Section-->
                             </div>
-                            <!--end::Content-->
                         </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">14:37</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-info icon-xxl"></i>
+                        <div class="tab-pane fade p-10" id="kt_tab_pane_4_2" role="tabpanel" aria-labelledby="kt_tab_pane_4_2">
+                            <div class="timeline timeline-5 mt-3">
+                                <div v-for="activity in activities.recent" :key="activity.id" class="timeline-item align-items-start">
+                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
+                                    <div class="timeline-badge">
+                                        <i class="fa fa-genderless text-success icon-xxl"></i>
+                                    </div>
+                                    <div class="timeline-content text-dark-50"><span class="label label-success label-inline mr-2">{{ activity.trip_ticket }}</span> {{ activity.purpose }}</div>
+                                </div>
                             </div>
-                            <!--end::Badge-->
-                            <!--begin::Desc-->
-                            <div class="timeline-content font-weight-bolder text-dark-75">Submit initial budget -
-                            <a href="#" class="text-primary">USD 700</a>.</div>
-                            <!--end::Desc-->
                         </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">16:50</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-danger icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Text-->
-                            <div class="timeline-content text-dark-50">Stakeholder meeting scheduling.</div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">17:30</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-success icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Text-->
-                            <div class="timeline-content text-dark-50">Project scoping &amp; estimations with stakeholders.</div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">21:03</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-warning icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Desc-->
-                            <div class="timeline-content font-weight-bolder text-dark-75">New order placed
-                            <a href="#" class="text-primary">#XF-2356</a>.</div>
-                            <!--end::Desc-->
-                        </div>
-                        <!--end::Item-->
-                        <!--begin: Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">21:07</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-danger icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Text-->
-                            <div class="timeline-content text-dark-50">Company BBQ to celebrate the last quater achievements and goals.</div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end: Item-->
-                        <!--begin::Item-->
-                        <div class="timeline-item align-items-start">
-                            <!--begin::Label-->
-                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">20:30</div>
-                            <!--end::Label-->
-                            <!--begin::Badge-->
-                            <div class="timeline-badge">
-                                <i class="fa fa-genderless text-info icon-xxl"></i>
-                            </div>
-                            <!--end::Badge-->
-                            <!--begin::Text-->
-                            <div class="timeline-content text-dark-50">Marketing campaign planning with customer.</div>
-                            <!--end::Text-->
-                        </div>
-                        <!--end::Item-->
                     </div>
-                    <!--end: Items-->
                 </div>
-                <!--end: Card Body-->
             </div>
             <!--end: Card-->
         </div>
         <div class="col-xl-8 col-lg-6">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label">PO Stat</h3>
@@ -396,7 +233,7 @@
         </div>
         <div class="col-xl-4 col-lg-6">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label">PO Balance</h3>
@@ -415,15 +252,114 @@
 
 <script>
 export default {
+    data() {
+        return {
+            overview: {
+                pending: 0,
+                approved: 0,
+                rejected: 0,
+                completed: 0
+            },
+            travel: {
+                month: [],
+                count: []
+            },
+            po: {
+                no: [],
+                amount: [],
+                balance: [],
+                balance_percent: []
+            },
+            activities: {
+                upcoming: [],
+                recent: []
+            }
+        }
+    },
     mounted() {
         this.ini().init();
+        this.ini().events();
     },
     methods: {
+        dashData() {
+            let year = $('#year').val();
+            
+            axios.get(BASE_URL + '/api/dash/' + year).then(res => { 
+                for (let i = 0; i <  res.data.overview.length; i++) {
+                    switch (res.data.overview[i]['is_status']) {
+                        case 1:
+                            this.overview.pending = res.data.overview[i]['count_status']
+                            break;
+                    
+                        case 2:
+                            this.overview.approved = res.data.overview[i]['count_status']
+                            break;
+
+                        case 3:
+                            this.overview.completed = res.data.overview[i]['count_status']
+                            break;
+
+                        case 4:
+                            this.overview.rejected = res.data.overview[i]['count_status']
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                for (let i = 0; i < res.data.travel.length; i++) {
+                    this.travel.month.push(res.data.travel[i]['travel_month']);
+                    this.travel.count.push(res.data.travel[i]['travel_count']);
+                }
+
+                for (let i = 0; i < res.data.procurement.length; i++) {
+                    let amount = res.data.procurement[i]['po_amount'];
+                    let balance = (res.data.procurement[i]['totalBalance'])? res.data.procurement[i]['totalBalance']:res.data.procurement[i]['po_amount'];
+                    let percent =  (balance / amount) * 100;
+                    this.po.no.push(res.data.procurement[i]['po_no']);
+                    this.po.amount.push(amount);
+                    this.po.balance.push(balance);
+                    this.po.balance_percent.push(percent.toFixed(2));
+                }
+
+                this.activities.upcoming = res.data.activities.upcoming;
+                this.activities.recent = res.data.activities.recent;
+
+
+                this.KTApexCharts().init();
+            });
+        },
         ini() {
             let vm = this;
             var charts = () => {
                 $(()=>{
-                    vm.KTApexCharts().init();
+                    setTimeout(() => {
+                        vm.dashData();
+                    }, 500);
+                });
+            }
+
+            var events = () => {
+                $(() => {
+                    $('#year').change(() => {
+                        vm.overview.pending = 0;
+                        vm.overview.approved = 0;
+                        vm.overview.rejected = 0;
+                        vm.overview.completed = 0;
+                        vm.travel.month = [],
+                        vm.travel.count = [],
+                        vm.po.no = [],
+                        vm.po.amount = [],
+                        vm.po.balance = [],
+                        vm.po.balance_percent = [],
+                        vm.activities.upcoming = [],
+                        vm.activities.recent = [],
+                        $('#chart_2').children().remove();
+                        $('#chart_3').children().remove();
+                        $('#chart_12').children().remove();
+                        $('#travel-stats').children().remove();
+                        vm.ini().init();
+                    });
                 });
             }
 
@@ -431,10 +367,14 @@ export default {
                 init: () => {
                     charts();
                 },
+                events: () => {
+                    events();
+                }
                
             };
         },
         KTApexCharts() {
+            let vm = this;
             const primary = '#6993FF';
             const success = '#1BC5BD';
             const info = '#8950FC';
@@ -445,12 +385,13 @@ export default {
                 const apexChart = "#chart_2";
                 var options = {
                     series: [{
-                        name: "Desktops",
-                        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+                        name: "Travels",
+                        data: JSON.parse(JSON.stringify(vm.travel.count))
                     }],
                     chart: {
                         height: 350,
                         type: 'area',
+                        redrawOnParentResize: true,
                         zoom: {
                             enabled: false
                         }
@@ -468,7 +409,7 @@ export default {
                         },
                     },
                     xaxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                        categories: JSON.parse(JSON.stringify(vm.travel.month)),
                     },
                     colors: [primary]
                 };
@@ -480,17 +421,15 @@ export default {
             var TravelStat = function() {
                 var element = document.getElementById("travel-stats");
                 var height = parseInt(KTUtil.css(element, 'height'));
-
                 if (!element) {
                     return;
                 }
-
                 var strokeColor = '#D13647';
 
                 var options = {
                     series: [{
-                        name: 'Net Profit',
-                        data: [30, 45, 32, 70, 40, 40, 40]
+                        name: 'Monthly Travel',
+                        data: JSON.parse(JSON.stringify(vm.travel.count))
                     }],
                     chart: {
                         type: 'area',
@@ -532,7 +471,7 @@ export default {
                         colors: [strokeColor]
                     },
                     xaxis: {
-                        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                        categories: JSON.parse(JSON.stringify(vm.travel.month)),
                         axisBorder: {
                             show: false,
                         },
@@ -559,7 +498,6 @@ export default {
                     },
                     yaxis: {
                         min: 0,
-                        max: 80,
                         labels: {
                             show: false,
                             style: {
@@ -597,7 +535,7 @@ export default {
                         },
                         y: {
                             formatter: function(val) {
-                                return "$" + val + " thousands"
+                                return "" + val + " Travels"
                             }
                         },
                         marker: {
@@ -620,14 +558,11 @@ export default {
                 const apexChart = "#chart_3";
                 var options = {
                     series: [{
-                        name: 'Net Profit',
-                        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                        name: 'Amount',
+                        data: JSON.parse(JSON.stringify(vm.po.amount)),
                     }, {
-                        name: 'Revenue',
-                        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                    }, {
-                        name: 'Free Cash Flow',
-                        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                        name: 'Balance',
+                        data: JSON.parse(JSON.stringify(vm.po.balance)),
                     }],
                     chart: {
                         type: 'bar',
@@ -649,11 +584,11 @@ export default {
                         colors: ['transparent']
                     },
                     xaxis: {
-                        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        categories: JSON.parse(JSON.stringify(vm.po.no)),
                     },
                     yaxis: {
                         title: {
-                            text: '$ (thousands)'
+                            text: '₱ (thousands)'
                         }
                     },
                     fill: {
@@ -662,7 +597,7 @@ export default {
                     tooltip: {
                         y: {
                             formatter: function (val) {
-                                return "$ " + val + " thousands"
+                                return "₱ " + toParseNum(val);
                             }
                         }
                     },
@@ -676,24 +611,36 @@ export default {
             var PieChart = function () {
                 const apexChart = "#chart_12";
                 var options = {
-                    series: [44, 55, 13, 43, 22],
+                    series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
                     chart: {
-                        width: 380,
-                        type: 'pie',
+                        height: 350,
+                        type: 'radialBar',
                     },
-                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: 200
-                            },
-                            legend: {
-                                position: 'bottom'
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: '22px',
+                                },
+                                value: {
+                                    fontSize: '16px',
+                                },
+                                total: {
+                                    show: true,
+                                    label: 'Total Balance',
+                                    formatter: function (w) {
+                                        let total = 0;
+                                        for (let i = 0; i < vm.po.balance_percent.length; i++) {
+                                            total += parseInt(vm.po.balance_percent[i]);
+                                        }
+                                        return (total / vm.po.balance_percent.length).toFixed(2) + ' %';
+                                    }
+                                }
                             }
                         }
-                    }],
-                    colors: [primary, success, warning, danger, info]
+                    },
+                    labels: JSON.parse(JSON.stringify(vm.po.amount)),
+                    colors: [primary, success, warning, danger]
                 };
 
                 var chart = new ApexCharts(document.querySelector(apexChart), options);
@@ -701,13 +648,16 @@ export default {
             }
 
             return {
-                init: function () {
+                init: function() {
                     TravelStat();
                     LineChart();
                     BarChart();
                     PieChart();
                 }
             };
+        },
+        dateEngShort(date) {
+            return dateEng2(date);
         }
     },
 }

@@ -100,6 +100,19 @@ Route::group(['namespace' => 'Ajax'], function () {
             'show' => 'ajax.po.show',
         ]
     ]);
+
+    Route::resource('dash', 'DashboardController', [
+        'names' => [
+            'index' => 'ajax.po.index',
+            'show' => 'ajax.po.show',
+        ]
+    ]);
+
+
+    Route::group(['prefix' => 'config'], function () {
+        Route::get('year', 'ConfigController@request_year');
+        Route::get('system', 'ConfigController@system');
+    });
 });
 
 
