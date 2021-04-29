@@ -1916,13 +1916,16 @@ __webpack_require__.r(__webpack_exports__);
     this.ini();
   },
   methods: {
-    ini: function ini() {
-      var scripts = ["/assets/plugins/global/plugins.bundle.js", "/assets/plugins/custom/datatables/datatables.bundle.js", "/plugins/fancybox/jquery.fancybox.js"];
-      scripts.forEach(function (script) {
-        var tag = document.createElement("script");
-        tag.setAttribute("src", script);
-        document.getElementById("kt_body").appendChild(tag);
-      });
+    ini: function ini() {// var scripts = [
+      //     "/assets/plugins/global/plugins.bundle.js",
+      //     "/assets/plugins/custom/datatables/datatables.bundle.js",
+      //     "/plugins/fancybox/jquery.fancybox.js",
+      // ];
+      // scripts.forEach(script => {
+      //     let tag = document.createElement("script");
+      //     tag.setAttribute("src", script);
+      //     document.getElementById("kt_body").appendChild(tag);
+      // });
     }
   }
 });
@@ -3693,7 +3696,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-/* harmony import */ var _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pages/Dialog */ "./resources/js/components/Pages/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3904,114 +3906,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4048,8 +3942,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, "names", ['po', 'vehicle']);
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
-    VdiaLog: _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
   created: function created() {
     this.getRegion();
@@ -4065,8 +3958,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var vm = this;
       $(function () {
-        $("#list-travel-tbl").DataTable().destroy();
-
         _this.tdatatable().init();
 
         $('.menu-item').removeClass('menu-item-active');
@@ -4140,27 +4031,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           vm.request_edit = 0;
           $('.btn-edit span').text('Edit');
         });
-      });
-    },
-    getTripTicket: function getTripTicket() {
-      var _this3 = this;
-
-      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
-        _this3.filterDropdown.tripTicket = response.data;
-      });
-    },
-    getServiceProviders: function getServiceProviders() {
-      var _this4 = this;
-
-      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
-        _this4.filterDropdown.serviceProvider = response.data;
-      });
-    },
-    getPoNumber: function getPoNumber() {
-      var _this5 = this;
-
-      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
-        _this5.filterDropdown.poNumber = response.data;
       });
     },
     tdatatable: function tdatatable() {
@@ -4622,6 +4492,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+/* harmony import */ var _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pages/Dialog */ "./resources/js/components/Pages/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4780,6 +4651,124 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4808,14 +4797,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
+      filterDropdown: {
+        tripTicket: [],
+        serviceProvider: [],
+        poNumber: ''
+      },
+      filterActive: {
+        tripTicket: null,
+        serviceProviders: null,
+        dateTravel: null,
+        procurementSub: null,
+        distanceTravelled: null,
+        poNumber: null,
+        poAmount: null,
+        rateperKm: null,
+        flatRate: null,
+        rateperNight: null,
+        numberofNights: null
+      },
+      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    VdiaLog: _components_Pages_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
     this.getVehicles();
+    this.getTripTicket();
+    this.getServiceProviders();
+    this.getPoNumber();
   },
   mounted: function mounted() {
     this.ini();
@@ -4834,14 +4846,82 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
+        $("#list-travel-tbl").DataTable().destroy();
+
         _this.tdatatable().init();
+
+        if (_this.dialogshow == true) {
+          showToast('Filtered successfully!', 'success');
+        }
       });
+    },
+    dialog: function dialog() {
+      var vm = this;
+      vm.dialogshow = false;
+      vm.dialogshow = true;
+      $("#dialog").dialog({
+        width: 600,
+        height: 700
+      });
+      setTimeout(function () {
+        $('#kt_select_trip_ticket').select2({
+          placeholder: "Trip Ticket",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').select2({
+          placeholder: "Service provider",
+          allowClear: true
+        });
+        $('#kt_select_po_number').select2({
+          placeholder: "Po number",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').change(function () {
+          vm.filterActive.serviceProviders = $(this).val();
+        });
+        $('#kt_select_trip_ticket').change(function () {
+          vm.filterActive.tripTicket = $(this).val();
+        });
+        $('#kt_select_po_number').change(function () {
+          vm.filterActive.poNumber = $(this).val();
+        });
+        $('#kt_date_travel').change(function () {
+          vm.filterActive.dateTravel = $(this).val();
+        });
+        $('#kt_procurement_sub').change(function () {
+          vm.filterActive.procurementSub = $(this).val();
+        });
+        $('#kt_distance_traveled').change(function () {
+          vm.filterActive.distanceTravelled = $(this).val();
+        });
+      }, 500);
     },
     getVehicles: function getVehicles() {
       var _this2 = this;
 
       axios.get(BASE_URL + '/api/vehicle').then(function (response) {
         _this2.vehicles = response.data;
+      });
+    },
+    getTripTicket: function getTripTicket() {
+      var _this3 = this;
+
+      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
+        _this3.filterDropdown.tripTicket = response.data;
+      });
+    },
+    getServiceProviders: function getServiceProviders() {
+      var _this4 = this;
+
+      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
+        _this4.filterDropdown.serviceProvider = response.data;
+      });
+    },
+    getPoNumber: function getPoNumber() {
+      var _this5 = this;
+
+      axios.get(BASE_URL + "/api/po").then(function (response) {
+        _this5.filterDropdown.poNumber = response.data;
       });
     },
     tdatatable: function tdatatable() {
@@ -4908,7 +4988,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           ajax: {
             url: BASE_URL + '/tracking/listtravel',
-            type: 'GET'
+            type: 'GET',
+            data: vm.filterActive
           },
           columns: [{
             "data": "id"
@@ -5039,32 +5120,32 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     show: function show(id) {
-      var _this3 = this;
+      var _this6 = this;
 
       this.reset();
       var vm = this;
       axios.get(BASE_URL + "/tracking/listtravel/" + id).then(function (response) {
-        _this3.id = id;
-        _this3.created_at = dateTimeEng(response.data[0].created_at);
-        _this3.trip_ticket = response.data[0].trip_ticket;
-        _this3.vehicle_image = response.data[0].image;
-        _this3.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
-        _this3.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+        _this6.id = id;
+        _this6.created_at = dateTimeEng(response.data[0].created_at);
+        _this6.trip_ticket = response.data[0].trip_ticket;
+        _this6.vehicle_image = response.data[0].image;
+        _this6.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
+        _this6.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
 
-        _this3.formFields.starting_odo = response.data[0].starting_odo;
-        _this3.formFields.ending_odo = response.data[0].ending_odo;
-        _this3.formFields.date_submitted_proc = response.data[0].date_submit_proc;
-        _this3.formFields.distance_travelled = response.data[0].travelled;
-        _this3.formFields.rate_per_km = response.data[0].rate_per_km;
-        _this3.formFields.flat_rate = response.data[0].flat_rate;
-        _this3.formFields.no_nights = response.data[0].nights_count;
-        _this3.formFields.rate_per_night = response.data[0].rate_per_night;
-        _this3.formFields.remarks = response.data[0].remarks;
-        _this3.formFields.travel_date = response.data[0].travel_date;
-        _this3.formFields.travel_time = response.data[0].depart_time;
-        _this3.formFields.vehicle_id = response.data[0].vehicle_id;
-        _this3.formFields.vehicle_name = response.data[0].vehicle_name;
-        _this3.formFields.status = response.data[0].is_status;
+        _this6.formFields.starting_odo = response.data[0].starting_odo;
+        _this6.formFields.ending_odo = response.data[0].ending_odo;
+        _this6.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+        _this6.formFields.distance_travelled = response.data[0].travelled;
+        _this6.formFields.rate_per_km = response.data[0].rate_per_km;
+        _this6.formFields.flat_rate = response.data[0].flat_rate;
+        _this6.formFields.no_nights = response.data[0].nights_count;
+        _this6.formFields.rate_per_night = response.data[0].rate_per_night;
+        _this6.formFields.remarks = response.data[0].remarks;
+        _this6.formFields.travel_date = response.data[0].travel_date;
+        _this6.formFields.travel_time = response.data[0].depart_time;
+        _this6.formFields.vehicle_id = response.data[0].vehicle_id;
+        _this6.formFields.vehicle_name = response.data[0].vehicle_name;
+        _this6.formFields.status = response.data[0].is_status;
         response.data[0].is_status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
         $('#kt_select_vehicle').select2({
           placeholder: "Select vehicle"
@@ -5095,7 +5176,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(".vehicle-img-viewer").fancybox();
     },
     update: function update(id) {
-      var _this4 = this;
+      var _this7 = this;
 
       axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(function (response) {
         $('.invalid-feedback').remove();
@@ -5103,7 +5184,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
 
-        _this4.show(id);
+        _this7.show(id);
 
         $('#list-travel-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
@@ -5125,10 +5206,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this4.names.length; i++) {
-          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
-            $('[name="' + _this4.names[i] + '"]').removeClass('is-invalid');
-            $('[name="' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
+        for (var i = 0; i < _this7.names.length; i++) {
+          if (keys.indexOf('' + _this7.names[i] + '') == -1) {
+            $('[name="' + _this7.names[i] + '"]').removeClass('is-invalid');
+            $('[name="' + _this7.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -5156,6 +5237,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.vehicle_id = null;
       this.formFields.vehicle_name = null;
       this.formFields.status = null;
+    },
+    undo: function undo(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Undo Transaction",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Undo it!"
+      }).then(function (result) {
+        if (result.value) {
+          axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(function (response) {
+            Swal.fire("Good job!", response.data.message, "success");
+            showToast(response.data.message, 'success');
+            $('#kt_datatable_modal').modal('toggle');
+            $('#list-travel-tbl').DataTable().ajax.reload();
+          });
+        }
+      });
     }
   }
 });
@@ -48657,6 +48756,38 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { attrs: { id: "dialog", title: "Advanced Filter" } },
+      [_vm._t("body")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=template&id=729893f3&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListPo.vue?vue&type=template&id=729893f3& ***!
@@ -50697,6 +50828,53 @@ var render = function() {
                     ])
                   ])
                 ])
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.undo(_vm.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Undo")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn-save btn btn-sm btn-primary font-weight-bold text-uppercase",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.update(_vm.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Save")]
+                )
               ]
             },
             proxy: true

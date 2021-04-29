@@ -8,6 +8,7 @@ use App\Http\Requests\ListTravels\TravelRequest;
 use App\Services\ListTravels\GetListingTravel;
 use App\Services\ListTravels\GetTravelById;
 use App\Services\ListTravels\UpdateTravel;
+use App\Services\ListTravels\UpdateStatus;
 
 class ListTravelController extends Controller
 {
@@ -91,6 +92,11 @@ class ListTravelController extends Controller
     {
         $result = $updateTravel->execute($id, $travelRequest->validated());
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
+    }
+
+    public function undo($id, UpdateStatus $updateStatus){
+        $result = $updateStatus->execute($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
     }
 
     /**
