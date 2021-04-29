@@ -4,7 +4,7 @@ namespace App\Services\ListTravels;
 use App\Models\Transaction;
 use App\Models\Request;
 
-class UpdateTravels
+class UpdateTravel
 {
     /**
      * Get user by email
