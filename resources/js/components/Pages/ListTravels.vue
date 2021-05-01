@@ -148,7 +148,12 @@
                      </div>
                 </form>
             </template>
-
+            <template v-slot:footer>
+                <button @click="undo(id)" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Undo</button>
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
+                <button @click="update(id)" type="button" class="btn-save btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
+                
+            </template>
         </modal>
         <vdiaLog>
             <template v-slot:body v-if="dialogshow == true">
@@ -235,6 +240,11 @@
                     </div>
                     </div>
                 </form>
+
+                
+                
+                
+                
             </template>
             
         </vdiaLog>
@@ -698,6 +708,30 @@ export default {
             this.formFields.vehicle_name = null;
             this.formFields.status = null;
         },
+        undo(id){
+            Swal.fire({
+            title: "Are you sure?",
+            text: "Undo Transaction",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Undo it!"
+        }).then(function(result) {
+            if (result.value) {
+                axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
+                Swal.fire(
+                    "Good job!",
+                    response.data.message,
+                    "success" 
+                )
+                    showToast(response.data.message, 'success');
+                    $('#kt_datatable_modal').modal('toggle');
+                    $('#list-travel-tbl').DataTable().ajax.reload();
+                });
+            }
+        });
+            
+        }
+
     }
 
 }

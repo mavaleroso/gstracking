@@ -66,16 +66,16 @@ export default {
 	},
 	methods: {
 		ini() {
-			var scripts = [
-                "/assets/plugins/global/plugins.bundle.js",
-                "/assets/plugins/custom/datatables/datatables.bundle.js",
-                "/plugins/fancybox/jquery.fancybox.js",
-            ];
-            scripts.forEach(script => {
-                let tag = document.createElement("script");
-                tag.setAttribute("src", script);
-                document.getElementById("kt_body").appendChild(tag);
-            });
+			// var scripts = [
+            //     "/assets/plugins/global/plugins.bundle.js",
+            //     "/assets/plugins/custom/datatables/datatables.bundle.js",
+            //     "/plugins/fancybox/jquery.fancybox.js",
+            // ];
+            // scripts.forEach(script => {
+            //     let tag = document.createElement("script");
+            //     tag.setAttribute("src", script);
+            //     document.getElementById("kt_body").appendChild(tag);
+            // });
 		}
 	},
 }
