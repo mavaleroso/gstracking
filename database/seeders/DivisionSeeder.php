@@ -9,24 +9,24 @@ class DivisionSeeder extends Seeder
 
     private $division = [
         [
-            'division_code' => '0001',
+            'division_code' => 'FMD',
             'division_name' => 'Finance Manangement Division',       
         ],
         [
-            'division_code' => '0002',
-            'division_name' => 'Personnel Division', 
+            'division_code' => 'DRD',
+            'division_name' => 'Disaster Response Division', 
         ],
         [
-            'division_code' => '0003',
-            'division_name' => 'Planning Division', 
+            'division_code' => 'AD',
+            'division_name' => 'Administrative Division', 
         ],
         [
-            'division_code' => '0004',
-            'division_name' => 'ICTMS Division', 
+            'division_code' => 'PSD',
+            'division_name' => 'Promotive Services Division', 
         ],
         [
-            'division_code' => '0005',
-            'division_name' => 'Hr Division', 
+            'division_code' => 'PPD',
+            'division_name' => 'Policy & Plans Division', 
         ]
 
     ];
@@ -40,7 +40,7 @@ class DivisionSeeder extends Seeder
     {
         $divisions = $this->division;
         foreach ($divisions as $key => $data) {
-            System::create($data);
+            Division::create($data);
         }
         //
     }
