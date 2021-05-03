@@ -149,14 +149,6 @@
                                         <span class="menu-text">Driver</span>
                                     </router-link>
                                 </li>
-                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
-                                    <router-link :to="{name: 'listServiceProvider'}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Service Provider</span>
-                                    </router-link>
-                                </li>
                             </ul>
                         </div>
                     </li>
@@ -225,7 +217,7 @@ export default {
     methods: {
         ini() {
             let pageLabel = this.$route.meta.title;
-            let pages = ['List of Transportation', 'List of Vehicles', 'List of Drivers', 'List of Service Provider', 'List of PO'];
+            let pages = ['List of Transportation', 'List of Vehicles', 'List of Drivers', 'List of PO'];
             if (pages.indexOf(pageLabel) != -1) {
                 $('#dropdown-transpo').addClass('menu-item-open')
             }

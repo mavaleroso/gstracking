@@ -17,7 +17,6 @@ class CreatePo
         $data = Procurement::create([
             'po_no' => $fields['po_no'],
             'po_amount' => $fields['po_amount'],
-            'balance' => $fields['po_amount'],
             'status' => $fields['status'],
         ]);
 

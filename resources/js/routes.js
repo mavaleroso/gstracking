@@ -7,7 +7,6 @@ import Log from './components/Pages/Logs';
 import Overview from './components/Pages/Transportation/Overview';
 import Vehicle from './components/Pages/Transportation/Vehicle';
 import Driver from './components/Pages/Transportation/Driver';
-import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 import ListPo from './components/Pages/ListPo';
 import ListUsers from './components/Pages/ListUsers';
 import travelCalendar from './components/Pages/travelCalendar';
@@ -68,14 +67,6 @@ const routes = [
         name: 'listDriver',
         meta: {
             title: 'List of Drivers'
-        }   
-    },
-    {
-        path: '/list_service_provider',
-        component: ServiceProvider,
-        name: 'listServiceProvider',
-        meta: {
-            title: 'List of Service Provider'
         }   
     },
     {
