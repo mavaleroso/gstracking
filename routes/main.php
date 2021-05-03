@@ -31,6 +31,7 @@ Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
 Route::get('/travel_calendar', 'base\DashboardController@index');
+Route::get('/print_request', 'base\PrintController@index')->name('main.print');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [

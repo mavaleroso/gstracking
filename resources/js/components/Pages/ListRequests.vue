@@ -57,7 +57,17 @@
                 <span class="d-block text-muted font-size-sm">Date Created</span></h3>
                 <button v-if="status == 1" @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
                     <i class="la la-edit icon-md"></i>
-                    <span>Edit</span>
+                    <p>Edit</p>
+                </button>
+                <!-- <a v-if="status == 2" :href="'print_request?id=' + current_id" target="_blank">
+                    <button type="button" class="btn-edit btn btn-sm btn-primary mr-7">
+                        <i class="la la-print icon-md"></i>
+                        <p>Print</p>
+                    </button>
+                </a> -->
+                <button @click="print" v-if="status == 2" type="button" class="btn-edit btn btn-sm btn-primary mr-7 d-flex">
+                    <i class="la la-print icon-md"></i>
+                    <p class="m-0">Print</p>
                 </button>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
@@ -199,6 +209,7 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            current_id: null,
             status: null,
             request_id: null,
             request_status: null,
@@ -356,7 +367,7 @@ export default {
                                     },
                                     2: {
                                         'title': 'Approved',
-                                        'class': ' label-light-info'
+                                        'class': ' label-light-primary'
                                     },
                                     3: {
                                         'title': 'Completed',
@@ -400,8 +411,9 @@ export default {
                 },
             };
         },
-        show(id) {
+        show(id, app = null) {
             let vm = this;
+            vm.current_id = id;
             axios.get(BASE_URL + '/travel/listrequest/' + id).then(response => {
                 switch (response.data[0].is_status) {
                     case 1:
@@ -436,7 +448,7 @@ export default {
                 vm.getDetails(vm.request_id);
                 vm.getPassengers(vm.request_id);
 
-                $('#kt_datatable_modal').modal('show');
+                (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
                     $('#vehicle-select').select2({
@@ -622,8 +634,11 @@ export default {
                 $('.invalid-feedback').remove();
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
-                $('#kt_datatable_modal').modal('toggle');
+                // $('#kt_datatable_modal').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
+                setTimeout(() => {
+                    this.show(this.current_id, 1);
+                }, 1000);
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -694,16 +709,17 @@ export default {
                 $('#kt_datatable_modal').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
             })
-
-
-
-            // axios.put(BASE_URL + '/travel/listrequeststaff', this.request_id).then(response => {
-                // $('.invalid-feedback').remove();
-                // Swal.fire("Good job!", response.data.message, "success");
-                // showToast(response.data.message, 'success');
-                // $('#kt_datatable_modal').modal('toggle');
-                // $('#request-tbl').DataTable().ajax.reload();
-            // });
+        },
+        print() {
+            var winPrint = window.open('', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+            winPrint.document.write('<button id="printMe">Button</button><title>Print  Report</title><br /><br /> Hellow World');
+            winPrint.document.close();
+            winPrint.focus();
+            // winPrint.print();
+            // winPrint.close(); 
+            $('#printMe').click(function() {
+                alert('123');
+            });
         }
     },
 }

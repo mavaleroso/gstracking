@@ -284,9 +284,15 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: [2, 3],
+                            targets: 2,
                             render: data => {
                                 return toParseNum(data);
+                            }
+                        },
+                        {
+                            targets: 3,
+                            render: data => {
+                                return (data)? toParseNum(data):0;
                             }
                         },
                         {

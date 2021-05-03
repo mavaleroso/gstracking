@@ -1,0 +1,100 @@
+body {
+    background: rgb(204,204,204); 
+}
+page {
+    background: white;
+    display: block;
+    margin: 0 auto;
+    margin-top: 0.8cm;
+    margin-bottom: 1.5cm;
+    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+page[size="officio"] {  
+    width: 21.59cm;
+    height: 33.02cm; 
+}
+page[size="A4"] {  
+    width: 21cm;
+    height: 29.7cm; 
+}
+page[size="A4"][layout="landscape"] {
+    width: 29.7cm;
+    height: 21cm;  
+}
+page[size="A3"] {
+    width: 29.7cm;
+    height: 42cm;
+}
+page[size="A3"][layout="landscape"] {
+    width: 42cm;
+    height: 29.7cm;  
+}
+page[size="A5"] {
+    width: 14.8cm;
+    height: 21cm;
+}
+page[size="A5"][layout="landscape"] {
+    width: 21cm;
+    height: 14.8cm;  
+}
+
+.paper-page {
+    padding: 3.75rem;
+}
+
+@media print {
+    body, page {
+      margin: 0;
+      box-shadow: 0;
+      font-size: 13px;
+      zoom: 122%;
+    }
+
+}
+
+
+.brand-logo img {
+    width: 158px;
+}
+
+.brand {
+    background-color: #fff !important;
+}
+
+.print-logo {
+    width: 150px;
+}
+
+.header-text {
+    line-height: 14px;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.text-underline {
+    text-decoration: underline !important;
+}
+
+.input-text {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #aaa;
+}
+
+table, th, td {
+    border: 1px solid #AAA;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.outline-0 {
+    outline: none !important;
+}
+
+.dashed-border {
+    width: 100%;
+    margin: auto;
+    border-top: 2px dashed #666;
+}
