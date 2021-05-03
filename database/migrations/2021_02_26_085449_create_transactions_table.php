@@ -16,8 +16,9 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
-            $table->unsignedBigInteger('vehicle_id')->nullable();
             $table->unsignedBigInteger('procurement_id')->nullable();
+            $table->unsignedBigInteger('office_id')->nullable();
+            $table->unsignedBigInteger('rental_id')->nullable();
             $table->string('trip_ticket')->nullable();
             $table->bigInteger('starting_odo')->nullable();
             $table->bigInteger('ending_odo')->nullable();
