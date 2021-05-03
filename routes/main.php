@@ -28,7 +28,6 @@ Route::get('/transaction_logs', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/list_vehicle', 'base\DashboardController@index');
 Route::get('/list_drivers', 'base\DashboardController@index');
-Route::get('/list_service_provider', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
 Route::get('/travel_calendar', 'base\DashboardController@index');

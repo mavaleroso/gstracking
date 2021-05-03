@@ -134,6 +134,93 @@
                 
             </template>
         </modal>
+        <vdiaLog>
+            <template v-slot:body v-if="dialogshow == true">
+                <form id="request-form" class="form">
+                    <div class="form-group row">
+                    <label class="col-3">Trip ticket</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_trip_ticket" name="trp_ticket" v-model="filterActive.tripTicket">
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.tripTicket" :key="svc.id" :value="svc.trip_ticket">{{ svc.trip_ticket }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Service Provider</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.company_name">{{ svc.company_name }} ({{ svc.type }})</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Date Travel</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_date_travel" name="date_travel" class="form-control details-input"  v-model="filterActive.dateTravel" />
+                        </div>
+                    </div>
+                    <label class="col-3">Procurement Date </label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_procurement_sub" name="date_travel" class="form-control details-input"  v-model="filterActive.procurementSub" />
+                        </div>
+                    </div>
+                    <label class="col-3">Distance Traveled</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="date" id="kt_distance_traveled" name="distance_traveled" class="form-control details-input"  v-model="filterActive.distanceTravelled"  />
+                        </div>
+                    </div>
+                    <label class="col-3">Po number</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_po_number" name="po_number" v-model="filterActive.poNumber">
+                                <option label="Label"></option>
+                                <option v-for="svc in filterDropdown.poNumber" :key="svc.id" :value="svc.po_no">{{ svc.po_no }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Po amount</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field"  id="kt_po_amount" name="svc_po_amount" placeholder="Po amount" v-model="filterActive.poAmount"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Rate per KM</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field"  id="kt_rate_per_km" name="svc_rate_per_km" placeholder="Enter number" v-model="filterActive.rateperKm"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Flat Rate</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_flat_rate" placeholder="Enter number" v-model="filterActive.flatRate"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Rate per Night</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_rate_per_night" placeholder="Enter number" v-model="filterActive.rateperNight"/>
+                        </div>
+                    </div>
+                    <label class="col-3">No of nights</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="number" class="form-control required-field" name="svc_vehicleCount" placeholder="Enter number" v-model="filterActive.numberofNights"/>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success mr-2" @click="ini()">Search</button>
+                    </div>
+                    </div>
+                </form>
+            </template>
+        </vdiaLog>
     </div>
 </template>
 
@@ -506,8 +593,6 @@ export default {
             this.formFields.status = null;
         },
         undo(id){
-           
-
                  Swal.fire({
                     title: "Are you sure?",
                     text: "Undo Transaction",
