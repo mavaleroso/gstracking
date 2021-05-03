@@ -4,6 +4,7 @@ import router from './routes';
 import VueRouter from 'vue-router';
 import Index from './Index.vue';
 import Login from './Login.vue';
+import Print from './Print.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
@@ -26,6 +27,6 @@ router.afterEach(() => {
 
 const app = new Vue({
     el: '#app',
-    components: { Index, Login },
+    components: { Index, Login, Print },
     router,
 });

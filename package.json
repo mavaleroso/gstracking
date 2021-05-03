@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "nprogress": "^0.2.0",
+        "vue-html-to-paper": "^1.3.1",
         "vue-router": "^3.5.1"
     }
 }

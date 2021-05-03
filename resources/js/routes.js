@@ -11,6 +11,7 @@ import ServiceProvider from './components/Pages/Transportation/ServiceProvider';
 import ListPo from './components/Pages/ListPo';
 import ListUsers from './components/Pages/ListUsers';
 import travelCalendar from './components/Pages/travelCalendar';
+import printRequest from './components/Pages/PrintRequest';
 
 const routes = [
     {
@@ -109,6 +110,11 @@ const routes = [
             title: 'Travel Calendar'
         }   
     },
+    {
+        path: '/print_request',
+        component: printRequest,
+        name: 'printRequest'
+    }
 ]
 
 const router = new VueRouter({
