@@ -4645,6 +4645,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+<<<<<<< HEAD
+=======
 //
 //
 //
@@ -4761,6 +4763,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 
+>>>>>>> develop
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5068,6 +5071,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 3: {
                   'title': 'Completed',
                   'class': ' label-light-success'
+                },
+                4: {
+                  'title': 'Declined',
+                  'class': ' label-light-danger'
                 }
               };
 
@@ -44054,43 +44061,6 @@ component.options.__file = "resources/js/components/Pages/Dashboard.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/Pages/Dialog.vue":
-/*!**************************************************!*\
-  !*** ./resources/js/components/Pages/Dialog.vue ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dialog.vue?vue&type=template&id=0fbb887e& */ "./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-var script = {}
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
-  _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Pages/Dialog.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/Pages/ListPo.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/Pages/ListPo.vue ***!
@@ -44950,23 +44920,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=template&id=7365c9ce& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=template&id=7365c9ce&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e& ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_0fbb887e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dialog.vue?vue&type=template&id=0fbb887e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dialog.vue?vue&type=template&id=0fbb887e&");
 
 
 /***/ }),
@@ -49685,82 +49638,7 @@ var render = function() {
     "div",
     { attrs: { id: "list-travel-page" } },
     [
-      _c("div", { staticClass: "card card-custom gutter-b" }, [
-        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-          _c("div", { staticClass: "card-title" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-toolbar" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-primary font-weight-bolder",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    return _vm.dialog()
-                  }
-                }
-              },
-              [
-                _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                        width: "24px",
-                        height: "24px",
-                        viewBox: "0 0 24 24",
-                        version: "1.1"
-                      }
-                    },
-                    [
-                      _c(
-                        "g",
-                        {
-                          attrs: {
-                            stroke: "none",
-                            "stroke-width": "1",
-                            fill: "none",
-                            "fill-rule": "evenodd"
-                          }
-                        },
-                        [
-                          _c("rect", {
-                            attrs: { x: "0", y: "0", width: "24", height: "24" }
-                          }),
-                          _vm._v(" "),
-                          _c("circle", {
-                            attrs: {
-                              fill: "#000000",
-                              cx: "9",
-                              cy: "15",
-                              r: "6"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v("Advance Filter")
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
-      ]),
+      _vm._m(0),
       _vm._v(" "),
       _c("modal", {
         scopedSlots: _vm._u([
@@ -50257,7 +50135,7 @@ var render = function() {
                               expression: "formFields.no_nights"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "f orm-control",
                           attrs: {
                             type: "number",
                             placeholder: "Enter number of nights"
@@ -50397,586 +50275,6 @@ var render = function() {
             proxy: true
           }
         ])
-      }),
-      _vm._v(" "),
-      _c("vdiaLog", {
-        scopedSlots: _vm._u(
-          [
-            _vm.dialogshow == true
-              ? {
-                  key: "body",
-                  fn: function() {
-                    return [
-                      _c(
-                        "form",
-                        { staticClass: "form", attrs: { id: "request-form" } },
-                        [
-                          _c("div", { staticClass: "form-group row" }, [
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Trip ticket")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.filterActive.tripTicket,
-                                        expression: "filterActive.tripTicket"
-                                      }
-                                    ],
-                                    staticClass:
-                                      "form-control select2 details-input",
-                                    attrs: {
-                                      id: "kt_select_trip_ticket",
-                                      name: "trp_ticket"
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.filterActive,
-                                          "tripTicket",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { label: "Label" } }),
-                                    _vm._v(" "),
-                                    _vm._l(
-                                      _vm.filterDropdown.tripTicket,
-                                      function(svc) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            key: svc.id,
-                                            domProps: { value: svc.trip_ticket }
-                                          },
-                                          [_vm._v(_vm._s(svc.trip_ticket))]
-                                        )
-                                      }
-                                    )
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Service Provider")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.filterActive.serviceProviders,
-                                        expression:
-                                          "filterActive.serviceProviders"
-                                      }
-                                    ],
-                                    staticClass:
-                                      "form-control select2 details-input",
-                                    attrs: {
-                                      id: "kt_select_service_provider",
-                                      name: "service_provider"
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.filterActive,
-                                          "serviceProviders",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { label: "Label" } }),
-                                    _vm._v(" "),
-                                    _vm._l(
-                                      _vm.filterDropdown.serviceProvider,
-                                      function(svc) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            key: svc.id,
-                                            domProps: {
-                                              value: svc.company_name
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(svc.company_name) +
-                                                " (" +
-                                                _vm._s(svc.type) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                      }
-                                    )
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Date Travel")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.dateTravel,
-                                      expression: "filterActive.dateTravel"
-                                    }
-                                  ],
-                                  staticClass: "form-control details-input",
-                                  attrs: {
-                                    type: "date",
-                                    id: "kt_date_travel",
-                                    name: "date_travel"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.dateTravel
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "dateTravel",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Procurement Date ")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.procurementSub,
-                                      expression: "filterActive.procurementSub"
-                                    }
-                                  ],
-                                  staticClass: "form-control details-input",
-                                  attrs: {
-                                    type: "date",
-                                    id: "kt_procurement_sub",
-                                    name: "date_travel"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.procurementSub
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "procurementSub",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Distance Traveled")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.distanceTravelled,
-                                      expression:
-                                        "filterActive.distanceTravelled"
-                                    }
-                                  ],
-                                  staticClass: "form-control details-input",
-                                  attrs: {
-                                    type: "date",
-                                    id: "kt_distance_traveled",
-                                    name: "distance_traveled"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.distanceTravelled
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "distanceTravelled",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Po number")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c(
-                                  "select",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.filterActive.poNumber,
-                                        expression: "filterActive.poNumber"
-                                      }
-                                    ],
-                                    staticClass:
-                                      "form-control select2 details-input",
-                                    attrs: {
-                                      id: "kt_select_po_number",
-                                      name: "po_number"
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        var $$selectedVal = Array.prototype.filter
-                                          .call($event.target.options, function(
-                                            o
-                                          ) {
-                                            return o.selected
-                                          })
-                                          .map(function(o) {
-                                            var val =
-                                              "_value" in o ? o._value : o.value
-                                            return val
-                                          })
-                                        _vm.$set(
-                                          _vm.filterActive,
-                                          "poNumber",
-                                          $event.target.multiple
-                                            ? $$selectedVal
-                                            : $$selectedVal[0]
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("option", { attrs: { label: "Label" } }),
-                                    _vm._v(" "),
-                                    _vm._l(
-                                      _vm.filterDropdown.poNumber,
-                                      function(svc) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            key: svc.id,
-                                            domProps: { value: svc.po_no }
-                                          },
-                                          [_vm._v(_vm._s(svc.po_no))]
-                                        )
-                                      }
-                                    )
-                                  ],
-                                  2
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Po amount")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.poAmount,
-                                      expression: "filterActive.poAmount"
-                                    }
-                                  ],
-                                  staticClass: "form-control required-field",
-                                  attrs: {
-                                    type: "number",
-                                    id: "kt_po_amount",
-                                    name: "svc_po_amount",
-                                    placeholder: "Po amount"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.poAmount
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "poAmount",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Rate per KM")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.rateperKm,
-                                      expression: "filterActive.rateperKm"
-                                    }
-                                  ],
-                                  staticClass: "form-control required-field",
-                                  attrs: {
-                                    type: "number",
-                                    id: "kt_rate_per_km",
-                                    name: "svc_rate_per_km",
-                                    placeholder: "Enter number"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.rateperKm
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "rateperKm",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Flat Rate")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.flatRate,
-                                      expression: "filterActive.flatRate"
-                                    }
-                                  ],
-                                  staticClass: "form-control required-field",
-                                  attrs: {
-                                    type: "number",
-                                    name: "svc_flat_rate",
-                                    placeholder: "Enter number"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.flatRate
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "flatRate",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("Rate per Night")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.rateperNight,
-                                      expression: "filterActive.rateperNight"
-                                    }
-                                  ],
-                                  staticClass: "form-control required-field",
-                                  attrs: {
-                                    type: "number",
-                                    name: "svc_rate_per_night",
-                                    placeholder: "Enter number"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.rateperNight
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "rateperNight",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "col-3" }, [
-                              _vm._v("No of nights")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-9" }, [
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.filterActive.numberofNights,
-                                      expression: "filterActive.numberofNights"
-                                    }
-                                  ],
-                                  staticClass: "form-control required-field",
-                                  attrs: {
-                                    type: "number",
-                                    name: "svc_vehicleCount",
-                                    placeholder: "Enter number"
-                                  },
-                                  domProps: {
-                                    value: _vm.filterActive.numberofNights
-                                  },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.filterActive,
-                                        "numberofNights",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "card-footer" }, [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-success mr-2",
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.ini()
-                                    }
-                                  }
-                                },
-                                [_vm._v("Search")]
-                              )
-                            ])
-                          ])
-                        ]
-                      )
-                    ]
-                  },
-                  proxy: true
-                }
-              : null
-          ],
-          null,
-          true
-        )
       })
     ],
     1
@@ -50987,58 +50285,65 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-separate table-head-custom table-checkable",
-          staticStyle: { width: "500px !important" },
-          attrs: { id: "list-travel-tbl" }
-        },
-        [
-          _c("thead", [
-            _c("tr", [
-              _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Trip Ticket")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Service Provider")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Date of Travel")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Starting ODO")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Ending Odo")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Date Submitted to Procurement")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Distance Travelled")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("PO Number")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("PO Amount")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Rate per Km")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Flat Rate")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Rate per night")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("No. of Nights")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Total Cost")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Remarks")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Created at")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
+    return _c("div", { staticClass: "card card-custom gutter-b" }, [
+      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+        _c("div", { staticClass: "card-title" })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "table",
+          {
+            staticClass:
+              "table table-separate table-head-custom table-checkable",
+            staticStyle: { width: "500px !important" },
+            attrs: { id: "list-travel-tbl" }
+          },
+          [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("ID")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Trip Ticket")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Service Provider")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date of Travel")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Starting ODO")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Ending Odo")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Date Submitted to Procurement")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Distance Travelled")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PO Number")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("PO Amount")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Rate per Km")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Flat Rate")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Rate per night")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("No. of Nights")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Total Cost")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Status")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Remarks")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Created at")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Action")])
+              ])
             ])
-          ])
-        ]
-      )
+          ]
+        )
+      ])
     ])
   }
 ]

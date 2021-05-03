@@ -43,6 +43,6 @@ return [
     // List Requests Page
     'list_requests_updated_successfully' => 'Requests has been declined!',
 
-    // List Travel Page
-    'list_travel_updated_successfully' => 'Transaction has been disapproved!' 
+    // List travel Page
+    'list_travel_updated_successfully' => 'Transaction has been disapproved!'  
 ];
