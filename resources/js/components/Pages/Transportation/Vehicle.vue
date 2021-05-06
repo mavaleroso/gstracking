@@ -12,27 +12,29 @@
                 <form class="form" id="vehicle-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <p>Image:</p>
-                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
-                                        <div class="image-input-wrapper"></div>
+                                <p>Image:</p>
+                                <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
+                                    <div class="image-input-wrapper"></div>
 
-                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                            <i class="fa fa-pen icon-sm text-muted"></i>
-                                            <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
-                                            <input type="hidden"/>
-                                        </label>
+                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                        <i class="fa fa-pen icon-sm text-muted"></i>
+                                        <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
+                                        <input type="hidden"/>
+                                    </label>
 
-                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                        </span>
+                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                    </span>
 
-                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                        </span>
-                                    </div>
+                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                    </span>
                                 </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Name:</label>
                                     <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
@@ -42,28 +44,15 @@
                                     <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3" v-model="formFields.description"></textarea>
                                 </div>
                             </div>
+                            
                             <div class="col-lg-6">
-                                <div class="form-group my-10">
-                                    <label>Service Provider:</label>
-                                    <select class="form-control select2" id="kt_select_svc_provider" name="vehicle_svc_provider" v-model="formFields.serviceProvider">
-                                        <option label="Label"></option>
-                                        <option v-for="svc in serviceProviders" :key="svc.id" :value="svc.id">{{ svc.company_name }} ({{ svc.type }})</option>
-                                    </select>
-                                </div>
-                                <div class="form-group my-10">
+                                <div class="form-group">
                                     <label>Template Number:</label>
                                     <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter template number" v-model="formFields.templateNumber"/>
                                 </div>
-                                <div class="form-group my-10">
+                                <div class="form-group">
                                     <label>Capacity Number:</label>
                                     <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
-                                </div>
-                                <div class="form-group my-10">
-                                    <label>Driver:</label>
-                                    <select class="form-control select2" id="kt_select2_drivers" name="vehicle_drivers" v-model="formFields.driver">
-                                        <option label="Label"></option>
-                                        <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +95,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Image</th>
-                            <th>Service Provider</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Capacity</th>
@@ -127,7 +115,6 @@ export default {
         return {
             create: false,
             edit: false,
-            serviceProviders: [],
             drivers: [],
             formFields: {
                 id: '',
@@ -135,32 +122,19 @@ export default {
                 pictureName: '',
                 name: '',
                 description: '',
-                serviceProvider: '',
                 templateNumber: '',
                 capacityNumber: '',
                 driver: ''
             },
-            names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
+            names: ['name', 'templateNumber', 'capacityNumber']
         }
     },
     created() {
-        this.getServiceProviders();
-        this.getDrivers();
     },
     mounted() {
         this.ini();
     },
     methods:{
-        getServiceProviders() {
-            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
-                this.serviceProviders = response.data;
-            });
-        },
-        getDrivers() {
-            axios.get(BASE_URL + "/api/driver").then(response => {
-                this.drivers = response.data;
-            });
-        },
         ini(){
             $(()=>{
                 this.tdatatable().init();
@@ -176,23 +150,9 @@ export default {
                 vm.formFields.description = '';
                 vm.formFields.capacityNumber = '';
                 vm.formFields.templateNumber = '';
-                vm.formFields.serviceProvider = '';
-                vm.formFields.driver = '';
 
                 this.image();
 
-                $('#kt_select_svc_provider').select2({
-                    placeholder: "Select service provider",
-                });
-                $('#kt_select2_drivers').select2({
-                    placeholder: "Select drivers",
-                });
-                $('#kt_select_svc_provider').change(function() {
-                    vm.formFields.serviceProvider = $(this).val();
-                });
-                $('#kt_select2_drivers').change(function() {
-                    vm.formFields.driver = $(this).val();
-                });
                 $('.card-label span').text('Create Vehicle');
             });
         },
@@ -208,35 +168,14 @@ export default {
                     vm.formFields.description = response.data.vehicles[0].description;
                     vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
                     vm.formFields.templateNumber = response.data.vehicles[0].template;
-                    vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
-                    vm.formFields.driver = response.data.vehicles[0].driver_id;
                   
                     let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
                 });
 
                 this.image();
-                $('#kt_select_svc_provider').select2({
-                    placeholder: "Select service provider",
-                });
-                $('#kt_select2_drivers').select2({
-                    placeholder: "Select drivers",
-                });
-                $('#kt_select_svc_provider').change(function() {
-                    vm.formFields.serviceProvider = $(this).val();
-                });
-                $('#kt_select2_drivers').change(function() {
-                    vm.formFields.driver = $(this).val();
-                });
-                
+            
                 $('.card-label span').text('Edit Vehicle');
-                setTimeout(() => {
-                    $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
-                    $('#kt_select_svc_provider').trigger('change');
-
-                    $('#kt_select2_drivers').val(vm.formFields.driver);
-                    $('#kt_select2_drivers').trigger('change');
-                }, 500);
             });
         },
         cancelEntry() {
@@ -254,11 +193,8 @@ export default {
             formD.append('pictureName', this.formFields.pictureName);
             formD.append('name', this.formFields.name);
             formD.append('description', this.formFields.description);
-            formD.append('serviceProvider', this.formFields.serviceProvider);
             formD.append('templateNumber', this.formFields.templateNumber);
             formD.append('capacityNumber', this.formFields.capacityNumber);
-            formD.append('driver', this.formFields.driver);
-
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 
@@ -279,34 +215,18 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(`${key}` == 'serviceProvider'){
-                            if ($('#kt_select_svc_provider').next().next().length == 0) {
-                                $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                            }
-                        } else {
-                            if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                                $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
-                                $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                            }
+                        if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                            $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'serviceProvider') {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#kt_select_svc_provider').next().next().length != 0) {
-                                    $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
-                                }
-                            }
-                        } else {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                $('[name="vehicle_'+this.names[i]+'"]').removeClass('is-invalid');
-                                $('[name="vehicle_'+this.names[i]+'"]').next('.invalid-feedback').remove();
-                            }
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            $('[name="vehicle_'+this.names[i]+'"]').removeClass('is-invalid');
+                            $('[name="vehicle_'+this.names[i]+'"]').next('.invalid-feedback').remove();
                         }
                     }
-
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
-
             });
         },
         deleteEntry(id) {
@@ -323,8 +243,7 @@ export default {
                             'Deleted!',
                             response.data.message,
                             'success'
-                        );
-                        
+                        ); 
                         $("#vehicle-tbl").DataTable().ajax.reload();
                     });
                 }

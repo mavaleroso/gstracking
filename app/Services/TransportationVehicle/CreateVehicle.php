@@ -3,7 +3,6 @@ namespace App\Services\TransportationVehicle;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
-use App\Models\Driver;
 
 class CreateVehicle 
 {
@@ -23,8 +22,6 @@ class CreateVehicle
         }
         
         $vehicle = Vehicle::create([
-            'service_provider_id' => $fields['serviceProvider'],
-            'driver_id' => $fields['driver'],
             (!$file_name)? NULL:'image' => $file_name,
             'name' => $fields['name'],
             'description' => $fields['description'],

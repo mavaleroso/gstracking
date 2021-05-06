@@ -6910,24 +6910,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       create: false,
       edit: false,
-      serviceProviders: [],
       drivers: [],
       formFields: {
         id: '',
@@ -6935,45 +6922,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         pictureName: '',
         name: '',
         description: '',
-        serviceProvider: '',
         templateNumber: '',
         capacityNumber: '',
         driver: ''
       },
-      names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
+      names: ['name', 'templateNumber', 'capacityNumber']
     };
   },
-  created: function created() {
-    this.getServiceProviders();
-    this.getDrivers();
-  },
+  created: function created() {},
   mounted: function mounted() {
     this.ini();
   },
   methods: {
-    getServiceProviders: function getServiceProviders() {
+    ini: function ini() {
       var _this = this;
 
-      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
-        _this.serviceProviders = response.data;
-      });
-    },
-    getDrivers: function getDrivers() {
-      var _this2 = this;
-
-      axios.get(BASE_URL + "/api/driver").then(function (response) {
-        _this2.drivers = response.data;
-      });
-    },
-    ini: function ini() {
-      var _this3 = this;
-
       $(function () {
-        _this3.tdatatable().init();
+        _this.tdatatable().init();
       });
     },
     newEntry: function newEntry() {
-      var _this4 = this;
+      var _this2 = this;
 
       this.create = true;
       var vm = this;
@@ -6984,28 +6953,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.description = '';
         vm.formFields.capacityNumber = '';
         vm.formFields.templateNumber = '';
-        vm.formFields.serviceProvider = '';
-        vm.formFields.driver = '';
 
-        _this4.image();
+        _this2.image();
 
-        $('#kt_select_svc_provider').select2({
-          placeholder: "Select service provider"
-        });
-        $('#kt_select2_drivers').select2({
-          placeholder: "Select drivers"
-        });
-        $('#kt_select_svc_provider').change(function () {
-          vm.formFields.serviceProvider = $(this).val();
-        });
-        $('#kt_select2_drivers').change(function () {
-          vm.formFields.driver = $(this).val();
-        });
         $('.card-label span').text('Create Vehicle');
       });
     },
     editEntry: function editEntry(id) {
-      var _this5 = this;
+      var _this3 = this;
 
       this.edit = true;
       var vm = this;
@@ -7017,33 +6972,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.description = response.data.vehicles[0].description;
           vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
           vm.formFields.templateNumber = response.data.vehicles[0].template;
-          vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
-          vm.formFields.driver = response.data.vehicles[0].driver_id;
           var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
           $('#kt_image_5').css('background-image', 'url(' + img + ')');
         });
 
-        _this5.image();
+        _this3.image();
 
-        $('#kt_select_svc_provider').select2({
-          placeholder: "Select service provider"
-        });
-        $('#kt_select2_drivers').select2({
-          placeholder: "Select drivers"
-        });
-        $('#kt_select_svc_provider').change(function () {
-          vm.formFields.serviceProvider = $(this).val();
-        });
-        $('#kt_select2_drivers').change(function () {
-          vm.formFields.driver = $(this).val();
-        });
         $('.card-label span').text('Edit Vehicle');
-        setTimeout(function () {
-          $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
-          $('#kt_select_svc_provider').trigger('change');
-          $('#kt_select2_drivers').val(vm.formFields.driver);
-          $('#kt_select2_drivers').trigger('change');
-        }, 500);
       });
     },
     cancelEntry: function cancelEntry() {
@@ -7052,7 +6987,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this6 = this;
+      var _this4 = this;
 
       var formD = new FormData();
       var method = null;
@@ -7062,10 +6997,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('pictureName', this.formFields.pictureName);
       formD.append('name', this.formFields.name);
       formD.append('description', this.formFields.description);
-      formD.append('serviceProvider', this.formFields.serviceProvider);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
-      formD.append('driver', this.formFields.driver);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -7081,7 +7014,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this6.cancelEntry();
+          _this4.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -7096,30 +7029,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'serviceProvider') {
-            if ($('#kt_select_svc_provider').next().next().length == 0) {
-              $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else {
-            if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
-            }
+          if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+            $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
+            $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
           }
         }
 
-        for (var i = 0; i < _this6.names.length; i++) {
-          if (_this6.names[i] == 'serviceProvider') {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              if ($('#kt_select_svc_provider').next().next().length != 0) {
-                $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
-              }
-            }
-          } else {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              $('[name="vehicle_' + _this6.names[i] + '"]').removeClass('is-invalid');
-              $('[name="vehicle_' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
-            }
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+            $('[name="vehicle_' + _this4.names[i] + '"]').removeClass('is-invalid');
+            $('[name="vehicle_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -53813,7 +53732,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "col-lg-12" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("p", [_vm._v("Image:")]),
                           _vm._v(" "),
@@ -53867,8 +53786,10 @@ var render = function() {
                               _vm._m(2)
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Name:")]),
                           _vm._v(" "),
@@ -53939,69 +53860,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group my-10" }, [
-                          _c("label", [_vm._v("Service Provider:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.serviceProvider,
-                                  expression: "formFields.serviceProvider"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select_svc_provider",
-                                name: "vehicle_svc_provider"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "serviceProvider",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _vm._l(_vm.serviceProviders, function(svc) {
-                                return _c(
-                                  "option",
-                                  { key: svc.id, domProps: { value: svc.id } },
-                                  [
-                                    _vm._v(
-                                      _vm._s(svc.company_name) +
-                                        " (" +
-                                        _vm._s(svc.type) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              })
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
+                        _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Template Number:")]),
                           _vm._v(" "),
                           _c("input", {
@@ -54035,7 +53894,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
+                        _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Capacity Number:")]),
                           _vm._v(" "),
                           _c("input", {
@@ -54067,64 +53926,6 @@ var render = function() {
                               }
                             }
                           })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
-                          _c("label", [_vm._v("Driver:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.driver,
-                                  expression: "formFields.driver"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select2_drivers",
-                                name: "vehicle_drivers"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "driver",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _vm._l(_vm.drivers, function(driver) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: driver.id,
-                                    domProps: { value: driver.id }
-                                  },
-                                  [_vm._v(_vm._s(driver.fullname))]
-                                )
-                              })
-                            ],
-                            2
-                          )
                         ])
                       ])
                     ])
@@ -54315,8 +54116,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Image")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Service Provider")]),
               _vm._v(" "),
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),
