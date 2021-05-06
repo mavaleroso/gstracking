@@ -26,15 +26,17 @@ class TravelStoreRequest extends FormRequest
     {
         $rules = [
             'request_id' => 'nullable',
-            'prog_div_sec' => 'required',
+            'division' => 'required',
+            'section' => 'required',
             'pur_travel' => 'required',
             'region' => 'required',
             'province' => 'required',
             'city' => 'required',
-            'brgy' => 'required',
+            'brgy' => 'nullable',
             'date_travel' => 'required',
             'time_depart' => 'required',
             'pax_total' => 'required',
+            
         ];
 
         for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
@@ -53,7 +55,8 @@ class TravelStoreRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'prog_div_sec' => 'Department',
+            'division' => 'Division',
+            'section' => 'Section',
             'pur_travel' => 'Purpose',
             'region' => 'Region',
             'province' => 'Province',

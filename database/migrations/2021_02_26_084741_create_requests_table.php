@@ -16,9 +16,10 @@ class CreateRequestsTable extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('division_id')->nullable();
+            $table->unsignedBigInteger('section_id')->nullable();
             $table->string('serial_code')->nullable();
             $table->string('type_vehicle')->nullable();
-            $table->string('department')->nullable();
             $table->string('purpose')->nullable();
             $table->date('travel_date')->nullable();
             $table->time('depart_time')->nullable();
