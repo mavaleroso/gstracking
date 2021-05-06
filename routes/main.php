@@ -69,6 +69,18 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'destroy' => 'main.listrequeststaff.destroy',
         ]
     ]);
+
+    Route::resource('printrequest', 'PrintRequestController', [
+        'names' => [
+            'index' => 'main.printrequest.index',
+            'create' => 'main.printrequest.create',
+            'store' => 'main.printrequest.store',
+            'show' => 'main.printrequest.show',
+            'edit' => 'main.printrequest.edit',
+            'update' => 'main.printrequest.update',
+            'destroy' => 'main.printrequest.destroy',
+        ]
+    ]);
 });
 
 Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () {

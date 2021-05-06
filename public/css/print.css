@@ -15,7 +15,7 @@ page[size="officio"] {
 }
 page[size="A4"] {  
     width: 21cm;
-    height: 29.7cm; 
+    height: auto; 
 }
 page[size="A4"][layout="landscape"] {
     width: 29.7cm;
@@ -42,16 +42,31 @@ page[size="A5"][layout="landscape"] {
     padding: 3.75rem;
 }
 
+html, body, .main, .tabs, .tabbed-content { float: none; }
+
+#line-break {
+    display: block;
+    page-break-before: always;
+    position: absolute !important;
+}
+
+
 @media print {
     body, page {
       margin: 0;
       box-shadow: 0;
-      font-size: 13px;
-      zoom: 122%;
+      font-size: 20px !important;
     }
-
+    h5 {
+        font-size: 23px !important;
+    }
+    #line-break {
+        page-break-before: always !important;
+    }
 }
 
+thead {display: table-header-group;}
+tfoot {display: table-header-group;}
 
 .brand-logo img {
     width: 158px;
@@ -81,13 +96,20 @@ page[size="A5"][layout="landscape"] {
     border-bottom: 1px solid #aaa;
 }
 
-table, th, td {
+/* table, th, td {
+    border: 1px solid #AAA;
+} */
+
+.table-border {
     border: 1px solid #AAA;
 }
 
 table {
     border-collapse: collapse;
+    width: 100%;
 }
+
+
 
 .outline-0 {
     outline: none !important;
@@ -97,4 +119,21 @@ table {
     width: 100%;
     margin: auto;
     border-top: 2px dashed #666;
+}
+
+.w-35 {
+    width: 35% !important;
+}
+
+.w-10 {
+    width: 115px !important;
+}
+
+.textarea {
+    border:1px solid #aaa;
+    font-size: 14px;
+}
+
+.break-page {
+    page-break-before: always;
 }

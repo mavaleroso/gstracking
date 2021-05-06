@@ -41,5 +41,6 @@
     <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('js/printThis.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>
