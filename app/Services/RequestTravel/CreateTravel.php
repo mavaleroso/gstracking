@@ -36,9 +36,11 @@ class CreateTravel
         $rqt_code = $this->getCode->request_code();
 
         $request = Request::create([
+
+            
             'user_id' => auth()->user()->id,
             'serial_code' => $rqt_code,
-            'division_name' => $fields['division'],
+            'division_id' => $fields['division'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
             'depart_time' => $fields['time_depart']

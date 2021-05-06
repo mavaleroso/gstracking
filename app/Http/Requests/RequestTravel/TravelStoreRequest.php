@@ -82,7 +82,7 @@ class TravelStoreRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'prog_div_sec' => __('main/validations.required'),
+            'section' => __('main/validations.required'),
             'pur_travel' => __('main/validations.required'),
             'region' => __('main/validations.required'),
             'province' => __('main/validations.required'),
