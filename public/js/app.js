@@ -4001,10 +4001,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4572,17 +4568,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         showToast(response.data.message, 'success');
         $('#kt_datatable_modal').modal('toggle');
         $('#request-tbl').DataTable().ajax.reload();
-      });
-    },
-    print: function print() {
-      var winPrint = window.open('', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
-      winPrint.document.write('<button id="printMe">Button</button><title>Print  Report</title><br /><br /> Hellow World');
-      winPrint.document.close();
-      winPrint.focus(); // winPrint.print();
-      // winPrint.close(); 
-
-      $('#printMe').click(function () {
-        alert('123');
       });
     }
   }
@@ -5714,7 +5699,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      passenger_count: 7,
+      transaction: {
+        depart_time: null,
+        department: null,
+        gs_staff: null,
+        type_vehicle: null,
+        driver: null,
+        purpose: null,
+        vehicle_name: null,
+        template: null,
+        travel_date: null,
+        trip_ticket: null
+      },
+      destinations: [],
+      passengers: []
+    };
+  },
+  computed: {
+    freePassengers: function freePassengers() {
+      var result = 5 - this.passengers.length;
+      return result > 0 ? result : 0;
+    }
+  },
   mounted: function mounted() {
     this.ini();
   },
@@ -5744,11 +5802,61 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
 
-      document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
+      document.addEventListener('contextmenu', function (e) {// e.preventDefault();
       });
       $('.btn-print').click(function () {
-        $("#printArea").printThis();
+        $("#page-1").printThis();
+      });
+      var url = window.location.href;
+      var data = this.parseURLParams(url);
+      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
+      // $('#footer').css('page-break-before', 'always');
+    },
+    parseURLParams: function parseURLParams(url) {
+      var queryStart = url.indexOf("?") + 1,
+          queryEnd = url.indexOf("#") + 1 || url.length + 1,
+          query = url.slice(queryStart, queryEnd - 1),
+          pairs = query.replace(/\+/g, " ").split("&"),
+          parms = {},
+          i,
+          n,
+          v,
+          nv;
+      if (query === url || query === "") return;
+
+      for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+      }
+
+      return parms;
+    },
+    getData: function getData(id) {
+      var _this = this;
+
+      axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
+        _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
+        _this.transaction.department = res.data.transaction[0].department;
+        _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
+        _this.transaction.type_vehicle = res.data.transaction[0].type_vehicle;
+        _this.transaction.driver = res.data.transaction[0].fullname;
+        _this.transaction.purpose = res.data.transaction[0].purpose;
+        _this.transaction.vehicle_name = res.data.transaction[0].name;
+        _this.transaction.template = res.data.transaction[0].template;
+        _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
+        _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
+
+        for (var i = 0; i < res.data.destinations.length; i++) {
+          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + res.data.destinations[i].brgy_name + '\n';
+
+          _this.destinations.push(data);
+        }
+
+        _this.passengers = res.data.passengers;
+        autosize($('#kt_autosize_1'));
       });
     }
   }
@@ -49264,24 +49372,34 @@ var render = function() {
                         [
                           _c("i", { staticClass: "la la-edit icon-md" }),
                           _vm._v(" "),
-                          _c("p", [_vm._v("Edit")])
+                          _c("span", [_vm._v("Edit")])
                         ]
                       )
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.status == 2
                     ? _c(
-                        "button",
+                        "a",
                         {
-                          staticClass:
-                            "btn-edit btn btn-sm btn-primary mr-7 d-flex",
-                          attrs: { type: "button" },
-                          on: { click: _vm.print }
+                          attrs: {
+                            href: "print_request?id=" + _vm.current_id,
+                            target: "_blank"
+                          }
                         },
                         [
-                          _c("i", { staticClass: "la la-print icon-md" }),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "m-0" }, [_vm._v("Print")])
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn-print btn btn-sm btn-primary mr-7",
+                              attrs: { type: "button" }
+                            },
+                            [
+                              _c("i", { staticClass: "la la-print icon-md" }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Print")])
+                            ]
+                          )
                         ]
                       )
                     : _vm._e(),
@@ -52010,361 +52128,610 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "page",
-        { staticClass: "paper-page", attrs: { id: "printArea", size: "A4" } },
-        [
-          _c("div", { staticClass: "page-header mt-2" }, [
-            _c("img", {
-              staticClass: "print-logo d-block m-auto",
-              attrs: {
-                alt: "Print Logo",
-                src: "assets/media/logos/dswd_print_logo.png"
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "header-text d-block m-auto text-center" },
-              [_vm._v("Field Office"), _c("br"), _vm._v("Butuan City")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "page-body row" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "col-12 text-center d-block mr-auto ml-auto mt-7"
-              },
-              [_vm._v("Motor Vehicle Request")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-4 offset-8 mt-5" }, [
-              _c("p", { staticClass: "text-right" }, [
-                _vm._v("Series: "),
-                _c("span", { staticClass: "font-weight-bold text-underline" }, [
-                  _vm._v("20-01-0001")
+      _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
+        _c("div", { attrs: { id: "page-1" } }, [
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "page-header mt-2" }, [
+                    _c("img", {
+                      staticClass: "print-logo d-block m-auto",
+                      attrs: {
+                        alt: "Print Logo",
+                        src: "assets/media/logos/dswd_print_logo.png"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "header-text d-block m-auto text-center" },
+                      [_vm._v("Field Office"), _c("br"), _vm._v("Butuan City")]
+                    )
+                  ])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-5" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Type of Motor Vehicle:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3 d-flex" }, [
-                _c("input", {
-                  staticClass: "mt-1",
-                  attrs: { type: "radio", name: "vehicleType" }
-                }),
+            _c(
+              "tbody",
+              [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto mt-5"
+                      },
+                      [_vm._v("Motor Vehicle Request")]
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "ml-2", attrs: { for: "vehicleType" } },
-                  [_vm._v("Office")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3 d-flex" }, [
-                _c("input", {
-                  staticClass: "mt-1",
-                  attrs: { type: "radio", name: "vehicleType" }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "ml-2", attrs: { for: "vehicleType" } },
-                  [_vm._v("Rental")]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Program / Division / Section:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Purpose of travel:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Destination:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Date of travel:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Time of departure:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("table", { staticClass: "w-100" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v("Name of Passenger/s")
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v("Position/Designation")
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "text-right my-10" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: " text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.trip_ticket))
+                      ])
                     ])
                   ])
                 ]),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                _c("tr", [
+                  _c("td", { staticClass: "w-35" }, [
+                    _c("p", {}, [_vm._v("Type of Motor Vehicle:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", { staticClass: "w-10" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.type_vehicle,
+                          expression: "transaction.type_vehicle"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.type_vehicle },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "type_vehicle",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", [
+                    _c("input", {
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", {}, [_vm._v("Program / Division / Section:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.department,
+                          expression: "transaction.department"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.department },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "department",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Purpose of travel:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.purpose,
+                          expression: "transaction.purpose"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.purpose },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "purpose",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Destination:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.destinations,
+                          expression: "destinations"
+                        }
+                      ],
+                      staticClass: "form-control textarea my-3",
+                      attrs: {
+                        id: "kt_autosize_1",
+                        cols: "60",
+                        rows: "3",
+                        readonly: ""
+                      },
+                      domProps: { value: _vm.destinations },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.destinations = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Date of travel:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.travel_date,
+                          expression: "transaction.travel_date"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.travel_date },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "travel_date",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "pb-8" }, [
+                    _c("p", {}, [_vm._v("Time of departure:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
+                  _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.depart_time,
+                          expression: "transaction.depart_time"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.depart_time },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "depart_time",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c(
+                    "td",
+                    {
+                      staticClass: "text-center table-border",
+                      attrs: { colspan: "2" }
+                    },
+                    [_vm._v("Name of Passenger/s")]
+                  ),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center table-border" }, [
+                    _vm._v("Position/Designation")
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.passengers, function(p) {
+                  return _c("tr", { key: p.id }, [
+                    _c(
+                      "td",
+                      { staticClass: "table-border", attrs: { colspan: "2" } },
+                      [
+                        _c("input", {
+                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                          attrs: { type: "text" },
+                          domProps: { value: p.name }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-border" }, [
                       _c("input", {
                         staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
+                        attrs: { type: "text" },
+                        domProps: { value: p.designation }
                       })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
+                  ])
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.freePassengers, function(f) {
+                  return _c("tr", { key: f.id }, [
+                    _c(
+                      "td",
+                      { staticClass: "table-border", attrs: { colspan: "2" } },
+                      [
+                        _c("input", {
+                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                          attrs: { type: "text" }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-border" }, [
                       _c("input", {
                         staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                         attrs: { type: "text" }
                       })
                     ])
                   ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex mt-5" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Prepared by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
                 }),
                 _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Requested by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
-                _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [
-                  _vm._v("Section/Program/Division Head")
+                _c("tr", [
+                  _c(
+                    "td",
+                    { staticClass: "p-4 py-10", attrs: { colspan: "2" } },
+                    [
+                      _c("p", { staticClass: "mb-6" }, [
+                        _vm._v("Accepted by:")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass:
+                          "text-center input-text w-100 text-uppercase",
+                        attrs: { type: "text", disabled: "" }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 py-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Requested by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Section/Program/Division Head")
+                    ])
+                  ])
                 ])
-              ])
-            ])
+              ],
+              2
+            )
           ]),
           _vm._v(" "),
-          _c("hr", { staticClass: "dashed-border mt-2" }),
+          _vm.passengers.length <= 5
+            ? _c("hr", { staticClass: "dashed-border my-2" })
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "page-footer" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "col-12 text-center d-block mr-auto ml-auto mt-4"
-              },
-              [_vm._v("Motor Vehicle Confirmation Slip")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-5" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Motor Vehicle Description:")
-              ]),
+          _c(
+            "table",
+            { class: _vm.passengers.length > 5 ? "break-page" : "" },
+            [
+              _vm.passengers.length > 5
+                ? _c("thead", [
+                    _c("tr", [
+                      _c("td", { attrs: { colspan: "3" } }, [
+                        _c("div", { staticClass: "page-header mt-2" }, [
+                          _c("img", {
+                            staticClass: "print-logo d-block m-auto",
+                            attrs: {
+                              alt: "Print Logo",
+                              src: "assets/media/logos/dswd_print_logo.png"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "header-text d-block m-auto text-center"
+                            },
+                            [
+                              _vm._v("Field Office"),
+                              _c("br"),
+                              _vm._v("Butuan City")
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Motor Vehicle Plate No:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Name of Driver:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Confirmed No. of Passenger/s:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex mt-7" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Accepted by:")]),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto my-8"
+                      },
+                      [_vm._v("Motor Vehicle Confirmation Slip")]
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "text-right my-8" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: "text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.trip_ticket))
+                      ])
+                    ])
+                  ])
+                ]),
                 _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [
-                  _vm._v("Assigned GS staff")
+                _c("tr", [
+                  _c("td", [
+                    _c("p", {}, [_vm._v("Motor Vehicle Description:")])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.vehicle_name,
+                          expression: "transaction.vehicle_name"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.vehicle_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "vehicle_name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Motor Vehicle Plate No:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.template,
+                          expression: "transaction.template"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.template },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "template",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Name of Driver:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.driver,
+                          expression: "transaction.driver"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.driver },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "driver",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", [_vm._v("Confirmed No. of Passenger/s:")])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.passengers.length,
+                          expression: "passengers.length"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.passengers.length },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.passengers,
+                            "length",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Accepted by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.gs_staff,
+                          expression: "transaction.gs_staff"
+                        }
+                      ],
+                      staticClass:
+                        "text-center text-uppercase input-text w-100",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.gs_staff },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "gs_staff",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Assigned GS staff")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("GSS Head")
+                    ])
+                  ])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Approved by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
-                _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [_vm._v("GSS Head")])
               ])
-            ])
-          ])
-        ]
-      )
+            ]
+          )
+        ])
+      ])
     ],
     1
   )
