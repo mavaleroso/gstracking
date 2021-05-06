@@ -5979,24 +5979,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           _this.sections = [];
           _this.activeSections = [];
         });
-        $('#kt_select_section').on('change', function () {
-          var id = $('#kt_select_section').val();
-          id = id.map(function (i) {
-            return Number(i);
-          });
-
-          _this.sections.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
-          });
-
-          if (id.length != 0) {
-            _this.currentSec();
-          }
-        });
         $('#kt_select_region').on('change', function () {
           var id = $('#kt_select_region').val();
 
@@ -6200,11 +6182,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       axios.get(BASE_URL + "/api/brgy/" + id).then(function (response) {
         _this8.brgys = response.data;
-      });
-    },
-    currentSec: function currentSec() {
-      this.activeSections = this.sections.filter(function (i) {
-        return i.active === 'true';
       });
     },
     currentProv: function currentProv() {

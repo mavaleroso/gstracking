@@ -205,22 +205,6 @@ export default {
 
                 });
 
-                $('#kt_select_section').on('change', () => {
-                    let id  = $('#kt_select_section').val();
-                    id = id.map(i=>Number(i));
-                    this.sections.map(i=> {
-                        if (id.indexOf(i.id) != -1) {
-                            i.active="true";
-                        } else {
-                            i.active="false";
-                        }
-                    });
-                    if(id.length != 0) {
-                        this.currentSec();             
-                    }
-                });
-                
-
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
                     this.getProvince(id);
@@ -387,10 +371,6 @@ export default {
             axios.get(BASE_URL + "/api/brgy/" + id).then(response => {
                 this.brgys = response.data;
             });
-        },
-
-        currentSec() {
-            this.activeSections = this.sections.filter(i => i.active === 'true');
         },
         currentProv() {
             this.activeProvinces = this.provinces.filter(i => i.active === 'true');
