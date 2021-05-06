@@ -33,7 +33,6 @@ class PermissionCommand extends Command
     protected $modules = [
         'vehicle',
         'driver',
-        'serviceprovider',
         'travel',
         'request',
         'listrequest',
@@ -42,7 +41,8 @@ class PermissionCommand extends Command
         'po',
         'log',
         'listtravel',
-        'listuser'
+        'listuser',
+        'printrequest',
     ];
 
     /**

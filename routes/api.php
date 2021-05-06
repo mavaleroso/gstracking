@@ -103,8 +103,8 @@ Route::group(['namespace' => 'Ajax'], function () {
 
     Route::resource('dash', 'DashboardController', [
         'names' => [
-            'index' => 'ajax.po.index',
-            'show' => 'ajax.po.show',
+            'index' => 'ajax.dash.index',
+            'show' => 'ajax.dash.show',
         ]
     ]);
 
