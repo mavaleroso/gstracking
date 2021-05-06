@@ -37,7 +37,6 @@ class CreateTravel
         $request = Request::create([
             'user_id' => auth()->user()->id,
             'serial_code' => $rqt_code,
-            'type_vehicle' => $fields['travel_radio'],
             'department' => $fields['prog_div_sec'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
