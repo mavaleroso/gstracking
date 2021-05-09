@@ -77,19 +77,6 @@
                         <div class="col-lg-6">
                             <input name="prog_div_sec" type="hidden" v-model="request_dept"/>
                             <div class="form-group">
-                                <label>Type of Motor Vehicle</label>
-                                <div class="radio-inline">
-                                    <label class="radio radio-solid">
-                                        <input type="radio" name="travel_radio" disabled="disabled" class="details-input" value="Office" v-model="request_vehicle"/> Office
-                                        <span></span>
-                                    </label>
-                                    <label class="radio radio-solid">
-                                        <input type="radio" name="travel_radio" disabled="disabled" class="details-input" value="Rental" v-model="request_vehicle"/> Rental
-                                        <span></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label>Purpose of Travel</label>
                                 <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
                             </div>
@@ -172,11 +159,32 @@
                     <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
                     <div class="col-lg-6">
                         <div class="form-group">
+                            <label>Type of Motor Vehicle</label>
+                            <div class="radio-inline">
+                                <label class="radio radio-solid">
+                                    <input type="radio" name="travel_radio" class="radio-vehicle details-input" value="office" v-model="staff.vehicle_type"/> Office
+                                    <span></span>
+                                </label>
+                                <label class="radio radio-solid">
+                                    <input type="radio" name="travel_radio" class="radio-vehicle details-input" value="rental" v-model="staff.vehicle_type"/> Rental
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'office'" class="form-group vehicle-select">
                             <label>Vehicle</label>
                             <select class="form-control select2 staff-required" id="vehicle-select">
                                 <option label="Label"></option>
                                 <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
                             </select>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <label>Vehicle</label>
+                            <input type="text" name="vehicle-input" class="form-control details-input" v-model="staff.vehicle_name"/>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <label>Template No.</label>
+                            <input type="text" name="template-input" class="select-remove form-control details-input" v-model="staff.vehicle_template"/>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -186,6 +194,21 @@
                                 <option label="Label"></option>
                                 <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.totalBalance) }}</option>
                             </select>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'office'" class="form-group driver-select">
+                            <label>Driver</label>
+                            <select class="form-control select2 staff-required" id="driver-select">
+                                <option label="Label"></option>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <label>Driver name</label>
+                            <input type="text" name="driver-name-input" class="form-control details-input" v-model="staff.driver_name"/>
+                        </div>
+                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <label>Driver contact #</label>
+                            <input type="text" name="driver-contact-input" class="select-remove form-control details-input" v-model="staff.driver_contact"/>
                         </div>
                     </div>
                 </div>
@@ -233,7 +256,12 @@ export default {
             staff: {
                 id: null,
                 vehicle: null,
-                po: null
+                po: null,
+                type_vehicle: null,
+                vehicle_name: null,
+                vehicle_template: null,
+                driver_name: null,
+                driver_contact: null,
             },
             names: ['po', 'vehicle']
         }
@@ -447,15 +475,33 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
-                    $('#vehicle-select').select2({
-                        placeholder: "Select a vehicle",
+                    
+
+                    $('.radio-vehicle').change(function() {
+                        let vehicleType =  $(this).val();
+                        if(vehicleType == 'office') {
+                            $('#vehicle-select').select2({
+                                placeholder: "Select a vehicle",
+                            });
+
+                            $('#driver-select').select2({
+                                placeholder: "Select a driver",
+                            });
+                        }  else if (vehicleType == 'rental') {
+                            $('.select-remove').siblings('.select2').remove();
+                            $('.select-remove').siblings('.select2').remove();
+                        }
                     });
 
                     $('#po-select').select2({
                         placeholder: "Select a PO",
                     });
 
-                    $('#vehicle-select').on('change', function() {
+                    // $('#vehicle-select').on('change', function() {
+                    //     vm.staff.vehicle = $(this).val();
+                    // });
+
+                    $('#driver-select').on('change', function() {
                         vm.staff.vehicle = $(this).val();
                     });
 

@@ -4001,6 +4001,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4033,7 +4056,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       staff: {
         id: null,
         vehicle: null,
-        po: null
+        po: null,
+        type_vehicle: null,
+        vehicle_name: null,
+        vehicle_template: null,
+        driver_name: null,
+        driver_contact: null
       }
     }, "names", ['po', 'vehicle']);
   },
@@ -4260,13 +4288,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         vm.getPassengers(vm.request_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
-          $('#vehicle-select').select2({
-            placeholder: "Select a vehicle"
+          $('.radio-vehicle').change(function () {
+            var vehicleType = $(this).val();
+
+            if (vehicleType == 'office') {
+              $('#vehicle-select').select2({
+                placeholder: "Select a vehicle"
+              });
+              $('#driver-select').select2({
+                placeholder: "Select a driver"
+              });
+            } else if (vehicleType == 'rental') {
+              $('.select-remove').siblings('.select2').remove();
+              $('.select-remove').siblings('.select2').remove();
+            }
           });
           $('#po-select').select2({
             placeholder: "Select a PO"
-          });
-          $('#vehicle-select').on('change', function () {
+          }); // $('#vehicle-select').on('change', function() {
+          //     vm.staff.vehicle = $(this).val();
+          // });
+
+          $('#driver-select').on('change', function () {
             vm.staff.vehicle = $(this).val();
           });
           $('#po-select').on('change', function () {
@@ -49487,90 +49530,6 @@ var render = function() {
                           }),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Type of Motor Vehicle")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "radio-inline" }, [
-                              _c(
-                                "label",
-                                { staticClass: "radio radio-solid" },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.request_vehicle,
-                                        expression: "request_vehicle"
-                                      }
-                                    ],
-                                    staticClass: "details-input",
-                                    attrs: {
-                                      type: "radio",
-                                      name: "travel_radio",
-                                      disabled: "disabled",
-                                      value: "Office"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.request_vehicle,
-                                        "Office"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.request_vehicle = "Office"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(
-                                    " Office\n                                    "
-                                  ),
-                                  _c("span")
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                { staticClass: "radio radio-solid" },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.request_vehicle,
-                                        expression: "request_vehicle"
-                                      }
-                                    ],
-                                    staticClass: "details-input",
-                                    attrs: {
-                                      type: "radio",
-                                      name: "travel_radio",
-                                      disabled: "disabled",
-                                      value: "Rental"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.request_vehicle,
-                                        "Rental"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.request_vehicle = "Rental"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(
-                                    " Rental\n                                    "
-                                  ),
-                                  _c("span")
-                                ]
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
                             _c("label", [_vm._v("Purpose of Travel")]),
                             _vm._v(" "),
                             _c("input", {
@@ -50050,37 +50009,187 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-6" }, [
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Vehicle")]),
+                        _c("label", [_vm._v("Type of Motor Vehicle")]),
                         _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2 staff-required",
-                            attrs: { id: "vehicle-select" }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(vehicle) {
-                              return _c(
-                                "option",
+                        _c("div", { staticClass: "radio-inline" }, [
+                          _c("label", { staticClass: "radio radio-solid" }, [
+                            _c("input", {
+                              directives: [
                                 {
-                                  key: vehicle.id,
-                                  domProps: { value: vehicle.id }
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.vehicle_type,
+                                  expression: "staff.vehicle_type"
+                                }
+                              ],
+                              staticClass: "radio-vehicle details-input",
+                              attrs: {
+                                type: "radio",
+                                name: "travel_radio",
+                                value: "office"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.staff.vehicle_type,
+                                  "office"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.staff,
+                                    "vehicle_type",
+                                    "office"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" Office\n                                "),
+                            _c("span")
+                          ]),
+                          _vm._v(" "),
+                          _c("label", { staticClass: "radio radio-solid" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.vehicle_type,
+                                  expression: "staff.vehicle_type"
+                                }
+                              ],
+                              staticClass: "radio-vehicle details-input",
+                              attrs: {
+                                type: "radio",
+                                name: "travel_radio",
+                                value: "rental"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.staff.vehicle_type,
+                                  "rental"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.staff,
+                                    "vehicle_type",
+                                    "rental"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" Rental\n                                "),
+                            _c("span")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "office"
+                        ? _c(
+                            "div",
+                            { staticClass: "form-group vehicle-select" },
+                            [
+                              _c("label", [_vm._v("Vehicle")]),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  staticClass:
+                                    "form-control select2 staff-required",
+                                  attrs: { id: "vehicle-select" }
                                 },
                                 [
-                                  _vm._v(
-                                    _vm._s(vehicle.name) +
-                                      " - " +
-                                      _vm._s(vehicle.fullname)
-                                  )
-                                ]
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.vehicles, function(vehicle) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: vehicle.id,
+                                        domProps: { value: vehicle.id }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(vehicle.name) +
+                                            " - " +
+                                            _vm._s(vehicle.fullname)
+                                        )
+                                      ]
+                                    )
+                                  })
+                                ],
+                                2
                               )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Vehicle")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.vehicle_name,
+                                  expression: "staff.vehicle_name"
+                                }
+                              ],
+                              staticClass: "form-control details-input",
+                              attrs: { type: "text", name: "vehicle-input" },
+                              domProps: { value: _vm.staff.vehicle_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.staff,
+                                    "vehicle_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
                             })
-                          ],
-                          2
-                        )
-                      ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Template No.")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.vehicle_template,
+                                  expression: "staff.vehicle_template"
+                                }
+                              ],
+                              staticClass:
+                                "select-remove form-control details-input",
+                              attrs: { type: "text", name: "template-input" },
+                              domProps: { value: _vm.staff.vehicle_template },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.staff,
+                                    "vehicle_template",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-6" }, [
@@ -50112,7 +50221,102 @@ var render = function() {
                           ],
                           2
                         )
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "office"
+                        ? _c(
+                            "div",
+                            { staticClass: "form-group driver-select" },
+                            [
+                              _c("label", [_vm._v("Driver")]),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  staticClass:
+                                    "form-control select2 staff-required",
+                                  attrs: { id: "driver-select" }
+                                },
+                                [
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _c("option")
+                                ]
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Driver name")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.driver_name,
+                                  expression: "staff.driver_name"
+                                }
+                              ],
+                              staticClass: "form-control details-input",
+                              attrs: {
+                                type: "text",
+                                name: "driver-name-input"
+                              },
+                              domProps: { value: _vm.staff.driver_name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.staff,
+                                    "driver_name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Driver contact #")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.staff.driver_contact,
+                                  expression: "staff.driver_contact"
+                                }
+                              ],
+                              staticClass:
+                                "select-remove form-control details-input",
+                              attrs: {
+                                type: "text",
+                                name: "driver-contact-input"
+                              },
+                              domProps: { value: _vm.staff.driver_contact },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.staff,
+                                    "driver_contact",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e()
                     ])
                   ])
                 ]
