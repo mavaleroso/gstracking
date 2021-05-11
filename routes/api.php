@@ -108,11 +108,31 @@ Route::group(['namespace' => 'Ajax'], function () {
         ]
     ]);
 
-
     Route::group(['prefix' => 'config'], function () {
         Route::get('year', 'ConfigController@request_year');
         Route::get('system', 'ConfigController@system');
     });
+
+    Route::resource('tripticket', 'TripTicketController', [
+        'names' => [
+            'index' => 'ajax.tripticket.index',
+            'show' => 'ajax.tripticket.show',
+        ]
+    ]);
+
+    Route::resource('ponumber', 'PoController', [
+        'names' => [
+            'index' => 'ajax.ponumber.index',
+            'show' => 'ajax.ponumber.show',
+        ]
+    ]);
+
+    Route::resource('serviceprovider', 'ServiceProviderController', [
+        'names' => [
+            'index' => 'ajax.serviceprovider.index',
+            'show' => 'ajax.serviceprovider.show',
+        ]
+    ]);
 });
 
 
