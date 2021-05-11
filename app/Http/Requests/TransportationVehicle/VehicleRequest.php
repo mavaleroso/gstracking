@@ -24,10 +24,8 @@ class VehicleRequest extends FormRequest
             'pictureName' => 'nullable',
             'name' => 'required',
             'description' => 'nullable',
-            'serviceProvider' => 'required',
             'templateNumber' => 'required',
             'capacityNumber' => 'required',
-            'driver' => 'nullable',
         ];
     }
 
@@ -35,7 +33,6 @@ class VehicleRequest extends FormRequest
     {
         return [
             'name' => 'Name',
-            'serviceProvider' => 'Service Provider',
             'templateNumber' => 'Template Number',
             'capacityNumber' => 'Capacity',
         ];
@@ -46,7 +43,6 @@ class VehicleRequest extends FormRequest
     {
         return [
             'name.required' => __('main/validations.required'),
-            'serviceProvider.required' => __('main/validations.required'),
             'templateNumber.required' => __('main/validations.required'),
             'capacityNumber.required' => __('main/validations.required'),
         ];

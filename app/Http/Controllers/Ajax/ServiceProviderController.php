@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\Request as TravelRequest;
 
-class RoleController extends Controller
+class ServiceProviderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return response()->json(Role::all());
+        return response()->json(TravelRequest::select('type_vehicle')->groupBy('type_vehicle')->get());
     }
 
     /**
@@ -45,13 +45,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
         //
-        // dd($id);
-        // $data = Role::where('id', $id)->get();
-        // return response()->json($data);
-
     }
 
     /**

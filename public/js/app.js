@@ -4001,10 +4001,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
 //
+=======
+>>>>>>> develop
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4573,17 +4576,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         $('#kt_datatable_modal').modal('toggle');
         $('#request-tbl').DataTable().ajax.reload();
       });
-    },
-    print: function print() {
-      var winPrint = window.open('', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
-      winPrint.document.write('<button id="printMe">Button</button><title>Print  Report</title><br /><br /> Hellow World');
-      winPrint.document.close();
-      winPrint.focus(); // winPrint.print();
-      // winPrint.close(); 
-
-      $('#printMe').click(function () {
-        alert('123');
-      });
     }
   }
 });
@@ -4602,6 +4594,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+<<<<<<< HEAD
+=======
+/* harmony import */ var _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Layouts/Dialog */ "./resources/js/components/Layouts/Dialog.vue");
+>>>>>>> develop
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4762,6 +4758,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> develop
 //
 //
 //
@@ -4850,6 +4865,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4881,7 +4900,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   components: {
+<<<<<<< HEAD
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+=======
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
+>>>>>>> develop
   },
   created: function created() {
     this.getVehicles();
@@ -4903,6 +4927,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
+<<<<<<< HEAD
+=======
+        if (_this.dialogshow == true) {
+          $("#list-travel-tbl").DataTable().destroy();
+          showToast('Filtered successfully!', 'success');
+        }
+
+>>>>>>> develop
         _this.tdatatable().init();
       });
     },
@@ -4984,7 +5016,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "trip_ticket"
           }, {
-            "data": "company_name"
+            "data": "type_vehicle"
           }, {
             "data": "travel_date"
           }, {
@@ -5081,18 +5113,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             targets: -1,
             orderable: false,
             render: function render(data) {
+              var id = parseInt(data);
               return '\
-                                    <a href="javascript:;" data-id="' + data + '" class="ml-5 btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
+                                    <div class="d-flex">\
+                                        <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md">\
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                        <rect x="0" y="0" width="24" height="24"/>\
+                                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                                    </g>\
+                                                </svg>\
+                                            </span>\
+                                        </a>\
+                                        <a href="print_request?id=' + id + '" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
+                                                    <rect x="0" y="0" width="24" height="24"/> \
+                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/> \
+                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/> \
+                                                </g> \
+                                            </svg><!--end::Svg Icon--></span> \
+                                        </a> \
+                                    </div> \
                                 ';
             }
           }],
@@ -5246,6 +5290,67 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('#list-travel-tbl').DataTable().ajax.reload();
           });
         }
+      });
+    },
+    dialog: function dialog() {
+      var vm = this;
+      vm.dialogshow = true;
+      $("#dialog").dialog({
+        width: 600,
+        height: 700
+      });
+      setTimeout(function () {
+        $('#kt_select_trip_ticket').select2({
+          placeholder: "Trip Ticket",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').select2({
+          placeholder: "Service provider",
+          allowClear: true
+        });
+        $('#kt_select_po_number').select2({
+          placeholder: "Po number",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').change(function () {
+          vm.filterActive.serviceProviders = $(this).val();
+        });
+        $('#kt_select_trip_ticket').change(function () {
+          vm.filterActive.tripTicket = $(this).val();
+        });
+        $('#kt_select_po_number').change(function () {
+          vm.filterActive.poNumber = $(this).val();
+        });
+        $('#kt_date_travel').change(function () {
+          vm.filterActive.dateTravel = $(this).val();
+        });
+        $('#kt_procurement_sub').change(function () {
+          vm.filterActive.procurementSub = $(this).val();
+        });
+        $('#kt_distance_traveled').change(function () {
+          vm.filterActive.distanceTravelled = $(this).val();
+        });
+      }, 500);
+    },
+    getTripTicket: function getTripTicket() {
+      var _this5 = this;
+
+      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
+        _this5.filterDropdown.tripTicket = response.data;
+      });
+    },
+    getServiceProviders: function getServiceProviders() {
+      var _this6 = this;
+
+      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
+        _this6.filterDropdown.serviceProvider = response.data;
+      });
+    },
+    getPoNumber: function getPoNumber() {
+      var _this7 = this;
+
+      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
+        _this7.filterDropdown.poNumber = response.data;
       });
     }
   }
@@ -5714,7 +5819,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      passenger_count: 7,
+      transaction: {
+        depart_time: null,
+        department: null,
+        gs_staff: null,
+        type_vehicle: null,
+        driver: null,
+        purpose: null,
+        vehicle_name: null,
+        template: null,
+        travel_date: null,
+        trip_ticket: null
+      },
+      destinations: [],
+      passengers: []
+    };
+  },
+  computed: {
+    freePassengers: function freePassengers() {
+      var result = 5 - this.passengers.length;
+      return result > 0 ? result : 0;
+    }
+  },
   mounted: function mounted() {
     this.ini();
   },
@@ -5744,11 +5922,61 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
 
-      document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
+      document.addEventListener('contextmenu', function (e) {// e.preventDefault();
       });
       $('.btn-print').click(function () {
-        $("#printArea").printThis();
+        $("#page-1").printThis();
+      });
+      var url = window.location.href;
+      var data = this.parseURLParams(url);
+      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
+      // $('#footer').css('page-break-before', 'always');
+    },
+    parseURLParams: function parseURLParams(url) {
+      var queryStart = url.indexOf("?") + 1,
+          queryEnd = url.indexOf("#") + 1 || url.length + 1,
+          query = url.slice(queryStart, queryEnd - 1),
+          pairs = query.replace(/\+/g, " ").split("&"),
+          parms = {},
+          i,
+          n,
+          v,
+          nv;
+      if (query === url || query === "") return;
+
+      for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+      }
+
+      return parms;
+    },
+    getData: function getData(id) {
+      var _this = this;
+
+      axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
+        _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
+        _this.transaction.department = res.data.transaction[0].department;
+        _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
+        _this.transaction.type_vehicle = res.data.transaction[0].type_vehicle;
+        _this.transaction.driver = res.data.transaction[0].fullname;
+        _this.transaction.purpose = res.data.transaction[0].purpose;
+        _this.transaction.vehicle_name = res.data.transaction[0].name;
+        _this.transaction.template = res.data.transaction[0].template;
+        _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
+        _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
+
+        for (var i = 0; i < res.data.destinations.length; i++) {
+          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + res.data.destinations[i].brgy_name + '\n';
+
+          _this.destinations.push(data);
+        }
+
+        _this.passengers = res.data.passengers;
+        autosize($('#kt_autosize_1'));
       });
     }
   }
@@ -6832,24 +7060,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       create: false,
       edit: false,
-      serviceProviders: [],
       drivers: [],
       formFields: {
         id: '',
@@ -6857,45 +7072,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         pictureName: '',
         name: '',
         description: '',
-        serviceProvider: '',
         templateNumber: '',
         capacityNumber: '',
         driver: ''
       },
-      names: ['name', 'serviceProvider', 'templateNumber', 'capacityNumber']
+      names: ['name', 'templateNumber', 'capacityNumber']
     };
   },
-  created: function created() {
-    this.getServiceProviders();
-    this.getDrivers();
-  },
+  created: function created() {},
   mounted: function mounted() {
     this.ini();
   },
   methods: {
-    getServiceProviders: function getServiceProviders() {
+    ini: function ini() {
       var _this = this;
 
-      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
-        _this.serviceProviders = response.data;
-      });
-    },
-    getDrivers: function getDrivers() {
-      var _this2 = this;
-
-      axios.get(BASE_URL + "/api/driver").then(function (response) {
-        _this2.drivers = response.data;
-      });
-    },
-    ini: function ini() {
-      var _this3 = this;
-
       $(function () {
-        _this3.tdatatable().init();
+        _this.tdatatable().init();
       });
     },
     newEntry: function newEntry() {
-      var _this4 = this;
+      var _this2 = this;
 
       this.create = true;
       var vm = this;
@@ -6906,28 +7103,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.description = '';
         vm.formFields.capacityNumber = '';
         vm.formFields.templateNumber = '';
-        vm.formFields.serviceProvider = '';
-        vm.formFields.driver = '';
 
-        _this4.image();
+        _this2.image();
 
-        $('#kt_select_svc_provider').select2({
-          placeholder: "Select service provider"
-        });
-        $('#kt_select2_drivers').select2({
-          placeholder: "Select drivers"
-        });
-        $('#kt_select_svc_provider').change(function () {
-          vm.formFields.serviceProvider = $(this).val();
-        });
-        $('#kt_select2_drivers').change(function () {
-          vm.formFields.driver = $(this).val();
-        });
         $('.card-label span').text('Create Vehicle');
       });
     },
     editEntry: function editEntry(id) {
-      var _this5 = this;
+      var _this3 = this;
 
       this.edit = true;
       var vm = this;
@@ -6939,33 +7122,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.description = response.data.vehicles[0].description;
           vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
           vm.formFields.templateNumber = response.data.vehicles[0].template;
-          vm.formFields.serviceProvider = response.data.vehicles[0].service_provider_id;
-          vm.formFields.driver = response.data.vehicles[0].driver_id;
           var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
           $('#kt_image_5').css('background-image', 'url(' + img + ')');
         });
 
-        _this5.image();
+        _this3.image();
 
-        $('#kt_select_svc_provider').select2({
-          placeholder: "Select service provider"
-        });
-        $('#kt_select2_drivers').select2({
-          placeholder: "Select drivers"
-        });
-        $('#kt_select_svc_provider').change(function () {
-          vm.formFields.serviceProvider = $(this).val();
-        });
-        $('#kt_select2_drivers').change(function () {
-          vm.formFields.driver = $(this).val();
-        });
         $('.card-label span').text('Edit Vehicle');
-        setTimeout(function () {
-          $('#kt_select_svc_provider').val(vm.formFields.serviceProvider);
-          $('#kt_select_svc_provider').trigger('change');
-          $('#kt_select2_drivers').val(vm.formFields.driver);
-          $('#kt_select2_drivers').trigger('change');
-        }, 500);
       });
     },
     cancelEntry: function cancelEntry() {
@@ -6974,7 +7137,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this6 = this;
+      var _this4 = this;
 
       var formD = new FormData();
       var method = null;
@@ -6984,10 +7147,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('pictureName', this.formFields.pictureName);
       formD.append('name', this.formFields.name);
       formD.append('description', this.formFields.description);
-      formD.append('serviceProvider', this.formFields.serviceProvider);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
-      formD.append('driver', this.formFields.driver);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -7003,7 +7164,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this6.cancelEntry();
+          _this4.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -7018,30 +7179,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'serviceProvider') {
-            if ($('#kt_select_svc_provider').next().next().length == 0) {
-              $('#kt_select_svc_provider').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else {
-            if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
-            }
+          if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+            $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
+            $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
           }
         }
 
-        for (var i = 0; i < _this6.names.length; i++) {
-          if (_this6.names[i] == 'serviceProvider') {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              if ($('#kt_select_svc_provider').next().next().length != 0) {
-                $('#kt_select_svc_provider').next().next('.invalid-feedback').remove();
-              }
-            }
-          } else {
-            if (keys.indexOf('' + _this6.names[i] + '') == -1) {
-              $('[name="vehicle_' + _this6.names[i] + '"]').removeClass('is-invalid');
-              $('[name="vehicle_' + _this6.names[i] + '"]').next('.invalid-feedback').remove();
-            }
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+            $('[name="vehicle_' + _this4.names[i] + '"]').removeClass('is-invalid');
+            $('[name="vehicle_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -43974,6 +44121,43 @@ component.options.__file = "resources/js/Print.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Layouts/Dialog.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Layouts/Dialog.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dialog.vue?vue&type=template&id=756807d9& */ "./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  script,
+  _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Layouts/Dialog.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Layouts/Footer.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/Layouts/Footer.vue ***!
@@ -45131,6 +45315,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dialog.vue?vue&type=template&id=756807d9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Layouts/Footer.vue?vue&type=template&id=1ca25eac&":
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/Layouts/Footer.vue?vue&type=template&id=1ca25eac& ***!
@@ -46260,6 +46461,38 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { attrs: { id: "dialog", title: "Advanced Filter" } },
+      [_vm._t("body")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49375,24 +49608,34 @@ var render = function() {
                         [
                           _c("i", { staticClass: "la la-edit icon-md" }),
                           _vm._v(" "),
-                          _c("p", [_vm._v("Edit")])
+                          _c("span", [_vm._v("Edit")])
                         ]
                       )
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.status == 2
                     ? _c(
-                        "button",
+                        "a",
                         {
-                          staticClass:
-                            "btn-edit btn btn-sm btn-primary mr-7 d-flex",
-                          attrs: { type: "button" },
-                          on: { click: _vm.print }
+                          attrs: {
+                            href: "print_request?id=" + _vm.current_id,
+                            target: "_blank"
+                          }
                         },
                         [
-                          _c("i", { staticClass: "la la-print icon-md" }),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "m-0" }, [_vm._v("Print")])
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn-print btn btn-sm btn-primary mr-7",
+                              attrs: { type: "button" }
+                            },
+                            [
+                              _c("i", { staticClass: "la la-print icon-md" }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Print")])
+                            ]
+                          )
                         ]
                       )
                     : _vm._e(),
@@ -50239,7 +50482,82 @@ var render = function() {
     "div",
     { attrs: { id: "list-travel-page" } },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "card card-custom gutter-b" }, [
+        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+          _c("div", { staticClass: "card-title" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-toolbar" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary font-weight-bolder",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    return _vm.dialog()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                        width: "24px",
+                        height: "24px",
+                        viewBox: "0 0 24 24",
+                        version: "1.1"
+                      }
+                    },
+                    [
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd"
+                          }
+                        },
+                        [
+                          _c("rect", {
+                            attrs: { x: "0", y: "0", width: "24", height: "24" }
+                          }),
+                          _vm._v(" "),
+                          _c("circle", {
+                            attrs: {
+                              fill: "#000000",
+                              cx: "9",
+                              cy: "15",
+                              r: "6"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v("Advance Filter")
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
       _vm._v(" "),
       _c("modal", {
         scopedSlots: _vm._u([
@@ -50736,7 +51054,7 @@ var render = function() {
                               expression: "formFields.no_nights"
                             }
                           ],
-                          staticClass: "f orm-control",
+                          staticClass: "form-control",
                           attrs: {
                             type: "number",
                             placeholder: "Enter number of nights"
@@ -50878,7 +51196,11 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
+<<<<<<< HEAD
       _c("vdiaLog", {
+=======
+      _c("filterdialog", {
+>>>>>>> develop
         scopedSlots: _vm._u(
           [
             _vm.dialogshow == true
@@ -51018,6 +51340,7 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
+<<<<<<< HEAD
                                               value: svc.company_name
                                             }
                                           },
@@ -51029,6 +51352,12 @@ var render = function() {
                                                 ")"
                                             )
                                           ]
+=======
+                                              value: svc.type_vehicle
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(svc.type_vehicle))]
+>>>>>>> develop
                                         )
                                       }
                                     )
@@ -51466,65 +51795,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-separate table-head-custom table-checkable",
-            staticStyle: { width: "500px !important" },
-            attrs: { id: "list-travel-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Trip Ticket")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Service Provider")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date of Travel")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Starting ODO")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Ending Odo")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date Submitted to Procurement")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Distance Travelled")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Amount")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per Km")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Flat Rate")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per night")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("No. of Nights")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Total Cost")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Status")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Remarks")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Created at")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Action")])
-              ])
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          staticStyle: { width: "500px !important" },
+          attrs: { id: "list-travel-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Trip Ticket")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Service Provider")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date of Travel")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Starting ODO")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ending Odo")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Submitted to Procurement")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Distance Travelled")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Number")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Amount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per Km")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Flat Rate")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per night")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("No. of Nights")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Cost")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created at")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]
-        )
-      ])
+          ])
+        ]
+      )
     ])
   }
 ]
@@ -52121,361 +52443,610 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "page",
-        { staticClass: "paper-page", attrs: { id: "printArea", size: "A4" } },
-        [
-          _c("div", { staticClass: "page-header mt-2" }, [
-            _c("img", {
-              staticClass: "print-logo d-block m-auto",
-              attrs: {
-                alt: "Print Logo",
-                src: "assets/media/logos/dswd_print_logo.png"
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "span",
-              { staticClass: "header-text d-block m-auto text-center" },
-              [_vm._v("Field Office"), _c("br"), _vm._v("Butuan City")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "page-body row" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "col-12 text-center d-block mr-auto ml-auto mt-7"
-              },
-              [_vm._v("Motor Vehicle Request")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-4 offset-8 mt-5" }, [
-              _c("p", { staticClass: "text-right" }, [
-                _vm._v("Series: "),
-                _c("span", { staticClass: "font-weight-bold text-underline" }, [
-                  _vm._v("20-01-0001")
+      _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
+        _c("div", { attrs: { id: "page-1" } }, [
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "page-header mt-2" }, [
+                    _c("img", {
+                      staticClass: "print-logo d-block m-auto",
+                      attrs: {
+                        alt: "Print Logo",
+                        src: "assets/media/logos/dswd_print_logo.png"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "header-text d-block m-auto text-center" },
+                      [_vm._v("Field Office"), _c("br"), _vm._v("Butuan City")]
+                    )
+                  ])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-5" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Type of Motor Vehicle:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3 d-flex" }, [
-                _c("input", {
-                  staticClass: "mt-1",
-                  attrs: { type: "radio", name: "vehicleType" }
-                }),
+            _c(
+              "tbody",
+              [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto mt-5"
+                      },
+                      [_vm._v("Motor Vehicle Request")]
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "ml-2", attrs: { for: "vehicleType" } },
-                  [_vm._v("Office")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3 d-flex" }, [
-                _c("input", {
-                  staticClass: "mt-1",
-                  attrs: { type: "radio", name: "vehicleType" }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  { staticClass: "ml-2", attrs: { for: "vehicleType" } },
-                  [_vm._v("Rental")]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Program / Division / Section:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Purpose of travel:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Destination:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Date of travel:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Time of departure:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 mt-5" }, [
-              _c("table", { staticClass: "w-100" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v("Name of Passenger/s")
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v("Position/Designation")
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "text-right my-10" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: " text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.trip_ticket))
+                      ])
                     ])
                   ])
                 ]),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                _c("tr", [
+                  _c("td", { staticClass: "w-35" }, [
+                    _c("p", {}, [_vm._v("Type of Motor Vehicle:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", { staticClass: "w-10" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.type_vehicle,
+                          expression: "transaction.type_vehicle"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.type_vehicle },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "type_vehicle",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", [
+                    _c("input", {
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", {}, [_vm._v("Program / Division / Section:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.department,
+                          expression: "transaction.department"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.department },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "department",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Purpose of travel:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.purpose,
+                          expression: "transaction.purpose"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.purpose },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "purpose",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Destination:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.destinations,
+                          expression: "destinations"
+                        }
+                      ],
+                      staticClass: "form-control textarea my-3",
+                      attrs: {
+                        id: "kt_autosize_1",
+                        cols: "60",
+                        rows: "3",
+                        readonly: ""
+                      },
+                      domProps: { value: _vm.destinations },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.destinations = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", {}, [_vm._v("Date of travel:")])]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.travel_date,
+                          expression: "transaction.travel_date"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.travel_date },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "travel_date",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "pb-8" }, [
+                    _c("p", {}, [_vm._v("Time of departure:")])
                   ]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
+                  _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.depart_time,
+                          expression: "transaction.depart_time"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.depart_time },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "depart_time",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c(
+                    "td",
+                    {
+                      staticClass: "text-center table-border",
+                      attrs: { colspan: "2" }
+                    },
+                    [_vm._v("Name of Passenger/s")]
+                  ),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-center table-border" }, [
+                    _vm._v("Position/Designation")
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.passengers, function(p) {
+                  return _c("tr", { key: p.id }, [
+                    _c(
+                      "td",
+                      { staticClass: "table-border", attrs: { colspan: "2" } },
+                      [
+                        _c("input", {
+                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                          attrs: { type: "text" },
+                          domProps: { value: p.name }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-border" }, [
                       _c("input", {
                         staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
+                        attrs: { type: "text" },
+                        domProps: { value: p.designation }
                       })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
+                  ])
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.freePassengers, function(f) {
+                  return _c("tr", { key: f.id }, [
+                    _c(
+                      "td",
+                      { staticClass: "table-border", attrs: { colspan: "2" } },
+                      [
+                        _c("input", {
+                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                          attrs: { type: "text" }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-border" }, [
                       _c("input", {
                         staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                         attrs: { type: "text" }
                       })
                     ])
                   ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex mt-5" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Prepared by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
                 }),
                 _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Requested by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
-                _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [
-                  _vm._v("Section/Program/Division Head")
+                _c("tr", [
+                  _c(
+                    "td",
+                    { staticClass: "p-4 py-10", attrs: { colspan: "2" } },
+                    [
+                      _c("p", { staticClass: "mb-6" }, [
+                        _vm._v("Accepted by:")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass:
+                          "text-center input-text w-100 text-uppercase",
+                        attrs: { type: "text", disabled: "" }
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 py-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Requested by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Section/Program/Division Head")
+                    ])
+                  ])
                 ])
-              ])
-            ])
+              ],
+              2
+            )
           ]),
           _vm._v(" "),
-          _c("hr", { staticClass: "dashed-border mt-2" }),
+          _vm.passengers.length <= 5
+            ? _c("hr", { staticClass: "dashed-border my-2" })
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "page-footer" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "col-12 text-center d-block mr-auto ml-auto mt-4"
-              },
-              [_vm._v("Motor Vehicle Confirmation Slip")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-5" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Motor Vehicle Description:")
-              ]),
+          _c(
+            "table",
+            { class: _vm.passengers.length > 5 ? "break-page" : "" },
+            [
+              _vm.passengers.length > 5
+                ? _c("thead", [
+                    _c("tr", [
+                      _c("td", { attrs: { colspan: "3" } }, [
+                        _c("div", { staticClass: "page-header mt-2" }, [
+                          _c("img", {
+                            staticClass: "print-logo d-block m-auto",
+                            attrs: {
+                              alt: "Print Logo",
+                              src: "assets/media/logos/dswd_print_logo.png"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "header-text d-block m-auto text-center"
+                            },
+                            [
+                              _vm._v("Field Office"),
+                              _c("br"),
+                              _vm._v("Butuan City")
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Motor Vehicle Plate No:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [_vm._v("Name of Driver:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex row mt-1" }, [
-              _c("p", { staticClass: "col-4" }, [
-                _vm._v("Confirmed No. of Passenger/s:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "input-text col-8 w-100 mb-3 mt-n2",
-                attrs: { type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-12 d-flex mt-7" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Accepted by:")]),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto my-8"
+                      },
+                      [_vm._v("Motor Vehicle Confirmation Slip")]
+                    )
+                  ])
+                ]),
                 _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "text-right my-8" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: "text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.trip_ticket))
+                      ])
+                    ])
+                  ])
+                ]),
                 _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [
-                  _vm._v("Assigned GS staff")
+                _c("tr", [
+                  _c("td", [
+                    _c("p", {}, [_vm._v("Motor Vehicle Description:")])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.vehicle_name,
+                          expression: "transaction.vehicle_name"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.vehicle_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "vehicle_name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Motor Vehicle Plate No:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.template,
+                          expression: "transaction.template"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.template },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "template",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Name of Driver:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.driver,
+                          expression: "transaction.driver"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.driver },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "driver",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", [_vm._v("Confirmed No. of Passenger/s:")])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.passengers.length,
+                          expression: "passengers.length"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.passengers.length },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.passengers,
+                            "length",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Accepted by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.gs_staff,
+                          expression: "transaction.gs_staff"
+                        }
+                      ],
+                      staticClass:
+                        "text-center text-uppercase input-text w-100",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.gs_staff },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "gs_staff",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Assigned GS staff")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("GSS Head")
+                    ])
+                  ])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6" }, [
-                _c("p", [_vm._v("Approved by:")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-text w-100",
-                  attrs: { type: "text" }
-                }),
-                _vm._v(" "),
-                _c("p", { staticClass: "text-center" }, [_vm._v("GSS Head")])
               ])
-            ])
-          ])
-        ]
-      )
+            ]
+          )
+        ])
+      ])
     ],
     1
   )
@@ -53511,7 +54082,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "col-lg-12" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("p", [_vm._v("Image:")]),
                           _vm._v(" "),
@@ -53565,8 +54136,10 @@ var render = function() {
                               _vm._m(2)
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Name:")]),
                           _vm._v(" "),
@@ -53637,69 +54210,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group my-10" }, [
-                          _c("label", [_vm._v("Service Provider:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.serviceProvider,
-                                  expression: "formFields.serviceProvider"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select_svc_provider",
-                                name: "vehicle_svc_provider"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "serviceProvider",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _vm._l(_vm.serviceProviders, function(svc) {
-                                return _c(
-                                  "option",
-                                  { key: svc.id, domProps: { value: svc.id } },
-                                  [
-                                    _vm._v(
-                                      _vm._s(svc.company_name) +
-                                        " (" +
-                                        _vm._s(svc.type) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              })
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
+                        _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Template Number:")]),
                           _vm._v(" "),
                           _c("input", {
@@ -53733,7 +54244,7 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
+                        _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Capacity Number:")]),
                           _vm._v(" "),
                           _c("input", {
@@ -53765,64 +54276,6 @@ var render = function() {
                               }
                             }
                           })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group my-10" }, [
-                          _c("label", [_vm._v("Driver:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.driver,
-                                  expression: "formFields.driver"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select2_drivers",
-                                name: "vehicle_drivers"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "driver",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _vm._l(_vm.drivers, function(driver) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: driver.id,
-                                    domProps: { value: driver.id }
-                                  },
-                                  [_vm._v(_vm._s(driver.fullname))]
-                                )
-                              })
-                            ],
-                            2
-                          )
                         ])
                       ])
                     ])
@@ -54013,8 +54466,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Image")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Service Provider")]),
               _vm._v(" "),
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),

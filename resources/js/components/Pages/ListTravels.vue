@@ -3,6 +3,22 @@
         <div class="card card-custom gutter-b" >
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title"></div>
+                <div class="card-toolbar">
+                    <!--begin::Button-->
+                    <a href="#" class="btn btn-primary font-weight-bolder" @click="dialog()">
+                    <span class="svg-icon svg-icon-md">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <circle fill="#000000" cx="9" cy="15" r="6" />
+                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon-->
+                    </span>Advance Filter</a>
+                    <!--end::Button-->
+                </div>
             </div>
             <div class="card-body">
                 <!--begin: Datatable-->
@@ -111,7 +127,7 @@
                             </div>
                             <div class="form-group">
                                 <label>No. of Nights:</label>
-                                <input type="number" class="f orm-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
+                                <input type="number" class="form-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
                             </div>
                             <div class="form-group">
                                 <label>Rate per Night:</label>
@@ -134,7 +150,7 @@
                 
             </template>
         </modal>
-        <vdiaLog>
+        <filterdialog>
             <template v-slot:body v-if="dialogshow == true">
                 <form id="request-form" class="form">
                     <div class="form-group row">
@@ -152,7 +168,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.company_name">{{ svc.company_name }} ({{ svc.type }})</option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.type_vehicle">{{ svc.type_vehicle }}</option>
                             </select>
                         </div>
                     </div>
@@ -220,7 +236,7 @@
                     </div>
                 </form>
             </template>
-        </vdiaLog>
+        </filterdialog>
     </div>
 </template>
 
@@ -235,6 +251,7 @@
 
 <script>
 import Modal from '../../components/Layouts/Modal';
+import Filterdialog from '../../components/Layouts/Dialog';
 export default {
     data() {
         return {
@@ -262,14 +279,37 @@ export default {
                 status: null,
                 total_cost: null
             },
+            filterDropdown: {
+                tripTicket : [],
+                serviceProvider: [],
+                poNumber: '',
+            },
+            filterActive: {
+                tripTicket: null,
+                serviceProviders: null,
+                dateTravel:null,
+                procurementSub:null,
+                distanceTravelled: null,
+                poNumber: null,
+                poAmount: null,
+                rateperKm: null,
+                flatRate: null,
+                rateperNight: null,
+                numberofNights: null,
+            },
+            dialogshow: false,
             names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
         }
     },
     components: {
         Modal,
+        Filterdialog
     },
     created() {
         this.getVehicles();
+        this.getTripTicket();
+        this.getServiceProviders();
+        this.getPoNumber();
     },
     mounted() {
         this.ini();
@@ -284,6 +324,10 @@ export default {
     methods:{
         ini() {
             $(()=>{
+                if (this.dialogshow ==true){
+                    $("#list-travel-tbl").DataTable().destroy();
+                    showToast('Filtered successfully!', 'success');
+                }
                 this.tdatatable().init();
             });
         },
@@ -369,11 +413,12 @@ export default {
                     ajax: {
                         url: BASE_URL + '/tracking/listtravel',
                         type: 'GET',
+                        data: vm.filterActive
                     },
                     columns: [
                         { "data": "id" },
                         { "data": "trip_ticket" },
-                        { "data": "company_name" },
+                        { "data": "type_vehicle" },
                         { "data": "travel_date" },
                         { "data": "starting_odo" },
                         { "data": "ending_odo" },
@@ -449,18 +494,30 @@ export default {
                             targets: -1,
                             orderable: false,
                             render: data => {
+                                let id = parseInt(data);
                                 return '\
-                                    <a href="javascript:;" data-id="'+ data +'" class="ml-5 btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
+                                    <div class="d-flex">\
+                                        <a href="javascript:;" data-id="'+ data +'" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md">\
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                        <rect x="0" y="0" width="24" height="24"/>\
+                                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                                    </g>\
+                                                </svg>\
+                                            </span>\
+                                        </a>\
+                                        <a href="print_request?id='+id+'" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
+                                                    <rect x="0" y="0" width="24" height="24"/> \
+                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/> \
+                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/> \
+                                                </g> \
+                                            </svg><!--end::Svg Icon--></span> \
+                                        </a> \
+                                    </div> \
                                 ';
                             }
                         }
@@ -614,7 +671,59 @@ export default {
                     }
                 });
             
-        }
+        },
+        dialog(){
+            let vm = this;
+            vm.dialogshow = true;
+            $( "#dialog" ).dialog({ width: 600, height: 700 });
+            setTimeout(()=>{
+                $('#kt_select_trip_ticket').select2({
+                    placeholder: "Trip Ticket",
+                    allowClear: true
+                });
+                $('#kt_select_service_provider').select2({
+                    placeholder: "Service provider",
+                    allowClear: true
+                });
+                $('#kt_select_po_number').select2({
+                    placeholder: "Po number",
+                    allowClear: true
+                });
+                $('#kt_select_service_provider').change(function() {
+                    vm.filterActive.serviceProviders = $(this).val();
+                });
+                $('#kt_select_trip_ticket').change(function() {
+                    vm.filterActive.tripTicket = $(this).val();
+                });
+                $('#kt_select_po_number').change(function() {
+                    vm.filterActive.poNumber = $(this).val();
+                });
+                $('#kt_date_travel').change(function() {
+                    vm.filterActive.dateTravel = $(this).val();
+                });
+                $('#kt_procurement_sub').change(function() {
+                    vm.filterActive.procurementSub = $(this).val();
+                });
+                $('#kt_distance_traveled').change(function() {
+                    vm.filterActive.distanceTravelled = $(this).val();
+                });
+            },500);
+        },
+        getTripTicket() {
+            axios.get(BASE_URL + "/api/tripticket").then(response => {
+                this.filterDropdown.tripTicket = response.data;
+            });
+        },
+        getServiceProviders() {
+            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
+                this.filterDropdown.serviceProvider = response.data;
+            });
+        },
+        getPoNumber() {
+            axios.get(BASE_URL + "/api/ponumber").then(response => {
+                this.filterDropdown.poNumber = response.data;
+            });
+        },
     }
 
 }

@@ -57,18 +57,14 @@
                 <span class="d-block text-muted font-size-sm">Date Created</span></h3>
                 <button v-if="status == 1" @click="edit" type="button" class="btn-edit btn btn-sm btn-primary mr-7">
                     <i class="la la-edit icon-md"></i>
-                    <p>Edit</p>
+                    <span>Edit</span>
                 </button>
-                <!-- <a v-if="status == 2" :href="'print_request?id=' + current_id" target="_blank">
-                    <button type="button" class="btn-edit btn btn-sm btn-primary mr-7">
+                <a v-if="status == 2" :href="'print_request?id=' + current_id" target="_blank">
+                    <button type="button" class="btn-print btn btn-sm btn-primary mr-7">
                         <i class="la la-print icon-md"></i>
-                        <p>Print</p>
+                        <span>Print</span>
                     </button>
-                </a> -->
-                <button @click="print" v-if="status == 2" type="button" class="btn-edit btn btn-sm btn-primary mr-7 d-flex">
-                    <i class="la la-print icon-md"></i>
-                    <p class="m-0">Print</p>
-                </button>
+                </a>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -710,17 +706,6 @@ export default {
                 $('#request-tbl').DataTable().ajax.reload();
             })
         },
-        print() {
-            var winPrint = window.open('', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
-            winPrint.document.write('<button id="printMe">Button</button><title>Print  Report</title><br /><br /> Hellow World');
-            winPrint.document.close();
-            winPrint.focus();
-            // winPrint.print();
-            // winPrint.close(); 
-            $('#printMe').click(function() {
-                alert('123');
-            });
-        }
     },
 }
 </script>

@@ -4,7 +4,6 @@ namespace App\Services\TransportationVehicle;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
-use App\Models\Driver;
 
 class UpdateVehicle 
 {
@@ -17,12 +16,11 @@ class UpdateVehicle
     public function execute($id, $fields)
     {
         $data = [
-            'service_provider_id' => $fields['serviceProvider'],
             'name' => $fields['name'],
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
-            'capacity' => $fields['capacityNumber'],
-            ($fields['driver'] == '')? NULL:'driver_id' => $fields['driver'],
+            'capacity' => $fields['capacityNumber']
+
         ];
         
         $vehicle = Vehicle::find($id);
