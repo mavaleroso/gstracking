@@ -4001,13 +4001,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-<<<<<<< HEAD
-//
-//
-//
-//
-=======
->>>>>>> develop
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4594,10 +4587,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
-<<<<<<< HEAD
-=======
 /* harmony import */ var _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Layouts/Dialog */ "./resources/js/components/Layouts/Dialog.vue");
->>>>>>> develop
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4758,8 +4748,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-<<<<<<< HEAD
-=======
 //
 //
 //
@@ -4776,7 +4764,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
->>>>>>> develop
 //
 //
 //
@@ -4865,10 +4852,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 
-<<<<<<< HEAD
-=======
 
->>>>>>> develop
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4896,19 +4880,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
+      filterDropdown: {
+        tripTicket: [],
+        serviceProvider: [],
+        poNumber: ''
+      },
+      filterActive: {
+        tripTicket: null,
+        serviceProviders: null,
+        dateTravel: null,
+        procurementSub: null,
+        distanceTravelled: null,
+        poNumber: null,
+        poAmount: null,
+        rateperKm: null,
+        flatRate: null,
+        rateperNight: null,
+        numberofNights: null
+      },
+      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
-<<<<<<< HEAD
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
-=======
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
     Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
->>>>>>> develop
   },
   created: function created() {
     this.getVehicles();
+    this.getTripTicket();
+    this.getServiceProviders();
+    this.getPoNumber();
   },
   mounted: function mounted() {
     this.ini();
@@ -4927,14 +4929,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
-<<<<<<< HEAD
-=======
         if (_this.dialogshow == true) {
           $("#list-travel-tbl").DataTable().destroy();
           showToast('Filtered successfully!', 'success');
         }
 
->>>>>>> develop
         _this.tdatatable().init();
       });
     },
@@ -5009,7 +5008,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           ajax: {
             url: BASE_URL + '/tracking/listtravel',
-            type: 'GET'
+            type: 'GET',
+            data: vm.filterActive
           },
           columns: [{
             "data": "id"
@@ -50704,7 +50704,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control select2",
-                            attrs: { id: "kt_select_vehicle", name: "vehicle" },
+                            attrs: {
+                              id: "kt_select_vehicle",
+                              name: "vehicle",
+                              disabled: _vm.status == "Completed"
+                            },
                             on: {
                               change: function($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -50767,7 +50771,9 @@ var render = function() {
                           attrs: {
                             type: "number",
                             name: "starting_odo",
-                            placeholder: "Enter starting ODO"
+                            id: "starting_odo",
+                            placeholder: "Enter starting ODO",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.starting_odo },
                           on: {
@@ -50800,7 +50806,9 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "number",
-                            placeholder: "Enter ending ODO"
+                            id: "ending_odo",
+                            placeholder: "Enter ending ODO",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.ending_odo },
                           on: {
@@ -50834,7 +50842,9 @@ var render = function() {
                           attrs: {
                             type: "date",
                             name: "date_submitted_proc",
-                            placeholder: "Enter date submitted to procurement"
+                            id: "date_submitted_proc",
+                            placeholder: "Enter date submitted to procurement",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: {
                             value: _vm.formFields.date_submitted_proc
@@ -50869,7 +50879,9 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "number",
-                            placeholder: "Enter distance travelled"
+                            id: "distance_travelled",
+                            placeholder: "Enter distance travelled",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: {
                             value: _vm.formFields.distance_travelled
@@ -50923,7 +50935,9 @@ var render = function() {
                           attrs: {
                             type: "date",
                             name: "travel_date",
-                            placeholder: "Enter travel date"
+                            id: "travel_date",
+                            placeholder: "Enter travel date",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.travel_date },
                           on: {
@@ -50956,7 +50970,9 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "time",
-                            placeholder: "Enter travel time"
+                            id: "travel_time",
+                            placeholder: "Enter travel time",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.travel_time },
                           on: {
@@ -50990,7 +51006,9 @@ var render = function() {
                           attrs: {
                             type: "number",
                             name: "rate_per_km",
-                            placeholder: "Enter rate per kilometer"
+                            id: "rate_per_km",
+                            placeholder: "Enter rate per kilometer",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.rate_per_km },
                           on: {
@@ -51024,7 +51042,9 @@ var render = function() {
                           attrs: {
                             type: "number",
                             name: "flat_rate",
-                            placeholder: "Enter flat rate"
+                            id: "flat_rate",
+                            placeholder: "Enter flat rate",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.flat_rate },
                           on: {
@@ -51057,7 +51077,9 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "number",
-                            placeholder: "Enter number of nights"
+                            id: "no_of_nights",
+                            placeholder: "Enter number of nights",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.no_nights },
                           on: {
@@ -51090,7 +51112,9 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "number",
-                            placeholder: "Enter rate per night"
+                            id: "rate_per_night",
+                            placeholder: "Enter rate per night",
+                            disabled: _vm.status == "Completed"
                           },
                           domProps: { value: _vm.formFields.rate_per_night },
                           on: {
@@ -51123,7 +51147,13 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { name: "", id: "", cols: "30", rows: "3" },
+                          attrs: {
+                            name: "",
+                            id: "remarks",
+                            cols: "30",
+                            rows: "3",
+                            disabled: _vm.status == "Completed"
+                          },
                           domProps: { value: _vm.formFields.remarks },
                           on: {
                             input: function($event) {
@@ -51196,11 +51226,7 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-<<<<<<< HEAD
-      _c("vdiaLog", {
-=======
       _c("filterdialog", {
->>>>>>> develop
         scopedSlots: _vm._u(
           [
             _vm.dialogshow == true
@@ -51340,24 +51366,10 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
-<<<<<<< HEAD
-                                              value: svc.company_name
-                                            }
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(svc.company_name) +
-                                                " (" +
-                                                _vm._s(svc.type) +
-                                                ")"
-                                            )
-                                          ]
-=======
                                               value: svc.type_vehicle
                                             }
                                           },
                                           [_vm._v(_vm._s(svc.type_vehicle))]
->>>>>>> develop
                                         )
                                       }
                                     )
