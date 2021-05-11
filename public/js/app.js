@@ -4630,6 +4630,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+/* harmony import */ var _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Layouts/Dialog */ "./resources/js/components/Layouts/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4877,6 +4878,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4905,14 +4923,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
+      filterDropdown: {
+        tripTicket: [],
+        serviceProvider: [],
+        poNumber: ''
+      },
+      filterActive: {
+        tripTicket: null,
+        serviceProviders: null,
+        dateTravel: null,
+        procurementSub: null,
+        distanceTravelled: null,
+        poNumber: null,
+        poAmount: null,
+        rateperKm: null,
+        flatRate: null,
+        rateperNight: null,
+        numberofNights: null
+      },
+      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
-    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
     this.getVehicles();
+    this.getTripTicket();
+    this.getServiceProviders();
+    this.getPoNumber();
   },
   mounted: function mounted() {
     this.ini();
@@ -4931,6 +4972,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
+        if (_this.dialogshow == true) {
+          $("#list-travel-tbl").DataTable().destroy();
+          showToast('Filtered successfully!', 'success');
+        }
+
         _this.tdatatable().init();
       });
     },
@@ -5005,14 +5051,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           ajax: {
             url: BASE_URL + '/tracking/listtravel',
-            type: 'GET'
+            type: 'GET',
+            data: vm.filterActive
           },
           columns: [{
             "data": "id"
           }, {
             "data": "trip_ticket"
           }, {
-            "data": "company_name"
+            "data": "type_vehicle"
           }, {
             "data": "travel_date"
           }, {
@@ -5109,18 +5156,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             targets: -1,
             orderable: false,
             render: function render(data) {
+              var id = parseInt(data);
               return '\
-                                    <a href="javascript:;" data-id="' + data + '" class="ml-5 btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
+                                    <div class="d-flex">\
+                                        <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md">\
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                        <rect x="0" y="0" width="24" height="24"/>\
+                                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                                    </g>\
+                                                </svg>\
+                                            </span>\
+                                        </a>\
+                                        <a href="print_request?id=' + id + '" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                            <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
+                                                    <rect x="0" y="0" width="24" height="24"/> \
+                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/> \
+                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/> \
+                                                </g> \
+                                            </svg><!--end::Svg Icon--></span> \
+                                        </a> \
+                                    </div> \
                                 ';
             }
           }],
@@ -5274,6 +5333,67 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('#list-travel-tbl').DataTable().ajax.reload();
           });
         }
+      });
+    },
+    dialog: function dialog() {
+      var vm = this;
+      vm.dialogshow = true;
+      $("#dialog").dialog({
+        width: 600,
+        height: 700
+      });
+      setTimeout(function () {
+        $('#kt_select_trip_ticket').select2({
+          placeholder: "Trip Ticket",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').select2({
+          placeholder: "Service provider",
+          allowClear: true
+        });
+        $('#kt_select_po_number').select2({
+          placeholder: "Po number",
+          allowClear: true
+        });
+        $('#kt_select_service_provider').change(function () {
+          vm.filterActive.serviceProviders = $(this).val();
+        });
+        $('#kt_select_trip_ticket').change(function () {
+          vm.filterActive.tripTicket = $(this).val();
+        });
+        $('#kt_select_po_number').change(function () {
+          vm.filterActive.poNumber = $(this).val();
+        });
+        $('#kt_date_travel').change(function () {
+          vm.filterActive.dateTravel = $(this).val();
+        });
+        $('#kt_procurement_sub').change(function () {
+          vm.filterActive.procurementSub = $(this).val();
+        });
+        $('#kt_distance_traveled').change(function () {
+          vm.filterActive.distanceTravelled = $(this).val();
+        });
+      }, 500);
+    },
+    getTripTicket: function getTripTicket() {
+      var _this5 = this;
+
+      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
+        _this5.filterDropdown.tripTicket = response.data;
+      });
+    },
+    getServiceProviders: function getServiceProviders() {
+      var _this6 = this;
+
+      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
+        _this6.filterDropdown.serviceProvider = response.data;
+      });
+    },
+    getPoNumber: function getPoNumber() {
+      var _this7 = this;
+
+      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
+        _this7.filterDropdown.poNumber = response.data;
       });
     }
   }
@@ -44014,6 +44134,43 @@ component.options.__file = "resources/js/Print.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Layouts/Dialog.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Layouts/Dialog.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dialog.vue?vue&type=template&id=756807d9& */ "./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  script,
+  _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Layouts/Dialog.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Layouts/Footer.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/Layouts/Footer.vue ***!
@@ -45171,6 +45328,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dialog_vue_vue_type_template_id_756807d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dialog.vue?vue&type=template&id=756807d9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Layouts/Footer.vue?vue&type=template&id=1ca25eac&":
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/Layouts/Footer.vue?vue&type=template&id=1ca25eac& ***!
@@ -46300,6 +46474,38 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Layouts/Dialog.vue?vue&type=template&id=756807d9& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { attrs: { id: "dialog", title: "Advanced Filter" } },
+      [_vm._t("body")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -50450,7 +50656,82 @@ var render = function() {
     "div",
     { attrs: { id: "list-travel-page" } },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "card card-custom gutter-b" }, [
+        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+          _c("div", { staticClass: "card-title" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-toolbar" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary font-weight-bolder",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    return _vm.dialog()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                        width: "24px",
+                        height: "24px",
+                        viewBox: "0 0 24 24",
+                        version: "1.1"
+                      }
+                    },
+                    [
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd"
+                          }
+                        },
+                        [
+                          _c("rect", {
+                            attrs: { x: "0", y: "0", width: "24", height: "24" }
+                          }),
+                          _vm._v(" "),
+                          _c("circle", {
+                            attrs: {
+                              fill: "#000000",
+                              cx: "9",
+                              cy: "15",
+                              r: "6"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v("Advance Filter")
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
       _vm._v(" "),
       _c("modal", {
         scopedSlots: _vm._u([
@@ -50947,7 +51228,7 @@ var render = function() {
                               expression: "formFields.no_nights"
                             }
                           ],
-                          staticClass: "f orm-control",
+                          staticClass: "form-control",
                           attrs: {
                             type: "number",
                             placeholder: "Enter number of nights"
@@ -51089,7 +51370,7 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _c("vdiaLog", {
+      _c("filterdialog", {
         scopedSlots: _vm._u(
           [
             _vm.dialogshow == true
@@ -51229,17 +51510,10 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
-                                              value: svc.company_name
+                                              value: svc.type_vehicle
                                             }
                                           },
-                                          [
-                                            _vm._v(
-                                              _vm._s(svc.company_name) +
-                                                " (" +
-                                                _vm._s(svc.type) +
-                                                ")"
-                                            )
-                                          ]
+                                          [_vm._v(_vm._s(svc.type_vehicle))]
                                         )
                                       }
                                     )
@@ -51677,65 +51951,58 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-custom gutter-b" }, [
-      _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-        _c("div", { staticClass: "card-title" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "table",
-          {
-            staticClass:
-              "table table-separate table-head-custom table-checkable",
-            staticStyle: { width: "500px !important" },
-            attrs: { id: "list-travel-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Trip Ticket")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Service Provider")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date of Travel")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Starting ODO")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Ending Odo")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Date Submitted to Procurement")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Distance Travelled")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("PO Amount")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per Km")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Flat Rate")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Rate per night")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("No. of Nights")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Total Cost")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Status")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Remarks")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Created at")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Action")])
-              ])
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          staticStyle: { width: "500px !important" },
+          attrs: { id: "list-travel-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Trip Ticket")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Service Provider")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date of Travel")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Starting ODO")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Ending Odo")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Submitted to Procurement")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Distance Travelled")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Number")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Amount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per Km")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Flat Rate")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Rate per night")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("No. of Nights")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total Cost")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Created at")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]
-        )
-      ])
+          ])
+        ]
+      )
     ])
   }
 ]
