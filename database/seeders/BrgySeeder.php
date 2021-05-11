@@ -14,6 +14,7 @@ class BrgySeeder extends Seeder
           'psgc_brgy'=> '166805002',
           'brgy_name'=> 'BUGSUKAN'
       ],
+      
       [
           'id'=> '425',
           'city_id'=> '448',
