@@ -4001,6 +4001,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+<<<<<<< HEAD
+//
+//
+//
+//
+=======
+>>>>>>> develop
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4587,7 +4594,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+<<<<<<< HEAD
+=======
 /* harmony import */ var _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Layouts/Dialog */ "./resources/js/components/Layouts/Dialog.vue");
+>>>>>>> develop
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4748,6 +4758,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+<<<<<<< HEAD
+=======
 //
 //
 //
@@ -4764,6 +4776,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+>>>>>>> develop
 //
 //
 //
@@ -4852,7 +4865,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> develop
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4880,37 +4896,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: null,
         total_cost: null
       },
-      filterDropdown: {
-        tripTicket: [],
-        serviceProvider: [],
-        poNumber: ''
-      },
-      filterActive: {
-        tripTicket: null,
-        serviceProviders: null,
-        dateTravel: null,
-        procurementSub: null,
-        distanceTravelled: null,
-        poNumber: null,
-        poAmount: null,
-        rateperKm: null,
-        flatRate: null,
-        rateperNight: null,
-        numberofNights: null
-      },
-      dialogshow: false,
       names: ['starting_odo', 'date_submitted_proc', 'rate_per_km', 'flat_rate', 'travel_date']
     };
   },
   components: {
+<<<<<<< HEAD
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+=======
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
     Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
+>>>>>>> develop
   },
   created: function created() {
     this.getVehicles();
-    this.getTripTicket();
-    this.getServiceProviders();
-    this.getPoNumber();
   },
   mounted: function mounted() {
     this.ini();
@@ -4929,11 +4927,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
+<<<<<<< HEAD
+=======
         if (_this.dialogshow == true) {
           $("#list-travel-tbl").DataTable().destroy();
           showToast('Filtered successfully!', 'success');
         }
 
+>>>>>>> develop
         _this.tdatatable().init();
       });
     },
@@ -5008,8 +5009,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           ajax: {
             url: BASE_URL + '/tracking/listtravel',
-            type: 'GET',
-            data: vm.filterActive
+            type: 'GET'
           },
           columns: [{
             "data": "id"
@@ -6146,20 +6146,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      divisions: [],
+      sections: [],
       regions: [],
       provinces: [],
       cities: [],
       brgys: [],
       activeProvinces: [],
+      activeSections: [],
       activeCities: [],
-      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division', 'section', 'pur_travel', 'time_depart'],
       complete: false,
       requestCode: null,
-      createdAt: null
+      createdAt: null,
+      section: ''
     };
   },
   created: function created() {
     this.getRegion();
+    this.getDivision();
   },
   mounted: function mounted() {
     this.ini();
@@ -6185,8 +6190,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a Region",
           allowClear: true
         });
+        $('#kt_select_division').select2({
+          placeholder: "Select a Division",
+          allowClear: true
+        });
+        $('#kt_select_section').select2({
+          placeholder: "Select a Section",
+          allowClear: true
+        });
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
+        $('#kt_select_division').on('change', function () {
+          var id = $('#kt_select_division').val();
+
+          _this.getSection(id);
+
+          _this.sections = [];
+          _this.activeSections = [];
+        });
+        $('#kt_select_section').on('change', function () {
+          var id = $('#kt_select_section').val();
+          console.log(id);
+          _this.section = id;
+        });
         $('#kt_select_region').on('change', function () {
           var id = $('#kt_select_region').val();
 
@@ -6298,19 +6324,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'travel_radio') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
-            if ("".concat(key) == 'brgy') {
-              if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              }
-            } else {
-              if ($('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              }
+          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'division' || "".concat(key) == 'section') {
+            if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
+              $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -6321,22 +6337,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'travel_radio') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('.checkbox-inline').next().length != 0) {
-                $('.checkbox-inline').next('.invalid-feedback').remove();
-              }
+          if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+            if ($('.checkbox-inline').next().length != 0) {
+              $('.checkbox-inline').next('.invalid-feedback').remove();
             }
-          } else if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'brgy') {
+          }
+
+          if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if (_this2.names[i] == 'brgy') {
-                if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-                }
-              } else {
-                if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                  $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-                }
+              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+              }
+
+              if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
@@ -6350,40 +6364,58 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
-    getRegion: function getRegion() {
+    getDivision: function getDivision() {
       var _this3 = this;
 
+      axios.get(BASE_URL + "/api/division").then(function (response) {
+        _this3.divisions = response.data;
+      });
+    },
+    getSection: function getSection(id) {
+      var _this4 = this;
+
+      axios.get(BASE_URL + "/api/section/" + id).then(function (response) {
+        _this4.sections = response.data;
+
+        _this4.sections.map(function (i) {
+          return i.active = "false";
+        });
+      });
+    },
+    getRegion: function getRegion() {
+      var _this5 = this;
+
       axios.get(BASE_URL + "/api/region").then(function (response) {
-        _this3.regions = response.data;
+        _this5.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
-      var _this4 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/province/" + id).then(function (response) {
-        _this4.provinces = response.data;
+        _this6.provinces = response.data;
 
-        _this4.provinces.map(function (i) {
+        _this6.provinces.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getCity: function getCity(id) {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
-        _this5.cities = response.data;
+        _this7.cities = response.data;
 
-        _this5.cities.map(function (i) {
+        _this7.cities.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getBrgy: function getBrgy(id) {
-      var _this6 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/brgy/" + id).then(function (response) {
-        _this6.brgys = response.data;
+        _this8.brgys = response.data;
       });
     },
     currentProv: function currentProv() {
@@ -6398,9 +6430,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     newRequest: function newRequest() {
       for (var i = 0; i < this.names.length; i++) {
-        if (this.names[i] == 'travel_radio') {
-          $('[name="' + this.names[i] + '"]').prop('checked', false);
-        } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+        if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
           $('#kt_select_' + this.names[i]).empty();
         } else {
           $('[name="' + this.names[i] + '"]').val(null);
@@ -51166,7 +51196,11 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
+<<<<<<< HEAD
+      _c("vdiaLog", {
+=======
       _c("filterdialog", {
+>>>>>>> develop
         scopedSlots: _vm._u(
           [
             _vm.dialogshow == true
@@ -51306,10 +51340,24 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
+<<<<<<< HEAD
+                                              value: svc.company_name
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(svc.company_name) +
+                                                " (" +
+                                                _vm._s(svc.type) +
+                                                ")"
+                                            )
+                                          ]
+=======
                                               value: svc.type_vehicle
                                             }
                                           },
                                           [_vm._v(_vm._s(svc.type_vehicle))]
+>>>>>>> develop
                                         )
                                       }
                                     )
@@ -53122,11 +53170,93 @@ var render = function() {
                   _vm._v("Requestor Info:")
                 ]),
                 _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-3" }, [_vm._v("Division")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c(
+                      "select",
+                      {
+                        staticClass: "details-input form-control select2",
+                        attrs: { id: "kt_select_division", name: "division" },
+                        on: {
+                          change: function($event) {
+                            return _vm.onChange($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { label: "Label" } }),
+                        _vm._v(" "),
+                        _vm._l(_vm.divisions, function(division) {
+                          return _c(
+                            "option",
+                            {
+                              key: division.id,
+                              domProps: { value: division.id }
+                            },
+                            [_vm._v(_vm._s(division.division_name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-3" }, [_vm._v("Section")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.section,
+                            expression: "section"
+                          }
+                        ],
+                        staticClass: "details-input form-control select2",
+                        attrs: { id: "kt_select_section", name: "section" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.section = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { label: "Label" } }),
+                        _vm._v(" "),
+                        _vm._l(_vm.sections, function(section) {
+                          return _c(
+                            "option",
+                            {
+                              key: section.id,
+                              domProps: { value: section.id }
+                            },
+                            [_vm._v(_vm._s(section.section_name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
                 _vm._m(2),
-                _vm._v(" "),
-                _vm._m(3),
-                _vm._v(" "),
-                _vm._m(4),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
                   _c("label", { staticClass: "col-3" }, [
@@ -53252,9 +53382,9 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(5),
+                _vm._m(3),
                 _vm._v(" "),
-                _vm._m(6)
+                _vm._m(4)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -53299,7 +53429,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(7)
+                _vm._m(5)
               ])
             ]),
             _vm._v(" "),
@@ -53339,53 +53469,6 @@ var staticRenderFns = [
         _vm._v("Back")
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3" }, [_vm._v("Type of Motor Vehicle")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-9" }, [
-        _c("div", { staticClass: "checkbox-inline" }, [
-          _c("label", { staticClass: "radio mr-2" }, [
-            _c("input", {
-              staticClass: "details-input",
-              attrs: { type: "radio", name: "travel_radio", value: "Office" }
-            }),
-            _vm._v(" Office\n                                        "),
-            _c("span")
-          ]),
-          _vm._v(" "),
-          _c("label", { staticClass: "radio" }, [
-            _c("input", {
-              staticClass: "details-input",
-              attrs: { type: "radio", name: "travel_radio", value: "Rental" }
-            }),
-            _vm._v(" Rental\n                                        "),
-            _c("span")
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3" }, [
-        _vm._v("Program/Division/Section")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-9" }, [
-        _c("input", {
-          staticClass: "details-input form-control",
-          attrs: { name: "prog_div_sec", type: "text" }
-        })
-      ])
-    ])
   },
   function() {
     var _vm = this

@@ -36,24 +36,24 @@
                             <input name="request_id" type="hidden" value=""/>
                             <h3 class="text-dark font-weight-bold mb-10">Requestor Info:</h3>
                             <div class="form-group row">
-                                <label class="col-3">Type of Motor Vehicle</label>
+                                <label class="col-3">Division</label>
                                 <div class="col-9">
-                                    <div class="checkbox-inline">
-                                        <label class="radio mr-2">
-                                            <input class="details-input" type="radio" name="travel_radio" value="Office"/> Office
-                                            <span></span>
-                                        </label>
-                                        <label class="radio">
-                                            <input class="details-input" type="radio" name="travel_radio" value="Rental"/> Rental
-                                            <span></span>
-                                        </label>
-                                    </div>
+                                    <select class="details-input form-control select2" id="kt_select_division" name="division"  @change="onChange($event)">
+                                        <option label="Label"></option>
+                                        <option v-for="division in divisions" :key="division.id" :value="division.id">{{ division.division_name }}</option>
+                                    </select>
+                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Program/Division/Section</label>
+                                <label class="col-3">Section</label>
                                 <div class="col-9">
-                                    <input name="prog_div_sec" type="text" class="details-input form-control"/>
+                                    <select class="details-input form-control select2" id="kt_select_section" name="section" v-model="section">
+                                        <option label="Label"></option>
+                                        <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.section_name }}</option>
+                                    </select>
+                              
+                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -138,20 +138,25 @@
 export default {
     data() {
         return {
+            divisions: [],
+            sections:[],
             regions: [],
             provinces: [],
             cities: [],
             brgys: [],
             activeProvinces: [],
+            activeSections: [],
             activeCities: [],
-            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division','section', 'pur_travel', 'time_depart'],
             complete: false,
             requestCode: null,
-            createdAt: null
+            createdAt: null,
+            section:''
         }
     },
     created() {
         this.getRegion();
+        this.getDivision();
     },
     mounted() {
         this.ini();
@@ -181,9 +186,31 @@ export default {
                     allowClear: true
                 });
 
+                $('#kt_select_division').select2({
+                    placeholder: "Select a Division",
+                    allowClear: true
+                });
+                $('#kt_select_section').select2({
+                    placeholder: "Select a Section",
+                    allowClear: true
+                });
 
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
+
+                $('#kt_select_division').on('change', () => {
+                    let id  = $('#kt_select_division').val();
+                    this.getSection(id);
+                    this.sections= [];
+                    this.activeSections = [];
+
+                });
+
+                $('#kt_select_section').on('change', () => {
+                    let id  = $('#kt_select_section').val();
+                    console.log(id);
+                    this.section = id;
+                });
 
                 $('#kt_select_region').on('change', () => {
                     let id  = $('#kt_select_region').val();
@@ -257,8 +284,6 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
-
-            
         },
         saveForm() {
             let requestform = $('#kt_form').serialize();
@@ -279,19 +304,9 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if (`${key}` == 'travel_radio') {
-                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-                            $('.checkbox-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                        }
-                    } else if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
-                        if (`${key}` == 'brgy') {
-                            if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
+                        if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                            }
-                        } else {
-                            if ($('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                            }
                         }
                     } else {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -301,23 +316,20 @@ export default {
                     }
                 }
                 for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i] == 'travel_radio') {
+                    if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        if ($('.checkbox-inline').next().length != 0) {
+                            $('.checkbox-inline').next('.invalid-feedback').remove();
+                        }
+                    } 
+                    if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            if ($('.checkbox-inline').next().length != 0) {
-                                $('.checkbox-inline').next('.invalid-feedback').remove();
+                            if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                                $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
                             }
-                        } 
-                    } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            if (this.names[i] == 'brgy') {
-                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
-                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                                }
-                            } else {
-                                if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                                }
+                            if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                                $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
                             }
+                            
                         }
                     } else {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {
@@ -329,6 +341,19 @@ export default {
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
 
+        },
+
+        getDivision() {
+            axios.get(BASE_URL + "/api/division").then(response => {
+                this.divisions = response.data;
+            });
+        },
+
+        getSection(id) {
+            axios.get(BASE_URL + "/api/section/" + id).then(response => {
+                this.sections = response.data;
+                this.sections.map(i=>i.active="false")
+            });
         },
         getRegion() {
             axios.get(BASE_URL + "/api/region").then(response => {
@@ -358,11 +383,10 @@ export default {
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
+
         newRequest() {
             for (let i = 0; i < this.names.length; i++) {
-                if (this.names[i] == 'travel_radio') {
-                    $('[name="'+this.names[i]+'"]').prop('checked', false);
-                } else if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
                     $('#kt_select_'+this.names[i]).empty();
                 } else {
                     $('[name="'+this.names[i]+'"]').val(null);

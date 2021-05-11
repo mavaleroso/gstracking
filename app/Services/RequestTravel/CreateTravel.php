@@ -31,28 +31,32 @@ class CreateTravel
      */
     public function execute($fields)
     {
+ 
 
         $rqt_code = $this->getCode->request_code();
 
         $request = Request::create([
+
+            
             'user_id' => auth()->user()->id,
             'serial_code' => $rqt_code,
-            'type_vehicle' => $fields['travel_radio'],
-            'department' => $fields['prog_div_sec'],
+            'division_id' => $fields['division'],
+            'section_id' => $fields['section'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
             'depart_time' => $fields['time_depart']
+
         ]);
 
-        for ($i=0; $i < count($fields['brgy']); $i++) { 
+        $check = (isset($fields['brgy']))? 1:0;
+        for ($i=0; $i < count($fields['city']); $i++) { 
             $request->destinations()->create([
                 'region_id' => $fields['region'],
-                'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
-                'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
-                'brgy_id' => $fields['brgy'][$i]
-            ]);
-        }
-        
+                'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
+                'city_id' => $fields['city'][$i],
+                'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i]
+            ]);    
+        }      
         for ($i=1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
                 'name' => $fields['pax_name_'.$i],
