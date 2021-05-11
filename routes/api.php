@@ -113,6 +113,20 @@ Route::group(['namespace' => 'Ajax'], function () {
         Route::get('system', 'ConfigController@system');
     });
 
+    Route::resource('division', 'DivisionController', [
+        'names' => [
+            'index' => 'ajax.division.index',
+            'show' => 'ajax.division.show',
+        ]
+    ]);
+
+    Route::resource('section', 'SectionController', [
+        'names' => [
+            'index' => 'ajax.section.index',
+            'show' => 'ajax.section.show',
+        ]
+    ]);
+
     Route::resource('tripticket', 'TripTicketController', [
         'names' => [
             'index' => 'ajax.tripticket.index',

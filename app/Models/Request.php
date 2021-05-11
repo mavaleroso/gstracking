@@ -24,6 +24,8 @@ class Request extends Model
      */
     protected $fillable = [
         'user_id',
+        'division_id',
+        'section_id',
         'serial_code',
         'type_vehicle',
         'department',

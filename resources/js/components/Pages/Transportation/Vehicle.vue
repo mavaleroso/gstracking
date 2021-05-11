@@ -95,6 +95,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Image</th>
+                            <th>Company</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Capacity</th>
@@ -266,7 +267,7 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "image" },
-                        { "data": "company_name" },
+                        { "data": "type_vehicle" },
                         { "data": "name" },
                         { "data": "description" },
                         { "data": "template" },

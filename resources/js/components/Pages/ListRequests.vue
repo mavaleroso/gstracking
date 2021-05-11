@@ -76,13 +76,21 @@
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Requestor Details:</h5>
                         <div class="col-lg-6">
                             <h5>Info:</h5>
+                            <input type="hidden" name="division" v-model="division">
+                            <input type="hidden" name="section" v-model="section">
                             <div class="form-group">
                                 <label>Program/Division/Section</label>
                                 <input name="prog_div_sec" type="text" class="form-control" disabled="disabled" v-model="request_dept"/>
+                            </div>
+                            <div class="form-group mt-n7">
                                 <label>Purpose of Travel</label>
                                 <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
+                            </div>
+                            <div class="form-group mt-n7">
                                 <label>Date of Travel</label>
                                 <input type="date" name="date_travel" class="form-control details-input" disabled="disabled" v-model="request_travelDate"/>
+                            </div>
+                            <div class="form-group mt-n7">
                                 <label>Time of Departure</label>
                                 <input type="time" name="time_depart" class="form-control details-input" disabled="disabled" v-model="request_departTime"/>
                             </div>
@@ -161,11 +169,11 @@
                                 <label>Type of Motor Vehicle</label>
                                 <div class="radio-inline">
                                     <label class="radio radio-solid">
-                                        <input type="radio" name="vehicle_type" class="radio-vehicle details-input" value="office" v-model="staff.vehicle_type"/> Office
+                                        <input type="radio" name="vehicle_type" class="radio-vehicle" value="office" v-model="staff.vehicle_type"/> Office
                                         <span></span>
                                     </label>
                                     <label class="radio radio-solid">
-                                        <input type="radio" name="vehicle_type" class="radio-vehicle details-input" value="rental" v-model="staff.vehicle_type"/> Rental
+                                        <input type="radio" name="vehicle_type" class="radio-vehicle" value="rental" v-model="staff.vehicle_type"/> Rental
                                         <span></span>
                                     </label>
                                 </div>
@@ -189,26 +197,34 @@
                                 <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
                             </select>
                         </div>
-                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
-                            <label>Vehicle</label>
-                            <input type="text" name="vehicle_desc" class="form-control details-input" v-model="staff.vehicle_desc" placeholder="Enter vehicle description"/>
-                            <label>Template No.</label>
-                            <input type="text" name="vehicle_template" class="select-remove form-control details-input" v-model="staff.vehicle_template" placeholder="Enter vehicle template no."/>
+                        <div v-if="staff.vehicle_type == 'rental'">
+                            <div  class="form-group">
+                                <label>Vehicle</label>
+                                <input type="text" name="vehicle_desc" class="form-control" v-model="staff.vehicle_desc" placeholder="Enter vehicle description"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Template No.</label>
+                                <input type="text" name="vehicle_template" class="select-remove form-control" v-model="staff.vehicle_template" placeholder="Enter vehicle template no."/>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div v-if="staff.vehicle_type == 'office'" class="form-group driver-select">
+                        <div v-if="staff.vehicle_type == 'office'" class="form-group">
                             <label>Driver</label>
                             <select name="driver" class="form-control select2 staff-required" id="driver-select">
                                 <option label="Label"></option>
                                 <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
                             </select>
                         </div>
-                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
-                            <label>Driver name</label>
-                            <input name="driver_name" type="text" class="form-control details-input" v-model="staff.driver_name" placeholder="Enter driver name"/>
-                            <label>Driver contact #</label>
-                            <input name="driver_contact" type="text" class="select-remove form-control details-input" v-model="staff.driver_contact" placeholder="Enter driver contact no."/>
+                        <div v-if="staff.vehicle_type == 'rental'">
+                            <div class="form-group">
+                                <label>Driver name</label>
+                                <input name="driver_name" type="text" class="form-control" v-model="staff.driver_name" placeholder="Enter driver name"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Driver contact #</label>
+                                <input name="driver_contact" type="text" class="select-remove form-control" v-model="staff.driver_contact" placeholder="Enter driver contact no."/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,6 +256,8 @@ export default {
             request_travelDate: null,
             request_departTime: null,
             request_dept: null,
+            division: null,
+            section: null,
             regions: [],
             provinces: [],
             cities: [],
@@ -249,7 +267,6 @@ export default {
             destinations: [],
             passengers: [],
             request_edit: 0,
-            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             dateTimeEng: null,
             vehicles: [],
             procurements: [],
@@ -265,6 +282,7 @@ export default {
                 driver_name: null,
                 driver_contact: null,
             },
+            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: ['po', 'vehicle_type'],
             officeNames: ['po', 'vehicle_type', 'vehicle', 'driver'],
             rentalNames: ['po', 'vehicle_type', 'vehicle_name', 'vehicle_template','driver_name','driver_contact']
@@ -484,6 +502,8 @@ export default {
                 vm.request_departTime = response.data[0].depart_time;
                 vm.request_dept = response.data[0].department;
                 vm.status = response.data[0].is_status;
+                vm.division = response.data[0].division_code;
+                vm.section = response.data[0].section_code;
 
                 vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
                 vm.getDetails(vm.request_id);
@@ -523,6 +543,12 @@ export default {
                     $('#po-select').on('change', function() {
                         vm.staff.po = $(this).val();
                     });
+
+                    $('.radio-vehicle').on('change', () => {
+                        $('.invalid-feedback-admin').remove();
+                        $('.invalid-admin').removeClass('is-invalid');
+                    });
+
                 }, 500);
 
                 vm.staff.id = vm.request_id;
@@ -688,7 +714,8 @@ export default {
         },
         approved() {
             axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(response => {
-                $('.invalid-feedback').remove();
+                $('.invalid-feedback-admin').remove();
+                $('.invalid-admin').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
                 $('#request-tbl').DataTable().ajax.reload();
@@ -704,38 +731,43 @@ export default {
                     values.push(`${value}`);
                     if (`${key}` == 'vehicle_type') {
                         if ($('.radio-inline').next().length == 0 || $('.radio-inline').next().attr('class').search('invalid-feedback') == -1) {
-                            $('.radio-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            $('.radio-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
                     } else if (`${key}` == 'po' || `${key}` == 'driver' || `${key}` == 'vehicle') {
                         if($('#'+`${key}`+'-select').next().next().length == 0) {
-                            $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                            $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
                     } else if (`${key}` == 'vehicle_desc' || `${key}` == 'vehicle_template' || `${key}` == 'driver_name' || `${key}` == 'driver_contact') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
-                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid invalid-admin');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback invalid-feedback-admin">'+`${value}`+'</div>');
                         }
                     }
-
-                    // if (this.staff.vehicle_type == 'office') {
-                    //     if($('#'+`${key}`+'-select').next().next().length == 0) {
-                    //         $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                    //     }
-                    // } else if (this.staff.vehicle_type == 'rental') {
-
-                    // }
-                    
-
-                   
                 };
-                // for (let i = 0; i < this.names.length; i++) {
-                //     if (keys.indexOf(''+this.names[i]+'') == -1) {
-                //         if ($('#'+this.names[i]+'-select').next().next().attr('class').search('invalid-feedback') != -1) {
-                //             $('#'+this.names[i]+'-select').next().next('.invalid-feedback').remove();
-                //         }
-                //     }
-                   
-                // }
+
+                let names = (this.staff.vehicle_type == 'office') ? this.officeNames:(this.staff.vehicle_type == 'rental') ? this.rentalNames:this.defaultNames;
+                
+                for (let i = 0; i < names.length; i++) {
+                    if (names[i] == 'vehicle_type') {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            if ($('.radio-inline').next().length != 0) {
+                                $('.radio-inline').next('.invalid-feedback').remove();
+                            }
+                        } 
+                    } else if (names[i] == 'po' || names[i] == 'driver' || names[i] == 'vehicle') {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            if ($('#'+names[i]+'-select').next().next().length != 0) {
+                                $('#'+names[i]+'-select').next().next('.invalid-feedback').remove();
+                            }
+                        }
+                    } else {
+                        if (keys.indexOf(''+names[i]+'') == -1) {
+                            $('[name="'+names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+names[i]+'"]').next('.invalid-feedback').remove();
+                        }
+                    }
+                    
+                }
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },

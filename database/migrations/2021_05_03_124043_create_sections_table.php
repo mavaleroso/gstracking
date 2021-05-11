@@ -13,7 +13,7 @@ class CreateSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('section', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('division_id')->nullable(); 
             $table->string('section_code')->nullable();

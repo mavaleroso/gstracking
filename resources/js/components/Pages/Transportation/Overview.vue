@@ -10,7 +10,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Image</th>
-                        <th>Company</th>
                         <th>Type</th>
                         <th>Description</th>
                         <th>Template No.</th>
@@ -50,7 +49,6 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "image" },
-                        { "data": "company_name" },
                         { "data": "type" },
                         { "data": "description" },
                         { "data": "template" },
@@ -66,7 +64,7 @@ export default {
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 6,
                             render: data => {
                                 return dateTimeEng(data);
                             }

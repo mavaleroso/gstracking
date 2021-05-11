@@ -74,33 +74,33 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <p>Image:</p>
-                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.png'">
+                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
                                     <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
-                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.png" alt="">
+                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
                                 </a>
                             </div>
                             <div class="form-group">
                                 <label>Vehicle:</label>
-                                <select class="form-control select2" id="kt_select_vehicle" name="vehicle" v-model="formFields.vehicle_id">
+                                <select class="form-control select2" id="kt_select_vehicle" name="vehicle" v-model="formFields.vehicle_id" :disabled="status=='Completed'">
                                     <option label="Label"></option>
                                     <option v-for="vehicle in vehicles" :data-img="vehicle.image" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} ({{ vehicle.template }})</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Starting ODO:</label>
-                                <input type="number" name="starting_odo" class="form-control required-field" placeholder="Enter starting ODO" v-model="formFields.starting_odo"/>
+                                <input type="number" name="starting_odo" id="starting_odo" class="form-control required-field" placeholder="Enter starting ODO" v-model="formFields.starting_odo" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Ending ODO:</label>
-                                <input type="number" class="form-control" placeholder="Enter ending ODO" v-model="formFields.ending_odo"/>
+                                <input type="number" class="form-control" id="ending_odo" placeholder="Enter ending ODO" v-model="formFields.ending_odo" :disabled="status=='Completed'" />
                             </div>
                             <div class="form-group">
                                 <label>Date submitted to procurement:</label>
-                                <input type="date" name="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc"/>
+                                <input type="date" name="date_submitted_proc" id="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Distance Travelled</label>
-                                <input type="number" class="form-control" placeholder="Enter distance travelled" v-model="formFields.distance_travelled"/>
+                                <input type="number" class="form-control" id="distance_travelled" placeholder="Enter distance travelled" v-model="formFields.distance_travelled" :disabled="status=='Completed'"/>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -111,33 +111,33 @@
                             <hr>
                             <div class="form-group">
                                 <label>Travel Date:</label>
-                                <input type="date" name="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date"/>
+                                <input type="date" name="travel_date" id="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Travel Time:</label>
-                                <input type="time" class="form-control" placeholder="Enter travel time" v-model="formFields.travel_time"/>
+                                <input type="time" class="form-control" id="travel_time" placeholder="Enter travel time" v-model="formFields.travel_time" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Rate per KM:</label>
-                                <input type="number" name="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km"/>
+                                <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Flat Rate:</label>
-                                <input type="number" name="flat_rate" class="form-control required-field" placeholder="Enter flat rate" v-model="formFields.flat_rate"/>
+                                <input type="number" name="flat_rate" id="flat_rate" class="form-control required-field" placeholder="Enter flat rate" v-model="formFields.flat_rate" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>No. of Nights:</label>
-                                <input type="number" class="form-control" placeholder="Enter number of nights" v-model="formFields.no_nights"/>
+                                <input type="number" class="form-control" id="no_of_nights" placeholder="Enter number of nights" v-model="formFields.no_nights" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Rate per Night:</label>
-                                <input type="number" class="form-control" placeholder="Enter rate per night" v-model="formFields.rate_per_night"/>
+                                <input type="number" class="form-control" id="rate_per_night" placeholder="Enter rate per night" v-model="formFields.rate_per_night" :disabled="status=='Completed'"/>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>Remarks:</label>
-                                <textarea class="form-control" name="" id="" cols="30" rows="3" v-model="formFields.remarks"></textarea>
+                                <textarea class="form-control" name="" id="remarks" cols="30" rows="3" v-model="formFields.remarks" :disabled="status=='Completed'"></textarea>
                             </div>
                         </div>
                      </div>
@@ -563,7 +563,6 @@ export default {
                 this.formFields.vehicle_id = response.data[0].vehicle_id;
                 this.formFields.vehicle_name = response.data[0].vehicle_name;
                 this.formFields.status = response.data[0].is_status;
-
                 (response.data[0].is_status == 3)? $('#is-completed').prop('checked', true):$('#is-completed').prop('checked', false);
 
                 $('#kt_select_vehicle').select2({

@@ -15,7 +15,9 @@ class GetListingRequest
     public function execute()
     {
         $query = Request::leftJoin('users_details', 'requests.user_id', '=', 'users_details.user_id')
-                        ->select(['requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname')]);
+                        ->leftJoin('divisions', 'requests.division_id','=','divisions.id')
+                        ->leftJoin('sections', 'requests.section_id','=','sections.id')
+                        ->select(['requests.*', DB::raw('CONCAT(users_details.first_name," ",users_details.last_name) AS fullname'), DB::raw('CONCAT(divisions.division_code, ", ", sections.section_code) AS department')]);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [
