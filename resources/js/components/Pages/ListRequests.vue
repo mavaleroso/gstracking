@@ -75,47 +75,45 @@
                     <div class="card-body row">
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Requestor Details:</h5>
                         <div class="col-lg-6">
-                            <input name="prog_div_sec" type="hidden" v-model="request_dept"/>
+                            <h5>Info:</h5>
                             <div class="form-group">
+                                <label>Program/Division/Section</label>
+                                <input name="prog_div_sec" type="text" class="form-control" disabled="disabled" v-model="request_dept"/>
                                 <label>Purpose of Travel</label>
                                 <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
-                            </div>
-                            <div class="form-group">
                                 <label>Date of Travel</label>
                                 <input type="date" name="date_travel" class="form-control details-input" disabled="disabled" v-model="request_travelDate"/>
-                            </div>
-                            <div class="form-group">
                                 <label>Time of Departure</label>
                                 <input type="time" name="time_depart" class="form-control details-input" disabled="disabled" v-model="request_departTime"/>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Destination</label>
-                                <br>
+                                <h5>Destination:</h5>
+
+                                <label>Region</label>
                                 <select class="form-control select2 details-input" id="kt_select_region" name="region" disabled="disabled">
                                     <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                 </select>
-                                <span class="form-text text-muted">Region</span>
-                                <br>
+
+                                <label class="mt-4">Province</label>
                                 <select class="form-control select2 kt_select2_3 details-input" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
                                     <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                 </select>
-                                <span class="form-text text-muted">Province</span>
-                                <br>
+
+                                <label class="mt-4">City</label>
                                 <select class="form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
                                         <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                     </optgroup>
                                 </select>
-                                <span class="form-text text-muted">City</span>
-                                <br>
+
+                                <label class="mt-4">Barangay</label>
                                 <select class="form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
                                     <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
                                         <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                     </optgroup>
                                 </select>
-                                <span class="form-text text-muted">Barangay</span>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -157,58 +155,60 @@
             <template v-slot:adminbody>
                 <div class="card-body row">
                     <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label>Type of Motor Vehicle</label>
-                            <div class="radio-inline">
-                                <label class="radio radio-solid">
-                                    <input type="radio" name="travel_radio" class="radio-vehicle details-input" value="office" v-model="staff.vehicle_type"/> Office
-                                    <span></span>
-                                </label>
-                                <label class="radio radio-solid">
-                                    <input type="radio" name="travel_radio" class="radio-vehicle details-input" value="rental" v-model="staff.vehicle_type"/> Rental
-                                    <span></span>
-                                </label>
+                    <div class="col-lg-12 row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Type of Motor Vehicle</label>
+                                <div class="radio-inline">
+                                    <label class="radio radio-solid">
+                                        <input type="radio" name="vehicle_type" class="radio-vehicle details-input" value="office" v-model="staff.vehicle_type"/> Office
+                                        <span></span>
+                                    </label>
+                                    <label class="radio radio-solid">
+                                        <input type="radio" name="vehicle_type" class="radio-vehicle details-input" value="rental" v-model="staff.vehicle_type"/> Rental
+                                        <span></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Po Number</label>
+                                <select name="po" class="form-control select2 staff-required" id="po-select">
+                                    <option label="Label"></option>
+                                    <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
                         <div v-if="staff.vehicle_type == 'office'" class="form-group vehicle-select">
                             <label>Vehicle</label>
-                            <select class="form-control select2 staff-required" id="vehicle-select">
+                            <select class="form-control select2 staff-required" id="vehicle-select" name="vehicle">
                                 <option label="Label"></option>
                                 <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
                             </select>
                         </div>
                         <div v-if="staff.vehicle_type == 'rental'" class="form-group">
                             <label>Vehicle</label>
-                            <input type="text" name="vehicle-input" class="form-control details-input" v-model="staff.vehicle_name"/>
-                        </div>
-                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <input type="text" name="vehicle_desc" class="form-control details-input" v-model="staff.vehicle_desc" placeholder="Enter vehicle description"/>
                             <label>Template No.</label>
-                            <input type="text" name="template-input" class="select-remove form-control details-input" v-model="staff.vehicle_template"/>
+                            <input type="text" name="vehicle_template" class="select-remove form-control details-input" v-model="staff.vehicle_template" placeholder="Enter vehicle template no."/>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            <label>Po Number</label>
-                            <select class="form-control select2 staff-required" id="po-select">
-                                <option label="Label"></option>
-                                <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ parseNum(po.totalBalance) }}</option>
-                            </select>
-                        </div>
                         <div v-if="staff.vehicle_type == 'office'" class="form-group driver-select">
                             <label>Driver</label>
-                            <select class="form-control select2 staff-required" id="driver-select">
+                            <select name="driver" class="form-control select2 staff-required" id="driver-select">
                                 <option label="Label"></option>
-                                <option></option>
+                                <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
                             </select>
                         </div>
                         <div v-if="staff.vehicle_type == 'rental'" class="form-group">
                             <label>Driver name</label>
-                            <input type="text" name="driver-name-input" class="form-control details-input" v-model="staff.driver_name"/>
-                        </div>
-                        <div v-if="staff.vehicle_type == 'rental'" class="form-group">
+                            <input name="driver_name" type="text" class="form-control details-input" v-model="staff.driver_name" placeholder="Enter driver name"/>
                             <label>Driver contact #</label>
-                            <input type="text" name="driver-contact-input" class="select-remove form-control details-input" v-model="staff.driver_contact"/>
+                            <input name="driver_contact" type="text" class="select-remove form-control details-input" v-model="staff.driver_contact" placeholder="Enter driver contact no."/>
                         </div>
                     </div>
                 </div>
@@ -253,17 +253,21 @@ export default {
             dateTimeEng: null,
             vehicles: [],
             procurements: [],
+            drivers: [],
             staff: {
                 id: null,
                 vehicle: null,
+                driver: null,
                 po: null,
                 type_vehicle: null,
-                vehicle_name: null,
+                vehicle_desc: null,
                 vehicle_template: null,
                 driver_name: null,
                 driver_contact: null,
             },
-            names: ['po', 'vehicle']
+            defaultNames: ['po', 'vehicle_type'],
+            officeNames: ['po', 'vehicle_type', 'vehicle', 'driver'],
+            rentalNames: ['po', 'vehicle_type', 'vehicle_name', 'vehicle_template','driver_name','driver_contact']
         }
     },  
     components: {
@@ -273,6 +277,7 @@ export default {
         this.getRegion();
         this.getVehicle();
         this.getPo();
+        this.getDriver();
     },
     mounted() {
         this.ini();
@@ -382,6 +387,18 @@ export default {
                     ],
                     columnDefs: [
                         {
+                            targets: 5,
+                            render: data => {
+                                return dateEng(data);
+                            }
+                        },
+                        {
+                            targets: 6,
+                            render: data => {
+                                return timeEng(data); 
+                            }
+                        },
+                        {
                             targets: 7,
                             render: data => {
                                 var status = {
@@ -475,8 +492,6 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
-                    
-
                     $('.radio-vehicle').change(function() {
                         let vehicleType =  $(this).val();
                         if(vehicleType == 'office') {
@@ -497,12 +512,12 @@ export default {
                         placeholder: "Select a PO",
                     });
 
-                    // $('#vehicle-select').on('change', function() {
-                    //     vm.staff.vehicle = $(this).val();
-                    // });
+                    $('#vehicle-select').on('change', function() {
+                        vm.staff.vehicle = $(this).val();
+                    });
 
                     $('#driver-select').on('change', function() {
-                        vm.staff.vehicle = $(this).val();
+                        vm.staff.driver_name = $(this).val();
                     });
 
                     $('#po-select').on('change', function() {
@@ -676,7 +691,6 @@ export default {
                 $('.invalid-feedback').remove();
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
-                // $('#kt_datatable_modal').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
                 setTimeout(() => {
                     this.show(this.current_id, 1);
@@ -688,18 +702,40 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if ($('#'+`${key}`+'-select').next().attr('class').search('invalid-feedback') == -1) {
-                        $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                    }
-                };
-                for (let i = 0; i < this.names.length; i++) {
-                    if (keys.indexOf(''+this.names[i]+'') == -1) {
-                        if ($('#'+this.names[i]+'-select').next().next().attr('class').search('invalid-feedback') != -1) {
-                            $('#'+this.names[i]+'-select').next().next('.invalid-feedback').remove();
+                    if (`${key}` == 'vehicle_type') {
+                        if ($('.radio-inline').next().length == 0 || $('.radio-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.radio-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        }
+                    } else if (`${key}` == 'po' || `${key}` == 'driver' || `${key}` == 'vehicle') {
+                        if($('#'+`${key}`+'-select').next().next().length == 0) {
+                            $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        }
+                    } else if (`${key}` == 'vehicle_desc' || `${key}` == 'vehicle_template' || `${key}` == 'driver_name' || `${key}` == 'driver_contact') {
+                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
+
+                    // if (this.staff.vehicle_type == 'office') {
+                    //     if($('#'+`${key}`+'-select').next().next().length == 0) {
+                    //         $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                    //     }
+                    // } else if (this.staff.vehicle_type == 'rental') {
+
+                    // }
+                    
+
                    
-                }
+                };
+                // for (let i = 0; i < this.names.length; i++) {
+                //     if (keys.indexOf(''+this.names[i]+'') == -1) {
+                //         if ($('#'+this.names[i]+'-select').next().next().attr('class').search('invalid-feedback') != -1) {
+                //             $('#'+this.names[i]+'-select').next().next('.invalid-feedback').remove();
+                //         }
+                //     }
+                   
+                // }
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
@@ -739,6 +775,11 @@ export default {
         getPo() {
             axios.get(BASE_URL + '/api/po').then(response => {
                 this.procurements = response.data;
+            });
+        },
+        getDriver() {
+            axios.get(BASE_URL + '/api/driver').then(response => {
+                this.drivers = response.data;
             });
         },
         parseNum(data) {

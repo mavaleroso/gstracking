@@ -26,8 +26,8 @@ class TravelStoreRequest extends FormRequest
     {
         $rules = [
             'request_id' => 'nullable',
-            'travel_radio' => 'required',
-            'prog_div_sec' => 'required',
+            'travel_radio' => 'nullable',
+            'prog_div_sec' => 'nullable',
             'pur_travel' => 'required',
             'region' => 'required',
             'province' => 'required',
@@ -54,8 +54,6 @@ class TravelStoreRequest extends FormRequest
     public function attributes()
     {
         $attributes = [
-            'travel_radio' => 'Vehicle',
-            'prog_div_sec' => 'Department',
             'pur_travel' => 'Purpose',
             'region' => 'Region',
             'province' => 'Province',
@@ -81,8 +79,6 @@ class TravelStoreRequest extends FormRequest
     public function messages()
     {
         $messages = [
-            'travel_radio' => __('main/validations.required'),
-            'prog_div_sec' => __('main/validations.required'),
             'pur_travel' => __('main/validations.required'),
             'region' => __('main/validations.required'),
             'province' => __('main/validations.required'),

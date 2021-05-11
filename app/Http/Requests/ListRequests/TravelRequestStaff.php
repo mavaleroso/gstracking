@@ -19,28 +19,63 @@ class TravelRequestStaff extends FormRequest
     
     public function rules()
     {
-        return [
+        $data = [
             'id' => 'nullable',
-            'vehicle' => 'required',
+            'vehicle_type' => 'required',
             'po' => 'required',
         ];
+
+        if ($this->request->get('vehicle_type') == 'office') {
+            $data['vehicle'] = 'required';
+            $data['driver'] = 'required';
+        } else if ($this->request->get('vehicle_type') == 'rental') {
+            $data['vehicle_desc'] = 'required';
+            $data['vehicle_template'] = 'required';
+            $data['driver_name'] = 'required';
+            $data['driver_contact'] = 'required';
+        }
+
+        return $data;
     }
 
     public function attributes()
     {
-        return [
-            'vehicle' => 'Vehicle',
+        $data = [
+            'vehicle_type' => 'Type of Vehicle',
             'po' => 'PO',
         ];
+
+        if ($this->request->get('vehicle_type') == 'office') {
+            $data['vehicle'] = 'Vehicle';
+            $data['driver'] = 'Driver';
+        } else if ($this->request->get('vehicle_type') == 'rental') {
+            $data['vehicle_desc'] = 'Description';
+            $data['vehicle_template'] = 'Template';
+            $data['driver_name'] = 'Driver name';
+            $data['driver_contact'] = 'Driver Contact number';
+        }
+
+        return $data;
 
     }
 
     public function messages()
     {
-        return [
-            'vehicle.required' => __('main/validations.required'),
+        $data = [
+            'vehicle_type.required' => __('main/validations.required'),
             'po.required' => __('main/validations.required'),
         ];
 
+        if ($this->request->get('vehicle_type') == 'office') {
+            $data['vehicle'] = __('main/validations.required');
+            $data['driver'] = __('main/validations.required');
+        } else if ($this->request->get('vehicle_type') == 'rental') {
+            $data['vehicle_desc'] = __('main/validations.required');
+            $data['vehicle_template'] = __('main/validations.required');
+            $data['driver_name'] = __('main/validations.required');
+            $data['driver_contact'] = __('main/validations.required');
+        }
+
+        return $data;
     }
 }
