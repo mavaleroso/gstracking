@@ -38,7 +38,7 @@
                             <div class="form-group row">
                                 <label class="col-3">Division</label>
                                 <div class="col-9">
-                                    <select class="details-input form-control select2" id="kt_select_division" name="division">
+                                    <select class="details-input form-control select2" id="kt_select_division" name="division"  @change="onChange($event)">
                                         <option label="Label"></option>
                                         <option v-for="division in divisions" :key="division.id" :value="division.id">{{ division.division_name }}</option>
                                     </select>
@@ -48,7 +48,7 @@
                             <div class="form-group row">
                                 <label class="col-3">Section</label>
                                 <div class="col-9">
-                                    <select class="details-input form-control select2" id="kt_select_section" name="section">
+                                    <select class="details-input form-control select2" id="kt_select_section" name="section" v-model="section">
                                         <option label="Label"></option>
                                         <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.section_name }}</option>
                                     </select>
@@ -150,7 +150,8 @@ export default {
             names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division','section', 'pur_travel', 'time_depart'],
             complete: false,
             requestCode: null,
-            createdAt: null
+            createdAt: null,
+            section:''
         }
     },
     created() {
@@ -203,6 +204,12 @@ export default {
                     this.sections= [];
                     this.activeSections = [];
 
+                });
+
+                $('#kt_select_section').on('change', () => {
+                    let id  = $('#kt_select_section').val();
+                    console.log(id);
+                    this.section = id;
                 });
 
                 $('#kt_select_region').on('change', () => {
@@ -277,8 +284,6 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
-
-            
         },
         saveForm() {
             let requestform = $('#kt_form').serialize();

@@ -41,6 +41,7 @@ class CreateTravel
             'user_id' => auth()->user()->id,
             'serial_code' => $rqt_code,
             'division_id' => $fields['division'],
+            'section_id' => $fields['section'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
             'depart_time' => $fields['time_depart']
@@ -48,8 +49,6 @@ class CreateTravel
         ]);
 
         $check = (isset($fields['brgy']))? 1:0;
-        
-
         for ($i=0; $i < count($fields['city']); $i++) { 
             $request->destinations()->create([
                 'region_id' => $fields['region'],
@@ -57,10 +56,7 @@ class CreateTravel
                 'city_id' => $fields['city'][$i],
                 'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i]
             ]);    
-        }
-
-       
-        
+        }      
         for ($i=1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
                 'name' => $fields['pax_name_'.$i],

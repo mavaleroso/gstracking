@@ -5930,7 +5930,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division', 'section', 'pur_travel', 'time_depart'],
       complete: false,
       requestCode: null,
-      createdAt: null
+      createdAt: null,
+      section: ''
     };
   },
   created: function created() {
@@ -5978,6 +5979,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
           _this.sections = [];
           _this.activeSections = [];
+        });
+        $('#kt_select_section').on('change', function () {
+          var id = $('#kt_select_section').val();
+          console.log(id);
+          _this.section = id;
         });
         $('#kt_select_region').on('change', function () {
           var id = $('#kt_select_region').val();
@@ -52601,7 +52607,12 @@ var render = function() {
                       "select",
                       {
                         staticClass: "details-input form-control select2",
-                        attrs: { id: "kt_select_division", name: "division" }
+                        attrs: { id: "kt_select_division", name: "division" },
+                        on: {
+                          change: function($event) {
+                            return _vm.onChange($event)
+                          }
+                        }
                       },
                       [
                         _c("option", { attrs: { label: "Label" } }),
@@ -52629,8 +52640,31 @@ var render = function() {
                     _c(
                       "select",
                       {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.section,
+                            expression: "section"
+                          }
+                        ],
                         staticClass: "details-input form-control select2",
-                        attrs: { id: "kt_select_section", name: "section" }
+                        attrs: { id: "kt_select_section", name: "section" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.section = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
                       },
                       [
                         _c("option", { attrs: { label: "Label" } }),
