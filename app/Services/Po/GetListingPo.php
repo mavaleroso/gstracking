@@ -10,13 +10,13 @@ class GetListingPo
 {
     /**
      * Get user by email
-     *
+     *1
      * @param string $email
      */
     public function execute()
     {
         $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
-                ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
+                ->select(['procurements.*', DB::raw('IF((procurements.po_amount - SUM(transactions.total_cost)) > 0, (procurements.po_amount - SUM(transactions.total_cost)), procurements.po_amount) as totalBalance')])
                 ->groupBy('procurements.id','procurements.po_no');
         
         $result = Datatable::of($query, request(), [
@@ -24,6 +24,7 @@ class GetListingPo
                 'id',
                 'po_no',
                 'po_amount',
+                'totalBalance',
                 'created_at',
                 'status',
             ],

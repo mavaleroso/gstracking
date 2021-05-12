@@ -26,6 +26,7 @@ class TravelStoreRequest extends FormRequest
     {
         $rules = [
             'request_id' => 'nullable',
+            'travel_radio' => 'nullable',
             'division' => 'required',
             'section' => 'required',
             'pur_travel' => 'required',
@@ -83,6 +84,7 @@ class TravelStoreRequest extends FormRequest
     {
         $messages = [
             'section' => __('main/validations.required'),
+            'division' => __('main/validations.required'),
             'pur_travel' => __('main/validations.required'),
             'region' => __('main/validations.required'),
             'province' => __('main/validations.required'),

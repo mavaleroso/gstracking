@@ -1917,7 +1917,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ini: function ini() {
-      var scripts = ["/assets/plugins/global/plugins.bundle.js", "/assets/plugins/custom/prismjs/prismjs.bundle.js", "/assets/js/scripts.bundle.js", "/assets/plugins/custom/datatables/datatables.bundle.js", "/plugins/fancybox/jquery.fancybox.js", "/js/jquery-ui.js"];
+      var scripts = [// "/assets/plugins/global/plugins.bundle.js",
+        // "/assets/plugins/custom/prismjs/prismjs.bundle.js",
+        // "/assets/js/scripts.bundle.js",
+        // "/assets/plugins/custom/datatables/datatables.bundle.js",
+        // "/plugins/fancybox/jquery.fancybox.js",
+        // "/js/jquery-ui.js",
+      ];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
@@ -3705,7 +3711,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 3,
             render: function render(data) {
-              return data ? toParseNum(data) : 0;
+              return toParseNum(data);
             }
           }, {
             targets: 4,
@@ -3797,8 +3803,44 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4004,7 +4046,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return _defineProperty({
+    return {
       current_id: null,
       status: null,
       request_id: null,
@@ -4017,6 +4059,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       request_travelDate: null,
       request_departTime: null,
       request_dept: null,
+      division: null,
+      section: null,
       regions: [],
       provinces: [],
       cities: [],
@@ -4026,16 +4070,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       destinations: [],
       passengers: [],
       request_edit: 0,
-      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       dateTimeEng: null,
       vehicles: [],
       procurements: [],
+      drivers: [],
       staff: {
         id: null,
         vehicle: null,
-        po: null
-      }
-    }, "names", ['po', 'vehicle']);
+        driver: null,
+        po: null,
+        vehicle_type: null,
+        vehicle_desc: null,
+        vehicle_template: null,
+        driver_name: null,
+        driver_contact: null
+      },
+      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+      defaultNames: ['po', 'vehicle_type'],
+      officeNames: ['po', 'vehicle_type', 'vehicle', 'driver'],
+      rentalNames: ['po', 'vehicle_type', 'vehicle_name', 'vehicle_template', 'driver_name', 'driver_contact']
+    };
   },
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
@@ -4044,6 +4098,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getRegion();
     this.getVehicle();
     this.getPo();
+    this.getDriver();
   },
   mounted: function mounted() {
     this.ini();
@@ -4149,8 +4204,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }, {
             "data": "serial_code"
           }, {
-            "data": "type_vehicle"
-          }, {
             "data": "department"
           }, {
             "data": "purpose"
@@ -4168,7 +4221,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             "data": "id"
           }],
           columnDefs: [{
-            targets: 7,
+            targets: 4,
+            render: function render(data) {
+              return dateEng(data);
+            }
+          }, {
+            targets: 5,
+            render: function render(data) {
+              return timeEng(data);
+            }
+          }, {
+            targets: 6,
             render: function render(data) {
               var status = {
                 1: {
@@ -4191,7 +4254,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
-            targets: 8,
+            targets: 7,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -4255,22 +4318,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         vm.request_departTime = response.data[0].depart_time;
         vm.request_dept = response.data[0].department;
         vm.status = response.data[0].is_status;
+        vm.division = response.data[0].division_code;
+        vm.section = response.data[0].section_code;
         vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
         vm.getDetails(vm.request_id);
         vm.getPassengers(vm.request_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
-          $('#vehicle-select').select2({
-            placeholder: "Select a vehicle"
+          $('.radio-vehicle').change(function () {
+            var vehicleType = $(this).val();
+
+            if (vehicleType == 'office') {
+              $('#vehicle-select').select2({
+                placeholder: "Select a vehicle"
+              });
+              $('#driver-select').select2({
+                placeholder: "Select a driver"
+              });
+              $('#vehicle-select').on('change', function () {
+                vm.staff.vehicle = $(this).val();
+              });
+              $('#driver-select').on('change', function () {
+                vm.staff.driver = $(this).val();
+              });
+            } else if (vehicleType == 'rental') {
+              $('.select-remove').siblings('.select2').remove();
+              $('.select-remove').siblings('.select2').remove();
+            }
           });
           $('#po-select').select2({
             placeholder: "Select a PO"
           });
-          $('#vehicle-select').on('change', function () {
-            vm.staff.vehicle = $(this).val();
-          });
           $('#po-select').on('change', function () {
             vm.staff.po = $(this).val();
+          });
+          $('.radio-vehicle').on('change', function () {
+            $('.invalid-feedback-admin').remove();
+            $('.invalid-admin').removeClass('is-invalid');
           });
         }, 500);
         vm.staff.id = vm.request_id;
@@ -4418,11 +4502,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'travel_radio') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
+          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
             if ("".concat(key) == 'brgy') {
               if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
                 $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
@@ -4441,13 +4521,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         for (var i = 0; i < _this7.names.length; i++) {
-          if (_this7.names[i] == 'travel_radio') {
-            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
-              if ($('.checkbox-inline').next().length != 0) {
-                $('.checkbox-inline').next('.invalid-feedback').remove();
-              }
-            }
-          } else if (_this7.names[i] == 'region' || _this7.names[i] == 'province' || _this7.names[i] == 'city' || _this7.names[i] == 'brgy') {
+          if (_this7.names[i] == 'region' || _this7.names[i] == 'province' || _this7.names[i] == 'city' || _this7.names[i] == 'brgy') {
             if (keys.indexOf('' + _this7.names[i] + '') == -1) {
               if (_this7.names[i] == 'brgy') {
                 if ($('#kt_select_' + _this7.names[i]).next().next().length != 0) {
@@ -4474,10 +4548,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this8 = this;
 
       axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(function (response) {
-        $('.invalid-feedback').remove();
+        $('.invalid-feedback-admin').remove();
+        $('.invalid-admin').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success'); // $('#kt_datatable_modal').modal('toggle');
-
+        showToast(response.data.message, 'success');
         $('#request-tbl').DataTable().ajax.reload();
         setTimeout(function () {
           _this8.show(_this8.current_id, 1);
@@ -4495,17 +4569,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ($('#' + "".concat(key) + '-select').next().attr('class').search('invalid-feedback') == -1) {
-            $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == 'vehicle_type') {
+            if ($('.radio-inline').next().length == 0 || $('.radio-inline').next().attr('class').search('invalid-feedback') == -1) {
+              $('.radio-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ("".concat(key) == 'po' || "".concat(key) == 'driver' || "".concat(key) == 'vehicle') {
+            if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
+              $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ("".concat(key) == 'vehicle_desc' || "".concat(key) == 'vehicle_template' || "".concat(key) == 'driver_name' || "".concat(key) == 'driver_contact') {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid invalid-admin');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin">' + "".concat(value) + '</div>');
+            }
           }
         }
 
         ;
+        var names = _this8.staff.vehicle_type == 'office' ? _this8.officeNames : _this8.staff.vehicle_type == 'rental' ? _this8.rentalNames : _this8.defaultNames;
 
-        for (var i = 0; i < _this8.names.length; i++) {
-          if (keys.indexOf('' + _this8.names[i] + '') == -1) {
-            if ($('#' + _this8.names[i] + '-select').next().next().attr('class').search('invalid-feedback') != -1) {
-              $('#' + _this8.names[i] + '-select').next().next('.invalid-feedback').remove();
+        for (var i = 0; i < names.length; i++) {
+          if (names[i] == 'vehicle_type') {
+            if (keys.indexOf('' + names[i] + '') == -1) {
+              if ($('.radio-inline').next().length != 0) {
+                $('.radio-inline').next('.invalid-feedback').remove();
+              }
+            }
+          } else if (names[i] == 'po' || names[i] == 'driver' || names[i] == 'vehicle') {
+            if (keys.indexOf('' + names[i] + '') == -1) {
+              if ($('#' + names[i] + '-select').next().next().length != 0) {
+                $('#' + names[i] + '-select').next().next('.invalid-feedback').remove();
+              }
+            }
+          } else {
+            if (keys.indexOf('' + names[i] + '') == -1) {
+              $('[name="' + names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
@@ -4557,6 +4656,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios.get(BASE_URL + '/api/po').then(function (response) {
         _this10.procurements = response.data;
+      });
+    },
+    getDriver: function getDriver() {
+      var _this11 = this;
+
+      axios.get(BASE_URL + '/api/driver').then(function (response) {
+        _this11.drivers = response.data;
       });
     },
     parseNum: function parseNum(data) {
@@ -5016,7 +5122,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "trip_ticket"
           }, {
-            "data": "type_vehicle"
+            "data": "vehicle_type"
           }, {
             "data": "travel_date"
           }, {
@@ -5867,6 +5973,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5875,8 +5989,9 @@ __webpack_require__.r(__webpack_exports__);
         depart_time: null,
         department: null,
         gs_staff: null,
-        type_vehicle: null,
+        vehicle_type: null,
         driver: null,
+        driver_contact: null,
         purpose: null,
         vehicle_name: null,
         template: null,
@@ -5961,11 +6076,23 @@ __webpack_require__.r(__webpack_exports__);
         _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
         _this.transaction.department = res.data.transaction[0].department;
         _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
-        _this.transaction.type_vehicle = res.data.transaction[0].type_vehicle;
+        _this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
+
+        if (res.data.transaction[0].vehicle_type == 'office') {
+          _this.transaction.vehicle_name = res.data.transaction[0].name;
+          _this.transaction.template = res.data.transaction[0].template;
+          _this.transaction.driver = res.data.transaction[0].fullname;
+          _this.transaction.driver_contact = res.data.transaction[0].contact;
+        } else if (res.data.transaction[0].vehicle_type == 'office') {
+          _this.transaction.vehicle_name = res.data.transaction[0].vehicle_description;
+          _this.transaction.template = res.data.transaction[0].vehicle_template;
+          _this.transaction.driver = res.data.transaction[0].driver_name;
+          _this.transaction.driver_contact = res.data.transaction[0].driver_contact;
+        }
+
         _this.transaction.driver = res.data.transaction[0].fullname;
         _this.transaction.purpose = res.data.transaction[0].purpose;
         _this.transaction.vehicle_name = res.data.transaction[0].name;
-        _this.transaction.template = res.data.transaction[0].template;
         _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
         _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 
@@ -6853,8 +6980,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -6885,15 +7010,11 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "image"
           }, {
-            "data": "company_name"
-          }, {
             "data": "type"
           }, {
             "data": "description"
           }, {
             "data": "template"
-          }, {
-            "data": "fullname"
           }, {
             "data": "updated_at"
           }],
@@ -6904,7 +7025,7 @@ __webpack_require__.r(__webpack_exports__);
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
-            targets: 7,
+            targets: 5,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -7231,8 +7352,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "image"
           }, {
-            "data": "company_name"
-          }, {
             "data": "name"
           }, {
             "data": "description"
@@ -7246,7 +7365,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: [1, 5],
+            targets: [1, 4],
             orderable: false
           }, {
             targets: -1,
@@ -7286,7 +7405,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
-            targets: 7,
+            targets: 6,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -49701,112 +49820,81 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
+                          _c("h5", [_vm._v("Info:")]),
+                          _vm._v(" "),
                           _c("input", {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.request_dept,
-                                expression: "request_dept"
+                                value: _vm.division,
+                                expression: "division"
                               }
                             ],
-                            attrs: { name: "prog_div_sec", type: "hidden" },
-                            domProps: { value: _vm.request_dept },
+                            attrs: { type: "hidden", name: "division" },
+                            domProps: { value: _vm.division },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.request_dept = $event.target.value
+                                _vm.division = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.section,
+                                expression: "section"
+                              }
+                            ],
+                            attrs: { type: "hidden", name: "section" },
+                            domProps: { value: _vm.section },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.section = $event.target.value
                               }
                             }
                           }),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Type of Motor Vehicle")]),
+                            _c("label", [_vm._v("Program/Division/Section")]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "radio-inline" }, [
-                              _c(
-                                "label",
-                                { staticClass: "radio radio-solid" },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.request_vehicle,
-                                        expression: "request_vehicle"
-                                      }
-                                    ],
-                                    staticClass: "details-input",
-                                    attrs: {
-                                      type: "radio",
-                                      name: "travel_radio",
-                                      disabled: "disabled",
-                                      value: "Office"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.request_vehicle,
-                                        "Office"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.request_vehicle = "Office"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(
-                                    " Office\n                                    "
-                                  ),
-                                  _c("span")
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                { staticClass: "radio radio-solid" },
-                                [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.request_vehicle,
-                                        expression: "request_vehicle"
-                                      }
-                                    ],
-                                    staticClass: "details-input",
-                                    attrs: {
-                                      type: "radio",
-                                      name: "travel_radio",
-                                      disabled: "disabled",
-                                      value: "Rental"
-                                    },
-                                    domProps: {
-                                      checked: _vm._q(
-                                        _vm.request_vehicle,
-                                        "Rental"
-                                      )
-                                    },
-                                    on: {
-                                      change: function($event) {
-                                        _vm.request_vehicle = "Rental"
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(
-                                    " Rental\n                                    "
-                                  ),
-                                  _c("span")
-                                ]
-                              )
-                            ])
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.request_dept,
+                                  expression: "request_dept"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "prog_div_sec",
+                                type: "text",
+                                disabled: "disabled"
+                              },
+                              domProps: { value: _vm.request_dept },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.request_dept = $event.target.value
+                                }
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
+                          _c("div", { staticClass: "form-group mt-n7" }, [
                             _c("label", [_vm._v("Purpose of Travel")]),
                             _vm._v(" "),
                             _c("input", {
@@ -49837,7 +49925,7 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
+                          _c("div", { staticClass: "form-group mt-n7" }, [
                             _c("label", [_vm._v("Date of Travel")]),
                             _vm._v(" "),
                             _c("input", {
@@ -49867,7 +49955,7 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
+                          _c("div", { staticClass: "form-group mt-n7" }, [
                             _c("label", [_vm._v("Time of Departure")]),
                             _vm._v(" "),
                             _c("input", {
@@ -49900,9 +49988,9 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Destination")]),
+                            _c("h5", [_vm._v("Destination:")]),
                             _vm._v(" "),
-                            _c("br"),
+                            _c("label", [_vm._v("Region")]),
                             _vm._v(" "),
                             _c(
                               "select",
@@ -49928,13 +50016,9 @@ var render = function() {
                               0
                             ),
                             _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("Region")]
-                            ),
-                            _vm._v(" "),
-                            _c("br"),
+                            _c("label", { staticClass: "mt-4" }, [
+                              _vm._v("Province")
+                            ]),
                             _vm._v(" "),
                             _c(
                               "select",
@@ -49961,13 +50045,9 @@ var render = function() {
                               0
                             ),
                             _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("Province")]
-                            ),
-                            _vm._v(" "),
-                            _c("br"),
+                            _c("label", { staticClass: "mt-4" }, [
+                              _vm._v("City")
+                            ]),
                             _vm._v(" "),
                             _c(
                               "select",
@@ -50009,13 +50089,9 @@ var render = function() {
                               0
                             ),
                             _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("City")]
-                            ),
-                            _vm._v(" "),
-                            _c("br"),
+                            _c("label", { staticClass: "mt-4" }, [
+                              _vm._v("Barangay")
+                            ]),
                             _vm._v(" "),
                             _c(
                               "select",
@@ -50055,12 +50131,6 @@ var render = function() {
                                 )
                               }),
                               0
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "span",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("Barangay")]
                             )
                           ])
                         ]),
@@ -50284,71 +50354,348 @@ var render = function() {
                       [_vm._v("Administrative Fill-in:")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Vehicle")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2 staff-required",
-                            attrs: { id: "vehicle-select" }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(vehicle) {
-                              return _c(
-                                "option",
-                                {
-                                  key: vehicle.id,
-                                  domProps: { value: vehicle.id }
+                    _c("div", { staticClass: "col-lg-12 row" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Type of Motor Vehicle")]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "radio-inline" }, [
+                            _c("label", { staticClass: "radio radio-solid" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.vehicle_type,
+                                    expression: "staff.vehicle_type"
+                                  }
+                                ],
+                                staticClass: "radio-vehicle",
+                                attrs: {
+                                  type: "radio",
+                                  name: "vehicle_type",
+                                  value: "office"
                                 },
-                                [
-                                  _vm._v(
-                                    _vm._s(vehicle.name) +
-                                      " - " +
-                                      _vm._s(vehicle.fullname)
+                                domProps: {
+                                  checked: _vm._q(
+                                    _vm.staff.vehicle_type,
+                                    "office"
                                   )
-                                ]
-                              )
-                            })
-                          ],
-                          2
-                        )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    return _vm.$set(
+                                      _vm.staff,
+                                      "vehicle_type",
+                                      "office"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                " Office\n                                    "
+                              ),
+                              _c("span")
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "radio radio-solid" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.vehicle_type,
+                                    expression: "staff.vehicle_type"
+                                  }
+                                ],
+                                staticClass: "radio-vehicle",
+                                attrs: {
+                                  type: "radio",
+                                  name: "vehicle_type",
+                                  value: "rental"
+                                },
+                                domProps: {
+                                  checked: _vm._q(
+                                    _vm.staff.vehicle_type,
+                                    "rental"
+                                  )
+                                },
+                                on: {
+                                  change: function($event) {
+                                    return _vm.$set(
+                                      _vm.staff,
+                                      "vehicle_type",
+                                      "rental"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                " Rental\n                                    "
+                              ),
+                              _c("span")
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Po Number")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass:
+                                "form-control select2 staff-required",
+                              attrs: { name: "po", id: "po-select" }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.procurements, function(po) {
+                                return _c(
+                                  "option",
+                                  { key: po.id, domProps: { value: po.id } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(po.po_no) +
+                                        " - ₱ " +
+                                        _vm._s(
+                                          po.totalBalance
+                                            ? _vm.parseNum(po.totalBalance)
+                                            : _vm.parseNum(po.po_amount)
+                                        )
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ])
                       ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Po Number")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2 staff-required",
-                            attrs: { id: "po-select" }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.procurements, function(po) {
-                              return _c(
-                                "option",
-                                { key: po.id, domProps: { value: po.id } },
+                      _vm.staff.vehicle_type == "office"
+                        ? _c(
+                            "div",
+                            { staticClass: "form-group vehicle-select" },
+                            [
+                              _c("label", [_vm._v("Vehicle")]),
+                              _vm._v(" "),
+                              _c(
+                                "select",
+                                {
+                                  staticClass:
+                                    "form-control select2 staff-required",
+                                  attrs: {
+                                    id: "vehicle-select",
+                                    name: "vehicle"
+                                  }
+                                },
                                 [
-                                  _vm._v(
-                                    _vm._s(po.po_no) +
-                                      " - ₱ " +
-                                      _vm._s(_vm.parseNum(po.totalBalance))
-                                  )
-                                ]
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.vehicles, function(vehicle) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: vehicle.id,
+                                        domProps: { value: vehicle.id }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(vehicle.name) +
+                                            " - " +
+                                            _vm._s(vehicle.template)
+                                        )
+                                      ]
+                                    )
+                                  })
+                                ],
+                                2
                               )
-                            })
-                          ],
-                          2
-                        )
-                      ])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Vehicle")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.vehicle_desc,
+                                    expression: "staff.vehicle_desc"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  name: "vehicle_desc",
+                                  placeholder: "Enter vehicle description"
+                                },
+                                domProps: { value: _vm.staff.vehicle_desc },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.staff,
+                                      "vehicle_desc",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Template No.")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.vehicle_template,
+                                    expression: "staff.vehicle_template"
+                                  }
+                                ],
+                                staticClass: "select-remove form-control",
+                                attrs: {
+                                  type: "text",
+                                  name: "vehicle_template",
+                                  placeholder: "Enter vehicle template no."
+                                },
+                                domProps: { value: _vm.staff.vehicle_template },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.staff,
+                                      "vehicle_template",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _vm.staff.vehicle_type == "office"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Driver")]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                staticClass:
+                                  "form-control select2 staff-required",
+                                attrs: { name: "driver", id: "driver-select" }
+                              },
+                              [
+                                _c("option", { attrs: { label: "Label" } }),
+                                _vm._v(" "),
+                                _vm._l(_vm.drivers, function(driver) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: driver.id,
+                                      domProps: { value: driver.id }
+                                    },
+                                    [_vm._v(_vm._s(driver.fullname))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.staff.vehicle_type == "rental"
+                        ? _c("div", [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Driver name")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.driver_name,
+                                    expression: "staff.driver_name"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  name: "driver_name",
+                                  type: "text",
+                                  placeholder: "Enter driver name"
+                                },
+                                domProps: { value: _vm.staff.driver_name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.staff,
+                                      "driver_name",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Driver contact #")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.staff.driver_contact,
+                                    expression: "staff.driver_contact"
+                                  }
+                                ],
+                                staticClass: "select-remove form-control",
+                                attrs: {
+                                  name: "driver_contact",
+                                  type: "text",
+                                  placeholder: "Enter driver contact no."
+                                },
+                                domProps: { value: _vm.staff.driver_contact },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.staff,
+                                      "driver_contact",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        : _vm._e()
                     ])
                   ])
                 ]
@@ -50431,8 +50778,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Code")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Vehicle Type")]),
               _vm._v(" "),
               _c("th", [_vm._v("Department")]),
               _vm._v(" "),
@@ -50663,7 +51008,7 @@ var render = function() {
                             attrs: {
                               href: _vm.vehicle_image
                                 ? "/storage/images/" + _vm.vehicle_image
-                                : "/storage/images/vehicle-photo-default.png"
+                                : "/storage/images/vehicle-photo-default.jpg"
                             }
                           },
                           [
@@ -50681,7 +51026,7 @@ var render = function() {
                                     "travel-vehicle-img img-fluid img-thumbnail",
                                   attrs: {
                                     src:
-                                      "/storage/images/vehicle-photo-default.png",
+                                      "/storage/images/vehicle-photo-default.jpg",
                                     alt: ""
                                   }
                                 })
@@ -51366,10 +51711,10 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
-                                              value: svc.type_vehicle
+                                              value: svc.vehicle_type
                                             }
                                           },
-                                          [_vm._v(_vm._s(svc.type_vehicle))]
+                                          [_vm._v(_vm._s(svc.vehicle_type))]
                                         )
                                       }
                                     )
@@ -52517,13 +52862,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.transaction.type_vehicle,
-                          expression: "transaction.type_vehicle"
+                          value: _vm.transaction.vehicle_type,
+                          expression: "transaction.vehicle_type"
                         }
                       ],
                       staticClass: "input-text w-100 mb-3 mt-n2",
                       attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.type_vehicle },
+                      domProps: { value: _vm.transaction.vehicle_type },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -52531,7 +52876,7 @@ var render = function() {
                           }
                           _vm.$set(
                             _vm.transaction,
-                            "type_vehicle",
+                            "vehicle_type",
                             $event.target.value
                           )
                         }
@@ -52972,6 +53317,38 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Driver Contact:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.driver_contact,
+                          expression: "transaction.driver_contact"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.driver_contact },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "driver_contact",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
                   _c("td", [
                     _c("p", [_vm._v("Confirmed No. of Passenger/s:")])
                   ]),
@@ -53183,7 +53560,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
-                  _c("label", { staticClass: "col-3" }, [_vm._v("Division")]),
+                  _c("label", { staticClass: "col-3 mt-3" }, [
+                    _vm._v("Division")
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-9" }, [
                     _c(
@@ -53217,7 +53596,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
-                  _c("label", { staticClass: "col-3" }, [_vm._v("Section")]),
+                  _c("label", { staticClass: "col-3 mt-3" }, [
+                    _vm._v("Section")
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-9" }, [
                     _c(
@@ -53487,7 +53868,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3" }, [_vm._v("Purpose of travel")]),
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Purpose of travel")]),
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
@@ -53502,7 +53883,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3" }, [_vm._v("Date of Travel")]),
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Date of Travel")]),
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
@@ -53517,7 +53898,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3" }, [_vm._v("Time of Departure")]),
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Time of Departure")]),
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
@@ -54025,15 +54406,11 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("th", [_vm._v("Image")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Company")]),
-                  _vm._v(" "),
                   _c("th", [_vm._v("Type")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Description")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Template No.")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Driver")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Updated")])
                 ])

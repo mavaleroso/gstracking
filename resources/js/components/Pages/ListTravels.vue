@@ -74,9 +74,9 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <p>Image:</p>
-                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.png'">
+                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
                                     <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
-                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.png" alt="">
+                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
                                 </a>
                             </div>
                             <div class="form-group">
@@ -168,7 +168,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.type_vehicle">{{ svc.type_vehicle }}</option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.vehicle_type">{{ svc.vehicle_type }}</option>
                             </select>
                         </div>
                     </div>
@@ -418,7 +418,7 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "trip_ticket" },
-                        { "data": "type_vehicle" },
+                        { "data": "vehicle_type" },
                         { "data": "travel_date" },
                         { "data": "starting_odo" },
                         { "data": "ending_odo" },

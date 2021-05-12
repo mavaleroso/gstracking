@@ -14,7 +14,6 @@ class GetCity
      */
     public function execute(string $id)
     {
-        // $cityId = Barangay::where('id', $id)->first();
         return City::where('id', $id)->first();
     }
 }

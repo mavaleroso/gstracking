@@ -10,11 +10,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Image</th>
-                        <th>Company</th>
                         <th>Type</th>
                         <th>Description</th>
                         <th>Template No.</th>
-                        <th>Driver</th>
                         <th>Updated</th>
                     </tr>
                 </thead>
@@ -50,11 +48,9 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "image" },
-                        { "data": "company_name" },
                         { "data": "type" },
                         { "data": "description" },
                         { "data": "template" },
-                        { "data": "fullname" },
                         { "data": "updated_at" }
                     ],
                     columnDefs: [
@@ -66,7 +62,7 @@ export default {
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 5,
                             render: data => {
                                 return dateTimeEng(data);
                             }

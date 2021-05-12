@@ -13,7 +13,7 @@ class CreateOfficeVehiclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('office_vehicle', function (Blueprint $table) {
+        Schema::create('office_vehicles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vehicle_id')->nullable();
             $table->unsignedBigInteger('driver_id')->nullable();

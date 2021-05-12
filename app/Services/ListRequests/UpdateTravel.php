@@ -36,8 +36,6 @@ class UpdateTravel
         
         $request->update([
             'user_id' => auth()->user()->id,
-            'type_vehicle' => $fields['travel_radio'],
-            'department' => $fields['prog_div_sec'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
             'depart_time' => $fields['time_depart']

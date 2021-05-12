@@ -15,8 +15,7 @@ class GetListingVehicle
      */
     public function execute()
     {
-        $query = Vehicle::join('service_providers', 'vehicles.service_provider_id', '=', 'service_providers.id')
-                        ->select(['vehicles.*', 'service_providers.company_name']);
+        $query = Vehicle::select(['*']);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [

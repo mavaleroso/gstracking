@@ -36,7 +36,7 @@
                             <input name="request_id" type="hidden" value=""/>
                             <h3 class="text-dark font-weight-bold mb-10">Requestor Info:</h3>
                             <div class="form-group row">
-                                <label class="col-3">Division</label>
+                                <label class="col-3 mt-3">Division</label>
                                 <div class="col-9">
                                     <select class="details-input form-control select2" id="kt_select_division" name="division"  @change="onChange($event)">
                                         <option label="Label"></option>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Section</label>
+                                <label class="col-3 mt-3">Section</label>
                                 <div class="col-9">
                                     <select class="details-input form-control select2" id="kt_select_section" name="section" v-model="section">
                                         <option label="Label"></option>
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Purpose of travel</label>
+                                <label class="col-3 mt-3">Purpose of travel</label>
                                 <div class="col-9">
                                     <input name="pur_travel" type="text" class="details-input form-control" />
                                 </div>
@@ -86,13 +86,13 @@
                                 
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Date of Travel</label>
+                                <label class="col-3 mt-3">Date of Travel</label>
                                 <div class="col-9">
                                     <input name="date_travel" class="details-input form-control" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Time of Departure</label>
+                                <label class="col-3 mt-3">Time of Departure</label>
                                 <div class="col-9">
                                     <input name="time_depart" class="details-input form-control" type="time" value="" />
                                 </div>

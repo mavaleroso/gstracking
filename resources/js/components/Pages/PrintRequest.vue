@@ -29,7 +29,7 @@
                                 <p class="">Type of Motor Vehicle:</p>
                             </td>
                             <td class="w-10">
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.type_vehicle" disabled>
+                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.vehicle_type" disabled>
                             </td>
                             <td>
                                 <input class="input-text w-100 mb-3 mt-n2" type="text" disabled>
@@ -152,6 +152,14 @@
                         </tr>
                         <tr>
                             <td>
+                                <p>Driver Contact:</p>
+                            </td>
+                            <td>
+                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.driver_contact" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <p>Confirmed No. of Passenger/s:</p>
                             </td>
                             <td>
@@ -186,8 +194,9 @@ export default {
                 depart_time: null,
                 department: null,
                 gs_staff: null,
-                type_vehicle: null,
+                vehicle_type: null,
                 driver: null,
+                driver_contact: null,
                 purpose: null,
                 vehicle_name: null,
                 template: null,
@@ -267,11 +276,22 @@ export default {
                 this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
                 this.transaction.department = res.data.transaction[0].department;
                 this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
-                this.transaction.type_vehicle = res.data.transaction[0].type_vehicle;
+                this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
+
+                if (res.data.transaction[0].vehicle_type == 'office') {
+                    this.transaction.vehicle_name = res.data.transaction[0].name;
+                    this.transaction.template = res.data.transaction[0].template;
+                    this.transaction.driver = res.data.transaction[0].fullname;
+                    this.transaction.driver_contact = res.data.transaction[0].contact;
+                } else if (res.data.transaction[0].vehicle_type == 'office') {
+                    this.transaction.vehicle_name = res.data.transaction[0].vehicle_description;
+                    this.transaction.template = res.data.transaction[0].vehicle_template;
+                    this.transaction.driver = res.data.transaction[0].driver_name;
+                    this.transaction.driver_contact = res.data.transaction[0].driver_contact;
+                }
                 this.transaction.driver = res.data.transaction[0].fullname;
                 this.transaction.purpose = res.data.transaction[0].purpose;
                 this.transaction.vehicle_name = res.data.transaction[0].name;
-                this.transaction.template = res.data.transaction[0].template;
                 this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
                 this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 

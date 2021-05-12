@@ -27,7 +27,9 @@ class Transaction extends Model
      */
     protected $fillable = [
         'request_id',
-        'vehicle_id',
+        'office_id',
+        'rental_id',
+        'vehicle_type',
         'procurement_id',
         'trip_ticket',
         'starting_odo',

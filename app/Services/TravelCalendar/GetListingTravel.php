@@ -16,7 +16,9 @@ class GetListingTravel
     public function execute()
     {
         $query = Transaction::leftJoin('requests','transactions.request_id','=','requests.id')
-                            ->leftJoin('vehicles','transactions.vehicle_id','=','vehicles.id')
+                            ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
+                            ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
+                            ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                             ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name'])->get();
         
         foreach ($query as $key) {
@@ -30,7 +32,9 @@ class GetListingTravel
         
         $data['records'] = $query;
 
-        $data['data'] = Vehicle::join('transactions','transactions.vehicle_id','=','vehicles.id')
+        $data['data'] = Transaction::leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
+                        ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
+                        ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                         ->select(['vehicles.*'])
                         ->groupBy('vehicles.id')
                         ->get();

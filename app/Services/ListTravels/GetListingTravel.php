@@ -16,48 +16,50 @@ class GetListingTravel
     public function execute($fields)
     {
         $query = Transaction::leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
-                        ->leftJoin('vehicles', 'transactions.vehicle_id', '=', 'vehicles.id')
+                        ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
+                        ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
+                        ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                         ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')
-                        ->select(['transactions.id','transactions.trip_ticket', 'requests.type_vehicle', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks']);
-                        if ($fields['tripTicket']){
-                            $query->where('transactions.trip_ticket', 'like' , '%'.$fields['tripTicket'].'%');
-                        }
-                        if ($fields['serviceProviders']){
-                            $query->where('requests.type_vehicle', 'like' , '%'.$fields['serviceProviders'].'%');
-                        }
-                        if ($fields['dateTravel']){
-                            $query->where('requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%');
-                        }
-                        if ($fields['procurementSub']){
-                            $query->where('transactions.date_submit_proc', 'like' , '%'.$fields['procurementSub'].'%');
-                        }
-                        if ($fields['distanceTravelled']){
-                            $query->where('transactions.travelled', 'like' , '%'.$fields['distanceTravelled'].'%');
-                        }
-                        if ($fields['poNumber']){
-                            $query->where('procurements.po_no', 'like' , '%'.$fields['poNumber'].'%');
-                        }
-                        if ($fields['poAmount']){
-                            $query->where('procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%');
-                        }
-                        if ($fields['rateperKm']){
-                            $query->where('transactions.rate_per_km', 'like' , '%'.$fields['rateperKm'].'%');
-                        }
-                        if ($fields['flatRate']){
-                            $query->where('transactions.flat_rate', 'like' , '%'.$fields['flatRate'].'%');
-                        }
-                        if ($fields['rateperNight']){
-                            $query->where('transactions.rate_per_night', 'like' , '%'.$fields['rateperNight'].'%');
-                        }
-                        if ($fields['numberofNights']){
-                            $query->where('transactions.nights_count', 'like' , '%'.$fields['numberofNights'].'%');
-                        }
+                        ->select(['transactions.id','transactions.trip_ticket', 'transactions.vehicle_type', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks']);
 
+        if ($fields['tripTicket']){
+            $query->where('transactions.trip_ticket', 'like' , '%'.$fields['tripTicket'].'%');
+        }
+        if ($fields['serviceProviders']){
+            $query->where('transactions.vehicle_type', 'like' , '%'.$fields['serviceProviders'].'%');
+        }
+        if ($fields['dateTravel']){
+            $query->where('requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%');
+        }
+        if ($fields['procurementSub']){
+            $query->where('transactions.date_submit_proc', 'like' , '%'.$fields['procurementSub'].'%');
+        }
+        if ($fields['distanceTravelled']){
+            $query->where('transactions.travelled', 'like' , '%'.$fields['distanceTravelled'].'%');
+        }
+        if ($fields['poNumber']){
+            $query->where('procurements.po_no', 'like' , '%'.$fields['poNumber'].'%');
+        }
+        if ($fields['poAmount']){
+            $query->where('procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%');
+        }
+        if ($fields['rateperKm']){
+            $query->where('transactions.rate_per_km', 'like' , '%'.$fields['rateperKm'].'%');
+        }
+        if ($fields['flatRate']){
+            $query->where('transactions.flat_rate', 'like' , '%'.$fields['flatRate'].'%');
+        }
+        if ($fields['rateperNight']){
+            $query->where('transactions.rate_per_night', 'like' , '%'.$fields['rateperNight'].'%');
+        }
+        if ($fields['numberofNights']){
+            $query->where('transactions.nights_count', 'like' , '%'.$fields['numberofNights'].'%');
+        }
 
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'trip_ticket',
-                'type_vehicle',
+                'vehicle_type',
                 'travel_date',
                 'starting_odo',
                 'ending_odo',
@@ -73,7 +75,7 @@ class GetListingTravel
             'orderable' => [
                 'id',
                 'trip_ticket',
-                'type_vehicle',
+                'vehicle_type',
                 'travel_date',
                 'starting_odo',
                 'ending_odo',

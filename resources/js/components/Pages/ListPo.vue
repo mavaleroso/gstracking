@@ -292,7 +292,8 @@ export default {
                         {
                             targets: 3,
                             render: data => {
-                                return (data)? toParseNum(data):0;
+
+                                return toParseNum(data);
                             }
                         },
                         {

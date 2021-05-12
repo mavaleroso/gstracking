@@ -15,6 +15,10 @@ class CreateRentalVehiclesTable extends Migration
     {
         Schema::create('rental_vehicles', function (Blueprint $table) {
             $table->id();
+            $table->string('vehicle_description')->nullable();
+            $table->string('vehicle_template')->nullable();
+            $table->string('driver_name')->nullable();
+            $table->string('driver_contact')->nullable();
             $table->timestamps();
         });
     }
