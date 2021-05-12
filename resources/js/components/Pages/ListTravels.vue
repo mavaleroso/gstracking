@@ -168,7 +168,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.type_vehicle">{{ svc.type_vehicle }}</option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.vehicle_type">{{ svc.vehicle_type }}</option>
                             </select>
                         </div>
                     </div>
@@ -418,7 +418,7 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "trip_ticket" },
-                        { "data": "type_vehicle" },
+                        { "data": "vehicle_type" },
                         { "data": "travel_date" },
                         { "data": "starting_odo" },
                         { "data": "ending_odo" },

@@ -13,7 +13,6 @@
                         <th>Type</th>
                         <th>Description</th>
                         <th>Template No.</th>
-                        <th>Driver</th>
                         <th>Updated</th>
                     </tr>
                 </thead>
@@ -52,7 +51,6 @@ export default {
                         { "data": "type" },
                         { "data": "description" },
                         { "data": "template" },
-                        { "data": "fullname" },
                         { "data": "updated_at" }
                     ],
                     columnDefs: [
@@ -64,7 +62,7 @@ export default {
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 5,
                             render: data => {
                                 return dateTimeEng(data);
                             }

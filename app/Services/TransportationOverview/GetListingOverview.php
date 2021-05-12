@@ -15,8 +15,7 @@ class GetListingOverview
      */
     public function execute()
     {
-        $query = Vehicle::leftJoin('drivers', 'vehicles.driver_id', '=', 'drivers.id')
-                        ->select(['vehicles.*','drivers.fullname']);
+        $query = Vehicle::select(['*']);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [
@@ -24,8 +23,6 @@ class GetListingOverview
                 'name',
                 'description',
                 'template',
-                'fullname',
-                'type'
             ],
             'orderable' => [
                 'id',
@@ -33,8 +30,6 @@ class GetListingOverview
                 'name',
                 'description',
                 'template',
-                'fullname',
-                'type'
             ]
         ]);
 

@@ -5122,7 +5122,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "trip_ticket"
           }, {
-            "data": "type_vehicle"
+            "data": "vehicle_type"
           }, {
             "data": "travel_date"
           }, {
@@ -6980,7 +6980,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -7017,8 +7016,6 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "template"
           }, {
-            "data": "fullname"
-          }, {
             "data": "updated_at"
           }],
           columnDefs: [{
@@ -7028,7 +7025,7 @@ __webpack_require__.r(__webpack_exports__);
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
-            targets: 6,
+            targets: 5,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -51714,10 +51711,10 @@ var render = function() {
                                           {
                                             key: svc.id,
                                             domProps: {
-                                              value: svc.type_vehicle
+                                              value: svc.vehicle_type
                                             }
                                           },
-                                          [_vm._v(_vm._s(svc.type_vehicle))]
+                                          [_vm._v(_vm._s(svc.vehicle_type))]
                                         )
                                       }
                                     )
@@ -54414,8 +54411,6 @@ var staticRenderFns = [
                   _c("th", [_vm._v("Description")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Template No.")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Driver")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Updated")])
                 ])

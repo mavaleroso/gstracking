@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Request as TravelRequest;
+use App\Models\Transaction;
 
 class ServiceProviderController extends Controller
 {
@@ -15,7 +16,7 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-        return response()->json(TravelRequest::select('type_vehicle')->groupBy('type_vehicle')->get());
+        return response()->json(Transaction::select('vehicle_type')->groupBy('vehicle_type')->get());
     }
 
     /**
