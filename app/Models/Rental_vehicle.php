@@ -12,7 +12,7 @@ class Rental_vehicle extends Model
     protected $table = 'rental_vehicles';
 
     protected $fillable = [
-        'vehicle_description',
+        'vehicle_name',
         'vehicle_template',
         'driver_name',
         'driver_contact',

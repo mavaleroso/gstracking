@@ -30,9 +30,9 @@
                                     <label>Status:</label>
                                     <select class="form-control select2" id="status" name="status" v-model="formFields.status">
                                         <option label="Label"></option>
-                                        <option>Ongoing</option>
-                                        <option>Approved</option>
-                                        <option>Completed</option>
+                                        <option value="1">Ongoing</option>
+                                        <option value="2">Approved</option>
+                                        <option value="3">Completed</option>
                                     </select>
                                 </div>
                             </div>
@@ -292,14 +292,31 @@ export default {
                         {
                             targets: 3,
                             render: data => {
-
                                 return toParseNum(data);
                             }
                         },
                         {
                             targets: 4,
                             render: data => {
-                                return '<span class="label label-inline label-primary">'+ data +'</span>';
+                                var status = {
+                                    1: {
+                                        'title': 'Pending',
+                                        'class': ' label-light-warning'
+                                    },
+                                    2: {
+                                        'title': 'Approved',
+                                        'class': ' label-light-primary'
+                                    },
+                                    3: {
+                                        'title': 'Completed',
+                                        'class': ' label-light-success'
+                                    },
+                                    4: {
+                                        'title': 'Declined',
+                                        'class': ' label-light-danger'
+                                    }
+                                };
+                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
                             }
                         },
                         {

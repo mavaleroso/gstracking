@@ -26,8 +26,14 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Division</th>
+                            <th>Section</th>
                             <th>Trip Ticket</th>
                             <th>Service Provider</th>
+                            <th>Vehicle</th>
+                            <th>Template</th>
+                            <th>Driver</th>
+                            <th>Contact</th>
                             <th>Date of Travel</th>
                             <th>Starting ODO</th>
                             <th>Ending Odo</th>
@@ -154,6 +160,24 @@
             <template v-slot:body v-if="dialogshow == true">
                 <form id="request-form" class="form">
                     <div class="form-group row">
+                    <label class="col-3">Division</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_division" name="division" v-model="filterActive.division">
+                                <option label="Label"></option>
+                                <option v-for="div in filterDropdown.division" :key="div.id" :value="div.id">{{ div.division_name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Section</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <select class="form-control select2 details-input" id="kt_select_section" name="section" v-model="filterActive.section">
+                                <option label="Label"></option>
+                                <option v-for="sec in filterDropdown.section" :key="sec.id" :value="sec.id">{{ sec.section_name }}</option>
+                            </select>
+                        </div>
+                    </div>
                     <label class="col-3">Trip ticket</label>
                     <div class="col-9">
                         <div class="checkbox-inline">
@@ -170,6 +194,30 @@
                                 <option label="Label"></option>
                                 <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.vehicle_type">{{ svc.vehicle_type }}</option>
                             </select>
+                        </div>
+                    </div>
+                    <label class="col-3">Vehicle Name</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="text" class="form-control required-field"  id="vehicle-name" name="vehicle_name" placeholder="Vehicle Name" v-model="filterActive.vehicleName"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Vehicle Template</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="text" class="form-control required-field"  id="vehicle-template" name="vehicle_template" placeholder="Template Number" v-model="filterActive.vehicleTemplate"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Driver Name</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="text" class="form-control required-field"  id="driver-name" name="driver_name" placeholder="Driver Name" v-model="filterActive.driverName"/>
+                        </div>
+                    </div>
+                    <label class="col-3">Contact</label>
+                    <div class="col-9">
+                        <div class="checkbox-inline">
+                            <input type="text" class="form-control required-field"  id="driver-contact" name="driver_contact" placeholder="Contact Number" v-model="filterActive.driverContact"/>
                         </div>
                     </div>
                     <label class="col-3">Date Travel</label>
@@ -282,9 +330,17 @@ export default {
             filterDropdown: {
                 tripTicket : [],
                 serviceProvider: [],
-                poNumber: '',
+                division: [],
+                section: [],
+                poNumber: [],
             },
             filterActive: {
+                vehicleName: null,
+                vehicelTemplate: null,
+                driverName: null,
+                driverContact: null,
+                division: null,
+                section: null,
                 tripTicket: null,
                 serviceProviders: null,
                 dateTravel:null,
@@ -310,6 +366,7 @@ export default {
         this.getTripTicket();
         this.getServiceProviders();
         this.getPoNumber();
+        this.getDivision();
     },
     mounted() {
         this.ini();
@@ -417,8 +474,14 @@ export default {
                     },
                     columns: [
                         { "data": "id" },
+                        { "data": "division_code" },
+                        { "data": "section_code" },
                         { "data": "trip_ticket" },
                         { "data": "vehicle_type" },
+                        { "data": "vehicle_name" },
+                        { "data": "vehicle_template" },
+                        { "data": "driver_name" },
+                        { "data": "driver_contact" },
                         { "data": "travel_date" },
                         { "data": "starting_odo" },
                         { "data": "ending_odo" },
@@ -439,44 +502,44 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 1,
+                            targets: 3,
                             render: data => {
                                 return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">'+data+'</span>';
                             }
                         },
                         {
-                            targets: 3,
+                            targets: 9,
                             render: data => {
                                 return dateEng(data);
                             }
                         },
                         {
-                            targets: [9, 10, 11, 12, 14],
+                            targets: [15, 16, 17, 18, 20],
                             render: data => {
                                 let values = (data)? toParseNum(data):'';
                                 return values;
                             }
                         },
                         {
-                            targets: [7, 13],
+                            targets: [13, 19],
                             render: data => {
                                 let values = (data)? data:'';
                                 return values;
                             }
                         },
                         {
-                            targets: [13, 16],
+                            targets: [19, 22],
                             orderable: false,
                         },
                         {
-                            targets: 17,
+                            targets: 23,
                             orderable: false,
                             render: data => {
                                 return dateTimeEng(data);
                             }
                         },
                         {
-                            targets: 15,
+                            targets: 21,
                             render: data => {
                                 var status = {
                                     1: {'title': 'Pending', 'class': ' label-light-warning'},
@@ -676,6 +739,14 @@ export default {
             vm.dialogshow = true;
             $( "#dialog" ).dialog({ width: 600, height: 700 });
             setTimeout(()=>{
+                $('#kt_select_division').select2({
+                    placeholder: "Division",
+                    allowClear: true
+                });
+                $('#kt_select_section').select2({
+                    placeholder: "Section",
+                    allowClear: true
+                });
                 $('#kt_select_trip_ticket').select2({
                     placeholder: "Trip Ticket",
                     allowClear: true
@@ -690,6 +761,14 @@ export default {
                 });
                 $('#kt_select_service_provider').change(function() {
                     vm.filterActive.serviceProviders = $(this).val();
+                });
+                $('#kt_select_division').change(function() {
+                    let id = $(this).val();
+                    vm.filterActive.division = id;
+                    vm.getSection(id);
+                });
+                $('#kt_select_section').change(function() {
+                    vm.filterActive.section = $(this).val();
                 });
                 $('#kt_select_trip_ticket').change(function() {
                     vm.filterActive.tripTicket = $(this).val();
@@ -721,6 +800,16 @@ export default {
         getPoNumber() {
             axios.get(BASE_URL + "/api/ponumber").then(response => {
                 this.filterDropdown.poNumber = response.data;
+            });
+        },
+        getDivision() {
+            axios.get(BASE_URL + "/api/division").then(response => {
+                this.filterDropdown.division = response.data;
+            });
+        },
+        getSection(id) {
+            axios.get(BASE_URL + "/api/section/"+id).then(response => {
+                this.filterDropdown.section = response.data;
             });
         },
     }
