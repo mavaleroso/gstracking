@@ -2979,6 +2979,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3001,6 +3017,10 @@ __webpack_require__.r(__webpack_exports__);
       activities: {
         upcoming: [],
         recent: []
+      },
+      division: {
+        dep: [],
+        count: []
       }
     };
   },
@@ -3137,6 +3157,43 @@ __webpack_require__.r(__webpack_exports__);
           },
           xaxis: {
             categories: JSON.parse(JSON.stringify(vm.travel.month))
+          },
+          colors: [primary]
+        };
+        var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart.render();
+      };
+
+      var DivisionChart = function DivisionChart() {
+        var apexChart = "#division-chart";
+        var options = {
+          series: [{
+            name: "Division",
+            data: JSON.parse(JSON.stringify(vm.division.count))
+          }],
+          chart: {
+            height: 350,
+            type: 'area',
+            redrawOnParentResize: true,
+            zoom: {
+              enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          grid: {
+            row: {
+              colors: ['#f3f3f3', 'transparent'],
+              // takes an array which will be repeated on columns
+              opacity: 0.5
+            }
+          },
+          xaxis: {
+            categories: JSON.parse(JSON.stringify(vm.division.dep))
           },
           colors: [primary]
         };
@@ -3379,6 +3436,7 @@ __webpack_require__.r(__webpack_exports__);
           LineChart();
           BarChart();
           PieChart();
+          DivisionChart();
         }
       };
     },
@@ -49079,7 +49137,9 @@ var render = function() {
     _vm._v(" "),
     _vm._m(5),
     _vm._v(" "),
-    _vm._m(6)
+    _vm._m(6),
+    _vm._v(" "),
+    _vm._m(7)
   ])
 }
 var staticRenderFns = [
@@ -49191,12 +49251,12 @@ var staticRenderFns = [
       _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
+            _c("h3", { staticClass: "card-label" }, [_vm._v("Division")])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "chart_2" } })
+          _c("div", { attrs: { id: "division-chart" } })
         ])
       ])
     ])
@@ -49269,7 +49329,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-8 col-lg-6" }, [
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "chart_2" } })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
       _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "card-title" }, [

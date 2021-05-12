@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Request;
 use App\Models\Transaction;
 use App\Models\Procurement;
+use App\Models\Division;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -56,6 +57,7 @@ class DashboardController extends Controller
         $data['activities']['upcoming'] = Transaction::leftJoin('requests', 'transactions.request_id','=','requests.id')->select('transactions.trip_ticket','requests.travel_date','requests.purpose')->where(DB::raw('YEAR(travel_date)'),'=',$id)->where('requests.is_status','=','2')->groupBy('transactions.trip_ticket','requests.id')->orderBy('requests.travel_date', 'ASC')->LIMIT(10)->get();
 
         $data['activities']['recent'] = Transaction::leftJoin('requests', 'transactions.request_id','=','requests.id')->select('transactions.trip_ticket','requests.travel_date','requests.purpose')->where(DB::raw('YEAR(travel_date)'),'=',$id)->where('requests.is_status','=','3')->groupBy('transactions.trip_ticket','requests.id')->orderBy('requests.travel_date', 'DESC')->LIMIT(10)->get();
+        $data['division'] = Division::all();
 
         return response()->json($data);
     }

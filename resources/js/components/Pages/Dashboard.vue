@@ -151,12 +151,12 @@
             <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Travel Stat</h3>
+                        <h3 class="card-label">Division</h3>
                     </div>
                 </div>
                 <div class="card-body">
                     <!--begin::Chart-->
-                    <div id="chart_2"></div>
+                    <div id="division-chart"></div>
                     <!--end::Chart-->
                 </div>
             </div>
@@ -215,7 +215,23 @@
             </div>
             <!--end: Card-->
         </div>
-        <div class="col-xl-8 col-lg-6">
+        <div class="col-xl-4 col-lg-6">
+            <!--begin::Card-->
+            <div class="card card-custom card-stretch gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Travel Stat</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!--begin::Chart-->
+                    <div id="chart_2"></div>
+                    <!--end::Chart-->
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <div class="col-xl-4 col-lg-6">
             <!--begin::Card-->
             <div class="card card-custom card-stretch gutter-b">
                 <div class="card-header">
@@ -273,6 +289,10 @@ export default {
             activities: {
                 upcoming: [],
                 recent: []
+            },
+            division: {
+                dep: [],
+                count: [],
             }
         }
     },
@@ -410,6 +430,43 @@ export default {
                     },
                     xaxis: {
                         categories: JSON.parse(JSON.stringify(vm.travel.month)),
+                    },
+                    colors: [primary]
+                };
+
+                var chart = new ApexCharts(document.querySelector(apexChart), options);
+                chart.render();
+            }
+
+            var DivisionChart = function() {
+                const apexChart = "#division-chart";
+                var options = {
+                    series: [{
+                        name: "Division",
+                        data: JSON.parse(JSON.stringify(vm.division.count))
+                    }],
+                    chart: {
+                        height: 350,
+                        type: 'area',
+                        redrawOnParentResize: true,
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: { 	
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        categories: JSON.parse(JSON.stringify(vm.division.dep)),
                     },
                     colors: [primary]
                 };
@@ -653,6 +710,7 @@ export default {
                     LineChart();
                     BarChart();
                     PieChart();
+                    DivisionChart();
                 }
             };
         },
