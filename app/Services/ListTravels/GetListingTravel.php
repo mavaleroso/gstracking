@@ -20,13 +20,13 @@ class GetListingTravel
                         ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
                         ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                         ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')
-                        ->select(['transactions.id','transactions.trip_ticket', 'requests.type_vehicle', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks']);
+                        ->select(['transactions.id','transactions.trip_ticket', 'transactions.vehicle_type', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks']);
 
         if ($fields['tripTicket']){
             $query->where('transactions.trip_ticket', 'like' , '%'.$fields['tripTicket'].'%');
         }
         if ($fields['serviceProviders']){
-            $query->where('requests.type_vehicle', 'like' , '%'.$fields['serviceProviders'].'%');
+            $query->where('transactions.vehicle_type', 'like' , '%'.$fields['serviceProviders'].'%');
         }
         if ($fields['dateTravel']){
             $query->where('requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%');
@@ -59,7 +59,7 @@ class GetListingTravel
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'trip_ticket',
-                'type_vehicle',
+                'vehicle_type',
                 'travel_date',
                 'starting_odo',
                 'ending_odo',
@@ -75,7 +75,7 @@ class GetListingTravel
             'orderable' => [
                 'id',
                 'trip_ticket',
-                'type_vehicle',
+                'vehicle_type',
                 'travel_date',
                 'starting_odo',
                 'ending_odo',

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model
 {
-    protected $table = 'division';
+    protected $table = 'divisions';
 
     protected $fillable = [
         'division_code',

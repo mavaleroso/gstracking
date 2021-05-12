@@ -22,7 +22,6 @@ class GetListingRequest
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'serial_code',
-                'type_vehicle',
                 'department',
                 'purpose',
                 'travel_date',
@@ -34,7 +33,6 @@ class GetListingRequest
             'orderable' => [
                 'id',
                 'serial_code',
-                'type_vehicle',
                 'department',
                 'purpose',
                 'travel_date',

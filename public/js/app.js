@@ -3711,7 +3711,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 3,
             render: function render(data) {
-              return data ? toParseNum(data) : 0;
+              return toParseNum(data);
             }
           }, {
             targets: 4,
@@ -5973,6 +5973,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5981,8 +5989,9 @@ __webpack_require__.r(__webpack_exports__);
         depart_time: null,
         department: null,
         gs_staff: null,
-        type_vehicle: null,
+        vehicle_type: null,
         driver: null,
+        driver_contact: null,
         purpose: null,
         vehicle_name: null,
         template: null,
@@ -6067,11 +6076,23 @@ __webpack_require__.r(__webpack_exports__);
         _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
         _this.transaction.department = res.data.transaction[0].department;
         _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
-        _this.transaction.type_vehicle = res.data.transaction[0].type_vehicle;
+        _this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
+
+        if (res.data.transaction[0].vehicle_type == 'office') {
+          _this.transaction.vehicle_name = res.data.transaction[0].name;
+          _this.transaction.template = res.data.transaction[0].template;
+          _this.transaction.driver = res.data.transaction[0].fullname;
+          _this.transaction.driver_contact = res.data.transaction[0].contact;
+        } else if (res.data.transaction[0].vehicle_type == 'office') {
+          _this.transaction.vehicle_name = res.data.transaction[0].vehicle_description;
+          _this.transaction.template = res.data.transaction[0].vehicle_template;
+          _this.transaction.driver = res.data.transaction[0].driver_name;
+          _this.transaction.driver_contact = res.data.transaction[0].driver_contact;
+        }
+
         _this.transaction.driver = res.data.transaction[0].fullname;
         _this.transaction.purpose = res.data.transaction[0].purpose;
         _this.transaction.vehicle_name = res.data.transaction[0].name;
-        _this.transaction.template = res.data.transaction[0].template;
         _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
         _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 
@@ -52844,13 +52865,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.transaction.type_vehicle,
-                          expression: "transaction.type_vehicle"
+                          value: _vm.transaction.vehicle_type,
+                          expression: "transaction.vehicle_type"
                         }
                       ],
                       staticClass: "input-text w-100 mb-3 mt-n2",
                       attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.type_vehicle },
+                      domProps: { value: _vm.transaction.vehicle_type },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -52858,7 +52879,7 @@ var render = function() {
                           }
                           _vm.$set(
                             _vm.transaction,
-                            "type_vehicle",
+                            "vehicle_type",
                             $event.target.value
                           )
                         }
@@ -53290,6 +53311,38 @@ var render = function() {
                           _vm.$set(
                             _vm.transaction,
                             "driver",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_c("p", [_vm._v("Driver Contact:")])]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.transaction.driver_contact,
+                          expression: "transaction.driver_contact"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.transaction.driver_contact },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.transaction,
+                            "driver_contact",
                             $event.target.value
                           )
                         }
