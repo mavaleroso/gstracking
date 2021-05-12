@@ -95,7 +95,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Image</th>
-                            <th>Company</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Capacity</th>
@@ -267,7 +266,6 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "image" },
-                        { "data": "type_vehicle" },
                         { "data": "name" },
                         { "data": "description" },
                         { "data": "template" },
@@ -277,7 +275,7 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: [1, 5],
+                            targets: [1, 4],
                             orderable: false
                         },
                         {
@@ -320,7 +318,7 @@ export default {
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 6,
                             render: data => {
                                 return dateTimeEng(data);
                             }

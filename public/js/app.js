@@ -4043,7 +4043,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4080,7 +4079,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vehicle: null,
         driver: null,
         po: null,
-        type_vehicle: null,
+        vehicle_type: null,
         vehicle_desc: null,
         vehicle_template: null,
         driver_name: null,
@@ -4205,8 +4204,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "serial_code"
           }, {
-            "data": "type_vehicle"
-          }, {
             "data": "department"
           }, {
             "data": "purpose"
@@ -4224,17 +4221,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 5,
+            targets: 4,
             render: function render(data) {
               return dateEng(data);
             }
           }, {
-            targets: 6,
+            targets: 5,
             render: function render(data) {
               return timeEng(data);
             }
           }, {
-            targets: 7,
+            targets: 6,
             render: function render(data) {
               var status = {
                 1: {
@@ -4257,7 +4254,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
-            targets: 8,
+            targets: 7,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -4338,6 +4335,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               $('#driver-select').select2({
                 placeholder: "Select a driver"
               });
+              $('#vehicle-select').on('change', function () {
+                vm.staff.vehicle = $(this).val();
+              });
+              $('#driver-select').on('change', function () {
+                vm.staff.driver = $(this).val();
+              });
             } else if (vehicleType == 'rental') {
               $('.select-remove').siblings('.select2').remove();
               $('.select-remove').siblings('.select2').remove();
@@ -4345,12 +4348,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           });
           $('#po-select').select2({
             placeholder: "Select a PO"
-          });
-          $('#vehicle-select').on('change', function () {
-            vm.staff.vehicle = $(this).val();
-          });
-          $('#driver-select').on('change', function () {
-            vm.staff.driver_name = $(this).val();
           });
           $('#po-select').on('change', function () {
             vm.staff.po = $(this).val();
@@ -4505,11 +4502,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'travel_radio') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
+          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'brgy') {
             if ("".concat(key) == 'brgy') {
               if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
                 $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
@@ -4528,13 +4521,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this7.names.length; i++) {
-          if (_this7.names[i] == 'travel_radio') {
-            if (keys.indexOf('' + _this7.names[i] + '') == -1) {
-              if ($('.checkbox-inline').next().length != 0) {
-                $('.checkbox-inline').next('.invalid-feedback').remove();
-              }
-            }
-          } else if (_this7.names[i] == 'region' || _this7.names[i] == 'province' || _this7.names[i] == 'city' || _this7.names[i] == 'brgy') {
+          if (_this7.names[i] == 'region' || _this7.names[i] == 'province' || _this7.names[i] == 'city' || _this7.names[i] == 'brgy') {
             if (keys.indexOf('' + _this7.names[i] + '') == -1) {
               if (_this7.names[i] == 'brgy') {
                 if ($('#kt_select_' + _this7.names[i]).next().next().length != 0) {
@@ -7176,7 +7163,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7348,8 +7334,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "image"
           }, {
-            "data": "type_vehicle"
-          }, {
             "data": "name"
           }, {
             "data": "description"
@@ -7363,7 +7347,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: [1, 5],
+            targets: [1, 4],
             orderable: false
           }, {
             targets: -1,
@@ -7403,7 +7387,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
-            targets: 7,
+            targets: 6,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -50507,7 +50491,7 @@ var render = function() {
                                         _vm._v(
                                           _vm._s(vehicle.name) +
                                             " - " +
-                                            _vm._s(vehicle.fullname)
+                                            _vm._s(vehicle.template)
                                         )
                                       ]
                                     )
@@ -50776,8 +50760,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Code")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Vehicle Type")]),
               _vm._v(" "),
               _c("th", [_vm._v("Department")]),
               _vm._v(" "),
@@ -54825,8 +54807,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
               _c("th", [_vm._v("Image")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Company")]),
               _vm._v(" "),
               _c("th", [_vm._v("Name")]),
               _vm._v(" "),

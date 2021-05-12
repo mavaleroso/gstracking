@@ -31,7 +31,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Code</th>
-                            <th>Vehicle Type</th>
                             <th>Department</th>
                             <th>Purpose</th>
                             <th>Travel Date</th>
@@ -194,7 +193,7 @@
                             <label>Vehicle</label>
                             <select class="form-control select2 staff-required" id="vehicle-select" name="vehicle">
                                 <option label="Label"></option>
-                                <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.fullname }}</option>
+                                <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.template }}</option>
                             </select>
                         </div>
                         <div v-if="staff.vehicle_type == 'rental'">
@@ -276,7 +275,7 @@ export default {
                 vehicle: null,
                 driver: null,
                 po: null,
-                type_vehicle: null,
+                vehicle_type: null,
                 vehicle_desc: null,
                 vehicle_template: null,
                 driver_name: null,
@@ -393,7 +392,6 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "serial_code" },
-                        { "data": "type_vehicle" },
                         { "data": "department" },
                         { "data": "purpose" },
                         { "data": "travel_date" },
@@ -405,19 +403,19 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 5,
+                            targets: 4,
                             render: data => {
                                 return dateEng(data);
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 5,
                             render: data => {
                                 return timeEng(data); 
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 6,
                             render: data => {
                                 var status = {
                                     1: {
@@ -441,7 +439,7 @@ export default {
                             }
                         },
                         {
-                            targets: 8,
+                            targets: 7,
                             render: data => {
                                 return dateTimeEng(data);
                             }
@@ -522,6 +520,14 @@ export default {
                             $('#driver-select').select2({
                                 placeholder: "Select a driver",
                             });
+
+                            $('#vehicle-select').on('change', function() {
+                                vm.staff.vehicle = $(this).val();
+                            });
+
+                            $('#driver-select').on('change', function() {
+                                vm.staff.driver = $(this).val();
+                            });
                         }  else if (vehicleType == 'rental') {
                             $('.select-remove').siblings('.select2').remove();
                             $('.select-remove').siblings('.select2').remove();
@@ -530,14 +536,6 @@ export default {
 
                     $('#po-select').select2({
                         placeholder: "Select a PO",
-                    });
-
-                    $('#vehicle-select').on('change', function() {
-                        vm.staff.vehicle = $(this).val();
-                    });
-
-                    $('#driver-select').on('change', function() {
-                        vm.staff.driver_name = $(this).val();
                     });
 
                     $('#po-select').on('change', function() {
@@ -662,11 +660,7 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if (`${key}` == 'travel_radio') {
-                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-                            $('.checkbox-inline').after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                        }
-                    } else if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
+                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
                         if (`${key}` == 'brgy') {
                             if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
@@ -684,13 +678,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i] == 'travel_radio') {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            if ($('.checkbox-inline').next().length != 0) {
-                                $('.checkbox-inline').next('.invalid-feedback').remove();
-                            }
-                        } 
-                    } else if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                    if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {
                             if (this.names[i] == 'brgy') {
                                 if ($('#kt_select_'+this.names[i]).next().next().length != 0) {

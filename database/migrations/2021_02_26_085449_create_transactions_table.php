@@ -17,6 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
             $table->unsignedBigInteger('procurement_id')->nullable();
+            $table->string('vehicle_type')->nullable();
             $table->unsignedBigInteger('office_id')->nullable();
             $table->unsignedBigInteger('rental_id')->nullable();
             $table->string('trip_ticket')->nullable();
