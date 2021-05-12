@@ -3063,12 +3063,18 @@ __webpack_require__.r(__webpack_exports__);
           _this.travel.count.push(res.data.travel[_i]['travel_count']);
         }
 
-        for (var _i2 = 0; _i2 < res.data.procurement.length; _i2++) {
-          var amount = res.data.procurement[_i2]['po_amount'];
-          var balance = res.data.procurement[_i2]['totalBalance'] ? res.data.procurement[_i2]['totalBalance'] : res.data.procurement[_i2]['po_amount'];
+        for (var _i2 = 0; _i2 < res.data.division.length; _i2++) {
+          _this.division.dep.push(res.data.division[_i2]['division_code']);
+
+          _this.division.count.push(res.data.division[_i2]['div_count']);
+        }
+
+        for (var _i3 = 0; _i3 < res.data.procurement.length; _i3++) {
+          var amount = res.data.procurement[_i3]['po_amount'];
+          var balance = res.data.procurement[_i3]['totalBalance'] ? res.data.procurement[_i3]['totalBalance'] : res.data.procurement[_i3]['po_amount'];
           var percent = balance / amount * 100;
 
-          _this.po.no.push(res.data.procurement[_i2]['po_no']);
+          _this.po.no.push(res.data.procurement[_i3]['po_no']);
 
           _this.po.amount.push(amount);
 

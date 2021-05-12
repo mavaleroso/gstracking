@@ -332,6 +332,11 @@ export default {
                     this.travel.count.push(res.data.travel[i]['travel_count']);
                 }
 
+                for (let i = 0; i < res.data.division.length; i++) {
+                    this.division.dep.push(res.data.division[i]['division_code']);
+                    this.division.count.push(res.data.division[i]['div_count']);
+                }
+
                 for (let i = 0; i < res.data.procurement.length; i++) {
                     let amount = res.data.procurement[i]['po_amount'];
                     let balance = (res.data.procurement[i]['totalBalance'])? res.data.procurement[i]['totalBalance']:res.data.procurement[i]['po_amount'];

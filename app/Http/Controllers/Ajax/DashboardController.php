@@ -57,7 +57,7 @@ class DashboardController extends Controller
         $data['activities']['upcoming'] = Transaction::leftJoin('requests', 'transactions.request_id','=','requests.id')->select('transactions.trip_ticket','requests.travel_date','requests.purpose')->where(DB::raw('YEAR(travel_date)'),'=',$id)->where('requests.is_status','=','2')->groupBy('transactions.trip_ticket','requests.id')->orderBy('requests.travel_date', 'ASC')->LIMIT(10)->get();
 
         $data['activities']['recent'] = Transaction::leftJoin('requests', 'transactions.request_id','=','requests.id')->select('transactions.trip_ticket','requests.travel_date','requests.purpose')->where(DB::raw('YEAR(travel_date)'),'=',$id)->where('requests.is_status','=','3')->groupBy('transactions.trip_ticket','requests.id')->orderBy('requests.travel_date', 'DESC')->LIMIT(10)->get();
-        $data['division'] = Division::all();
+        $data['division'] = Division::select('division_code', DB::raw('COUNT(id) as div_count'))->groupBy('division_code')->get();
 
         return response()->json($data);
     }
