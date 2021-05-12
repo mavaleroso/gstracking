@@ -198,8 +198,8 @@
                         </div>
                         <div v-if="staff.vehicle_type == 'rental'">
                             <div  class="form-group">
-                                <label>Vehicle</label>
-                                <input type="text" name="vehicle_desc" class="form-control" v-model="staff.vehicle_desc" placeholder="Enter vehicle description"/>
+                                <label>Vehicle Name:</label>
+                                <input type="text" name="vehicle_desc" class="form-control" v-model="staff.vehicle_desc" placeholder="Enter vehicle name"/>
                             </div>
                             <div class="form-group">
                                 <label>Template No.</label>

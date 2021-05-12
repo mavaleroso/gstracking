@@ -15,7 +15,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return response()->json(Vehicle::leftJoin('drivers','vehicles.driver_id','=','drivers.id')->select(['vehicles.*', 'drivers.fullname'])->get());
+        return response()->json(Vehicle::all());
     }
 
     /**

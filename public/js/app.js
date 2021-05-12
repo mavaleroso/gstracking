@@ -3716,7 +3716,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 4,
             render: function render(data) {
-              return '<span class="label label-inline label-primary">' + data + '</span>';
+              var status = {
+                1: {
+                  'title': 'Pending',
+                  'class': ' label-light-warning'
+                },
+                2: {
+                  'title': 'Approved',
+                  'class': ' label-light-primary'
+                },
+                3: {
+                  'title': 'Completed',
+                  'class': ' label-light-success'
+                },
+                4: {
+                  'title': 'Declined',
+                  'class': ' label-light-danger'
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
             targets: 5,
@@ -4957,6 +4975,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4989,9 +5055,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       filterDropdown: {
         tripTicket: [],
         serviceProvider: [],
-        poNumber: ''
+        division: [],
+        section: [],
+        poNumber: []
       },
       filterActive: {
+        vehicleName: null,
+        vehicelTemplate: null,
+        driverName: null,
+        driverContact: null,
+        division: null,
+        section: null,
         tripTicket: null,
         serviceProviders: null,
         dateTravel: null,
@@ -5017,6 +5091,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getTripTicket();
     this.getServiceProviders();
     this.getPoNumber();
+    this.getDivision();
   },
   mounted: function mounted() {
     this.ini();
@@ -5120,9 +5195,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columns: [{
             "data": "id"
           }, {
+            "data": "division_code"
+          }, {
+            "data": "section_code"
+          }, {
             "data": "trip_ticket"
           }, {
             "data": "vehicle_type"
+          }, {
+            "data": "vehicle_name"
+          }, {
+            "data": "vehicle_template"
+          }, {
+            "data": "driver_name"
+          }, {
+            "data": "driver_contact"
           }, {
             "data": "travel_date"
           }, {
@@ -5157,38 +5244,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 1,
+            targets: 3,
             render: function render(data) {
               return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">' + data + '</span>';
             }
           }, {
-            targets: 3,
+            targets: 9,
             render: function render(data) {
               return dateEng(data);
             }
           }, {
-            targets: [9, 10, 11, 12, 14],
+            targets: [15, 16, 17, 18, 20],
             render: function render(data) {
               var values = data ? toParseNum(data) : '';
               return values;
             }
           }, {
-            targets: [7, 13],
+            targets: [13, 19],
             render: function render(data) {
               var values = data ? data : '';
               return values;
             }
           }, {
-            targets: [13, 16],
+            targets: [19, 22],
             orderable: false
           }, {
-            targets: 17,
+            targets: 23,
             orderable: false,
             render: function render(data) {
               return dateTimeEng(data);
             }
           }, {
-            targets: 15,
+            targets: 21,
             render: function render(data) {
               var status = {
                 1: {
@@ -5406,6 +5493,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         height: 700
       });
       setTimeout(function () {
+        $('#kt_select_division').select2({
+          placeholder: "Division",
+          allowClear: true
+        });
+        $('#kt_select_section').select2({
+          placeholder: "Section",
+          allowClear: true
+        });
         $('#kt_select_trip_ticket').select2({
           placeholder: "Trip Ticket",
           allowClear: true
@@ -5420,6 +5515,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $('#kt_select_service_provider').change(function () {
           vm.filterActive.serviceProviders = $(this).val();
+        });
+        $('#kt_select_division').change(function () {
+          var id = $(this).val();
+          vm.filterActive.division = id;
+          vm.getSection(id);
+        });
+        $('#kt_select_section').change(function () {
+          vm.filterActive.section = $(this).val();
         });
         $('#kt_select_trip_ticket').change(function () {
           vm.filterActive.tripTicket = $(this).val();
@@ -5457,6 +5560,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       axios.get(BASE_URL + "/api/ponumber").then(function (response) {
         _this7.filterDropdown.poNumber = response.data;
+      });
+    },
+    getDivision: function getDivision() {
+      var _this8 = this;
+
+      axios.get(BASE_URL + "/api/division").then(function (response) {
+        _this8.filterDropdown.division = response.data;
+      });
+    },
+    getSection: function getSection(id) {
+      var _this9 = this;
+
+      axios.get(BASE_URL + "/api/section/" + id).then(function (response) {
+        _this9.filterDropdown.section = response.data;
       });
     }
   }
@@ -49384,11 +49501,17 @@ var render = function() {
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Ongoing")]),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Ongoing")
+                              ]),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Approved")]),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Approved")
+                              ]),
                               _vm._v(" "),
-                              _c("option", [_vm._v("Completed")])
+                              _c("option", { attrs: { value: "3" } }, [
+                                _vm._v("Completed")
+                              ])
                             ]
                           )
                         ])
@@ -50524,7 +50647,7 @@ var render = function() {
                       _vm.staff.vehicle_type == "rental"
                         ? _c("div", [
                             _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Vehicle")]),
+                              _c("label", [_vm._v("Vehicle Name:")]),
                               _vm._v(" "),
                               _c("input", {
                                 directives: [
@@ -50539,7 +50662,7 @@ var render = function() {
                                 attrs: {
                                   type: "text",
                                   name: "vehicle_desc",
-                                  placeholder: "Enter vehicle description"
+                                  placeholder: "Enter vehicle name"
                                 },
                                 domProps: { value: _vm.staff.vehicle_desc },
                                 on: {
@@ -51585,6 +51708,141 @@ var render = function() {
                         [
                           _c("div", { staticClass: "form-group row" }, [
                             _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Division")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.filterActive.division,
+                                        expression: "filterActive.division"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control select2 details-input",
+                                    attrs: {
+                                      id: "kt_select_division",
+                                      name: "division"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.filterActive,
+                                          "division",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", { attrs: { label: "Label" } }),
+                                    _vm._v(" "),
+                                    _vm._l(
+                                      _vm.filterDropdown.division,
+                                      function(div) {
+                                        return _c(
+                                          "option",
+                                          {
+                                            key: div.id,
+                                            domProps: { value: div.id }
+                                          },
+                                          [_vm._v(_vm._s(div.division_name))]
+                                        )
+                                      }
+                                    )
+                                  ],
+                                  2
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Section")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.filterActive.section,
+                                        expression: "filterActive.section"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "form-control select2 details-input",
+                                    attrs: {
+                                      id: "kt_select_section",
+                                      name: "section"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.filterActive,
+                                          "section",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", { attrs: { label: "Label" } }),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.filterDropdown.section, function(
+                                      sec
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: sec.id,
+                                          domProps: { value: sec.id }
+                                        },
+                                        [_vm._v(_vm._s(sec.section_name))]
+                                      )
+                                    })
+                                  ],
+                                  2
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
                               _vm._v("Trip ticket")
                             ]),
                             _vm._v(" "),
@@ -51721,6 +51979,170 @@ var render = function() {
                                   ],
                                   2
                                 )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Vehicle Name")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.filterActive.vehicleName,
+                                      expression: "filterActive.vehicleName"
+                                    }
+                                  ],
+                                  staticClass: "form-control required-field",
+                                  attrs: {
+                                    type: "text",
+                                    id: "vehicle-name",
+                                    name: "vehicle_name",
+                                    placeholder: "Vehicle Name"
+                                  },
+                                  domProps: {
+                                    value: _vm.filterActive.vehicleName
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.filterActive,
+                                        "vehicleName",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Vehicle Template")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.filterActive.vehicleTemplate,
+                                      expression: "filterActive.vehicleTemplate"
+                                    }
+                                  ],
+                                  staticClass: "form-control required-field",
+                                  attrs: {
+                                    type: "text",
+                                    id: "vehicle-template",
+                                    name: "vehicle_template",
+                                    placeholder: "Template Number"
+                                  },
+                                  domProps: {
+                                    value: _vm.filterActive.vehicleTemplate
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.filterActive,
+                                        "vehicleTemplate",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Driver Name")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.filterActive.driverName,
+                                      expression: "filterActive.driverName"
+                                    }
+                                  ],
+                                  staticClass: "form-control required-field",
+                                  attrs: {
+                                    type: "text",
+                                    id: "driver-name",
+                                    name: "driver_name",
+                                    placeholder: "Driver Name"
+                                  },
+                                  domProps: {
+                                    value: _vm.filterActive.driverName
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.filterActive,
+                                        "driverName",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "col-3" }, [
+                              _vm._v("Contact")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-9" }, [
+                              _c("div", { staticClass: "checkbox-inline" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.filterActive.driverContact,
+                                      expression: "filterActive.driverContact"
+                                    }
+                                  ],
+                                  staticClass: "form-control required-field",
+                                  attrs: {
+                                    type: "text",
+                                    id: "driver-contact",
+                                    name: "driver_contact",
+                                    placeholder: "Contact Number"
+                                  },
+                                  domProps: {
+                                    value: _vm.filterActive.driverContact
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.filterActive,
+                                        "driverContact",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
                               ])
                             ]),
                             _vm._v(" "),
@@ -52165,9 +52587,21 @@ var staticRenderFns = [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Division")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Section")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Trip Ticket")]),
               _vm._v(" "),
               _c("th", [_vm._v("Service Provider")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Vehicle")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Template")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Driver")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Contact")]),
               _vm._v(" "),
               _c("th", [_vm._v("Date of Travel")]),
               _vm._v(" "),
