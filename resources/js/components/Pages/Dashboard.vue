@@ -65,7 +65,7 @@
                 <!--begin::Body-->
                 <div class="card-body p-0 position-relative overflow-hidden">
                     <!--begin::Chart-->
-                    <div id="travel-stats" class="card-rounded-bottom bg-danger" style="height: 200px"></div>
+                    <div id="overview-line-chart" class="card-rounded-bottom bg-danger" style="height: 200px"></div>
                     <!--end::Chart-->
                     <!--begin::Stats-->
                     <div class="card-spacer mt-n25">
@@ -156,7 +156,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Chart-->
-                    <div id="division-chart"></div>
+                    <div id="division-bar-chart"></div>
                     <!--end::Chart-->
                 </div>
             </div>
@@ -225,7 +225,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Chart-->
-                    <div id="chart_2"></div>
+                    <div id="travel-bar-chart"></div>
                     <!--end::Chart-->
                 </div>
             </div>
@@ -241,7 +241,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Chart-->
-                    <div id="chart_3"></div>
+                    <div id="po-bar-chart"></div>
                     <!--end::Chart-->
                 </div>
             </div>
@@ -257,7 +257,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Chart-->
-                    <div id="chart_12" class="d-flex justify-content-center"></div>
+                    <div id="po-pie-chart" class="d-flex justify-content-center"></div>
                     <!--end::Chart-->
                 </div>
             </div>
@@ -379,10 +379,11 @@ export default {
                         vm.po.balance_percent = [],
                         vm.activities.upcoming = [],
                         vm.activities.recent = [],
-                        $('#chart_2').children().remove();
-                        $('#chart_3').children().remove();
-                        $('#chart_12').children().remove();
-                        $('#travel-stats').children().remove();
+                        $('#overview-line-chart').children().remove();
+                        $('#travel-bar-chart').children().remove();
+                        $('#division-bar-chart').children().remove();
+                        $('#po-bar-chart').children().remove();
+                        $('#po-pie-chart').children().remove();
                         vm.ini().init();
                     });
                 });
@@ -406,82 +407,116 @@ export default {
             const warning = '#FFA800';
             const danger = '#F64E60';
 
-            var LineChart = function() {
-                const apexChart = "#chart_2";
+            var TravelBarChart = function() {
+                const apexChart = "#travel-bar-chart";
                 var options = {
                     series: [{
-                        name: "Travels",
-                        data: JSON.parse(JSON.stringify(vm.travel.count))
+                        name: 'Travel/s',
+                        data: JSON.parse(JSON.stringify(vm.travel.count)),
                     }],
                     chart: {
-                        height: 350,
-                        type: 'area',
-                        redrawOnParentResize: true,
-                        zoom: {
-                            enabled: false
-                        }
+                        type: 'bar',
+                        height: 350
                     },
-                    dataLabels: { 	
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                        },
+                    },
+                    dataLabels: {
                         enabled: false
                     },
                     stroke: {
-                        curve: 'smooth'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                            opacity: 0.5
-                        },
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
                     },
                     xaxis: {
                         categories: JSON.parse(JSON.stringify(vm.travel.month)),
+                        title: {
+                            text: 'Travels'
+                        }
                     },
-                    colors: [primary]
+                    yaxis: {
+                        title: {
+                            text: 'Months'
+                        }
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return val;
+                            }
+                        }
+                    },
+                    colors: [primary, success, warning]
                 };
 
                 var chart = new ApexCharts(document.querySelector(apexChart), options);
                 chart.render();
             }
 
-            var DivisionChart = function() {
-                const apexChart = "#division-chart";
+            var DivisionBarChart = function() {
+                const apexChart = "#division-bar-chart";
                 var options = {
                     series: [{
-                        name: "Division",
-                        data: JSON.parse(JSON.stringify(vm.division.count))
+                        name: 'Travel/s',
+                        data: JSON.parse(JSON.stringify(vm.division.count)),
                     }],
                     chart: {
-                        height: 350,
-                        type: 'area',
-                        redrawOnParentResize: true,
-                        zoom: {
-                            enabled: false
-                        }
+                        type: 'bar',
+                        height: 350
                     },
-                    dataLabels: { 	
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                        },
+                    },
+                    dataLabels: {
                         enabled: false
                     },
                     stroke: {
-                        curve: 'smooth'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                            opacity: 0.5
-                        },
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
                     },
                     xaxis: {
                         categories: JSON.parse(JSON.stringify(vm.division.dep)),
+                        title: {
+                            text: 'Travels'
+                        }
                     },
-                    colors: [primary]
+                    yaxis: {
+                        title: {
+                            text: 'Divisions'
+                        }
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return val;
+                            }
+                        }
+                    },
+                    colors: [primary, success, warning]
                 };
 
                 var chart = new ApexCharts(document.querySelector(apexChart), options);
                 chart.render();
             }
 
-            var TravelStat = function() {
-                var element = document.getElementById("travel-stats");
+            var OverviewLineChart = function() {
+                var element = document.getElementById("overview-line-chart");
                 var height = parseInt(KTUtil.css(element, 'height'));
                 if (!element) {
                     return;
@@ -616,8 +651,8 @@ export default {
                 chart.render();
             }
 
-            var BarChart = function () {
-                const apexChart = "#chart_3";
+            var PoBarChart = function () {
+                const apexChart = "#po-bar-chart";
                 var options = {
                     series: [{
                         name: 'Amount',
@@ -670,8 +705,8 @@ export default {
                 chart.render();
             }
 
-            var PieChart = function () {
-                const apexChart = "#chart_12";
+            var PoPieChart = function () {
+                const apexChart = "#po-pie-chart";
                 var options = {
                     series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
                     chart: {
@@ -711,11 +746,11 @@ export default {
 
             return {
                 init: function() {
-                    TravelStat();
-                    LineChart();
-                    BarChart();
-                    PieChart();
-                    DivisionChart();
+                    OverviewLineChart();
+                    DivisionBarChart();
+                    TravelBarChart();
+                    PoBarChart();
+                    PoPieChart();
                 }
             };
         },

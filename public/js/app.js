@@ -3107,10 +3107,11 @@ __webpack_require__.r(__webpack_exports__);
             vm.overview.approved = 0;
             vm.overview.rejected = 0;
             vm.overview.completed = 0;
-            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#chart_2').children().remove();
-            $('#chart_3').children().remove();
-            $('#chart_12').children().remove();
-            $('#travel-stats').children().remove();
+            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#overview-line-chart').children().remove();
+            $('#travel-bar-chart').children().remove();
+            $('#division-bar-chart').children().remove();
+            $('#po-bar-chart').children().remove();
+            $('#po-pie-chart').children().remove();
             vm.ini().init();
           });
         });
@@ -3133,82 +3134,114 @@ __webpack_require__.r(__webpack_exports__);
       var warning = '#FFA800';
       var danger = '#F64E60';
 
-      var LineChart = function LineChart() {
-        var apexChart = "#chart_2";
+      var TravelBarChart = function TravelBarChart() {
+        var apexChart = "#travel-bar-chart";
         var options = {
           series: [{
-            name: "Travels",
+            name: 'Travel/s',
             data: JSON.parse(JSON.stringify(vm.travel.count))
           }],
           chart: {
-            height: 350,
-            type: 'area',
-            redrawOnParentResize: true,
-            zoom: {
-              enabled: false
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+              endingShape: 'rounded'
             }
           },
           dataLabels: {
             enabled: false
           },
           stroke: {
-            curve: 'smooth'
-          },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'],
-              // takes an array which will be repeated on columns
-              opacity: 0.5
-            }
+            show: true,
+            width: 2,
+            colors: ['transparent']
           },
           xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.travel.month))
+            categories: JSON.parse(JSON.stringify(vm.travel.month)),
+            title: {
+              text: 'Travels'
+            }
           },
-          colors: [primary]
+          yaxis: {
+            title: {
+              text: 'Months'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function formatter(val) {
+                return val;
+              }
+            }
+          },
+          colors: [primary, success, warning]
         };
         var chart = new ApexCharts(document.querySelector(apexChart), options);
         chart.render();
       };
 
-      var DivisionChart = function DivisionChart() {
-        var apexChart = "#division-chart";
+      var DivisionBarChart = function DivisionBarChart() {
+        var apexChart = "#division-bar-chart";
         var options = {
           series: [{
-            name: "Division",
+            name: 'Travel/s',
             data: JSON.parse(JSON.stringify(vm.division.count))
           }],
           chart: {
-            height: 350,
-            type: 'area',
-            redrawOnParentResize: true,
-            zoom: {
-              enabled: false
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: true,
+              columnWidth: '55%',
+              endingShape: 'rounded'
             }
           },
           dataLabels: {
             enabled: false
           },
           stroke: {
-            curve: 'smooth'
-          },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'],
-              // takes an array which will be repeated on columns
-              opacity: 0.5
-            }
+            show: true,
+            width: 2,
+            colors: ['transparent']
           },
           xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.division.dep))
+            categories: JSON.parse(JSON.stringify(vm.division.dep)),
+            title: {
+              text: 'Travels'
+            }
           },
-          colors: [primary]
+          yaxis: {
+            title: {
+              text: 'Divisions'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function formatter(val) {
+                return val;
+              }
+            }
+          },
+          colors: [primary, success, warning]
         };
         var chart = new ApexCharts(document.querySelector(apexChart), options);
         chart.render();
       };
 
-      var TravelStat = function TravelStat() {
-        var element = document.getElementById("travel-stats");
+      var OverviewLineChart = function OverviewLineChart() {
+        var element = document.getElementById("overview-line-chart");
         var height = parseInt(KTUtil.css(element, 'height'));
 
         if (!element) {
@@ -3343,8 +3376,8 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var BarChart = function BarChart() {
-        var apexChart = "#chart_3";
+      var PoBarChart = function PoBarChart() {
+        var apexChart = "#po-bar-chart";
         var options = {
           series: [{
             name: 'Amount',
@@ -3396,8 +3429,8 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var PieChart = function PieChart() {
-        var apexChart = "#chart_12";
+      var PoPieChart = function PoPieChart() {
+        var apexChart = "#po-pie-chart";
         var options = {
           series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
           chart: {
@@ -3438,11 +3471,11 @@ __webpack_require__.r(__webpack_exports__);
 
       return {
         init: function init() {
-          TravelStat();
-          LineChart();
-          BarChart();
-          PieChart();
-          DivisionChart();
+          OverviewLineChart();
+          DivisionBarChart();
+          TravelBarChart();
+          PoBarChart();
+          PoPieChart();
         }
       };
     },
@@ -48611,7 +48644,7 @@ var render = function() {
               _c("div", {
                 staticClass: "card-rounded-bottom bg-danger",
                 staticStyle: { height: "200px" },
-                attrs: { id: "travel-stats" }
+                attrs: { id: "overview-line-chart" }
               }),
               _vm._v(" "),
               _c("div", { staticClass: "card-spacer mt-n25" }, [
@@ -49262,7 +49295,7 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "division-chart" } })
+          _c("div", { attrs: { id: "division-bar-chart" } })
         ])
       ])
     ])
@@ -49344,7 +49377,7 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "chart_2" } })
+          _c("div", { attrs: { id: "travel-bar-chart" } })
         ])
       ])
     ])
@@ -49362,7 +49395,7 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "chart_3" } })
+          _c("div", { attrs: { id: "po-bar-chart" } })
         ])
       ])
     ])
@@ -49382,7 +49415,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card-body" }, [
           _c("div", {
             staticClass: "d-flex justify-content-center",
-            attrs: { id: "chart_12" }
+            attrs: { id: "po-pie-chart" }
           })
         ])
       ])
