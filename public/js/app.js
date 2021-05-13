@@ -2979,6 +2979,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3001,6 +3017,10 @@ __webpack_require__.r(__webpack_exports__);
       activities: {
         upcoming: [],
         recent: []
+      },
+      division: {
+        dep: [],
+        count: []
       }
     };
   },
@@ -3043,12 +3063,18 @@ __webpack_require__.r(__webpack_exports__);
           _this.travel.count.push(res.data.travel[_i]['travel_count']);
         }
 
-        for (var _i2 = 0; _i2 < res.data.procurement.length; _i2++) {
-          var amount = res.data.procurement[_i2]['po_amount'];
-          var balance = res.data.procurement[_i2]['totalBalance'] ? res.data.procurement[_i2]['totalBalance'] : res.data.procurement[_i2]['po_amount'];
+        for (var _i2 = 0; _i2 < res.data.division.length; _i2++) {
+          _this.division.dep.push(res.data.division[_i2]['division_code']);
+
+          _this.division.count.push(res.data.division[_i2]['div_count']);
+        }
+
+        for (var _i3 = 0; _i3 < res.data.procurement.length; _i3++) {
+          var amount = res.data.procurement[_i3]['po_amount'];
+          var balance = res.data.procurement[_i3]['totalBalance'] ? res.data.procurement[_i3]['totalBalance'] : res.data.procurement[_i3]['po_amount'];
           var percent = balance / amount * 100;
 
-          _this.po.no.push(res.data.procurement[_i2]['po_no']);
+          _this.po.no.push(res.data.procurement[_i3]['po_no']);
 
           _this.po.amount.push(amount);
 
@@ -3081,10 +3107,11 @@ __webpack_require__.r(__webpack_exports__);
             vm.overview.approved = 0;
             vm.overview.rejected = 0;
             vm.overview.completed = 0;
-            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#chart_2').children().remove();
-            $('#chart_3').children().remove();
-            $('#chart_12').children().remove();
-            $('#travel-stats').children().remove();
+            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#overview-line-chart').children().remove();
+            $('#travel-bar-chart').children().remove();
+            $('#division-bar-chart').children().remove();
+            $('#po-bar-chart').children().remove();
+            $('#po-pie-chart').children().remove();
             vm.ini().init();
           });
         });
@@ -3107,45 +3134,114 @@ __webpack_require__.r(__webpack_exports__);
       var warning = '#FFA800';
       var danger = '#F64E60';
 
-      var LineChart = function LineChart() {
-        var apexChart = "#chart_2";
+      var TravelBarChart = function TravelBarChart() {
+        var apexChart = "#travel-bar-chart";
         var options = {
           series: [{
-            name: "Travels",
+            name: 'Travel/s',
             data: JSON.parse(JSON.stringify(vm.travel.count))
           }],
           chart: {
-            height: 350,
-            type: 'area',
-            redrawOnParentResize: true,
-            zoom: {
-              enabled: false
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+              endingShape: 'rounded'
             }
           },
           dataLabels: {
             enabled: false
           },
           stroke: {
-            curve: 'smooth'
-          },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'],
-              // takes an array which will be repeated on columns
-              opacity: 0.5
-            }
+            show: true,
+            width: 2,
+            colors: ['transparent']
           },
           xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.travel.month))
+            categories: JSON.parse(JSON.stringify(vm.travel.month)),
+            title: {
+              text: 'Travels'
+            }
           },
-          colors: [primary]
+          yaxis: {
+            title: {
+              text: 'Months'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function formatter(val) {
+                return val;
+              }
+            }
+          },
+          colors: [primary, success, warning]
         };
         var chart = new ApexCharts(document.querySelector(apexChart), options);
         chart.render();
       };
 
-      var TravelStat = function TravelStat() {
-        var element = document.getElementById("travel-stats");
+      var DivisionBarChart = function DivisionBarChart() {
+        var apexChart = "#division-bar-chart";
+        var options = {
+          series: [{
+            name: 'Travel/s',
+            data: JSON.parse(JSON.stringify(vm.division.count))
+          }],
+          chart: {
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: true,
+              columnWidth: '55%',
+              endingShape: 'rounded'
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+          },
+          xaxis: {
+            categories: JSON.parse(JSON.stringify(vm.division.dep)),
+            title: {
+              text: 'Travels'
+            }
+          },
+          yaxis: {
+            title: {
+              text: 'Divisions'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function formatter(val) {
+                return val;
+              }
+            }
+          },
+          colors: [primary, success, warning]
+        };
+        var chart = new ApexCharts(document.querySelector(apexChart), options);
+        chart.render();
+      };
+
+      var OverviewLineChart = function OverviewLineChart() {
+        var element = document.getElementById("overview-line-chart");
         var height = parseInt(KTUtil.css(element, 'height'));
 
         if (!element) {
@@ -3280,8 +3376,8 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var BarChart = function BarChart() {
-        var apexChart = "#chart_3";
+      var PoBarChart = function PoBarChart() {
+        var apexChart = "#po-bar-chart";
         var options = {
           series: [{
             name: 'Amount',
@@ -3333,8 +3429,8 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var PieChart = function PieChart() {
-        var apexChart = "#chart_12";
+      var PoPieChart = function PoPieChart() {
+        var apexChart = "#po-pie-chart";
         var options = {
           series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
           chart: {
@@ -3375,10 +3471,11 @@ __webpack_require__.r(__webpack_exports__);
 
       return {
         init: function init() {
-          TravelStat();
-          LineChart();
-          BarChart();
-          PieChart();
+          OverviewLineChart();
+          DivisionBarChart();
+          TravelBarChart();
+          PoBarChart();
+          PoPieChart();
         }
       };
     },
@@ -48547,7 +48644,7 @@ var render = function() {
               _c("div", {
                 staticClass: "card-rounded-bottom bg-danger",
                 staticStyle: { height: "200px" },
-                attrs: { id: "travel-stats" }
+                attrs: { id: "overview-line-chart" }
               }),
               _vm._v(" "),
               _c("div", { staticClass: "card-spacer mt-n25" }, [
@@ -49079,7 +49176,9 @@ var render = function() {
     _vm._v(" "),
     _vm._m(5),
     _vm._v(" "),
-    _vm._m(6)
+    _vm._m(6),
+    _vm._v(" "),
+    _vm._m(7)
   ])
 }
 var staticRenderFns = [
@@ -49191,12 +49290,12 @@ var staticRenderFns = [
       _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
+            _c("h3", { staticClass: "card-label" }, [_vm._v("Division")])
           ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "chart_2" } })
+          _c("div", { attrs: { id: "division-bar-chart" } })
         ])
       ])
     ])
@@ -49269,7 +49368,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-8 col-lg-6" }, [
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { attrs: { id: "travel-bar-chart" } })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
       _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("div", { staticClass: "card-title" }, [
@@ -49278,7 +49395,7 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "chart_3" } })
+          _c("div", { attrs: { id: "po-bar-chart" } })
         ])
       ])
     ])
@@ -49298,7 +49415,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "card-body" }, [
           _c("div", {
             staticClass: "d-flex justify-content-center",
-            attrs: { id: "chart_12" }
+            attrs: { id: "po-pie-chart" }
           })
         ])
       ])
