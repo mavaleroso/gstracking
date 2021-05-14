@@ -34,19 +34,27 @@
                                 </div>
                             </div>
 
-                                                        <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Name:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Description:</label>
-                                    <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3" v-model="formFields.description"></textarea>
-                                </div>
-                            </div>
+
                             
                             
                             </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-6">Status </label>
+                                <div class="col-lg-6">
+                                    <div class="checkbox-inline">
+                                        <label class="radio mr-2">
+                                            <input class="details-input" type="radio" name="travel_radio" value="Office"/> Active
+                                            <span></span>
+                                        </label>
+                                        <label class="radio">
+                                            <input class="details-input" type="radio" name="travel_radio" value="Rental"/> Inactive
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Name:</label>
@@ -66,6 +74,10 @@
                                 <div class="form-group">
                                     <label>Capacity Number:</label>
                                     <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
+                                </div>
+                                    <div class="form-group">
+                                    <label>Remarks:</label>
+                                    <textarea class="form-control" name="vehicle_rem" id="exampleTextarea" rows="3" v-model="formFields.remarks"></textarea>
                                 </div>
                             </div>
                         </div>

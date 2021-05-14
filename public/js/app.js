@@ -7410,6 +7410,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -55112,78 +55124,10 @@ var render = function() {
                               _vm._m(2)
                             ]
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Name:")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.name,
-                                  expression: "formFields.name"
-                                }
-                              ],
-                              staticClass: "form-control required-field",
-                              attrs: {
-                                type: "text",
-                                name: "vehicle_name",
-                                placeholder: "Enter vehicle name"
-                              },
-                              domProps: { value: _vm.formFields.name },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "name",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("label", [_vm._v("Description:")]),
-                            _vm._v(" "),
-                            _c("textarea", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.description,
-                                  expression: "formFields.description"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                name: "vehicle_des",
-                                id: "exampleTextarea",
-                                rows: "3"
-                              },
-                              domProps: { value: _vm.formFields.description },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "description",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ])
                         ])
                       ]),
+                      _vm._v(" "),
+                      _vm._m(3),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
@@ -55322,6 +55266,40 @@ var render = function() {
                               }
                             }
                           })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Remarks:")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.remarks,
+                                expression: "formFields.remarks"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "vehicle_rem",
+                              id: "exampleTextarea",
+                              rows: "3"
+                            },
+                            domProps: { value: _vm.formFields.remarks },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "remarks",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
                         ])
                       ])
                     ])
@@ -55437,7 +55415,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(3)
+            _vm._m(4)
           ]
         )
   ])
@@ -55494,6 +55472,36 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-6" }, [_vm._v("Status ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-6" }, [
+        _c("div", { staticClass: "checkbox-inline" }, [
+          _c("label", { staticClass: "radio mr-2" }, [
+            _c("input", {
+              staticClass: "details-input",
+              attrs: { type: "radio", name: "travel_radio", value: "Office" }
+            }),
+            _vm._v(" Active\n                                        "),
+            _c("span")
+          ]),
+          _vm._v(" "),
+          _c("label", { staticClass: "radio" }, [
+            _c("input", {
+              staticClass: "details-input",
+              attrs: { type: "radio", name: "travel_radio", value: "Rental" }
+            }),
+            _vm._v(" Inactive\n                                        "),
+            _c("span")
+          ])
+        ])
+      ])
+    ])
   },
   function() {
     var _vm = this
