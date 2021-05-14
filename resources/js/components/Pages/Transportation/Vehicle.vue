@@ -12,7 +12,7 @@
                 <form class="form" id="vehicle-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                 <p>Image:</p>
                                 <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
@@ -33,6 +33,19 @@
                                     </span>
                                 </div>
                             </div>
+
+                                                        <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control required-field" name="vehicle_name" placeholder="Enter vehicle name" v-model="formFields.name" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Description:</label>
+                                    <textarea class="form-control" name="vehicle_des" id="exampleTextarea" rows="3" v-model="formFields.description"></textarea>
+                                </div>
+                            </div>
+                            
+                            
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -99,6 +112,8 @@
                             <th>Description</th>
                             <th>Capacity</th>
                             <th>Template No.</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
                             <th>Updated</th>
                             <th>Action</th>
                         </tr>
@@ -124,6 +139,8 @@ export default {
                 description: '',
                 templateNumber: '',
                 capacityNumber: '',
+                status: '',
+                remarks: '',
                 driver: ''
             },
             names: ['name', 'templateNumber', 'capacityNumber']
@@ -268,10 +285,13 @@ export default {
                         { "data": "image" },
                         { "data": "name" },
                         { "data": "description" },
-                        { "data": "template" },
                         { "data": "capacity" },
+                        { "data": "template" },
+                        { "data": "status" },
+                        { "data": "remarks" },
                         { "data": "updated_at" },
                         { "data": "id" },
+                        
                     ],
                     columnDefs: [
                         {
@@ -319,6 +339,22 @@ export default {
                         },
                         {
                             targets: 6,
+                            render: data => {
+                                var status = {
+                                    0: {
+                                        'title': 'Inactive',
+                                        'class': ' label-light-warning'
+                                    },
+                                    1: {
+                                        'title': 'Active',
+                                        'class': ' label-light-success'
+                                    },
+                                };
+                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                            }
+                        },
+                        {
+                            targets: 8,
                             render: data => {
                                 return dateTimeEng(data);
                             }

@@ -7395,6 +7395,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7409,6 +7424,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         description: '',
         templateNumber: '',
         capacityNumber: '',
+        status: '',
+        remarks: '',
         driver: ''
       },
       names: ['name', 'templateNumber', 'capacityNumber']
@@ -7570,9 +7587,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "description"
           }, {
+            "data": "capacity"
+          }, {
             "data": "template"
           }, {
-            "data": "capacity"
+            "data": "status"
+          }, {
+            "data": "remarks"
           }, {
             "data": "updated_at"
           }, {
@@ -7620,6 +7641,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }, {
             targets: 6,
+            render: function render(data) {
+              var status = {
+                0: {
+                  'title': 'Inactive',
+                  'class': ' label-light-warning'
+                },
+                1: {
+                  'title': 'Active',
+                  'class': ' label-light-success'
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+            }
+          }, {
+            targets: 8,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -55022,7 +55058,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("p", [_vm._v("Image:")]),
                           _vm._v(" "),
@@ -55076,6 +55112,76 @@ var render = function() {
                               _vm._m(2)
                             ]
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Name:")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.name,
+                                  expression: "formFields.name"
+                                }
+                              ],
+                              staticClass: "form-control required-field",
+                              attrs: {
+                                type: "text",
+                                name: "vehicle_name",
+                                placeholder: "Enter vehicle name"
+                              },
+                              domProps: { value: _vm.formFields.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Description:")]),
+                            _vm._v(" "),
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.description,
+                                  expression: "formFields.description"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                name: "vehicle_des",
+                                id: "exampleTextarea",
+                                rows: "3"
+                              },
+                              domProps: { value: _vm.formFields.description },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "description",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
                         ])
                       ]),
                       _vm._v(" "),
@@ -55414,6 +55520,10 @@ var staticRenderFns = [
               _c("th", [_vm._v("Capacity")]),
               _vm._v(" "),
               _c("th", [_vm._v("Template No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
               _vm._v(" "),
               _c("th", [_vm._v("Updated")]),
               _vm._v(" "),

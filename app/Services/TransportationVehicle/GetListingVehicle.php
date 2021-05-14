@@ -22,14 +22,19 @@ class GetListingVehicle
                 'vehicle_type',
                 'name',
                 'description',
-                'template'
+                'template',
+                'status',
+                'remarks'
+
             ],
             'orderable' => [
                 'id',
                 'vehicle_type',
                 'name',
                 'description',
-                'template'
+                'template',
+                'status',
+                'remarks'
             ]
         ]);
 
