@@ -33,22 +33,17 @@
                                     </span>
                                 </div>
                             </div>
-
-
-                            
-                            
                             </div>
-                            
                             <div class="form-group row">
                                 <label class="col-6">Status </label>
                                 <div class="col-lg-6">
                                     <div class="checkbox-inline">
                                         <label class="radio mr-2">
-                                            <input class="details-input" type="radio" name="travel_radio" value="Office"/> Active
+                                            <input class="details-input" type="radio" name="status_radio"  value="1" v-model="formFields.status"/> Active
                                             <span></span>
                                         </label>
                                         <label class="radio">
-                                            <input class="details-input" type="radio" name="travel_radio" value="Rental"/> Inactive
+                                            <input class="details-input" type="radio" name="status_radio" value="0" v-model="formFields.status"/> Inactive
                                             <span></span>
                                         </label>
                                     </div>
@@ -151,11 +146,11 @@ export default {
                 description: '',
                 templateNumber: '',
                 capacityNumber: '',
-                status: '',
+                status: 0,
                 remarks: '',
                 driver: ''
             },
-            names: ['name', 'templateNumber', 'capacityNumber']
+            names: ['status_radio','name', 'templateNumber', 'capacityNumber']
         }
     },
     created() {
@@ -167,11 +162,12 @@ export default {
         ini(){
             $(()=>{
                 this.tdatatable().init();
-            });
+            }); 
         },
         newEntry() {
             this.create = true;
             let vm = this;
+
             $(() => {
                 vm.formFields.id = '';
                 vm.formFields.pictureName = '';
@@ -179,6 +175,8 @@ export default {
                 vm.formFields.description = '';
                 vm.formFields.capacityNumber = '';
                 vm.formFields.templateNumber = '';
+                vm.formFields.status = '';
+                vm.formFields.remarks = '';
 
                 this.image();
 
@@ -197,6 +195,8 @@ export default {
                     vm.formFields.description = response.data.vehicles[0].description;
                     vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
                     vm.formFields.templateNumber = response.data.vehicles[0].template;
+                    vm.formFields.status = response.data.vehicles[0].status;
+                    vm.formFields.remarks = response.data.vehicles[0].remarks;
                   
                     let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
@@ -224,6 +224,8 @@ export default {
             formD.append('description', this.formFields.description);
             formD.append('templateNumber', this.formFields.templateNumber);
             formD.append('capacityNumber', this.formFields.capacityNumber);
+            formD.append('status', this.formFields.status);
+            formD.append('remarks', this.formFields.remarks);
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 

@@ -7417,11 +7417,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7436,11 +7431,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         description: '',
         templateNumber: '',
         capacityNumber: '',
-        status: '',
+        status: 0,
         remarks: '',
         driver: ''
       },
-      names: ['name', 'templateNumber', 'capacityNumber']
+      names: ['status_radio', 'name', 'templateNumber', 'capacityNumber']
     };
   },
   created: function created() {},
@@ -7467,6 +7462,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.description = '';
         vm.formFields.capacityNumber = '';
         vm.formFields.templateNumber = '';
+        vm.formFields.status = '';
+        vm.formFields.remarks = '';
 
         _this2.image();
 
@@ -7486,6 +7483,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.description = response.data.vehicles[0].description;
           vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
           vm.formFields.templateNumber = response.data.vehicles[0].template;
+          vm.formFields.status = response.data.vehicles[0].status;
+          vm.formFields.remarks = response.data.vehicles[0].remarks;
           var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
           $('#kt_image_5').css('background-image', 'url(' + img + ')');
         });
@@ -7513,6 +7512,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('description', this.formFields.description);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
+      formD.append('status', this.formFields.status);
+      formD.append('remarks', this.formFields.remarks);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -55127,7 +55128,85 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(3),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c("label", { staticClass: "col-6" }, [
+                          _vm._v("Status ")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "checkbox-inline" }, [
+                            _c("label", { staticClass: "radio mr-2" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.formFields.status,
+                                    expression: "formFields.status"
+                                  }
+                                ],
+                                staticClass: "details-input",
+                                attrs: {
+                                  type: "radio",
+                                  name: "status_radio",
+                                  value: "1"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.formFields.status, "1")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    return _vm.$set(
+                                      _vm.formFields,
+                                      "status",
+                                      "1"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                " Active\n                                        "
+                              ),
+                              _c("span")
+                            ]),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "radio" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.formFields.status,
+                                    expression: "formFields.status"
+                                  }
+                                ],
+                                staticClass: "details-input",
+                                attrs: {
+                                  type: "radio",
+                                  name: "status_radio",
+                                  value: "0"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.formFields.status, "0")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    return _vm.$set(
+                                      _vm.formFields,
+                                      "status",
+                                      "0"
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                " Inactive\n                                        "
+                              ),
+                              _c("span")
+                            ])
+                          ])
+                        ])
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
@@ -55415,7 +55494,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(4)
+            _vm._m(3)
           ]
         )
   ])
@@ -55472,36 +55551,6 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "ki ki-bold-close icon-xs text-muted" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-6" }, [_vm._v("Status ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-lg-6" }, [
-        _c("div", { staticClass: "checkbox-inline" }, [
-          _c("label", { staticClass: "radio mr-2" }, [
-            _c("input", {
-              staticClass: "details-input",
-              attrs: { type: "radio", name: "travel_radio", value: "Office" }
-            }),
-            _vm._v(" Active\n                                        "),
-            _c("span")
-          ]),
-          _vm._v(" "),
-          _c("label", { staticClass: "radio" }, [
-            _c("input", {
-              staticClass: "details-input",
-              attrs: { type: "radio", name: "travel_radio", value: "Rental" }
-            }),
-            _vm._v(" Inactive\n                                        "),
-            _c("span")
-          ])
-        ])
-      ])
-    ])
   },
   function() {
     var _vm = this

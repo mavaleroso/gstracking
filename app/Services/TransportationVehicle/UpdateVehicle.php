@@ -19,7 +19,9 @@ class UpdateVehicle
             'name' => $fields['name'],
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
-            'capacity' => $fields['capacityNumber']
+            'capacity' => $fields['capacityNumber'],
+            'status' => $fields['status'],
+            'remarks' => $fields['remarks']
 
         ];
         

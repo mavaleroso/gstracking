@@ -26,6 +26,8 @@ class VehicleRequest extends FormRequest
             'description' => 'nullable',
             'templateNumber' => 'required',
             'capacityNumber' => 'required',
+            'status' => 'nullable',
+            'remarks' => 'nullable',
         ];
     }
 
