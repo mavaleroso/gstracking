@@ -7803,15 +7803,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7819,7 +7810,8 @@ __webpack_require__.r(__webpack_exports__);
         list: [],
         office: [],
         rental: [],
-        data: []
+        officeData: [],
+        rentalData: []
       }
     };
   },
@@ -7904,7 +7896,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.vehicle.list = response.data.list;
         _this.vehicle.office = response.data.office;
         _this.vehicle.rental = response.data.rental;
-        _this.vehicle.data = response.data.data;
+        _this.vehicle.officeData = response.data.officeData;
+        _this.vehicle.rentalData = response.data.rentalData;
 
         _this.ktcalendar().init();
       });
@@ -55539,7 +55532,7 @@ var render = function() {
                     "accordion accordion-solid accordion-toggle-plus",
                   attrs: { id: "accordion-office" }
                 },
-                _vm._l(_vm.vehicle.data, function(v) {
+                _vm._l(_vm.vehicle.officeData, function(v) {
                   return _c("div", { key: v.id, staticClass: "card" }, [
                     _c(
                       "div",
@@ -55754,7 +55747,7 @@ var render = function() {
                     "accordion accordion-solid accordion-toggle-plus",
                   attrs: { id: "accordion-rental" }
                 },
-                _vm._l(_vm.vehicle.data, function(v) {
+                _vm._l(_vm.vehicle.rentalData, function(v) {
                   return _c("div", { key: v.id, staticClass: "card" }, [
                     _c(
                       "div",
@@ -55774,14 +55767,14 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "flaticon2-lorry" }),
-                            _vm._v(" " + _vm._s(v.name) + " "),
+                            _vm._v(" " + _vm._s(v.vehicle_name) + " "),
                             _c(
                               "span",
                               {
                                 staticClass:
                                   "mt-0 mb-0 ml-5 label label-primary label-inline"
                               },
-                              [_vm._v(_vm._s(v.template))]
+                              [_vm._v(_vm._s(v.vehicle_template))]
                             )
                           ]
                         )
@@ -55803,13 +55796,13 @@ var render = function() {
                           { staticClass: "card-body" },
                           _vm._l(
                             _vm.vehicle.rental.filter(function(i) {
-                              return i.vehicle_id == v.id
+                              return i.rental_id == v.id
                             }),
                             function(r) {
                               return _c(
                                 "div",
                                 {
-                                  key: r.id,
+                                  key: r.rental_id,
                                   staticClass: "timeline timeline-5 mt-1"
                                 },
                                 [
@@ -55948,7 +55941,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "alert-text" }, [
                   _vm._v(
-                    "\n                    No rental vehicle travel.\n                "
+                    "\n                    No Rental vehicle travel.\n                "
                   )
                 ])
               ]

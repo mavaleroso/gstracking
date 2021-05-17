@@ -76,28 +76,19 @@
                         <div class="card" v-for="v in vehicle.rentalData" :key="v.id">
                             <div class="card-header" :id="'headingOne' + v.id">
                                 <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseRentalOne' + v.id">
-                                    <i class="flaticon2-lorry"></i> {{ v.name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.template }}</span>
+                                    <i class="flaticon2-lorry"></i> {{ v.vehicle_name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.vehicle_template }}</span>
                                 </div>
                             </div>
                             <div :id="'collapseRentalOne' + v.id" class="collapse" data-parent="#accordion-rental">
                                 <div class="card-body">
-                                    <div v-for="r in vehicle.rental.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
-                                        <!-- cities.filter(i=>i.province_id == activeProv.id) -->
-                                        <!--begin::Item-->
+                                    <div v-for="r in vehicle.rental.filter(i=>i.rental_id == v.id)" :key="r.rental_id" class="timeline timeline-5 mt-1">
                                         <div class="timeline-item align-items-start">
-                                            <!--begin::Label-->
                                             <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateFormat(r.travel_date) }}</div>
-                                            <!--end::Label-->
-                                            <!--begin::Badge-->
                                             <div class="timeline-badge">
                                                 <i class="fa fa-genderless text-success icon-xxl"></i>
                                             </div>
-                                            <!--end::Badge-->
-                                            <!--begin::Text-->
                                             <div class="timeline-content text-dark-50">{{ r.purpose }}</div>
-                                            <!--end::Text-->
                                         </div>
-                                        <!--end::Item-->
                                     </div>
                                 </div>
                             </div>

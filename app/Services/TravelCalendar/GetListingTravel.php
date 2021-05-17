@@ -19,28 +19,25 @@ class GetListingTravel
                             ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
                             ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
                             ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
-                            ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name'])
+                            ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'),  DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template')])
                             ->get();
 
         $office = Transaction::leftJoin('requests','transactions.request_id','=','requests.id')
                             ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
-                            ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
                             ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                             ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name'])
                             ->where('transactions.vehicle_type','office')
                             ->get();
         
         $rental = Transaction::leftJoin('requests','transactions.request_id','=','requests.id')
-                                ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
                                 ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
-                                ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
-                                ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name'])
+                                ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'rental_vehicles.id as rental_id','rental_vehicles.vehicle_name','rental_vehicles.vehicle_template'])
                                 ->where('transactions.vehicle_type','rental')
                                 ->get();
 
         foreach ($query as $key) {
             $data['list'][] = array(
-                'title' => $key['purpose'] . ' ( ' . $key['name'] . ' )', 
+                'title' => $key['purpose'] . ' ( ' . $key['vehicle_name'] . ' )', 
                 'description' => $key['trip_ticket'], 
                 'start' => $key['travel_date'], 
                 'className' => 'fc-event-light fc-event-solid-primary', 
@@ -51,13 +48,6 @@ class GetListingTravel
 
         $data['rental'] = $rental;
         
-        // $data['data'] = Transaction::leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
-        //                             ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
-        //                             ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
-        //                             ->select([DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'), DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template')])
-        //                             ->groupBy('vehicle_template')
-        //                             ->get();
-
         $data['officeData'] = Transaction::join('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
                                             ->join('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
                                             ->select(['vehicles.*'])
