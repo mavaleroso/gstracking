@@ -37,7 +37,6 @@ class PermissionCommand extends Command
         'request',
         'listrequest',
         'listrequeststaff',
-        'overview',
         'po',
         'log',
         'listtravel',
