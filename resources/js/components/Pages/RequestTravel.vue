@@ -1,18 +1,10 @@
 <template>
-    <div class="request-travel card card-custom card-sticky animate__animated animate__fadeIn" id="kt_page_sticky_card">
+    <div class="request-travel card card-custom animate__animated animate__fadeIn" id="kt_page_sticky_card">
         <div class="card-header">
             <div class="card-title">
                 <h3 class="card-label">Motor Vehicle
                 <i class="mr-2"></i>
                 <small class="">Request Form</small></h3>
-            </div>
-            <div v-if="complete == false" class="card-toolbar">
-                <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
-                <i class="ki ki-long-arrow-back icon-sm"></i>Back</a>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary font-weight-bolder" @click="saveForm">
-                    <i class="ki ki-check icon-sm"></i>Save Form</button>
-                </div>
             </div>
         </div>
         <div class="card-body">
@@ -130,6 +122,12 @@
                 </div>
             </form>
             <!--end::Form-->
+        </div>
+        <div class="card-footer">
+            <div v-if="complete == false" class="save-form-btn">
+                <button type="button" class="btn btn-primary font-weight-bolder" @click="saveForm">
+                <i class="ki ki-check icon-sm"></i>Save Form</button>
+            </div>
         </div>
     </div>
 </template>

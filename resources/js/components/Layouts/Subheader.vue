@@ -11,7 +11,7 @@
 				<!--end::Actions-->
 			</div>
 			<div class="d-flex align-items-center">
-				<div class="input-group">
+				<div :class="($route.meta.title == 'Dashboard')? 'input-group':'d-none'">
 					<div class="input-group-prepend"><span class="input-group-text"><i class="la la-calendar-alt"></i></span></div>
 					<select id="year" class="form-control">
 						<option v-for="year in years" :key="year.id" :value="year.travel_year">{{ year.travel_year }}</option>

@@ -86,11 +86,8 @@
                                 </a>
                             </div>
                             <div class="form-group">
-                                <label>Vehicle:</label>
-                                <select class="form-control select2" id="kt_select_vehicle" name="vehicle" v-model="formFields.vehicle_id" :disabled="status=='Completed'">
-                                    <option label="Label"></option>
-                                    <option v-for="vehicle in vehicles" :data-img="vehicle.image" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} ({{ vehicle.template }})</option>
-                                </select>
+                                <label>Vehicle Name</label>
+                                <input type="text" name="vehicle" id="vehicle_name" v-model="formFields.vehicle_name" class="form-control" disabled/>
                             </div>
                             <div class="form-group">
                                 <label>Starting ODO:</label>
@@ -325,7 +322,7 @@ export default {
                 vehicle_id: null,
                 vehicle_name: null,
                 status: null,
-                total_cost: null
+                total_cost: 0
             },
             filterDropdown: {
                 tripTicket : [],
@@ -362,7 +359,6 @@ export default {
         Filterdialog
     },
     created() {
-        this.getVehicles();
         this.getTripTicket();
         this.getServiceProviders();
         this.getPoNumber();
@@ -375,6 +371,7 @@ export default {
         totalCost() {
             let result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
             this.formFields.total_cost = result;
+            // let cost = (this.formFields.distance_travelled * this.formFields.rate_per_km);
             return result.toLocaleString(undefined, {minimumFractionDigits: 2});
         }
     },
@@ -386,11 +383,6 @@ export default {
                     showToast('Filtered successfully!', 'success');
                 }
                 this.tdatatable().init();
-            });
-        },
-        getVehicles() {
-            axios.get(BASE_URL + '/api/vehicle').then(response => {
-                this.vehicles = response.data;
             });
         },
         tdatatable() {
@@ -615,11 +607,11 @@ export default {
                 this.formFields.starting_odo = response.data[0].starting_odo;
                 this.formFields.ending_odo = response.data[0].ending_odo;
                 this.formFields.date_submitted_proc = response.data[0].date_submit_proc;
-                this.formFields.distance_travelled = response.data[0].travelled;
-                this.formFields.rate_per_km = response.data[0].rate_per_km;
-                this.formFields.flat_rate = response.data[0].flat_rate;
-                this.formFields.no_nights = response.data[0].nights_count;
-                this.formFields.rate_per_night = response.data[0].rate_per_night;
+                this.formFields.distance_travelled = parseInt((response.data[0].travelled)? response.data[0].travelled:0);
+                this.formFields.rate_per_km = parseFloat((response.data[0].rate_per_km)? response.data[0].rate_per_km:0);
+                this.formFields.flat_rate = parseFloat((response.data[0].flat_rate)? response.data[0].flat_rate:0);
+                this.formFields.no_nights = parseInt((response.data[0].nights_count)? response.data[0].nights_count:0);
+                this.formFields.rate_per_night = parseFloat((response.data[0].rate_per_night)? response.data[0].rate_per_night:0);
                 this.formFields.remarks = response.data[0].remarks;
                 this.formFields.travel_date = response.data[0].travel_date;
                 this.formFields.travel_time = response.data[0].depart_time;
@@ -627,20 +619,6 @@ export default {
                 this.formFields.vehicle_name = response.data[0].vehicle_name;
                 this.formFields.status = response.data[0].is_status;
                 (response.data[0].is_status == 3)? $('#is-completed').prop('checked', true):$('#is-completed').prop('checked', false);
-
-                $('#kt_select_vehicle').select2({
-                    placeholder: "Select vehicle",
-                });
-
-                setTimeout(() => {
-                    $('#kt_select_vehicle').val(vm.formFields.vehicle_id);
-                    $('#kt_select_vehicle').trigger('change');
-                }, 500);
-
-                $('#kt_select_vehicle').change(function() {
-                    vm.formFields.vehicle_id = $(this).val();
-                    vm.vehicle_image = $(this).find(':selected').data('img')
-                });
 
                 $('#is-completed').change(function() {
                     if (this.checked) {

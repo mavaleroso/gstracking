@@ -97,3 +97,9 @@
 .timeline.timeline-5 {
     height: 40px !important;
 }
+
+.save-form-btn {
+    width: fit-content !important;
+    margin-left: auto !important;
+    display: block !important;
+}

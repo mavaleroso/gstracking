@@ -2987,6 +2987,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4377,6 +4411,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.btn-details').off().on('click', function () {
               var id = $(this).data('record-id');
               vm.current_id = id;
+              vm.staff.id = id;
               vm.show(id);
             });
           }
@@ -5106,9 +5141,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5136,7 +5168,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vehicle_id: null,
         vehicle_name: null,
         status: null,
-        total_cost: null
+        total_cost: 0
       },
       filterDropdown: {
         tripTicket: [],
@@ -5173,7 +5205,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
-    this.getVehicles();
     this.getTripTicket();
     this.getServiceProviders();
     this.getPoNumber();
@@ -5185,7 +5216,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   computed: {
     totalCost: function totalCost() {
       var result = this.formFields.distance_travelled * this.formFields.rate_per_km + this.formFields.no_nights * this.formFields.rate_per_night + parseInt(this.formFields.flat_rate);
-      this.formFields.total_cost = result;
+      this.formFields.total_cost = result; // let cost = (this.formFields.distance_travelled * this.formFields.rate_per_km);
+
       return result.toLocaleString(undefined, {
         minimumFractionDigits: 2
       });
@@ -5202,13 +5234,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         _this.tdatatable().init();
-      });
-    },
-    getVehicles: function getVehicles() {
-      var _this2 = this;
-
-      axios.get(BASE_URL + '/api/vehicle').then(function (response) {
-        _this2.vehicles = response.data;
       });
     },
     tdatatable: function tdatatable() {
@@ -5435,44 +5460,33 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     show: function show(id) {
-      var _this3 = this;
+      var _this2 = this;
 
       this.reset();
       var vm = this;
       axios.get(BASE_URL + "/tracking/listtravel/" + id).then(function (response) {
-        _this3.id = id;
-        _this3.created_at = dateTimeEng(response.data[0].created_at);
-        _this3.trip_ticket = response.data[0].trip_ticket;
-        _this3.vehicle_image = response.data[0].image;
-        _this3.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
-        _this3.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+        _this2.id = id;
+        _this2.created_at = dateTimeEng(response.data[0].created_at);
+        _this2.trip_ticket = response.data[0].trip_ticket;
+        _this2.vehicle_image = response.data[0].image;
+        _this2.status = response.data[0].is_status == 2 ? 'Approved' : 'Completed';
+        _this2.status_class = response.data[0].is_status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
 
-        _this3.formFields.starting_odo = response.data[0].starting_odo;
-        _this3.formFields.ending_odo = response.data[0].ending_odo;
-        _this3.formFields.date_submitted_proc = response.data[0].date_submit_proc;
-        _this3.formFields.distance_travelled = response.data[0].travelled;
-        _this3.formFields.rate_per_km = response.data[0].rate_per_km;
-        _this3.formFields.flat_rate = response.data[0].flat_rate;
-        _this3.formFields.no_nights = response.data[0].nights_count;
-        _this3.formFields.rate_per_night = response.data[0].rate_per_night;
-        _this3.formFields.remarks = response.data[0].remarks;
-        _this3.formFields.travel_date = response.data[0].travel_date;
-        _this3.formFields.travel_time = response.data[0].depart_time;
-        _this3.formFields.vehicle_id = response.data[0].vehicle_id;
-        _this3.formFields.vehicle_name = response.data[0].vehicle_name;
-        _this3.formFields.status = response.data[0].is_status;
+        _this2.formFields.starting_odo = response.data[0].starting_odo;
+        _this2.formFields.ending_odo = response.data[0].ending_odo;
+        _this2.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+        _this2.formFields.distance_travelled = parseInt(response.data[0].travelled ? response.data[0].travelled : 0);
+        _this2.formFields.rate_per_km = parseFloat(response.data[0].rate_per_km ? response.data[0].rate_per_km : 0);
+        _this2.formFields.flat_rate = parseFloat(response.data[0].flat_rate ? response.data[0].flat_rate : 0);
+        _this2.formFields.no_nights = parseInt(response.data[0].nights_count ? response.data[0].nights_count : 0);
+        _this2.formFields.rate_per_night = parseFloat(response.data[0].rate_per_night ? response.data[0].rate_per_night : 0);
+        _this2.formFields.remarks = response.data[0].remarks;
+        _this2.formFields.travel_date = response.data[0].travel_date;
+        _this2.formFields.travel_time = response.data[0].depart_time;
+        _this2.formFields.vehicle_id = response.data[0].vehicle_id;
+        _this2.formFields.vehicle_name = response.data[0].vehicle_name;
+        _this2.formFields.status = response.data[0].is_status;
         response.data[0].is_status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
-        $('#kt_select_vehicle').select2({
-          placeholder: "Select vehicle"
-        });
-        setTimeout(function () {
-          $('#kt_select_vehicle').val(vm.formFields.vehicle_id);
-          $('#kt_select_vehicle').trigger('change');
-        }, 500);
-        $('#kt_select_vehicle').change(function () {
-          vm.formFields.vehicle_id = $(this).val();
-          vm.vehicle_image = $(this).find(':selected').data('img');
-        });
         $('#is-completed').change(function () {
           if (this.checked) {
             $('#modal-status').removeClass('label-primary');
@@ -5491,7 +5505,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(".vehicle-img-viewer").fancybox();
     },
     update: function update(id) {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(function (response) {
         $('.invalid-feedback').remove();
@@ -5499,7 +5513,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
 
-        _this4.show(id);
+        _this3.show(id);
 
         $('#list-travel-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
@@ -5521,10 +5535,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this4.names.length; i++) {
-          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
-            $('[name="' + _this4.names[i] + '"]').removeClass('is-invalid');
-            $('[name="' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (keys.indexOf('' + _this3.names[i] + '') == -1) {
+            $('[name="' + _this3.names[i] + '"]').removeClass('is-invalid');
+            $('[name="' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -5628,38 +5642,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 500);
     },
     getTripTicket: function getTripTicket() {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get(BASE_URL + "/api/tripticket").then(function (response) {
-        _this5.filterDropdown.tripTicket = response.data;
+        _this4.filterDropdown.tripTicket = response.data;
       });
     },
     getServiceProviders: function getServiceProviders() {
-      var _this6 = this;
+      var _this5 = this;
 
       axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
-        _this6.filterDropdown.serviceProvider = response.data;
+        _this5.filterDropdown.serviceProvider = response.data;
       });
     },
     getPoNumber: function getPoNumber() {
-      var _this7 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/ponumber").then(function (response) {
-        _this7.filterDropdown.poNumber = response.data;
+        _this6.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
-      var _this8 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/division").then(function (response) {
-        _this8.filterDropdown.division = response.data;
+        _this7.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
-      var _this9 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/section/" + id).then(function (response) {
-        _this9.filterDropdown.section = response.data;
+        _this8.filterDropdown.section = response.data;
       });
     }
   }
@@ -6283,22 +6297,11 @@ __webpack_require__.r(__webpack_exports__);
         _this.transaction.department = res.data.transaction[0].department;
         _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
         _this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
-
-        if (res.data.transaction[0].vehicle_type == 'office') {
-          _this.transaction.vehicle_name = res.data.transaction[0].name;
-          _this.transaction.template = res.data.transaction[0].template;
-          _this.transaction.driver = res.data.transaction[0].fullname;
-          _this.transaction.driver_contact = res.data.transaction[0].contact;
-        } else if (res.data.transaction[0].vehicle_type == 'office') {
-          _this.transaction.vehicle_name = res.data.transaction[0].vehicle_description;
-          _this.transaction.template = res.data.transaction[0].vehicle_template;
-          _this.transaction.driver = res.data.transaction[0].driver_name;
-          _this.transaction.driver_contact = res.data.transaction[0].driver_contact;
-        }
-
-        _this.transaction.driver = res.data.transaction[0].fullname;
+        _this.transaction.vehicle_name = res.data.transaction[0].vehicle_name;
+        _this.transaction.template = res.data.transaction[0].vehicle_template;
+        _this.transaction.driver = res.data.transaction[0].driver_name;
+        _this.transaction.driver_contact = res.data.transaction[0].driver_contact;
         _this.transaction.purpose = res.data.transaction[0].purpose;
-        _this.transaction.vehicle_name = res.data.transaction[0].name;
         _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
         _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 
@@ -6340,8 +6343,6 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
 //
 //
 //
@@ -47978,7 +47979,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("span", { staticClass: "menu-text" }, [
-                          _vm._v("Transportation")
+                          _vm._v("Office")
                         ]),
                         _vm._v(" "),
                         _c("i", { staticClass: "menu-arrow" })
@@ -48382,7 +48383,7 @@ var staticRenderFns = [
       },
       [
         _c("span", { staticClass: "menu-link" }, [
-          _c("span", { staticClass: "menu-text" }, [_vm._v("Transportation")])
+          _c("span", { staticClass: "menu-text" }, [_vm._v("Office")])
         ])
       ]
     )
@@ -48462,22 +48463,31 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "d-flex align-items-center" }, [
-            _c("div", { staticClass: "input-group" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "select",
-                { staticClass: "form-control", attrs: { id: "year" } },
-                _vm._l(_vm.years, function(year) {
-                  return _c(
-                    "option",
-                    { key: year.id, domProps: { value: year.travel_year } },
-                    [_vm._v(_vm._s(year.travel_year))]
-                  )
-                }),
-                0
-              )
-            ])
+            _c(
+              "div",
+              {
+                class:
+                  _vm.$route.meta.title == "Dashboard"
+                    ? "input-group"
+                    : "d-none"
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  { staticClass: "form-control", attrs: { id: "year" } },
+                  _vm._l(_vm.years, function(year) {
+                    return _c(
+                      "option",
+                      { key: year.id, domProps: { value: year.travel_year } },
+                      [_vm._v(_vm._s(year.travel_year))]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
           ])
         ]
       )
@@ -48950,52 +48960,150 @@ var render = function() {
                 }
               },
               [
-                _c(
-                  "div",
-                  { staticClass: "timeline timeline-5 mt-3" },
-                  _vm._l(_vm.activities.upcoming, function(activity) {
-                    return _c(
+                _vm.activities.upcoming.length
+                  ? _c(
                       "div",
-                      {
-                        key: activity.id,
-                        staticClass: "timeline-item align-items-start"
-                      },
-                      [
-                        _c(
+                      { staticClass: "timeline timeline-5 mt-3" },
+                      _vm._l(_vm.activities.upcoming, function(activity) {
+                        return _c(
                           "div",
                           {
-                            staticClass:
-                              "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                            key: activity.id,
+                            staticClass: "timeline-item align-items-start"
                           },
                           [
-                            _vm._v(
-                              _vm._s(_vm.dateEngShort(activity.travel_date))
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.dateEngShort(activity.travel_date))
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm._m(3, true),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "timeline-content text-dark-50" },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "label label-primary label-inline mr-2"
+                                  },
+                                  [_vm._v(_vm._s(activity.trip_ticket))]
+                                ),
+                                _vm._v(" " + _vm._s(activity.purpose))
+                              ]
                             )
                           ]
-                        ),
-                        _vm._v(" "),
-                        _vm._m(3, true),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "timeline-content text-dark-50" },
-                          [
+                        )
+                      }),
+                      0
+                    )
+                  : _c("div", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-custom alert-default",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("div", { staticClass: "alert-icon" }, [
                             _c(
                               "span",
                               {
                                 staticClass:
-                                  "label label-primary label-inline mr-2"
+                                  "svg-icon svg-icon-primary svg-icon-2x"
                               },
-                              [_vm._v(_vm._s(activity.trip_ticket))]
-                            ),
-                            _vm._v(" " + _vm._s(activity.purpose))
-                          ]
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      "xmlns:xlink":
+                                        "http://www.w3.org/1999/xlink",
+                                      width: "24px",
+                                      height: "24px",
+                                      viewBox: "0 0 24 24",
+                                      version: "1.1"
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "g",
+                                      {
+                                        attrs: {
+                                          stroke: "none",
+                                          "stroke-width": "1",
+                                          fill: "none",
+                                          "fill-rule": "evenodd"
+                                        }
+                                      },
+                                      [
+                                        _c("rect", {
+                                          attrs: {
+                                            x: "0",
+                                            y: "0",
+                                            width: "24",
+                                            height: "24"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("circle", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            opacity: "0.3",
+                                            cx: "12",
+                                            cy: "12",
+                                            r: "10"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("rect", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            x: "11",
+                                            y: "10",
+                                            width: "2",
+                                            height: "7",
+                                            rx: "1"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("rect", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            x: "11",
+                                            y: "7",
+                                            width: "2",
+                                            height: "2",
+                                            rx: "1"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "alert-text" }, [
+                            _vm._v(
+                              "\n                                    No Upcoming Activities.\n                                "
+                            )
+                          ])
+                        ]
+                      )
+                    ])
               ]
             ),
             _vm._v(" "),
@@ -49010,52 +49118,150 @@ var render = function() {
                 }
               },
               [
-                _c(
-                  "div",
-                  { staticClass: "timeline timeline-5 mt-3" },
-                  _vm._l(_vm.activities.recent, function(activity) {
-                    return _c(
+                _vm.activities.recent.length
+                  ? _c(
                       "div",
-                      {
-                        key: activity.id,
-                        staticClass: "timeline-item align-items-start"
-                      },
-                      [
-                        _c(
+                      { staticClass: "timeline timeline-5 mt-3" },
+                      _vm._l(_vm.activities.recent, function(activity) {
+                        return _c(
                           "div",
                           {
-                            staticClass:
-                              "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                            key: activity.id,
+                            staticClass: "timeline-item align-items-start"
                           },
                           [
-                            _vm._v(
-                              _vm._s(_vm.dateEngShort(activity.travel_date))
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.dateEngShort(activity.travel_date))
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm._m(4, true),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "timeline-content text-dark-50" },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "label label-success label-inline mr-2"
+                                  },
+                                  [_vm._v(_vm._s(activity.trip_ticket))]
+                                ),
+                                _vm._v(" " + _vm._s(activity.purpose))
+                              ]
                             )
                           ]
-                        ),
-                        _vm._v(" "),
-                        _vm._m(4, true),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "timeline-content text-dark-50" },
-                          [
+                        )
+                      }),
+                      0
+                    )
+                  : _c("div", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-custom alert-default",
+                          attrs: { role: "alert" }
+                        },
+                        [
+                          _c("div", { staticClass: "alert-icon" }, [
                             _c(
                               "span",
                               {
                                 staticClass:
-                                  "label label-success label-inline mr-2"
+                                  "svg-icon svg-icon-primary svg-icon-2x"
                               },
-                              [_vm._v(_vm._s(activity.trip_ticket))]
-                            ),
-                            _vm._v(" " + _vm._s(activity.purpose))
-                          ]
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    attrs: {
+                                      xmlns: "http://www.w3.org/2000/svg",
+                                      "xmlns:xlink":
+                                        "http://www.w3.org/1999/xlink",
+                                      width: "24px",
+                                      height: "24px",
+                                      viewBox: "0 0 24 24",
+                                      version: "1.1"
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "g",
+                                      {
+                                        attrs: {
+                                          stroke: "none",
+                                          "stroke-width": "1",
+                                          fill: "none",
+                                          "fill-rule": "evenodd"
+                                        }
+                                      },
+                                      [
+                                        _c("rect", {
+                                          attrs: {
+                                            x: "0",
+                                            y: "0",
+                                            width: "24",
+                                            height: "24"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("circle", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            opacity: "0.3",
+                                            cx: "12",
+                                            cy: "12",
+                                            r: "10"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("rect", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            x: "11",
+                                            y: "10",
+                                            width: "2",
+                                            height: "7",
+                                            rx: "1"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("rect", {
+                                          attrs: {
+                                            fill: "#000000",
+                                            x: "11",
+                                            y: "7",
+                                            width: "2",
+                                            height: "2",
+                                            rx: "1"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "alert-text" }, [
+                            _vm._v(
+                              "\n                                    No Recent Activities.\n                                "
+                            )
+                          ])
+                        ]
+                      )
+                    ])
               ]
             )
           ])
@@ -51164,69 +51370,38 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Vehicle:")]),
+                        _c("label", [_vm._v("Vehicle Name")]),
                         _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.vehicle_id,
-                                expression: "formFields.vehicle_id"
-                              }
-                            ],
-                            staticClass: "form-control select2",
-                            attrs: {
-                              id: "kt_select_vehicle",
-                              name: "vehicle",
-                              disabled: _vm.status == "Completed"
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "vehicle_id",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.vehicle_name,
+                              expression: "formFields.vehicle_name"
                             }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(vehicle) {
-                              return _c(
-                                "option",
-                                {
-                                  key: vehicle.id,
-                                  attrs: { "data-img": vehicle.image },
-                                  domProps: { value: vehicle.id }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(vehicle.name) +
-                                      " (" +
-                                      _vm._s(vehicle.template) +
-                                      ")"
-                                  )
-                                ]
-                              )
-                            })
                           ],
-                          2
-                        )
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "vehicle",
+                            id: "vehicle_name",
+                            disabled: ""
+                          },
+                          domProps: { value: _vm.formFields.vehicle_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "vehicle_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
@@ -53918,34 +54093,11 @@ var render = function() {
     "div",
     {
       staticClass:
-        "request-travel card card-custom card-sticky animate__animated animate__fadeIn",
+        "request-travel card card-custom animate__animated animate__fadeIn",
       attrs: { id: "kt_page_sticky_card" }
     },
     [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm.complete == false
-          ? _c("div", { staticClass: "card-toolbar" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "btn-group" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary font-weight-bolder",
-                    attrs: { type: "button" },
-                    on: { click: _vm.saveForm }
-                  },
-                  [
-                    _c("i", { staticClass: "ki ki-check icon-sm" }),
-                    _vm._v("Save Form")
-                  ]
-                )
-              ])
-            ])
-          : _vm._e()
-      ]),
+      _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("form", { staticClass: "form", attrs: { id: "kt_form" } }, [
@@ -54100,7 +54252,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(2),
+                _vm._m(1),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
                   _c("label", { staticClass: "col-3" }, [
@@ -54226,9 +54378,9 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
-                _vm._m(4)
+                _vm._m(3)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -54273,13 +54425,32 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(5)
+                _vm._m(4)
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-xl-2" })
           ])
         ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-footer" }, [
+        _vm.complete == false
+          ? _c("div", { staticClass: "save-form-btn" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary font-weight-bolder",
+                  attrs: { type: "button" },
+                  on: { click: _vm.saveForm }
+                },
+                [
+                  _c("i", { staticClass: "ki ki-check icon-sm" }),
+                  _vm._v("Save Form")
+                ]
+              )
+            ])
+          : _vm._e()
       ])
     ]
   )
@@ -54289,30 +54460,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-title" }, [
-      _c("h3", { staticClass: "card-label" }, [
-        _vm._v("Motor Vehicle\n            "),
-        _c("i", { staticClass: "mr-2" }),
-        _vm._v(" "),
-        _c("small", {}, [_vm._v("Request Form")])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _vm._v("Motor Vehicle\n            "),
+          _c("i", { staticClass: "mr-2" }),
+          _vm._v(" "),
+          _c("small", {}, [_vm._v("Request Form")])
+        ])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "btn btn-light-primary font-weight-bolder mr-2",
-        attrs: { href: "#" }
-      },
-      [
-        _c("i", { staticClass: "ki ki-long-arrow-back icon-sm" }),
-        _vm._v("Back")
-      ]
-    )
   },
   function() {
     var _vm = this
