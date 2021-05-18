@@ -29,7 +29,7 @@ class CreateVehicle
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
             'capacity' => $fields['capacityNumber'],
-            'status' => $fields['status'],
+            'status' => $fields['status_radio'],
             'remarks' => $fields['remarks']
         ]);
 

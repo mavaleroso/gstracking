@@ -7417,6 +7417,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7512,7 +7515,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('description', this.formFields.description);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
-      formD.append('status', this.formFields.status);
+      formD.append('status_radio', this.formFields.status);
       formD.append('remarks', this.formFields.remarks);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
@@ -7544,14 +7547,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+          if ("".concat(key) == 'status_radio') {
+            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
             $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
             $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
           }
         }
 
         for (var i = 0; i < _this4.names.length; i++) {
-          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+          if (_this4.names[i] == 'status_radio') {
+            console.log("1");
+            console.log(keys);
+
+            if (keys.indexOf('status_radio') == -1) {
+              if ($('.checkbox-inline').next().length != 0) {
+                $('.checkbox-inline').next('.invalid-feedback').remove();
+              }
+            }
+          } else if (keys.indexOf('' + _this4.names[i] + '') == -1) {
             $('[name="vehicle_' + _this4.names[i] + '"]').removeClass('is-invalid');
             $('[name="vehicle_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
@@ -7653,6 +7669,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
+            targets: [3, 7],
+            render: function render(data) {
+              var data = data == 'null' ? '' : data;
+              return data;
+            }
+          }, {
             targets: 6,
             render: function render(data) {
               var status = {
@@ -7662,7 +7684,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 },
                 1: {
                   'title': 'Active',
-                  'class': ' label-light-success'
+                  'class': ' label-light-primary'
                 }
               };
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
@@ -55128,81 +55150,81 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c("label", { staticClass: "col-6" }, [
-                          _vm._v("Status ")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
-                          _c("div", { staticClass: "checkbox-inline" }, [
-                            _c("label", { staticClass: "radio mr-2" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.formFields.status,
-                                    expression: "formFields.status"
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Status ")]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-lg-6" }, [
+                            _c("div", { staticClass: "checkbox-inline" }, [
+                              _c("label", { staticClass: "radio mr-2" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.status,
+                                      expression: "formFields.status"
+                                    }
+                                  ],
+                                  staticClass: "details-input",
+                                  attrs: {
+                                    type: "radio",
+                                    name: "status_radio",
+                                    value: "1"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(_vm.formFields.status, "1")
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.formFields,
+                                        "status",
+                                        "1"
+                                      )
+                                    }
                                   }
-                                ],
-                                staticClass: "details-input",
-                                attrs: {
-                                  type: "radio",
-                                  name: "status_radio",
-                                  value: "1"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.formFields.status, "1")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    return _vm.$set(
-                                      _vm.formFields,
-                                      "status",
-                                      "1"
-                                    )
+                                }),
+                                _vm._v(
+                                  " Active\n                                            "
+                                ),
+                                _c("span")
+                              ]),
+                              _vm._v(" "),
+                              _c("label", { staticClass: "radio" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.status,
+                                      expression: "formFields.status"
+                                    }
+                                  ],
+                                  staticClass: "details-input",
+                                  attrs: {
+                                    type: "radio",
+                                    name: "status_radio",
+                                    value: "0"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(_vm.formFields.status, "0")
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.formFields,
+                                        "status",
+                                        "0"
+                                      )
+                                    }
                                   }
-                                }
-                              }),
-                              _vm._v(
-                                " Active\n                                        "
-                              ),
-                              _c("span")
-                            ]),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "radio" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.formFields.status,
-                                    expression: "formFields.status"
-                                  }
-                                ],
-                                staticClass: "details-input",
-                                attrs: {
-                                  type: "radio",
-                                  name: "status_radio",
-                                  value: "0"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.formFields.status, "0")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    return _vm.$set(
-                                      _vm.formFields,
-                                      "status",
-                                      "0"
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(
-                                " Inactive\n                                        "
-                              ),
-                              _c("span")
+                                }),
+                                _vm._v(
+                                  " Inactive\n                                            "
+                                ),
+                                _c("span")
+                              ])
                             ])
                           ])
                         ])
@@ -55508,6 +55530,8 @@ var staticRenderFns = [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
           _c("span"),
+          _vm._v(" "),
+          _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" }),
           _vm._v(" "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),

@@ -4,6 +4,7 @@
             <div class="card-header flex-wrap">
                 <div class="card-title">
                     <h3 class="card-label"><span></span>
+                    <span class="d-block text-muted pt-2 font-size-sm"></span>
                     <i class="mr-2"></i>
                     <small class="">Form</small></h3>
                 </div>
@@ -14,38 +15,40 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                <p>Image:</p>
-                                <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
-                                    <div class="image-input-wrapper"></div>
+                                    <p>Image:</p>
+                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
+                                        <div class="image-input-wrapper"></div>
 
-                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                        <i class="fa fa-pen icon-sm text-muted"></i>
-                                        <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
-                                        <input type="hidden"/>
-                                    </label>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
+                                            <input type="hidden"/>
+                                        </label>
 
-                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                    </span>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
 
-                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                    </span>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-6">Status </label>
-                                <div class="col-lg-6">
-                                    <div class="checkbox-inline">
-                                        <label class="radio mr-2">
-                                            <input class="details-input" type="radio" name="status_radio"  value="1" v-model="formFields.status"/> Active
-                                            <span></span>
-                                        </label>
-                                        <label class="radio">
-                                            <input class="details-input" type="radio" name="status_radio" value="0" v-model="formFields.status"/> Inactive
-                                            <span></span>
-                                        </label>
+                            <div class="col-lg-6">
+                                <div class="form-group"> 
+                                    <label>Status </label>
+                                    <div class="col-lg-6">
+                                        <div class="checkbox-inline">
+                                            <label class="radio mr-2">
+                                                <input class="details-input" type="radio" name="status_radio"  value="1" v-model="formFields.status"/> Active
+                                                <span></span>
+                                            </label>
+                                            <label class="radio">
+                                                <input class="details-input" type="radio" name="status_radio" value="0" v-model="formFields.status"/> Inactive
+                                                <span></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +227,7 @@ export default {
             formD.append('description', this.formFields.description);
             formD.append('templateNumber', this.formFields.templateNumber);
             formD.append('capacityNumber', this.formFields.capacityNumber);
-            formD.append('status', this.formFields.status);
+            formD.append('status_radio', this.formFields.status);
             formD.append('remarks', this.formFields.remarks);
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
@@ -246,13 +249,30 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+
+                    if (`${key}` == 'status_radio') {
+                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback d-block">'+`${value}`+'</div>');   
+                        }
+                    }
+                    else if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                             $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        if (this.names[i] == 'status_radio') {
+                            console.log("1");
+                            console.log(keys);
+                            if (keys.indexOf('status_radio') == -1) {
+                                if ($('.checkbox-inline').next().length != 0) {
+                                    $('.checkbox-inline').next('.invalid-feedback').remove();
+                                }
+                          
+                            } 
+                        }
+
+                       else if (keys.indexOf(''+this.names[i]+'') == -1) {
                             $('[name="vehicle_'+this.names[i]+'"]').removeClass('is-invalid');
                             $('[name="vehicle_'+this.names[i]+'"]').next('.invalid-feedback').remove();
                         }
@@ -352,6 +372,13 @@ export default {
                             }
                         },
                         {
+                            targets: [3,7],
+                            render: data => {
+                                var data = data =='null' ? '' : data;
+                                return data;
+                            }
+                        },
+                        {
                             targets: 6,
                             render: data => {
                                 var status = {
@@ -361,7 +388,7 @@ export default {
                                     },
                                     1: {
                                         'title': 'Active',
-                                        'class': ' label-light-success'
+                                        'class': ' label-light-primary'
                                     },
                                 };
                                 return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
