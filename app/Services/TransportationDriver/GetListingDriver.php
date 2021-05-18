@@ -23,6 +23,7 @@ class GetListingDriver
                 'age',
                 'sex',
                 'contact',
+                'status',
                 'updated_at'
             ],
             'orderable' => [
@@ -31,6 +32,7 @@ class GetListingDriver
                 'age',
                 'sex',
                 'contact',
+                'status',
                 'updated_at'
             ]
         ]);

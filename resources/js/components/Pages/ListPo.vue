@@ -30,9 +30,9 @@
                                     <label>Status:</label>
                                     <select class="form-control select2" id="status" name="status" v-model="formFields.status">
                                         <option label="Label"></option>
-                                        <option value="1">Ongoing</option>
-                                        <option value="2">Approved</option>
-                                        <option value="3">Completed</option>
+                                        <option value="0">Ongoing</option>
+                                        <option value="1">Approved</option>
+                                        <option value="2">Completed</option>
                                     </select>
                                 </div>
                             </div>
@@ -299,19 +299,19 @@ export default {
                             targets: 4,
                             render: data => {
                                 var status = {
-                                    1: {
+                                    0: {
                                         'title': 'Pending',
                                         'class': ' label-light-warning'
                                     },
-                                    2: {
+                                    1: {
                                         'title': 'Approved',
                                         'class': ' label-light-primary'
                                     },
-                                    3: {
+                                    2: {
                                         'title': 'Completed',
                                         'class': ' label-light-success'
                                     },
-                                    4: {
+                                    3: {
                                         'title': 'Declined',
                                         'class': ' label-light-danger'
                                     }

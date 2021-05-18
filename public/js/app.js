@@ -3814,19 +3814,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             targets: 4,
             render: function render(data) {
               var status = {
-                1: {
+                0: {
                   'title': 'Pending',
                   'class': ' label-light-warning'
                 },
-                2: {
+                1: {
                   'title': 'Approved',
                   'class': ' label-light-primary'
                 },
-                3: {
+                2: {
                   'title': 'Completed',
                   'class': ' label-light-success'
                 },
-                4: {
+                3: {
                   'title': 'Declined',
                   'class': ' label-light-danger'
                 }
@@ -4164,7 +4164,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     return {
       current_id: null,
       status: null,
-      request_id: null,
       request_status: null,
       request_status_lbl: null,
       request_title: null,
@@ -4385,6 +4384,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           drawCallback: function drawCallback() {
             $('.btn-details').off().on('click', function () {
               var id = $(this).data('record-id');
+              vm.current_id = id;
               vm.show(id);
             });
           }
@@ -4400,7 +4400,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     show: function show(id) {
       var app = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var vm = this;
-      vm.current_id = id;
       axios.get(BASE_URL + '/travel/listrequest/' + id).then(function (response) {
         switch (response.data[0].is_status) {
           case 1:
@@ -4424,7 +4423,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             break;
         }
 
-        vm.request_id = response.data[0].id;
         vm.request_title = response.data[0].serial_code;
         vm.request_createdAt = response.data[0].created_at;
         vm.request_vehicle = response.data[0].type_vehicle;
@@ -4436,8 +4434,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
         vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
-        vm.getDetails(vm.request_id);
-        vm.getPassengers(vm.request_id);
+        vm.getDetails(vm.current_id);
+        vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
           $('.radio-vehicle').change(function () {
@@ -4472,7 +4470,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.invalid-admin').removeClass('is-invalid');
           });
         }, 500);
-        vm.staff.id = vm.request_id;
       });
     },
     getRegion: function getRegion() {
@@ -4603,7 +4600,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
 
-        _this7.getPassengers(_this7.request_id);
+        _this7.getPassengers(_this7.current_id);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -4784,7 +4781,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return toParseNum(data);
     },
     reject: function reject() {
-      axios.put(BASE_URL + '/travel/listrequeststaff/' + this.request_id).then(function (response) {
+      axios.put(BASE_URL + '/travel/listrequeststaff/' + this.current_id).then(function (response) {
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         $('#kt_datatable_modal').modal('toggle');
@@ -6907,6 +6904,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6917,9 +6921,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         fullname: '',
         age: '',
         gender: '',
-        contactNumber: ''
+        contactNumber: '',
+        status: ''
       },
-      names: ['fullname', 'age', 'gender', 'contactNumber']
+      names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
     };
   },
   created: function created() {},
@@ -6942,8 +6947,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select gender",
           minimumResultsForSearch: Infinity
         });
+        $('#kt_select_status').select2({
+          placeholder: "Select status",
+          minimumResultsForSearch: Infinity
+        });
         $('#kt_select_gender').change(function () {
           vm.formFields.gender = $(this).val();
+        });
+        $('#kt_select_status').change(function () {
+          vm.formFields.status = $(this).val();
         });
         $('.card-label span').text('Create Driver');
       });
@@ -6959,16 +6971,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.age = response.data[0].age;
           vm.formFields.gender = response.data[0].sex;
           vm.formFields.contactNumber = response.data[0].contact;
+          vm.formFields.status = response.data[0].status;
         });
         $('#kt_select_gender').select2({
-          placeholder: "Select gender"
+          placeholder: "Select gender",
+          minimumResultsForSearch: Infinity
+        });
+        $('#kt_select_status').select2({
+          placeholder: "Select status",
+          minimumResultsForSearch: Infinity
         });
         $('#kt_select_gender').change(function () {
           vm.formFields.gender = $(this).val();
         });
+        $('#kt_select_status').change(function () {
+          vm.formFields.status = $(this).val();
+        });
         setTimeout(function () {
           $('#kt_select_gender').val(vm.formFields.gender);
           $('#kt_select_gender').trigger('change');
+          $('#kt_select_status').val(vm.formFields.status);
+          $('#kt_select_status').trigger('change');
         }, 500);
       });
     },
@@ -6978,6 +7001,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.age = '';
       this.formFields.gender = '';
       this.formFields.contactNumber = '';
+      this.formFields.status = '';
       this.create = false;
       this.edit = false;
       this.ini();
@@ -6993,6 +7017,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('age', this.formFields.age);
       formD.append('gender', this.formFields.gender);
       formD.append('contactNumber', this.formFields.contactNumber);
+      formD.append('status', this.formFields.status);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -7023,9 +7048,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'gender') {
-            if ($('#kt_select_gender').next().next().length == 0) {
-              $('#kt_select_gender').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == 'gender' || "".concat(key) == 'status') {
+            if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
+              $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
             }
           } else {
             if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -7036,10 +7061,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'gender') {
+          if (_this2.names[i] == 'gender' || _this2.names[i] == 'status') {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_gender').next().next().length != 0) {
-                $('#kt_select_gender').next().next('.invalid-feedback').remove();
+              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
@@ -7095,11 +7120,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "contact"
           }, {
+            "data": "status"
+          }, {
             "data": "updated_at"
           }, {
             "data": "id"
           }],
           columnDefs: [{
+            targets: 5,
+            render: function render(data) {
+              var status = {
+                0: {
+                  'title': 'Inactive',
+                  'class': ' label-light-warning'
+                },
+                1: {
+                  'title': 'Active',
+                  'class': ' label-light-primary'
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+            }
+          }, {
             targets: -1,
             title: 'Actions',
             orderable: false,
@@ -7131,7 +7173,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                 ';
             }
           }, {
-            targets: 5,
+            targets: 6,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -49687,15 +49729,15 @@ var render = function() {
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
+                              _c("option", { attrs: { value: "0" } }, [
                                 _vm._v("Ongoing")
                               ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
+                              _c("option", { attrs: { value: "1" } }, [
                                 _vm._v("Approved")
                               ]),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
+                              _c("option", { attrs: { value: "2" } }, [
                                 _vm._v("Completed")
                               ])
                             ]
@@ -50102,18 +50144,18 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.request_id,
-                            expression: "request_id"
+                            value: _vm.current_id,
+                            expression: "current_id"
                           }
                         ],
                         attrs: { name: "request_id", type: "hidden" },
-                        domProps: { value: _vm.request_id },
+                        domProps: { value: _vm.current_id },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.request_id = $event.target.value
+                            _vm.current_id = $event.target.value
                           }
                         }
                       }),
@@ -50638,7 +50680,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.save(_vm.request_id)
+                              return _vm.save(_vm.current_id)
                             }
                           }
                         },
@@ -54702,8 +54744,6 @@ var render = function() {
                               }
                             },
                             [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
                               _c("option", { attrs: { value: "male" } }, [
                                 _vm._v("Male")
                               ]),
@@ -54714,6 +54754,58 @@ var render = function() {
                               _vm._v(" "),
                               _c("option", { attrs: { value: "others" } }, [
                                 _vm._v("Others")
+                              ])
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Status:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.status,
+                                  expression: "formFields.status"
+                                }
+                              ],
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select_status",
+                                name: "driver_status"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "status",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Active")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "0" } }, [
+                                _vm._v("Inactive")
                               ])
                             ]
                           )
@@ -54960,6 +55052,8 @@ var staticRenderFns = [
               _c("th", [_vm._v("Sex")]),
               _vm._v(" "),
               _c("th", [_vm._v("Contact No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
               _vm._v(" "),
               _c("th", [_vm._v("Date")]),
               _vm._v(" "),
