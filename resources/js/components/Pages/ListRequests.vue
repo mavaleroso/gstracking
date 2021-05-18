@@ -457,6 +457,7 @@ export default {
                         $('.btn-details').off().on('click', function() {
                             let id = $(this).data('record-id');
                             vm.current_id = id;
+                            vm.staff.id = id;
                             vm.show(id);
                         });
                     }

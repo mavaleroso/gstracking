@@ -277,21 +277,11 @@ export default {
                 this.transaction.department = res.data.transaction[0].department;
                 this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
                 this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
-
-                if (res.data.transaction[0].vehicle_type == 'office') {
-                    this.transaction.vehicle_name = res.data.transaction[0].name;
-                    this.transaction.template = res.data.transaction[0].template;
-                    this.transaction.driver = res.data.transaction[0].fullname;
-                    this.transaction.driver_contact = res.data.transaction[0].contact;
-                } else if (res.data.transaction[0].vehicle_type == 'office') {
-                    this.transaction.vehicle_name = res.data.transaction[0].vehicle_description;
-                    this.transaction.template = res.data.transaction[0].vehicle_template;
-                    this.transaction.driver = res.data.transaction[0].driver_name;
-                    this.transaction.driver_contact = res.data.transaction[0].driver_contact;
-                }
-                this.transaction.driver = res.data.transaction[0].fullname;
+                this.transaction.vehicle_name = res.data.transaction[0].vehicle_name;
+                this.transaction.template = res.data.transaction[0].vehicle_template;
+                this.transaction.driver = res.data.transaction[0].driver_name;
+                this.transaction.driver_contact = res.data.transaction[0].driver_contact;
                 this.transaction.purpose = res.data.transaction[0].purpose;
-                this.transaction.vehicle_name = res.data.transaction[0].name;
                 this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
                 this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 

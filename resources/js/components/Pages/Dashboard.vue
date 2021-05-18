@@ -189,7 +189,7 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane fade show active p-10" id="kt_tab_pane_4_1" role="tabpanel" aria-labelledby="kt_tab_pane_4_1">
-                            <div class="timeline timeline-5 mt-3">
+                            <div v-if="activities.upcoming.length" class="timeline timeline-5 mt-3">
                                 <div v-for="activity in activities.upcoming" :key="activity.id" class="timeline-item align-items-start">
                                     <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
                                     <div class="timeline-badge">
@@ -198,9 +198,26 @@
                                     <div class="timeline-content text-dark-50"><span class="label label-primary label-inline mr-2">{{ activity.trip_ticket }}</span> {{ activity.purpose }}</div>
                                 </div>
                             </div>
+                            <div v-else>
+                                <div class="alert alert-custom alert-default" role="alert">
+                                    <div class="alert-icon">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+                                                <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
+                                                <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
+                                            </g>
+                                        </svg><!--end::Svg Icon--></span>
+                                    </div>
+                                    <div class="alert-text">
+                                        No Upcoming Activities.
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                         <div class="tab-pane fade p-10" id="kt_tab_pane_4_2" role="tabpanel" aria-labelledby="kt_tab_pane_4_2">
-                            <div class="timeline timeline-5 mt-3">
+                            <div v-if="activities.recent.length" class="timeline timeline-5 mt-3">
                                 <div v-for="activity in activities.recent" :key="activity.id" class="timeline-item align-items-start">
                                     <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
                                     <div class="timeline-badge">
@@ -209,6 +226,23 @@
                                     <div class="timeline-content text-dark-50"><span class="label label-success label-inline mr-2">{{ activity.trip_ticket }}</span> {{ activity.purpose }}</div>
                                 </div>
                             </div>
+                            <div v-else>
+                                <div class="alert alert-custom alert-default" role="alert">
+                                    <div class="alert-icon">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+                                                <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
+                                                <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
+                                            </g>
+                                        </svg><!--end::Svg Icon--></span>
+                                    </div>
+                                    <div class="alert-text">
+                                        No Recent Activities.
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                 </div>

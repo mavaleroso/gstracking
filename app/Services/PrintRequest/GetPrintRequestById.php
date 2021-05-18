@@ -16,7 +16,7 @@ class GetPrintRequestById
      */
     public function execute(int $id)
     {
-        $data['transaction'] = Transaction::select(['requests.id', 'transactions.trip_ticket','drivers.contact','rental_vehicles.driver_contact','transactions.vehicle_type',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.purpose','requests.travel_date','requests.depart_time','users_details.first_name','users_details.last_name','vehicles.name','vehicles.template','drivers.fullname'])
+        $data['transaction'] = Transaction::select(['requests.id', 'transactions.trip_ticket',DB::raw('IFNULL(drivers.contact,rental_vehicles.driver_contact) as driver_contact'),'transactions.vehicle_type',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.purpose','requests.travel_date','requests.depart_time','users_details.first_name','users_details.last_name',DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'), DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template'),DB::raw('IFNULL(drivers.fullname,rental_vehicles.driver_name) as driver_name')])
                                             ->leftJoin('requests','requests.id','=','transactions.request_id')
                                             ->leftJoin('users_details','users_details.user_id','=','requests.user_id')
                                             ->leftJoin('divisions','requests.division_id','=','divisions.id')
