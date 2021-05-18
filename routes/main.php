@@ -120,18 +120,6 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
         ]
     ]);
 
-    Route::resource('overview', 'TransportationOverviewController', [
-        'names' => [
-            'index' => 'main.overview.index',
-            'create' => 'main.overview.create',
-            'store' => 'main.overview.store',
-            'show' => 'main.overview.show',
-            'edit' => 'main.overview.edit',
-            'update' => 'main.overview.update',
-            'destroy' => 'main.overview.destroy',
-        ]
-    ]);
-    
 });
 Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
     Route::resource('log', 'LogController', [

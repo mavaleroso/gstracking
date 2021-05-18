@@ -126,14 +126,6 @@
                                     </span>
                                 </li>
                                 <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
-                                    <router-link :to="{name: 'listTransportation'}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Overview</span>
-                                    </router-link>
-                                </li>
-                                <li class="menu-item" aria-haspopup="true" @click="active('sub-menu')">
                                     <router-link :to="{name: 'listVehicle'}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
