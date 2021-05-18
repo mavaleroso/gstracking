@@ -7355,7 +7355,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -55341,8 +55340,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
           _c("span"),
-          _vm._v(" "),
-          _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" }),
           _vm._v(" "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),

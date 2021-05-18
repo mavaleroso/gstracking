@@ -4,7 +4,6 @@
             <div class="card-header flex-wrap">
                 <div class="card-title">
                     <h3 class="card-label"><span></span>
-                    <span class="d-block text-muted pt-2 font-size-sm"></span>
                     <i class="mr-2"></i>
                     <small class="">Form</small></h3>
                 </div>
