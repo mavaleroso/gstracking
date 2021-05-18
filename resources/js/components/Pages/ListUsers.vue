@@ -64,8 +64,11 @@
                                         <span v-if="user.gender=='Male'" class="symbol-label">
                                             <img src="assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
                                         </span>
-                                        <span v-else class="symbol-label">
+                                        <span v-else-if="user.gender=='Female'" class="symbol-label">
                                             <img src="assets/media/svg/avatars/002-girl.svg" class="h-75 align-self-end" alt="" />
+                                        </span>
+                                        <span v-else class="symbol-label">
+                                            <img src="assets/media/svg/avatars/001-boy.svg" class="h-75 align-self-end" alt="" />
                                         </span>
                                     </div>
                                 </td> 
