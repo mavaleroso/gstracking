@@ -4,7 +4,6 @@ import RequestTravel from './components/Pages/RequestTravel';
 import ListRequest from './components/Pages/ListRequests';
 import ListTravel from './components/Pages/ListTravels';
 import Log from './components/Pages/Logs';
-import Overview from './components/Pages/Transportation/Overview';
 import Vehicle from './components/Pages/Transportation/Vehicle';
 import Driver from './components/Pages/Transportation/Driver';
 import ListPo from './components/Pages/ListPo';
@@ -44,14 +43,6 @@ const routes = [
         meta: {
             title: 'List of Travels'
         }
-    },
-    {
-        path: '/list_transportation',
-        component: Overview,
-        name: 'listTransportation',
-        meta: {
-            title: 'List of Transportation'
-        }   
     },
     {
         path: '/list_vehicle',

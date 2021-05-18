@@ -70,7 +70,7 @@
             </template>
             <template v-slot:body>
                 <form id="request-form" class="form">
-                    <input name="request_id" type="hidden" v-model="request_id"/>
+                    <input name="request_id" type="hidden" v-model="current_id"/>
                     <div class="card-body row">
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Requestor Details:</h5>
                         <div class="col-lg-6">
@@ -157,7 +157,7 @@
             </template>
             <template v-slot:footer v-if="request_edit">
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
-                <button @click="save(request_id)" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
+                <button @click="save(current_id)" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
             </template>
             <template v-slot:adminbody>
                 <div class="card-body row">
@@ -245,7 +245,6 @@ export default {
         return {
             current_id: null,
             status: null,
-            request_id: null,
             request_status: null,
             request_status_lbl: null,
             request_title: null,
@@ -457,6 +456,7 @@ export default {
                     drawCallback: () => {
                         $('.btn-details').off().on('click', function() {
                             let id = $(this).data('record-id');
+                            vm.current_id = id;
                             vm.show(id);
                         });
                     }
@@ -470,7 +470,6 @@ export default {
         },
         show(id, app = null) {
             let vm = this;
-            vm.current_id = id;
             axios.get(BASE_URL + '/travel/listrequest/' + id).then(response => {
                 switch (response.data[0].is_status) {
                     case 1:
@@ -491,7 +490,6 @@ export default {
                         break; 
                 }
 
-                vm.request_id = response.data[0].id;
                 vm.request_title = response.data[0].serial_code;
                 vm.request_createdAt = response.data[0].created_at;
                 vm.request_vehicle = response.data[0].type_vehicle;
@@ -504,8 +502,8 @@ export default {
                 vm.section = response.data[0].section_code;
 
                 vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
-                vm.getDetails(vm.request_id);
-                vm.getPassengers(vm.request_id);
+                vm.getDetails(vm.current_id);
+                vm.getPassengers(vm.current_id);
 
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
@@ -549,7 +547,6 @@ export default {
 
                 }, 500);
 
-                vm.staff.id = vm.request_id;
             });
         },
         getRegion() {
@@ -652,7 +649,7 @@ export default {
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
-                this.getPassengers(this.request_id);
+                this.getPassengers(this.current_id);
             }).catch((error) => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -806,7 +803,7 @@ export default {
             return toParseNum(data);
         },
         reject(){
-            axios.put(BASE_URL + '/travel/listrequeststaff/' + this.request_id).then(response => {
+            axios.put(BASE_URL + '/travel/listrequeststaff/' + this.current_id).then(response => {
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
                 $('#kt_datatable_modal').modal('toggle');
