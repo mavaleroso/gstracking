@@ -21,6 +21,8 @@ class CreateVehiclesTable extends Migration
             $table->text('description')->nullable();
             $table->text('template')->nullable();
             $table->integer('capacity')->nullable();
+            $table->tinyInteger('status')->default('1');
+            $table->string('remarks')->nullable();
             $table->timestamps();
             $table->SoftDeletes();
         });

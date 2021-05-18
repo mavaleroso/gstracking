@@ -12,28 +12,46 @@
                 <form class="form" id="vehicle-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                <p>Image:</p>
-                                <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
-                                    <div class="image-input-wrapper"></div>
+                                    <p>Image:</p>
+                                    <div class="image-input image-input-empty image-input-outline" id="kt_image_5" style="background-image: url(storage/images/vehicle-photo-default.png)">
+                                        <div class="image-input-wrapper"></div>
 
-                                    <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                        <i class="fa fa-pen icon-sm text-muted"></i>
-                                        <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
-                                        <input type="hidden"/>
-                                    </label>
+                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                            <i class="fa fa-pen icon-sm text-muted"></i>
+                                            <input type="file" id="vehicle-img" ref="file" name="vehicle_avatar" accept=".png, .jpg, .jpeg"/>
+                                            <input type="hidden"/>
+                                        </label>
 
-                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                    </span>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
 
-                                    <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                    </span>
+                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="form-group"> 
+                                    <label>Status </label>
+                                    <div class="col-lg-6">
+                                        <div class="checkbox-inline">
+                                            <label class="radio mr-2">
+                                                <input class="details-input" type="radio" name="status_radio"  value="1" v-model="formFields.status"/> Active
+                                                <span></span>
+                                            </label>
+                                            <label class="radio">
+                                                <input class="details-input" type="radio" name="status_radio" value="0" v-model="formFields.status"/> Inactive
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Name:</label>
@@ -53,6 +71,10 @@
                                 <div class="form-group">
                                     <label>Capacity Number:</label>
                                     <input type="number" class="form-control required-field" name="vehicle_capacityNumber" placeholder="Enter capacity number" v-model="formFields.capacityNumber"/>
+                                </div>
+                                    <div class="form-group">
+                                    <label>Remarks:</label>
+                                    <textarea class="form-control" name="vehicle_rem" id="exampleTextarea" rows="3" v-model="formFields.remarks"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +121,8 @@
                             <th>Description</th>
                             <th>Capacity</th>
                             <th>Template No.</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
                             <th>Updated</th>
                             <th>Action</th>
                         </tr>
@@ -124,9 +148,11 @@ export default {
                 description: '',
                 templateNumber: '',
                 capacityNumber: '',
+                status: 0,
+                remarks: '',
                 driver: ''
             },
-            names: ['name', 'templateNumber', 'capacityNumber']
+            names: ['status_radio','name', 'templateNumber', 'capacityNumber']
         }
     },
     created() {
@@ -138,11 +164,12 @@ export default {
         ini(){
             $(()=>{
                 this.tdatatable().init();
-            });
+            }); 
         },
         newEntry() {
             this.create = true;
             let vm = this;
+
             $(() => {
                 vm.formFields.id = '';
                 vm.formFields.pictureName = '';
@@ -150,6 +177,8 @@ export default {
                 vm.formFields.description = '';
                 vm.formFields.capacityNumber = '';
                 vm.formFields.templateNumber = '';
+                vm.formFields.status = '';
+                vm.formFields.remarks = '';
 
                 this.image();
 
@@ -168,6 +197,8 @@ export default {
                     vm.formFields.description = response.data.vehicles[0].description;
                     vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
                     vm.formFields.templateNumber = response.data.vehicles[0].template;
+                    vm.formFields.status = response.data.vehicles[0].status;
+                    vm.formFields.remarks = response.data.vehicles[0].remarks;
                   
                     let img = (response.data.vehicles[0].image)? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
                     $('#kt_image_5').css('background-image', 'url('+img+')');
@@ -195,6 +226,8 @@ export default {
             formD.append('description', this.formFields.description);
             formD.append('templateNumber', this.formFields.templateNumber);
             formD.append('capacityNumber', this.formFields.capacityNumber);
+            formD.append('status_radio', this.formFields.status);
+            formD.append('remarks', this.formFields.remarks);
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
 
@@ -215,13 +248,30 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+
+                    if (`${key}` == 'status_radio') {
+                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback d-block">'+`${value}`+'</div>');   
+                        }
+                    }
+                    else if ($('[name="vehicle_'+`${key}`+'"]').next().length == 0 || $('[name="vehicle_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                             $('[name="vehicle_'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="vehicle_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        if (this.names[i] == 'status_radio') {
+                            console.log("1");
+                            console.log(keys);
+                            if (keys.indexOf('status_radio') == -1) {
+                                if ($('.checkbox-inline').next().length != 0) {
+                                    $('.checkbox-inline').next('.invalid-feedback').remove();
+                                }
+                          
+                            } 
+                        }
+
+                       else if (keys.indexOf(''+this.names[i]+'') == -1) {
                             $('[name="vehicle_'+this.names[i]+'"]').removeClass('is-invalid');
                             $('[name="vehicle_'+this.names[i]+'"]').next('.invalid-feedback').remove();
                         }
@@ -268,10 +318,13 @@ export default {
                         { "data": "image" },
                         { "data": "name" },
                         { "data": "description" },
-                        { "data": "template" },
                         { "data": "capacity" },
+                        { "data": "template" },
+                        { "data": "status" },
+                        { "data": "remarks" },
                         { "data": "updated_at" },
                         { "data": "id" },
+                        
                     ],
                     columnDefs: [
                         {
@@ -318,7 +371,30 @@ export default {
                             }
                         },
                         {
+                            targets: [3,7],
+                            render: data => {
+                                var data = data =='null' ? '' : data;
+                                return data;
+                            }
+                        },
+                        {
                             targets: 6,
+                            render: data => {
+                                var status = {
+                                    0: {
+                                        'title': 'Inactive',
+                                        'class': ' label-light-warning'
+                                    },
+                                    1: {
+                                        'title': 'Active',
+                                        'class': ' label-light-primary'
+                                    },
+                                };
+                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                            }
+                        },
+                        {
+                            targets: 8,
                             render: data => {
                                 return dateTimeEng(data);
                             }

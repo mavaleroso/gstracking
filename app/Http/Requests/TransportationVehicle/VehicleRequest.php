@@ -26,6 +26,10 @@ class VehicleRequest extends FormRequest
             'description' => 'nullable',
             'templateNumber' => 'required',
             'capacityNumber' => 'required',
+            'status_radio' => 'required',
+            'status' => 'nullable',
+            'remarks' => 'nullable',
+            
         ];
     }
 
@@ -35,6 +39,7 @@ class VehicleRequest extends FormRequest
             'name' => 'Name',
             'templateNumber' => 'Template Number',
             'capacityNumber' => 'Capacity',
+            'status_radio' => 'Status',
         ];
 
     }
@@ -45,6 +50,7 @@ class VehicleRequest extends FormRequest
             'name.required' => __('main/validations.required'),
             'templateNumber.required' => __('main/validations.required'),
             'capacityNumber.required' => __('main/validations.required'),
+            'status_radio.required' => __('main/validations.required'),
         ];
 
     }

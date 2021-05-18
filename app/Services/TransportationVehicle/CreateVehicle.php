@@ -14,6 +14,8 @@ class CreateVehicle
      */
     public function execute($fields)
     {
+
+        // dd($fields);
         $file_name = NULL;
         
         if($fields['picture']) {
@@ -27,6 +29,8 @@ class CreateVehicle
             'description' => $fields['description'],
             'template' => $fields['templateNumber'],
             'capacity' => $fields['capacityNumber'],
+            'status' => $fields['status_radio'],
+            'remarks' => $fields['remarks']
         ]);
 
         if ($fields['picture']) {

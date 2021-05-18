@@ -5793,6 +5793,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -7328,6 +7331,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7342,9 +7369,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         description: '',
         templateNumber: '',
         capacityNumber: '',
+        status: 0,
+        remarks: '',
         driver: ''
       },
-      names: ['name', 'templateNumber', 'capacityNumber']
+      names: ['status_radio', 'name', 'templateNumber', 'capacityNumber']
     };
   },
   created: function created() {},
@@ -7371,6 +7400,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.description = '';
         vm.formFields.capacityNumber = '';
         vm.formFields.templateNumber = '';
+        vm.formFields.status = '';
+        vm.formFields.remarks = '';
 
         _this2.image();
 
@@ -7390,6 +7421,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.description = response.data.vehicles[0].description;
           vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
           vm.formFields.templateNumber = response.data.vehicles[0].template;
+          vm.formFields.status = response.data.vehicles[0].status;
+          vm.formFields.remarks = response.data.vehicles[0].remarks;
           var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
           $('#kt_image_5').css('background-image', 'url(' + img + ')');
         });
@@ -7417,6 +7450,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('description', this.formFields.description);
       formD.append('templateNumber', this.formFields.templateNumber);
       formD.append('capacityNumber', this.formFields.capacityNumber);
+      formD.append('status_radio', this.formFields.status);
+      formD.append('remarks', this.formFields.remarks);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -7447,14 +7482,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+          if ("".concat(key) == 'status_radio') {
+            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
             $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
             $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
           }
         }
 
         for (var i = 0; i < _this4.names.length; i++) {
-          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+          if (_this4.names[i] == 'status_radio') {
+            console.log("1");
+            console.log(keys);
+
+            if (keys.indexOf('status_radio') == -1) {
+              if ($('.checkbox-inline').next().length != 0) {
+                $('.checkbox-inline').next('.invalid-feedback').remove();
+              }
+            }
+          } else if (keys.indexOf('' + _this4.names[i] + '') == -1) {
             $('[name="vehicle_' + _this4.names[i] + '"]').removeClass('is-invalid');
             $('[name="vehicle_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
@@ -7503,9 +7551,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "description"
           }, {
+            "data": "capacity"
+          }, {
             "data": "template"
           }, {
-            "data": "capacity"
+            "data": "status"
+          }, {
+            "data": "remarks"
           }, {
             "data": "updated_at"
           }, {
@@ -7552,7 +7604,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
+            targets: [3, 7],
+            render: function render(data) {
+              var data = data == 'null' ? '' : data;
+              return data;
+            }
+          }, {
             targets: 6,
+            render: function render(data) {
+              var status = {
+                0: {
+                  'title': 'Inactive',
+                  'class': ' label-light-warning'
+                },
+                1: {
+                  'title': 'Active',
+                  'class': ' label-light-primary'
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+            }
+          }, {
+            targets: 8,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -7671,80 +7744,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       vehicle: {
         list: [],
-        office: [],
-        rental: [],
-        officeData: [],
-        rentalData: []
+        records: [],
+        data: []
       }
     };
   },
@@ -7827,10 +7833,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(BASE_URL + '/tracking/travelcalendar').then(function (response) {
         _this.vehicle.list = response.data.list;
-        _this.vehicle.office = response.data.office;
-        _this.vehicle.rental = response.data.rental;
-        _this.vehicle.officeData = response.data.officeData;
-        _this.vehicle.rentalData = response.data.rentalData;
+        _this.vehicle.records = response.data.records;
+        _this.vehicle.data = response.data.data;
 
         _this.ktcalendar().init();
       });
@@ -52889,12 +52893,23 @@ var render = function() {
                                       }
                                     })
                                   ])
-                                : _c("span", { staticClass: "symbol-label" }, [
+                                : user.gender == "Female"
+                                ? _c("span", { staticClass: "symbol-label" }, [
                                     _c("img", {
                                       staticClass: "h-75 align-self-end",
                                       attrs: {
                                         src:
                                           "assets/media/svg/avatars/002-girl.svg",
+                                        alt: ""
+                                      }
+                                    })
+                                  ])
+                                : _c("span", { staticClass: "symbol-label" }, [
+                                    _c("img", {
+                                      staticClass: "h-75 align-self-end",
+                                      attrs: {
+                                        src:
+                                          "assets/media/svg/avatars/001-boy.svg",
                                         alt: ""
                                       }
                                     })
@@ -54888,7 +54903,7 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("p", [_vm._v("Image:")]),
                           _vm._v(" "),
@@ -54942,6 +54957,86 @@ var render = function() {
                               _vm._m(2)
                             ]
                           )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Status ")]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-lg-6" }, [
+                            _c("div", { staticClass: "checkbox-inline" }, [
+                              _c("label", { staticClass: "radio mr-2" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.status,
+                                      expression: "formFields.status"
+                                    }
+                                  ],
+                                  staticClass: "details-input",
+                                  attrs: {
+                                    type: "radio",
+                                    name: "status_radio",
+                                    value: "1"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(_vm.formFields.status, "1")
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.formFields,
+                                        "status",
+                                        "1"
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(
+                                  " Active\n                                            "
+                                ),
+                                _c("span")
+                              ]),
+                              _vm._v(" "),
+                              _c("label", { staticClass: "radio" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.status,
+                                      expression: "formFields.status"
+                                    }
+                                  ],
+                                  staticClass: "details-input",
+                                  attrs: {
+                                    type: "radio",
+                                    name: "status_radio",
+                                    value: "0"
+                                  },
+                                  domProps: {
+                                    checked: _vm._q(_vm.formFields.status, "0")
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$set(
+                                        _vm.formFields,
+                                        "status",
+                                        "0"
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(
+                                  " Inactive\n                                            "
+                                ),
+                                _c("span")
+                              ])
+                            ])
+                          ])
                         ])
                       ]),
                       _vm._v(" "),
@@ -55077,6 +55172,40 @@ var render = function() {
                                 _vm.$set(
                                   _vm.formFields,
                                   "capacityNumber",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Remarks:")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.remarks,
+                                expression: "formFields.remarks"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "vehicle_rem",
+                              id: "exampleTextarea",
+                              rows: "3"
+                            },
+                            domProps: { value: _vm.formFields.remarks },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "remarks",
                                   $event.target.value
                                 )
                               }
@@ -55281,6 +55410,10 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Template No.")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Updated")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
@@ -55314,440 +55447,145 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _vm._m(0),
-    _vm._v(" "),
     _c("div", { staticClass: "col-lg-3" }, [
-      _c("div", { staticClass: "card card-custom" }, [
-        _vm._m(1),
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _vm.vehicle.office.length
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "accordion accordion-solid accordion-toggle-plus",
-                  attrs: { id: "accordion-office" }
-                },
-                _vm._l(_vm.vehicle.officeData, function(v) {
-                  return _c("div", { key: v.id, staticClass: "card" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card-header",
-                        attrs: { id: "headingOne" + v.id }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-title collapsed",
-                            attrs: {
-                              "data-toggle": "collapse",
-                              "data-target": "#collapseOfficeOne" + v.id
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "flaticon2-lorry" }),
-                            _vm._v(" " + _vm._s(v.name) + " "),
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "mt-0 mb-0 ml-5 label label-primary label-inline"
-                              },
-                              [_vm._v(_vm._s(v.template))]
-                            )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "collapse",
-                        attrs: {
-                          id: "collapseOfficeOne" + v.id,
-                          "data-parent": "#accordion-office"
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "card-body" },
-                          _vm._l(
-                            _vm.vehicle.office.filter(function(i) {
-                              return i.vehicle_id == v.id
-                            }),
-                            function(r) {
-                              return _c(
-                                "div",
-                                {
-                                  key: r.id,
-                                  staticClass: "timeline timeline-5 mt-1"
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "timeline-item align-items-start"
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
-                                        },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.dateFormat(r.travel_date)
-                                            )
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._m(2, true),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-content text-dark-50"
-                                        },
-                                        [_vm._v(_vm._s(r.purpose))]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      ]
-                    )
-                  ])
-                }),
-                0
-              )
-            : _c("div", [
+          _c(
+            "div",
+            {
+              staticClass: "accordion accordion-solid accordion-toggle-plus",
+              attrs: { id: "accordionExample6" }
+            },
+            _vm._l(_vm.vehicle.data, function(v) {
+              return _c("div", { key: v.id, staticClass: "card" }, [
                 _c(
                   "div",
                   {
-                    staticClass: "alert alert-custom alert-default",
-                    attrs: { role: "alert" }
+                    staticClass: "card-header",
+                    attrs: { id: "headingOne" + v.id }
                   },
                   [
-                    _c("div", { staticClass: "alert-icon" }, [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "svg-icon svg-icon-primary svg-icon-2x"
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("rect", {
-                                    attrs: {
-                                      x: "0",
-                                      y: "0",
-                                      width: "24",
-                                      height: "24"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("circle", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      opacity: "0.3",
-                                      cx: "12",
-                                      cy: "12",
-                                      r: "10"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "11",
-                                      y: "10",
-                                      width: "2",
-                                      height: "7",
-                                      rx: "1"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "11",
-                                      y: "7",
-                                      width: "2",
-                                      height: "2",
-                                      rx: "1"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "alert-text" }, [
-                      _vm._v(
-                        "\n                            No office vehicle travel.\n                        "
-                      )
-                    ])
-                  ]
-                )
-              ])
-        ])
-      ]),
-      _vm._v(" "),
-      _vm.vehicle.rental.length
-        ? _c("div", { staticClass: "card card-custom mt-5" }, [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "accordion accordion-solid accordion-toggle-plus",
-                  attrs: { id: "accordion-rental" }
-                },
-                _vm._l(_vm.vehicle.rentalData, function(v) {
-                  return _c("div", { key: v.id, staticClass: "card" }, [
                     _c(
                       "div",
                       {
-                        staticClass: "card-header",
-                        attrs: { id: "headingOne" + v.id }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-title collapsed",
-                            attrs: {
-                              "data-toggle": "collapse",
-                              "data-target": "#collapseRentalOne" + v.id
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "flaticon2-lorry" }),
-                            _vm._v(" " + _vm._s(v.vehicle_name) + " "),
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "mt-0 mb-0 ml-5 label label-primary label-inline"
-                              },
-                              [_vm._v(_vm._s(v.vehicle_template))]
-                            )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "collapse",
+                        staticClass: "card-title collapsed",
                         attrs: {
-                          id: "collapseRentalOne" + v.id,
-                          "data-parent": "#accordion-rental"
+                          "data-toggle": "collapse",
+                          "data-target": "#collapseOne" + v.id
                         }
                       },
                       [
+                        _c("i", { staticClass: "flaticon2-lorry" }),
+                        _vm._v(" " + _vm._s(v.name) + " "),
                         _c(
-                          "div",
-                          { staticClass: "card-body" },
-                          _vm._l(
-                            _vm.vehicle.rental.filter(function(i) {
-                              return i.rental_id == v.id
-                            }),
-                            function(r) {
-                              return _c(
+                          "span",
+                          {
+                            staticClass:
+                              "mt-0 mb-0 ml-5 label label-primary label-inline"
+                          },
+                          [_vm._v(_vm._s(v.template))]
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "collapse",
+                    attrs: {
+                      id: "collapseOne" + v.id,
+                      "data-parent": "#accordionExample6"
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-body" },
+                      _vm._l(
+                        _vm.vehicle.records.filter(function(i) {
+                          return i.vehicle_id == v.id
+                        }),
+                        function(r) {
+                          return _c(
+                            "div",
+                            {
+                              key: r.id,
+                              staticClass: "timeline timeline-5 mt-1"
+                            },
+                            [
+                              _c(
                                 "div",
                                 {
-                                  key: r.rental_id,
-                                  staticClass: "timeline timeline-5 mt-1"
+                                  staticClass: "timeline-item align-items-start"
                                 },
                                 [
                                   _c(
                                     "div",
                                     {
                                       staticClass:
-                                        "timeline-item align-items-start"
+                                        "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
                                     },
                                     [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
-                                        },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              _vm.dateFormat(r.travel_date)
-                                            )
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._m(4, true),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-content text-dark-50"
-                                        },
-                                        [_vm._v(_vm._s(r.purpose))]
+                                      _vm._v(
+                                        _vm._s(_vm.dateFormat(r.travel_date))
                                       )
                                     ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(1, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "timeline-content text-dark-50"
+                                    },
+                                    [_vm._v(_vm._s(r.purpose))]
                                   )
                                 ]
                               )
-                            }
-                          ),
-                          0
-                        )
-                      ]
-                    )
-                  ])
-                }),
-                0
-              )
-            ])
-          ])
-        : _c("div", [
-            _c(
-              "div",
-              {
-                staticClass: "alert alert-custom alert-default",
-                attrs: { role: "alert" }
-              },
-              [
-                _c("div", { staticClass: "alert-icon" }, [
-                  _c(
-                    "span",
-                    { staticClass: "svg-icon svg-icon-primary svg-icon-2x" },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          attrs: {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                            width: "24px",
-                            height: "24px",
-                            viewBox: "0 0 24 24",
-                            version: "1.1"
-                          }
-                        },
-                        [
-                          _c(
-                            "g",
-                            {
-                              attrs: {
-                                stroke: "none",
-                                "stroke-width": "1",
-                                fill: "none",
-                                "fill-rule": "evenodd"
-                              }
-                            },
-                            [
-                              _c("rect", {
-                                attrs: {
-                                  x: "0",
-                                  y: "0",
-                                  width: "24",
-                                  height: "24"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("circle", {
-                                attrs: {
-                                  fill: "#000000",
-                                  opacity: "0.3",
-                                  cx: "12",
-                                  cy: "12",
-                                  r: "10"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("rect", {
-                                attrs: {
-                                  fill: "#000000",
-                                  x: "11",
-                                  y: "10",
-                                  width: "2",
-                                  height: "7",
-                                  rx: "1"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("rect", {
-                                attrs: {
-                                  fill: "#000000",
-                                  x: "11",
-                                  y: "7",
-                                  width: "2",
-                                  height: "2",
-                                  rx: "1"
-                                }
-                              })
                             ]
                           )
-                        ]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "alert-text" }, [
-                  _vm._v(
-                    "\n                    No Rental vehicle travel.\n                "
-                  )
-                ])
-              ]
-            )
-          ])
-    ])
+                        }
+                      ),
+                      0
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [_vm._v("Vehicles")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -55758,42 +55596,6 @@ var staticRenderFns = [
           _c("div", { attrs: { id: "kt_calendar" } })
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "card-title" }, [
-        _c("h3", { staticClass: "card-label" }, [_vm._v("Office")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "card-title" }, [
-        _c("h3", { staticClass: "card-label" }, [_vm._v("Rental")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
     ])
   }
 ]

@@ -28,6 +28,8 @@ class Vehicle extends Model
         'name',
         'description',
         'template',
-        'capacity'
+        'capacity',
+        'status',
+        'remarks'
     ];
 }
