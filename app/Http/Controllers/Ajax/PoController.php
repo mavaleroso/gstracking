@@ -18,6 +18,7 @@ class PoController extends Controller
     {
         $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
         ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
+        ->where('procurements.status',1)
         ->groupBy('procurements.id','procurements.po_no')
         ->get();
         return response()->json($query);

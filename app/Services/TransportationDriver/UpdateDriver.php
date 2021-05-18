@@ -19,6 +19,7 @@ class UpdateDriver
             'age' => $fields['age'],
             'sex' => $fields['gender'],
             'contact' => $fields['contactNumber'],
+            'status' => $fields['status'],
         ]);
 
         return $driver;

@@ -24,7 +24,8 @@ class DriverRequest extends FormRequest
             'fullname' => 'required',
             'age' => 'required',
             'gender' => 'required',
-            'contactNumber' => 'required'
+            'contactNumber' => 'required',
+            'status' => 'required'
         ];
     }
 
@@ -34,7 +35,8 @@ class DriverRequest extends FormRequest
             'fullname' => 'Fullname',
             'age' => 'Age',
             'gender' => 'Gender',
-            'contactNumber' => 'Contact Number'
+            'contactNumber' => 'Contact Number',
+            'status' => 'Status'
         ];
 
     }
@@ -45,7 +47,8 @@ class DriverRequest extends FormRequest
             'fullname.required' => __('main/validations.required'),
             'age.required' => __('main/validations.required'),
             'gender.required' => __('main/validations.required'),
-            'contactNumber.required' => __('main/validations.required')
+            'contactNumber.required' => __('main/validations.required'),
+            'status.required' => __('main/validations.required')
         ];
 
     }

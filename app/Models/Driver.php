@@ -27,6 +27,7 @@ class Driver extends Model
         'age',
         'sex',
         'contact',
+        'status',
         'updated_at'
     ];
 }

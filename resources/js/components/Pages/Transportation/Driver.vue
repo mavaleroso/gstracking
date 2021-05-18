@@ -20,10 +20,16 @@
                                 <div class="form-group">
                                     <label>Gender:</label>
                                     <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
-                                        <option label="Label"></option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="others">Others</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status:</label>
+                                    <select class="form-control select2" id="kt_select_status" name="driver_status" v-model="formFields.status">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -83,6 +89,7 @@
                             <th>Age</th>
                             <th>Sex</th>
                             <th>Contact No.</th>
+                            <th>Status</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -105,9 +112,10 @@ export default {
                 fullname: '',
                 age: '',
                 gender: '',
-                contactNumber: ''
+                contactNumber: '',
+                status: '',
             },
-            names: ['fullname', 'age', 'gender', 'contactNumber']
+            names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
         }
     },
     created() {
@@ -131,8 +139,17 @@ export default {
                     minimumResultsForSearch: Infinity
                 });
 
+                $('#kt_select_status').select2({
+                    placeholder: "Select status",
+                    minimumResultsForSearch: Infinity
+                });
+
                 $('#kt_select_gender').change(function() {
                     vm.formFields.gender = $(this).val();
+                });
+
+                $('#kt_select_status').change(function() {
+                    vm.formFields.status = $(this).val();
                 });
 
                 $('.card-label span').text('Create Driver');
@@ -150,19 +167,33 @@ export default {
                     vm.formFields.age = response.data[0].age;
                     vm.formFields.gender = response.data[0].sex;
                     vm.formFields.contactNumber = response.data[0].contact;
+                    vm.formFields.status = response.data[0].status;
                 });
 
                 $('#kt_select_gender').select2({
                     placeholder: "Select gender",
+                    minimumResultsForSearch: Infinity
+                });
+
+                 $('#kt_select_status').select2({
+                    placeholder: "Select status",
+                    minimumResultsForSearch: Infinity
                 });
           
                 $('#kt_select_gender').change(function() {
                     vm.formFields.gender = $(this).val();
                 });
 
+                $('#kt_select_status').change(function() {
+                    vm.formFields.status = $(this).val();
+                });
+
                 setTimeout(() => {
                     $('#kt_select_gender').val(vm.formFields.gender);
                     $('#kt_select_gender').trigger('change');
+
+                    $('#kt_select_status').val(vm.formFields.status);
+                    $('#kt_select_status').trigger('change');
                 }, 500);
             });
         },
@@ -172,6 +203,7 @@ export default {
             this.formFields.age = '';
             this.formFields.gender = '';
             this.formFields.contactNumber = '';
+            this.formFields.status = '';
             this.create = false;
             this.edit = false;
             this.ini();
@@ -186,6 +218,7 @@ export default {
             formD.append('age', this.formFields.age);
             formD.append('gender', this.formFields.gender);
             formD.append('contactNumber', this.formFields.contactNumber);
+            formD.append('status', this.formFields.status);
 
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
@@ -206,9 +239,9 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(`${key}` == 'gender'){
-                            if ($('#kt_select_gender').next().next().length == 0) {
-                                $('#kt_select_gender').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        if(`${key}` == 'gender' || `${key}` == 'status'){
+                            if ($('#kt_select_'+`${key}`).next().next().length == 0) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
                             }
                         } else {
                             if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -218,10 +251,10 @@ export default {
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'gender') {
+                        if (this.names[i] == 'gender' || this.names[i] == 'status') {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#kt_select_gender').next().next().length != 0) {
-                                    $('#kt_select_gender').next().next('.invalid-feedback').remove();
+                                if ($('#kt_select_'+ this.names[i]).next().next().length != 0) {
+                                    $('#kt_select_'+ this.names[i]).next().next('.invalid-feedback').remove();
                                 }
                             }
                         } else {
@@ -276,10 +309,27 @@ export default {
                         { "data": "age" },
                         { "data": "sex" },
                         { "data": "contact" },
+                        { "data": "status" },
                         { "data": "updated_at" },
                         { "data": "id" },
                     ],
                     columnDefs: [
+                        {
+                            targets: 5,
+                            render: data => {
+                                var status = {
+                                    0: {
+                                        'title': 'Inactive',
+                                        'class': ' label-light-warning'
+                                    },
+                                    1: {
+                                        'title': 'Active',
+                                        'class': ' label-light-primary'
+                                    }
+                                };
+                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                            }
+                        },
                         {
                             targets: -1,
                             title: 'Actions',
@@ -313,7 +363,7 @@ export default {
                             },
                         },
                         {
-                            targets: 5,
+                            targets: 6,
                             render: data => {
                                 return dateTimeEng(data);
                             }
