@@ -6539,6 +6539,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -54719,13 +54723,24 @@ var render = function() {
                         )
                       }),
                       0
-                    )
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "details-input form-control",
+                      attrs: {
+                        name: "destination_place",
+                        type: "text",
+                        placeholder: "Enter place here"
+                      }
+                    })
                   ])
                 ]),
                 _vm._v(" "),
                 _vm._m(2),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(3),
+                _vm._v(" "),
+                _vm._m(4)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -54770,7 +54785,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(4)
+                _vm._m(5)
               ])
             ]),
             _vm._v(" "),
@@ -54826,7 +54841,11 @@ var staticRenderFns = [
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
           staticClass: "details-input form-control",
-          attrs: { name: "pur_travel", type: "text" }
+          attrs: {
+            name: "pur_travel",
+            type: "text",
+            placeholder: "Enter purpose here"
+          }
         })
       ])
     ])
@@ -54842,6 +54861,21 @@ var staticRenderFns = [
         _c("input", {
           staticClass: "details-input form-control",
           attrs: { name: "date_travel", type: "date", value: "" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Date of Return")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "details-input form-control",
+          attrs: { name: "date_return", type: "date", value: "" }
         })
       ])
     ])

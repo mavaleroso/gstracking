@@ -34,7 +34,6 @@
                                         <option label="Label"></option>
                                         <option v-for="division in divisions" :key="division.id" :value="division.id">{{ division.division_name }}</option>
                                     </select>
-                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -44,14 +43,12 @@
                                         <option label="Label"></option>
                                         <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.section_name }}</option>
                                     </select>
-                              
-                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur_travel" type="text" class="details-input form-control" />
+                                    <input name="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -74,6 +71,7 @@
                                             <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
                                     </select>
+                                    <input name="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
                                 </div>
                                 
                             </div>
@@ -81,6 +79,12 @@
                                 <label class="col-3 mt-3">Date of Travel</label>
                                 <div class="col-9">
                                     <input name="date_travel" class="details-input form-control" type="date" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 mt-3">Date of Return</label>
+                                <div class="col-9">
+                                    <input name="date_return" class="details-input form-control" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
