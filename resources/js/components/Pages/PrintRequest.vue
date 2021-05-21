@@ -90,12 +90,12 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="p-4 py-10">
-                                <p class="mb-6">Accepted by:</p>
-                                <input type="text" class="text-center input-text w-100 text-uppercase" disabled>
+                                <p class="mb-6">Requested by:</p>
+                                <input type="text" class="text-center input-text w-100 text-uppercase" v-model="transaction.gs_staff" disabled>
                                 <p class="text-center">Staff</p>
                             </td>
                             <td class="p-4 py-10">
-                                <p class="mb-6">Requested by:</p>
+                                <p class="mb-6">Noted by:</p>
                                 <input type="text" class="input-text w-100" disabled>
                                 <p class="text-center">Section/Program/Division Head</p>
                             </td>
@@ -218,6 +218,22 @@ export default {
     },
     methods: {
         ini() {
+
+            var scripts = [
+                // "/assets/plugins/global/plugins.bundle.js",
+                // "/assets/plugins/custom/prismjs/prismjs.bundle.js",
+                // "/assets/js/scripts.bundle.js",
+                // "/assets/plugins/custom/datatables/datatables.bundle.js",
+                // "/plugins/fancybox/jquery.fancybox.js",
+                // "/js/jquery-ui.js",
+                "/js/main.js",
+            ];
+            scripts.forEach(script => {
+                let tag = document.createElement("script");
+                tag.setAttribute("src", script);
+                $('.print-content').append(tag);
+            });
+
             document.onkeypress = function (event) {  
                 event = (event || window.event);  
                 if (event.keyCode == 123) {  
@@ -274,6 +290,7 @@ export default {
         getData(id) {
             axios.get(BASE_URL + '/travel/printrequest/'+id).then(res => {
                 this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
+                // this.transaction.depart_time = res.data.transaction[0].depart_time;
                 this.transaction.department = res.data.transaction[0].department;
                 this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
                 this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
@@ -283,10 +300,12 @@ export default {
                 this.transaction.driver_contact = res.data.transaction[0].driver_contact;
                 this.transaction.purpose = res.data.transaction[0].purpose;
                 this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
+                // this.transaction.travel_date = res.data.transaction[0].travel_date;
                 this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 
                 for (let i = 0; i <  res.data.destinations.length; i++) {
-                    let data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + res.data.destinations[i].brgy_name + '\n'; 
+                    let brgy = (res.data.destinations[i].brgy_name) ? res.data.destinations[i].brgy_name : '';
+                    let data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n'; 
                     this.destinations.push(data);
                 }
 

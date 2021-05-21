@@ -65,14 +65,14 @@
                     </div>
                 </div>
             </div>
-            <div v-if="vehicle.rental.length" class="card card-custom mt-5">
+            <div class="card card-custom mt-5">
                 <div class="card-header">
                     <div class="card-title">
                         <h3 class="card-label">Rental</h3>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="accordion accordion-solid accordion-toggle-plus" id="accordion-rental">
+                    <div v-if="vehicle.rental.length"  class="accordion accordion-solid accordion-toggle-plus" id="accordion-rental">
                         <div class="card" v-for="v in vehicle.rentalData" :key="v.id">
                             <div class="card-header" :id="'headingOne' + v.id">
                                 <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseRentalOne' + v.id">
@@ -94,22 +94,22 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div v-else>
-                <div class="alert alert-custom alert-default" role="alert">
-                    <div class="alert-icon">
-                        <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24"/>
-                                <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
-                                <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
-                                <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
-                            </g>
-                        </svg><!--end::Svg Icon--></span>
-                    </div>
-                    <div class="alert-text">
-                        No Rental vehicle travel.
+                    <div v-else>
+                        <div class="alert alert-custom alert-default" role="alert">
+                            <div class="alert-icon">
+                                <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24"/>
+                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+                                        <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
+                                        <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
+                                    </g>
+                                </svg><!--end::Svg Icon--></span>
+                            </div>
+                            <div class="alert-text">
+                                No Rental vehicle travel.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
