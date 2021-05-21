@@ -73,6 +73,7 @@ export default {
                 // "/assets/plugins/custom/datatables/datatables.bundle.js",
                 // "/plugins/fancybox/jquery.fancybox.js",
                 // "/js/jquery-ui.js",
+                // "/js/main.js",
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");

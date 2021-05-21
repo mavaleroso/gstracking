@@ -1923,6 +1923,7 @@ __webpack_require__.r(__webpack_exports__);
         // "/assets/plugins/custom/datatables/datatables.bundle.js",
         // "/plugins/fancybox/jquery.fancybox.js",
         // "/js/jquery-ui.js",
+        // "/js/main.js",
       ];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
@@ -3021,6 +3022,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3047,7 +3089,9 @@ __webpack_require__.r(__webpack_exports__);
       division: {
         dep: [],
         count: []
-      }
+      },
+      drivers: [],
+      vehicles: []
     };
   },
   mounted: function mounted() {
@@ -3109,6 +3153,8 @@ __webpack_require__.r(__webpack_exports__);
           _this.po.balance_percent.push(percent.toFixed(2));
         }
 
+        _this.drivers = res.data.drivers;
+        _this.vehicles = res.data.vehicles;
         _this.activities.upcoming = res.data.activities.upcoming;
         _this.activities.recent = res.data.activities.recent;
 
@@ -6233,6 +6279,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ini: function ini() {
+      var scripts = [// "/assets/plugins/global/plugins.bundle.js",
+      // "/assets/plugins/custom/prismjs/prismjs.bundle.js",
+      // "/assets/js/scripts.bundle.js",
+      // "/assets/plugins/custom/datatables/datatables.bundle.js",
+      // "/plugins/fancybox/jquery.fancybox.js",
+      // "/js/jquery-ui.js",
+      "/js/main.js"];
+      scripts.forEach(function (script) {
+        var tag = document.createElement("script");
+        tag.setAttribute("src", script);
+        $('.print-content').append(tag);
+      });
+
       document.onkeypress = function (event) {
         event = event || window.event;
 
@@ -6293,7 +6352,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
-        _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
+        _this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time); // this.transaction.depart_time = res.data.transaction[0].depart_time;
+
         _this.transaction.department = res.data.transaction[0].department;
         _this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
         _this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
@@ -6302,11 +6362,13 @@ __webpack_require__.r(__webpack_exports__);
         _this.transaction.driver = res.data.transaction[0].driver_name;
         _this.transaction.driver_contact = res.data.transaction[0].driver_contact;
         _this.transaction.purpose = res.data.transaction[0].purpose;
-        _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
+        _this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date); // this.transaction.travel_date = res.data.transaction[0].travel_date;
+
         _this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
 
         for (var i = 0; i < res.data.destinations.length; i++) {
-          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + res.data.destinations[i].brgy_name + '\n';
+          var brgy = res.data.destinations[i].brgy_name ? res.data.destinations[i].brgy_name : '';
+          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n';
 
           _this.destinations.push(data);
         }
@@ -49342,7 +49404,188 @@ var render = function() {
     _vm._v(" "),
     _vm._m(6),
     _vm._v(" "),
-    _vm._m(7)
+    _vm._m(7),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
+      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+        _vm._m(8),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "div",
+            { staticClass: "col bg-light-primary px-6 py-8 rounded-xl mr-7" },
+            [
+              _c(
+                "span",
+                { staticClass: "svg-icon svg-icon-3x svg-icon-primary my-2" },
+                [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                        width: "24px",
+                        height: "24px",
+                        viewBox: "0 0 24 24",
+                        version: "1.1"
+                      }
+                    },
+                    [
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd"
+                          }
+                        },
+                        [
+                          _c("polygon", {
+                            attrs: { points: "0 0 24 0 24 24 0 24" }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z",
+                              fill: "#000000",
+                              "fill-rule": "nonzero"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "h1",
+                    {
+                      staticClass:
+                        "float-right text-primary font-weight-bold mr-5"
+                    },
+                    [_vm._v(_vm._s(_vm.vehicles.length))]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass:
+                    "text-primary font-weight-bold font-size-h6 mt-2",
+                  attrs: { href: "#" }
+                },
+                [_vm._v("Vehicles")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "col bg-light-primary px-6 py-8 rounded-xl mr-7 my-2"
+            },
+            [
+              _c(
+                "span",
+                { staticClass: "svg-icon svg-icon-3x svg-icon-primary my-2" },
+                [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                        width: "24px",
+                        height: "24px",
+                        viewBox: "0 0 24 24",
+                        version: "1.1"
+                      }
+                    },
+                    [
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd"
+                          }
+                        },
+                        [
+                          _c("rect", {
+                            attrs: { x: "0", y: "0", width: "24", height: "24" }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M12,11 C10.8954305,11 10,10.1045695 10,9 C10,7.8954305 10.8954305,7 12,7 C13.1045695,7 14,7.8954305 14,9 C14,10.1045695 13.1045695,11 12,11 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M7.00036205,16.4995035 C7.21569918,13.5165724 9.36772908,12 11.9907452,12 C14.6506758,12 16.8360465,13.4332455 16.9988413,16.5 C17.0053266,16.6221713 16.9988413,17 16.5815,17 C14.5228466,17 11.463736,17 7.4041679,17 C7.26484009,17 6.98863236,16.6619875 7.00036205,16.4995035 Z",
+                              fill: "#000000",
+                              opacity: "0.3"
+                            }
+                          })
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "h1",
+                    {
+                      staticClass:
+                        "float-right text-primary font-weight-bold mr-5"
+                    },
+                    [_vm._v(_vm._s(_vm.drivers.length))]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass:
+                    "text-primary font-weight-bold font-size-h6 mt-2",
+                  attrs: { href: "#" }
+                },
+                [_vm._v("Drivers")]
+              )
+            ]
+          )
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -49581,6 +49824,18 @@ var staticRenderFns = [
             staticClass: "d-flex justify-content-center",
             attrs: { id: "po-pie-chart" }
           })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _vm._v("Driver & Vehicle Stat")
         ])
       ])
     ])
@@ -53819,13 +54074,34 @@ var render = function() {
                     { staticClass: "p-4 py-10", attrs: { colspan: "2" } },
                     [
                       _c("p", { staticClass: "mb-6" }, [
-                        _vm._v("Accepted by:")
+                        _vm._v("Requested by:")
                       ]),
                       _vm._v(" "),
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.transaction.gs_staff,
+                            expression: "transaction.gs_staff"
+                          }
+                        ],
                         staticClass:
                           "text-center input-text w-100 text-uppercase",
-                        attrs: { type: "text", disabled: "" }
+                        attrs: { type: "text", disabled: "" },
+                        domProps: { value: _vm.transaction.gs_staff },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.transaction,
+                              "gs_staff",
+                              $event.target.value
+                            )
+                          }
+                        }
                       }),
                       _vm._v(" "),
                       _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
@@ -53833,7 +54109,7 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("td", { staticClass: "p-4 py-10" }, [
-                    _c("p", { staticClass: "mb-6" }, [_vm._v("Requested by:")]),
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Noted by:")]),
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "input-text w-100",

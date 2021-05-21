@@ -7,6 +7,8 @@ use App\Models\Request;
 use App\Models\Transaction;
 use App\Models\Procurement;
 use App\Models\Division;
+use App\Models\Driver;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -63,8 +65,9 @@ class DashboardController extends Controller
                                 ->get();
 
         $data['procurement'] =  Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
-                                            ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')]
-                                            )->groupBy('procurements.id','procurements.po_no')
+                                            ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
+                                            ->where('status',1)
+                                            ->groupBy('procurements.id','procurements.po_no')
                                             ->get();
 
         $data['activities']['upcoming'] = Transaction::leftJoin('requests', 'transactions.request_id','=','requests.id')
@@ -91,6 +94,9 @@ class DashboardController extends Controller
                                         ->whereIn('requests.is_status',[2,3])->groupBy('requests.division_id')
                                         ->where(DB::raw('YEAR(travel_date)'),'=',$id)
                                         ->get();
+
+        $data['drivers'] = Driver::where('status',1)->get();
+        $data['vehicles'] = Vehicle::where('status',1)->get();
 
         return response()->json($data);
     }
