@@ -107,3 +107,7 @@
 .fc-content {
     white-space: pre-wrap !important;
 }
+
+.w-15 {
+    width: 15% !important;
+}

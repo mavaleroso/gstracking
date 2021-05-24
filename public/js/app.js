@@ -6543,6 +6543,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6555,7 +6557,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeProvinces: [],
       activeSections: [],
       activeCities: [],
-      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division', 'section', 'pur_travel', 'time_depart'],
+      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return'],
       complete: false,
       requestCode: null,
       createdAt: null,
@@ -6737,19 +6739,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-            if ($('.checkbox-inline').next().length != 0) {
-              $('.checkbox-inline').next('.invalid-feedback').remove();
-            }
-          }
-
           if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-              }
-
-              if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
                 $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
@@ -54915,7 +54907,13 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
               _vm._v("Position/Designation")
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "th",
+              { staticClass: "text-center w-15", attrs: { scope: "col" } },
+              [_vm._v("Gender")]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -54936,6 +54934,13 @@ var staticRenderFns = [
               _c("input", {
                 staticClass: "details-input form-control",
                 attrs: { name: "pax_des_1", type: "text" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                staticClass: "details-input form-control",
+                attrs: { name: "pax_gen_1", type: "text" }
               })
             ])
           ])

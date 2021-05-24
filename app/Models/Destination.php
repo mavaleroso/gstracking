@@ -21,5 +21,6 @@ class Destination extends Model
         'province_id',
         'city_id',
         'brgy_id',
+        'others',
     ];
 }

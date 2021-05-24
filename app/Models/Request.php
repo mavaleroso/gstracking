@@ -31,6 +31,7 @@ class Request extends Model
         'department',
         'purpose',
         'travel_date',
+        'return_date',
         'depart_time',
         'is_status'    
     ];
