@@ -6539,6 +6539,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6551,7 +6557,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeProvinces: [],
       activeSections: [],
       activeCities: [],
-      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division', 'section', 'pur_travel', 'time_depart'],
+      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return'],
       complete: false,
       requestCode: null,
       createdAt: null,
@@ -6733,19 +6739,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-            if ($('.checkbox-inline').next().length != 0) {
-              $('.checkbox-inline').next('.invalid-feedback').remove();
-            }
-          }
-
           if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-              }
-
-              if ($('#kt_select_' + _this2.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
                 $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
@@ -54719,13 +54715,24 @@ var render = function() {
                         )
                       }),
                       0
-                    )
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "details-input form-control",
+                      attrs: {
+                        name: "destination_place",
+                        type: "text",
+                        placeholder: "Enter place here"
+                      }
+                    })
                   ])
                 ]),
                 _vm._v(" "),
                 _vm._m(2),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(3),
+                _vm._v(" "),
+                _vm._m(4)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -54770,7 +54777,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(4)
+                _vm._m(5)
               ])
             ]),
             _vm._v(" "),
@@ -54826,7 +54833,11 @@ var staticRenderFns = [
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
           staticClass: "details-input form-control",
-          attrs: { name: "pur_travel", type: "text" }
+          attrs: {
+            name: "pur_travel",
+            type: "text",
+            placeholder: "Enter purpose here"
+          }
         })
       ])
     ])
@@ -54842,6 +54853,21 @@ var staticRenderFns = [
         _c("input", {
           staticClass: "details-input form-control",
           attrs: { name: "date_travel", type: "date", value: "" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Date of Return")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "details-input form-control",
+          attrs: { name: "date_return", type: "date", value: "" }
         })
       ])
     ])
@@ -54881,7 +54907,13 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
               _vm._v("Position/Designation")
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "th",
+              { staticClass: "text-center w-15", attrs: { scope: "col" } },
+              [_vm._v("Gender")]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -54902,6 +54934,13 @@ var staticRenderFns = [
               _c("input", {
                 staticClass: "details-input form-control",
                 attrs: { name: "pax_des_1", type: "text" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                staticClass: "details-input form-control",
+                attrs: { name: "pax_gen_1", type: "text" }
               })
             ])
           ])

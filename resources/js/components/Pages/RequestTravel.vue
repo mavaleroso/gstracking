@@ -34,7 +34,6 @@
                                         <option label="Label"></option>
                                         <option v-for="division in divisions" :key="division.id" :value="division.id">{{ division.division_name }}</option>
                                     </select>
-                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -44,14 +43,12 @@
                                         <option label="Label"></option>
                                         <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.section_name }}</option>
                                     </select>
-                              
-                                    <!-- <input name="prog_div_sec" type="text" class="details-input form-control"/> -->
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur_travel" type="text" class="details-input form-control" />
+                                    <input name="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -74,6 +71,7 @@
                                             <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
                                     </select>
+                                    <input name="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
                                 </div>
                                 
                             </div>
@@ -81,6 +79,12 @@
                                 <label class="col-3 mt-3">Date of Travel</label>
                                 <div class="col-9">
                                     <input name="date_travel" class="details-input form-control" type="date" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3 mt-3">Date of Return</label>
+                                <div class="col-9">
+                                    <input name="date_return" class="details-input form-control" type="date" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -106,6 +110,7 @@
                                         <th scope="col" class="text-center">#</th>
                                         <th scope="col" class="text-center">Name of Passenger/s</th>
                                         <th scope="col" class="text-center">Position/Designation</th>
+                                        <th scope="col" class="text-center w-15">Gender</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,6 +118,7 @@
                                         <td scope="row" class="text-center">1</td>
                                         <td><input name="pax_name_1" class="details-input form-control" type="text"/></td>
                                         <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
+                                        <td><input name="pax_gen_1" class="details-input form-control" type="text"/></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -145,7 +151,7 @@ export default {
             activeProvinces: [],
             activeSections: [],
             activeCities: [],
-            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'division','section', 'pur_travel', 'time_depart'],
+            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return'],
             complete: false,
             requestCode: null,
             createdAt: null,
@@ -314,20 +320,11 @@ export default {
                     }
                 }
                 for (let i = 0; i < this.names.length; i++) {
-                    if (keys.indexOf(''+this.names[i]+'') == -1) {
-                        if ($('.checkbox-inline').next().length != 0) {
-                            $('.checkbox-inline').next('.invalid-feedback').remove();
-                        }
-                    } 
                     if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {
                             if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
                                 $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
                             }
-                            if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                                $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                            }
-                            
                         }
                     } else {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {

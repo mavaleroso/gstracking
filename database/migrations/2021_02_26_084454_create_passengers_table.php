@@ -18,6 +18,7 @@ class CreatePassengersTable extends Migration
             $table->unsignedBigInteger('request_id')->nullable();
             $table->string('name')->nullable();
             $table->string('designation')->nullable();
+            $table->string('gender')->nullable();
             $table->timestamps();
         });
     }

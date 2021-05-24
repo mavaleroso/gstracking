@@ -36,14 +36,13 @@ class CreateTravel
         $rqt_code = $this->getCode->request_code();
 
         $request = Request::create([
-
-            
             'user_id' => auth()->user()->id,
             'serial_code' => $rqt_code,
             'division_id' => $fields['division'],
             'section_id' => $fields['section'],
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
+            'return_date' => $fields['date_return'],
             'depart_time' => $fields['time_depart']
 
         ]);
@@ -54,13 +53,15 @@ class CreateTravel
                 'region_id' => $fields['region'],
                 'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
                 'city_id' => $fields['city'][$i],
-                'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i]
+                'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
+                'others' => $fields['destination_place']
             ]);    
         }      
         for ($i=1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
                 'name' => $fields['pax_name_'.$i],
-                'designation' => $fields['pax_des_'.$i]
+                'designation' => $fields['pax_des_'.$i],
+                'gender' => $fields['pax_gen_'.$i]
             ]);
         }
 
