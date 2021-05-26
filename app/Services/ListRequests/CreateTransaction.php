@@ -3,8 +3,9 @@ namespace App\Services\ListRequests;
 
 use App\Models\Transaction;
 use App\Models\Request;
-use App\Models\Office_vehicle;
-use App\Models\Rental_vehicle;
+use App\Models\TransactionVehicles;
+use App\Models\Vehicle;
+use App\Models\Driver;
 
 class CreateTransaction 
 {
@@ -15,39 +16,53 @@ class CreateTransaction
      */
     public function execute($fields)
     {
-        // dd($fields);
         $request = Request::where('id', $fields['id'])->first();
         $trip_ticket = substr($request->serial_code, 4);
-        $office = NULL;
-        $rental = NULL;
-
-        if($fields['vehicle_type'] == 'office') {
-            $office = Office_vehicle::create([
-                'vehicle_id' => $fields['vehicle'],
-                'driver_id' => $fields['driver']
-            ]);
-        } else if ($fields['vehicle_type'] == 'rental') {
-            $rental = Rental_vehicle::create([
-                'vehicle_description' => $fields['vehicle_desc'],
-                'vehicle_template' => $fields['vehicle_template'],
-                'driver_name' => $fields['driver_name'],
-                'driver_contact' => $fields['driver_contact']
-            ]);
-        }
-
-        $office_id = ($office) ? $office->id : NULL;
-        $rental_id = ($rental) ? $rental->id : NULL;
 
         $transaction = Transaction::create([
-           'request_id' => $fields['id'],
-           'procurement_id' => $fields['po'],
-           'trip_ticket' => $trip_ticket,
-           'vehicle_type' => $fields['vehicle_type'],
-           'office_id' => $office_id,
-           'rental_id' => $rental_id,
+            'request_id' => $fields['id'],
+            'procurement_id' => (isset($fields['po']))? $fields['po']:NULL,
+            'trip_ticket' => $trip_ticket,
         ]);
 
         ($transaction)? Request::find($fields['id'])->update(['is_status' => 2]):NULL;
+
+        if(isset($fields['vehicle_office'])) {
+            for ($i=1; $i <= $fields['office_vehicle_total']; $i++) { 
+                TransactionVehicles::create([
+                    'type' => 1,
+                    'transaction_id' => $transaction->id,
+                    'vehicle_id' => $fields['vehicle_'.$i],
+                    'driver_id' => $fields['driver_'.$i],
+                ]);
+            }
+        } 
+        
+        if (isset($fields['vehicle_rental'])) {
+            for ($i=1; $i <= $fields['rental_vehicle_total']; $i++) { 
+                $vehicle = Vehicle::create([
+                    'type' => 2,
+                    'name' => $fields['vehicle_name_'.$i],
+                    'plate_no' => $fields['vehicle_plate_'.$i]
+                ]);
+
+                $driver = Driver::create([
+                    'type' => 2,
+                    'fullname' => $fields['driver_name_'.$i],
+                    'contact' => $fields['driver_contact_'.$i]
+                ]);
+
+                TransactionVehicles::create([
+                    'type' => 2,
+                    'transaction_id' => $transaction->id,
+                    'vehicle_id' => $vehicle->id,
+                    'driver_id' => $driver->id,
+                ]);
+            }
+        }
+
+
+        
 
         return $transaction;
     }

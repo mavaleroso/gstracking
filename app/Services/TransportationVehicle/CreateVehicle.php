@@ -27,7 +27,7 @@ class CreateVehicle
             (!$file_name)? NULL:'image' => $file_name,
             'name' => $fields['name'],
             'description' => $fields['description'],
-            'template' => $fields['templateNumber'],
+            'plate_no' => $fields['templateNumber'],
             'capacity' => $fields['capacityNumber'],
             'status' => $fields['status_radio'],
             'remarks' => $fields['remarks']

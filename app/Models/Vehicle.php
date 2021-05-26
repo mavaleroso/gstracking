@@ -21,15 +21,14 @@ class Vehicle extends Model
      * @var array
      */
     protected $fillable = [
-        'service_provider_id',
-        'driver_id',
         'vehicle_type',
         'image',
         'name',
         'description',
-        'template',
+        'plate_no',
         'capacity',
         'status',
-        'remarks'
+        'remarks',
+        'type'
     ];
 }

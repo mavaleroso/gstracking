@@ -90,6 +90,10 @@
                                 <input type="date" name="date_travel" class="form-control details-input" disabled="disabled" v-model="request_travelDate"/>
                             </div>
                             <div class="form-group mt-n7">
+                                <label>Date of Return</label>
+                                <input type="date" name="date_return" class="form-control details-input" disabled="disabled" v-model="request_returnDate"/>
+                            </div>
+                            <div class="form-group mt-n7">
                                 <label>Time of Departure</label>
                                 <input type="time" name="time_depart" class="form-control details-input" disabled="disabled" v-model="request_departTime"/>
                             </div>
@@ -121,6 +125,9 @@
                                         <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                     </optgroup>
                                 </select>
+
+                                <label>Place</label>
+                                <input type="text" name="destination_place" class="form-control details-input" disabled="disabled" v-model="place"/>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -130,8 +137,8 @@
                                     <input id="pax-total" type="hidden" name="pax_total" v-model="passengers.length">
                                     <h5 class="text-dark font-weight-bold mb-10">Passenger Details:</h5>
                                     <div class="ml-auto" v-if="request_edit">
-                                        <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
-                                        <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary" @click="addPassengerRow"><i class="fa fa-plus-square p-0"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary" @click="removePassengerRow"><i class="fa fa-minus-square p-0"></i></button>
                                     </div>
                                 </div>
                                 <table id="passenger-tbl" class="table w-100">
@@ -140,6 +147,7 @@
                                             <th scope="col" class="text-center">#</th>
                                             <th scope="col" class="text-center">Name of Passenger/s</th>
                                             <th scope="col" class="text-center">Position/Designation</th>
+                                            <th scope="col" class="text-center w-15">Sex</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -147,6 +155,7 @@
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
                                             <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
                                             <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
+                                            <td><input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -160,73 +169,118 @@
                 <button @click="save(current_id)" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Save</button>
             </template>
             <template v-slot:adminbody>
-                <div class="card-body row">
-                    <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
-                    <div class="col-lg-12 row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Type of Motor Vehicle</label>
-                                <div class="radio-inline">
-                                    <label class="radio radio-solid">
-                                        <input type="radio" name="vehicle_type" class="radio-vehicle" value="office" v-model="staff.vehicle_type"/> Office
-                                        <span></span>
-                                    </label>
-                                    <label class="radio radio-solid">
-                                        <input type="radio" name="vehicle_type" class="radio-vehicle" value="rental" v-model="staff.vehicle_type"/> Rental
-                                        <span></span>
-                                    </label>
+                <form id="administrative-form" class="form">
+                    <div class="card-body row">
+                        <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
+                        <div class="col-lg-12 row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input id="request-id" type="hidden" name="id" v-model="staff.id">
+                                    <label>Type of Motor Vehicle</label>
+                                    <div class="checkbox-inline">
+                                        <label class="checkbox checkbox-solid">
+                                            <input type="checkbox" name="vehicle_office" id="checkbox-office" class="checkbox-vehicle" value="office" v-model="staff.vehicle_office"/> Office
+                                            <span></span>
+                                        </label>
+                                        <label class="checkbox checkbox-solid">
+                                            <input type="checkbox" name="vehicle_rental" id="checkbox-rental" class="checkbox-vehicle" value="rental" v-model="staff.vehicle_rental"/> Rental
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div v-if="staff.vehicle_rental" class="form-group">
+                                    <label>Po Number</label>
+                                    <select name="po" class="form-control select2 staff-required" id="po-select">
+                                        <option label="Label"></option>
+                                        <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Po Number</label>
-                                <select name="po" class="form-control select2 staff-required" id="po-select">
-                                    <option label="Label"></option>
-                                    <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
-                                </select>
+                        <hr class="col-lg-12" v-if="staff.vehicle_rental || staff.vehicle_office">
+                        <div v-if="staff.vehicle_office" class="col-lg-12 row">
+                            <div class="col-lg-12 d-flex">
+                                <input id="office-vehicle-total" type="hidden" name="office_vehicle_total" v-model="staff.office.total">
+                                <label class="h5">Office Vehicle</label>
+                                <div class="ml-auto">
+                                    <button class="btn btn-sm btn-outline-primary" @click="incrementOfficeVehicle"><i class="fa fa-plus-square p-0"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary" @click="decrementOfficeVehicle"><i class="fa fa-minus-square p-0"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <table id="vehicle-office-tbl" class="table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">#</th>
+                                            <th scope="col" class="text-center">Vehicle Name</th>
+                                            <th scope="col" class="text-center">Driver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="index in staff.office.total" :key="index">
+                                            <td scope="row" class="text-center">{{ index }}</td>
+                                            <td>
+                                                <select class="form-control select2 staff-required" :id="'vehicle-select-'+index" :name="'vehicle_'+index">
+                                                    <option label="Label"></option>
+                                                    <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.template }}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select :name="'driver_'+index" class="form-control select2 staff-required" :id="'driver-select-'+index">
+                                                    <option label="Label"></option>
+                                                    <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr class="col-lg-12" v-if="staff.vehicle_rental && staff.vehicle_office">
+                        <div v-if="staff.vehicle_rental" class="col-lg-12 row">
+                            <div class="col-lg-12 d-flex">
+                                <input id="rental-vehicle-total" type="hidden" name="rental_vehicle_total" v-model="staff.rental.total">
+                                <label class="h5">Rental Vehicle</label>
+                                <div class="ml-auto">
+                                    <button class="btn btn-sm btn-outline-primary" @click="incrementRentalVehicle"><i class="fa fa-plus-square p-0"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary" @click="decrementRentalVehicle"><i class="fa fa-minus-square p-0"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <table id="vehicle-rental-tbl" class="table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">#</th>
+                                            <th scope="col" class="text-center">Plate #</th>
+                                            <th scope="col" class="text-center">Vehicle Name</th>
+                                            <th scope="col" class="text-center">Driver Name</th>
+                                            <th scope="col" class="text-center">Contact #</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="index in staff.rental.total" :key="index">
+                                            <td scope="row" class="text-center">{{ index }}</td>
+                                            <td>
+                                                <input type="text" :name="'vehicle_plate_'+index" class="select-remove form-control" placeholder="Enter vehicle template no."/>
+                                            </td>
+                                            <td>
+                                                <input type="text" :name="'vehicle_name_'+index" class="form-control" placeholder="Enter vehicle name"/>
+                                            </td>
+                                            <td>
+                                                <input :name="'driver_name_'+index" type="text" class="form-control" placeholder="Enter driver name"/>
+                                            </td>
+                                            <td>
+                                                <input :name="'driver_contact_'+index" type="text" class="select-remove form-control" placeholder="Enter driver contact no."/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div v-if="staff.vehicle_type == 'office'" class="form-group vehicle-select">
-                            <label>Vehicle</label>
-                            <select class="form-control select2 staff-required" id="vehicle-select" name="vehicle">
-                                <option label="Label"></option>
-                                <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.template }}</option>
-                            </select>
-                        </div>
-                        <div v-if="staff.vehicle_type == 'rental'">
-                            <div  class="form-group">
-                                <label>Vehicle Name:</label>
-                                <input type="text" name="vehicle_desc" class="form-control" v-model="staff.vehicle_desc" placeholder="Enter vehicle name"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Template No.</label>
-                                <input type="text" name="vehicle_template" class="select-remove form-control" v-model="staff.vehicle_template" placeholder="Enter vehicle template no."/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div v-if="staff.vehicle_type == 'office'" class="form-group">
-                            <label>Driver</label>
-                            <select name="driver" class="form-control select2 staff-required" id="driver-select">
-                                <option label="Label"></option>
-                                <option v-for="driver in drivers" :key="driver.id" :value="driver.id">{{ driver.fullname }}</option>
-                            </select>
-                        </div>
-                        <div v-if="staff.vehicle_type == 'rental'">
-                            <div class="form-group">
-                                <label>Driver name</label>
-                                <input name="driver_name" type="text" class="form-control" v-model="staff.driver_name" placeholder="Enter driver name"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Driver contact #</label>
-                                <input name="driver_contact" type="text" class="select-remove form-control" v-model="staff.driver_contact" placeholder="Enter driver contact no."/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </template>
             <template v-slot:adminfooter>
                 <button @click="reject" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
@@ -252,6 +306,7 @@ export default {
             request_vehicle: null,
             request_travelPurpose: null,
             request_travelDate: null,
+            request_returnDate: null,
             request_departTime: null,
             request_dept: null,
             division: null,
@@ -260,6 +315,7 @@ export default {
             provinces: [],
             cities: [],
             brgys: [],
+            place: null,
             activeProvinces: [],
             activeCities: [],
             destinations: [],
@@ -274,16 +330,21 @@ export default {
                 vehicle: null,
                 driver: null,
                 po: null,
-                vehicle_type: null,
-                vehicle_desc: null,
-                vehicle_template: null,
-                driver_name: null,
-                driver_contact: null,
+                vehicle_office: false,
+                vehicle_rental: false,
+                office: {
+                    total: 1,
+                    data: []
+                }, 
+                rental: {
+                    total: 1,
+                    data: []
+                }
             },
-            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
-            defaultNames: ['po', 'vehicle_type'],
-            officeNames: ['po', 'vehicle_type', 'vehicle', 'driver'],
-            rentalNames: ['po', 'vehicle_type', 'vehicle_name', 'vehicle_template','driver_name','driver_contact']
+            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+            defaultNames: [],
+            officeNames: ['vehicle_1', 'driver_1'],
+            rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1']
         }
     },  
     components: {
@@ -316,7 +377,6 @@ export default {
                 });
 
                 $('#kt_select_brgy').select2({
-                    placeholder: "Select a Barangay",
                 });
 
                 $('#kt_select_region').select2({
@@ -496,6 +556,7 @@ export default {
                 vm.request_vehicle = response.data[0].type_vehicle;
                 vm.request_travelPurpose = response.data[0].purpose;
                 vm.request_travelDate = response.data[0].travel_date;
+                vm.request_returnDate = response.data[0].return_date;
                 vm.request_departTime = response.data[0].depart_time;
                 vm.request_dept = response.data[0].department;
                 vm.status = response.data[0].is_status;
@@ -509,39 +570,57 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
-                    $('.radio-vehicle').change(function() {
-                        let vehicleType =  $(this).val();
-                        if(vehicleType == 'office') {
-                            $('#vehicle-select').select2({
+                    $('.checkbox-vehicle').change(function() {
+                        vm.staff.office.total = vm.staff.rental.total = 1;
+                        if(vm.staff.vehicle_office) {
+                            $('#vehicle-select-1').select2({
                                 placeholder: "Select a vehicle",
                             });
 
-                            $('#driver-select').select2({
+                            $('#driver-select-1').select2({
                                 placeholder: "Select a driver",
                             });
 
-                            $('#vehicle-select').on('change', function() {
+                            $('#vehicle-select-1').on('change', function() {
                                 vm.staff.vehicle = $(this).val();
                             });
 
-                            $('#driver-select').on('change', function() {
+                            $('#driver-select-1').on('change', function() {
                                 vm.staff.driver = $(this).val();
                             });
-                        }  else if (vehicleType == 'rental') {
+                        } else {
+                            vm.officeNames = ['vehicle_1', 'driver_1'];
+                        }
+                        
+                        if (vm.staff.vehicle_rental) {
+                            $('#po-select').select2({
+                                placeholder: "Select a PO",
+                            });
+
+                            $('#po-select').on('change', function() {
+                                vm.staff.po = $(this).val();
+                            });
+
                             $('.select-remove').siblings('.select2').remove();
                             $('.select-remove').siblings('.select2').remove();
+                        } else {
+                            vm.rentalNames = ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'];
+                        }
+
+                        if ($('#checkbox-office').is(":checked")) {
+                            vm.defaultNames.push('office_vehicle');
+                        } else {
+                            vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
+                        }
+
+                        if ($('#checkbox-rental').is(":checked")) {
+                            vm.defaultNames.push('rental_vehicle');
+                        } else {
+                            vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
                         }
                     });
 
-                    $('#po-select').select2({
-                        placeholder: "Select a PO",
-                    });
-
-                    $('#po-select').on('change', function() {
-                        vm.staff.po = $(this).val();
-                    });
-
-                    $('.radio-vehicle').on('change', () => {
+                    $('.checkbox-vehicle').on('change', () => {
                         $('.invalid-feedback-admin').remove();
                         $('.invalid-admin').removeClass('is-invalid');
                     });
@@ -584,6 +663,8 @@ export default {
             $('#kt_select_region').val();
             axios.get(BASE_URL + "/api/destination/" + id).then(response => {
                 let destination = response.data;
+                this.place = response.data[0].others;
+
                 let data = [];
 
                 const distinct = (value, index, self) => {
@@ -658,7 +739,7 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'brgy'){
+                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city'){
                         if (`${key}` == 'brgy') {
                             if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
@@ -699,7 +780,8 @@ export default {
             });
         },
         approved() {
-            axios.post(BASE_URL + '/travel/listrequeststaff', this.staff).then(response => {
+            let adminForm = $('#administrative-form').serialize();
+            axios.post(BASE_URL + '/travel/listrequeststaff', adminForm).then(response => {
                 $('.invalid-feedback-admin').remove();
                 $('.invalid-admin').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
@@ -715,75 +797,151 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if (`${key}` == 'vehicle_type') {
-                        if ($('.radio-inline').next().length == 0 || $('.radio-inline').next().attr('class').search('invalid-feedback') == -1) {
-                            $('.radio-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
+                    let _keys = `${key}`.replace(/[0-9]/g, '');
+                    if (`${key}` == 'vehicle_office' || `${key}` == 'vehicle_rental') {
+                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+                            $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (`${key}` == 'po' || `${key}` == 'driver' || `${key}` == 'vehicle') {
+                    } else if (`${key}` == 'po') {
                         if($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (`${key}` == 'vehicle_desc' || `${key}` == 'vehicle_template' || `${key}` == 'driver_name' || `${key}` == 'driver_contact') {
+                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('[name="'+`${key}`+'"]').addClass('is-invalid invalid-admin');
-                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback invalid-feedback-admin">'+`${value}`+'</div>');
+                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                        }
+                    } else {
+                        if($('[name="'+`${key}`+'"]').next().next().length == 0) {
+                            $('[name="'+`${key}`+'"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
                     }
+                   
                 };
 
-                let names = (this.staff.vehicle_type == 'office') ? this.officeNames:(this.staff.vehicle_type == 'rental') ? this.rentalNames:this.defaultNames;
-                
-                for (let i = 0; i < names.length; i++) {
-                    if (names[i] == 'vehicle_type') {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
+                for (let i = 0; i < this.defaultNames.length; i++) {
+                    if (this.defaultNames[i] == 'vehicle_office' || this.defaultNames[i] == 'vehicle_rental') {
+                        if (keys.indexOf(''+this.defaultNames[i]+'') == -1) {
                             if ($('.radio-inline').next().length != 0) {
                                 $('.radio-inline').next('.invalid-feedback').remove();
                             }
                         } 
-                    } else if (names[i] == 'po' || names[i] == 'driver' || names[i] == 'vehicle') {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
-                            if ($('#'+names[i]+'-select').next().next().length != 0) {
-                                $('#'+names[i]+'-select').next().next('.invalid-feedback').remove();
+                    }
+                }
+                for (let i = 0; i < this.rentalNames.length; i++) {
+                    if (this.rentalNames[i] == 'po') {
+                        if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
+                            if ($('#'+this.rentalNames[i]+'-select').next().next().length != 0) {
+                                $('#'+this.rentalNames[i]+'-select').next().next('.invalid-feedback').remove();
                             }
                         }
                     } else {
-                        if (keys.indexOf(''+names[i]+'') == -1) {
-                            $('[name="'+names[i]+'"]').removeClass('is-invalid');
-                            $('[name="'+names[i]+'"]').next('.invalid-feedback').remove();
+                        if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
+                            $('[name="'+this.rentalNames[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.rentalNames[i]+'"]').next('.invalid-feedback').remove();
                         }
                     }
-                    
                 }
+                for (let i = 0; i < this.officeNames.length; i++) {
+                    if (keys.indexOf(''+this.officeNames[i]+'') == -1) {
+                        if ($('[name="'+this.officeNames[i]+'"]').next().next().length != 0) {
+                            $('[name="'+this.officeNames[i]+'"]').next().next('.invalid-feedback').remove();
+                        }
+                    }
+                }
+
+                        
+                    
                 showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
-        addRow(event){
+        addPassengerRow(event){
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td></tr>');
+            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
+            this.names.push('pax_gen_'+lastTr);
         },
-        removeRow(event){
+        removePassengerRow(event){
             event.preventDefault();
             let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
             if(lastTr.find('td:eq(0)').text() != '1') {
                 let aliasNames = this.names;
                 let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
-                let paxDes = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
+                let paxDes = aliasNames.indexOf('pax_des_'+lastTr.find('td:eq(0)').text());
+                let paxSex = aliasNames.indexOf('pax_gen_'+lastTr.find('td:eq(0)').text());
                 if (paxName > -1) {
                     aliasNames.splice(paxName, 1);
                 }
                 if (paxDes > -1) {
                     aliasNames.splice(paxDes, 1);
                 }
+                if (paxSex > -1) {
+                    aliasNames.splice(paxSex, 1);
+                }
                 this.names = aliasNames;
 
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },
+        incrementOfficeVehicle(event) {
+            event.preventDefault();
+            let vm = this;
+            let count = this.staff.office.total += 1;
+            setTimeout(() => {
+                $(`#vehicle-select-${count}`).select2({
+                    placeholder: "Select a vehicle",
+                });
+
+                $(`#driver-select-${count}`).select2({
+                    placeholder: "Select a driver",
+                });
+
+                $(`#vehicle-select-${count}`).on('change', function() {
+                    vm.staff.vehicle = $(this).val();
+                });
+
+                $(`#driver-select-${count}`).on('change', function() {
+                    vm.staff.driver = $(this).val();
+                });
+            }, 100);
+
+            this.officeNames.push(`vehicle_${count}`);
+            this.officeNames.push(`driver_${count}`);
+            
+        },
+        decrementOfficeVehicle(event) {
+            event.preventDefault();
+            if(this.staff.office.total != 1) {
+                this.officeNames.pop();
+                this.officeNames.pop();
+
+                this.staff.office.total -= 1;
+            } 
+            
+        },
+        incrementRentalVehicle(event) {
+            event.preventDefault();
+            let count = this.staff.rental.total += 1;
+            this.rentalNames.push('vehicle_name_'+count);
+            this.rentalNames.push('vehicle_plate_'+count);
+            this.rentalNames.push('driver_name_'+count);
+            this.rentalNames.push('driver_contact_'+count);
+        },
+        decrementRentalVehicle(event) {
+            event.preventDefault();
+            if(this.staff.rental.total != 1) {
+                this.rentalNames.pop();
+                this.rentalNames.pop();
+                this.rentalNames.pop();
+                this.rentalNames.pop();
+
+                this.staff.rental.total -= 1;
+            }
         },
         getVehicle() {
             axios.get(BASE_URL + '/api/vehicle').then(response => {

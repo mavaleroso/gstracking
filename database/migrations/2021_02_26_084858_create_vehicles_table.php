@@ -19,7 +19,7 @@ class CreateVehiclesTable extends Migration
             $table->text('image')->nullable();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
-            $table->text('template')->nullable();
+            $table->text('plate_no')->nullable();
             $table->integer('capacity')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->string('remarks')->nullable();
