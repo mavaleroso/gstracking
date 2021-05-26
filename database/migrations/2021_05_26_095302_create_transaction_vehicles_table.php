@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfficeVehiclesTable extends Migration
+class CreateTransactionVehiclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateOfficeVehiclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('office_vehicles', function (Blueprint $table) {
+        Schema::create('transaction_vehicles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vehicle_id')->nullable();
-            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->string('type');
+            $table->bigInteger('transaction_id');
+            $table->bigInteger('vehicle_id');
+            $table->bigInteger('driver_id');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateOfficeVehiclesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('office_vehicles');
+        Schema::dropIfExists('transaction_vehicles');
     }
 }

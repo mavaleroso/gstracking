@@ -22,7 +22,7 @@ class Driver extends Model
      * @var array
      */
     protected $fillable = [
-        'vehicle_id',
+        'type',
         'fullname',
         'age',
         'sex',

@@ -18,7 +18,7 @@ class UpdateVehicle
         $data = [
             'name' => $fields['name'],
             'description' => $fields['description'],
-            'template' => $fields['templateNumber'],
+            'plate_no' => $fields['templateNumber'],
             'capacity' => $fields['capacityNumber'],
             'status' => $fields['status_radio'],
             'remarks' => $fields['remarks']

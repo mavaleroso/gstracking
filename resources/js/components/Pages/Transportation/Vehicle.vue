@@ -65,8 +65,8 @@
                             
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Template Number:</label>
-                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter template number" v-model="formFields.templateNumber"/>
+                                    <label>Plate Number:</label>
+                                    <input type="text" class="form-control required-field" name="vehicle_templateNumber" placeholder="Enter plate number" v-model="formFields.templateNumber"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Capacity Number:</label>
@@ -196,7 +196,7 @@ export default {
                     vm.formFields.name = response.data.vehicles[0].name;
                     vm.formFields.description = response.data.vehicles[0].description;
                     vm.formFields.capacityNumber = response.data.vehicles[0].capacity;
-                    vm.formFields.templateNumber = response.data.vehicles[0].template;
+                    vm.formFields.templateNumber = response.data.vehicles[0].plate_no;
                     vm.formFields.status = response.data.vehicles[0].status;
                     vm.formFields.remarks = response.data.vehicles[0].remarks;
                   
@@ -319,7 +319,7 @@ export default {
                         { "data": "name" },
                         { "data": "description" },
                         { "data": "capacity" },
-                        { "data": "template" },
+                        { "data": "plate_no" },
                         { "data": "status" },
                         { "data": "remarks" },
                         { "data": "updated_at" },

@@ -21,7 +21,7 @@ class GetListingVehicle
             'searchable' => [
                 'name',
                 'description',
-                'template',
+                'plate_no',
                 'status',
                 'remarks'
 
@@ -30,7 +30,7 @@ class GetListingVehicle
                 'id',
                 'name',
                 'description',
-                'template',
+                'plate_no',
                 'status',
                 'remarks'
             ]

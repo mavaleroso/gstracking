@@ -265,7 +265,7 @@ export default {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td></tr>');
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><inputname="pax_gen_'+lastTr+'" class="details-input form-control" type="text" /></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);

@@ -38,39 +38,44 @@ class UpdateTravel
             'user_id' => auth()->user()->id,
             'purpose' => $fields['pur_travel'],
             'travel_date' => $fields['date_travel'],
+            'return_date' => $fields['date_return'],
             'depart_time' => $fields['time_depart']
         ]);
 
+        $check = (isset($fields['brgy']))? 1:0;
         $dest = Destination::select('id')->where('request_id', $id)->get();
-        $destDiff = (count($dest) - count($fields['brgy']));
+        $destDiff = (count($dest) - count($fields['city']));
         if ($destDiff > 0) {
             for ($i=$destDiff-1; $i >= 0 ; $i--) { 
                 Destination::where('id', $dest[(count($dest) - 1) - $i]->id)->delete();
             }
         }
-        for ($i=0; $i < count($fields['brgy']); $i++) { 
+        for ($i=0; $i < count($fields['city']); $i++) { 
             try {
                 if ($id) {
                     $request->destinations()->where('id', $dest[$i]->id)->update([
                         'region_id' => $fields['region'],
-                        'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
-                        'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
-                        'brgy_id' => $fields['brgy'][$i]
+                        'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
+                        'city_id' => $fields['city'][$i],
+                        'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
+                        'others' => $fields['destination_place']
                     ]);
                 } else {
                     $request->destinations()->where('id', $dest[$i]->id)->update([
                         'region_id' => $fields['region'],
-                        'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
-                        'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
-                        'brgy_id' => $fields['brgy'][$i]
+                        'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
+                        'city_id' => $fields['city'][$i],
+                        'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
+                        'others' => $fields['destination_place']
                     ]);
                 }
             } catch (\Throwable $th) {
                 $request->destinations()->create([
                     'region_id' => $fields['region'],
-                    'province_id' => $this->getCity->execute($fields['brgy'][$i])->province_id,
-                    'city_id' => $this->getBrgy->execute($fields['brgy'][$i])->city_id,
-                    'brgy_id' => $fields['brgy'][$i]
+                    'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
+                    'city_id' => $fields['city'][$i],
+                    'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
+                    'others' => $fields['destination_place']
                 ]);
             }
         }
@@ -87,18 +92,21 @@ class UpdateTravel
                 if ($id) {
                     $request->passengers()->where('id', $pax[$i-1]->id)->update([
                         'name' => $fields['pax_name_'.$i],
-                        'designation' => $fields['pax_des_'.$i]
+                        'designation' => $fields['pax_des_'.$i],
+                        'gender' => $fields['pax_gen_'.$i]
                     ]);
                 } else {
                     $request->passengers()->create([
                         'name' => $fields['pax_name_'.$i],
-                        'designation' => $fields['pax_des_'.$i]
+                        'designation' => $fields['pax_des_'.$i],
+                        'gender' => $fields['pax_gen_'.$i]
                     ]);
                 }
             } catch (\Throwable $th) {
                 $request->passengers()->create([
                     'name' => $fields['pax_name_'.$i],
-                    'designation' => $fields['pax_des_'.$i]
+                    'designation' => $fields['pax_des_'.$i],
+                    'gender' => $fields['pax_gen_'.$i]
                 ]);
             }
         }
