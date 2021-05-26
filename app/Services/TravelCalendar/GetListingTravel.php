@@ -16,10 +16,9 @@ class GetListingTravel
     public function execute()
     {
         $query = Transaction::leftJoin('requests','transactions.request_id','=','requests.id')
-                            ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
-                            ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
-                            ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
-                            ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'),  DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template')])
+                            ->leftJoin('transaction_vehicles', 'transactions.id','=','transaction_vehicles.transaction_id')
+                            ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
+                            ->select(['transactions.*','requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name',  DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template')])
                             ->where('requests.is_status',2)
                             ->get();
 

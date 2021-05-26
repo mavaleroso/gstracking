@@ -4284,6 +4284,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4316,6 +4323,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       vehicles: [],
       procurements: [],
       drivers: [],
+      maxDate: null,
       staff: {
         id: null,
         vehicle: null,
@@ -4714,6 +4722,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           $('#kt_select_brgy').trigger('change');
         }, 1500);
       });
+      this.dateConf();
     },
     getPassengers: function getPassengers(id) {
       var _this7 = this;
@@ -4900,7 +4909,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_gen_' + lastTr + '" class="form-control details-input" type="text" /></td></tr>');
+      $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_gen_' + lastTr + '" class="form-control details-input" type="text" /></td><td><select name="pax_gen_' + lastTr + '" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
       $('#pax-total').val(lastTr);
       this.names.push('pax_name_' + lastTr);
       this.names.push('pax_des_' + lastTr);
@@ -5014,6 +5023,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('#kt_datatable_modal').modal('toggle');
         $('#request-tbl').DataTable().ajax.reload();
       });
+    },
+    dateConf: function dateConf() {
+      var dtToday = new Date();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if (month < 10) month = '0' + month.toString();
+      if (day < 10) day = '0' + day.toString();
+      var maxDate = year + '-' + month + '-' + day;
+      this.maxDate = maxDate;
     }
   }
 });
@@ -5045,11 +5064,6 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
-//
-//
-//
 //
 //
 //
@@ -5512,16 +5526,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "trip_ticket"
           }, {
-            "data": "vehicle_type"
-          }, {
-            "data": "vehicle_name"
-          }, {
-            "data": "vehicle_template"
-          }, {
-            "data": "driver_name"
-          }, {
-            "data": "driver_contact"
-          }, {
             "data": "travel_date"
           }, {
             "data": "starting_odo"
@@ -5560,33 +5564,33 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">' + data + '</span>';
             }
           }, {
-            targets: 9,
+            targets: 4,
             render: function render(data) {
               return dateEng(data);
             }
           }, {
-            targets: [15, 16, 17, 18, 20],
+            targets: [10, 11, 12, 13, 15],
             render: function render(data) {
               var values = data ? toParseNum(data) : '';
               return values;
             }
           }, {
-            targets: [13, 19],
+            targets: [8, 14],
             render: function render(data) {
               var values = data ? data : '';
               return values;
             }
           }, {
-            targets: [19, 22],
+            targets: [14, 17],
             orderable: false
           }, {
-            targets: 23,
+            targets: 18,
             orderable: false,
             render: function render(data) {
               return dateTimeEng(data);
             }
           }, {
-            targets: 21,
+            targets: 16,
             render: function render(data) {
               var status = {
                 1: {
@@ -6699,6 +6703,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6715,7 +6725,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       complete: false,
       requestCode: null,
       createdAt: null,
-      section: ''
+      section: '',
+      maxDate: null,
+      travelDate: null,
+      returnDate: null
     };
   },
   created: function created() {
@@ -6724,6 +6737,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   mounted: function mounted() {
     this.ini();
+    this.dateConf();
   },
   methods: {
     ini: function ini() {
@@ -6826,7 +6840,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       event.preventDefault();
       var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="details-input form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="details-input form-control" type="text" /></td><td><inputname="pax_gen_' + lastTr + '" class="details-input form-control" type="text" /></td></tr>');
+      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="details-input form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="details-input form-control" type="text" /></td><td><select name="pax_gen_' + lastTr + '" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
       $('#pax-total').val(lastTr);
       this.names.push('pax_name_' + lastTr);
       this.names.push('pax_des_' + lastTr);
@@ -6886,7 +6900,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
             }
           }
@@ -6901,7 +6915,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           } else {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('input[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
               $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
@@ -6987,6 +7001,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.complete = false;
       this.requestCode = null;
       this.createdAt = null;
+    },
+    dateConf: function dateConf() {
+      var dtToday = new Date();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if (month < 10) month = '0' + month.toString();
+      if (day < 10) day = '0' + day.toString();
+      var maxDate = year + '-' + month + '-' + day;
+      this.maxDate = maxDate;
     }
   }
 });
@@ -50746,11 +50770,14 @@ var render = function() {
                                   expression: "request_travelDate"
                                 }
                               ],
-                              staticClass: "form-control details-input",
+                              staticClass:
+                                "form-control details-input date-limit",
                               attrs: {
+                                id: "date-travel",
                                 type: "date",
                                 name: "date_travel",
-                                disabled: "disabled"
+                                disabled: "disabled",
+                                min: _vm.maxDate
                               },
                               domProps: { value: _vm.request_travelDate },
                               on: {
@@ -50776,11 +50803,14 @@ var render = function() {
                                   expression: "request_returnDate"
                                 }
                               ],
-                              staticClass: "form-control details-input",
+                              staticClass:
+                                "form-control details-input date-limit",
                               attrs: {
+                                id: "date-return",
                                 type: "date",
                                 name: "date_return",
-                                disabled: "disabled"
+                                disabled: "disabled",
+                                min: _vm.maxDate
                               },
                               domProps: { value: _vm.request_returnDate },
                               on: {
@@ -51169,17 +51199,37 @@ var render = function() {
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
-                                        _c("input", {
-                                          staticClass:
-                                            "form-control details-input",
-                                          attrs: {
-                                            name:
-                                              "pax_gen_" + _vm.paxIndex(index),
-                                            type: "text",
-                                            disabled: "disabled"
+                                        _c(
+                                          "select",
+                                          {
+                                            staticClass:
+                                              "details-input form-control",
+                                            attrs: {
+                                              name:
+                                                "pax_gen_" +
+                                                _vm.paxIndex(index),
+                                              disabled: "disabled"
+                                            },
+                                            domProps: { value: pax.gender }
                                           },
-                                          domProps: { value: pax.gender }
-                                        })
+                                          [
+                                            _c("option", {
+                                              attrs: { value: "" }
+                                            }),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "Male" } },
+                                              [_vm._v("Male")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "Female" } },
+                                              [_vm._v("Female")]
+                                            )
+                                          ]
+                                        )
                                       ])
                                     ])
                                   }),
@@ -53015,11 +53065,17 @@ var render = function() {
                                           "option",
                                           {
                                             key: svc.id,
-                                            domProps: {
-                                              value: svc.vehicle_type
-                                            }
+                                            domProps: { value: svc.type }
                                           },
-                                          [_vm._v(_vm._s(svc.vehicle_type))]
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                svc.type == 1
+                                                  ? "Office"
+                                                  : "Rental"
+                                              )
+                                            )
+                                          ]
                                         )
                                       }
                                     )
@@ -53639,16 +53695,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("Section")]),
               _vm._v(" "),
               _c("th", [_vm._v("Trip Ticket")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Service Provider")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Vehicle")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Template")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Driver")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Contact")]),
               _vm._v(" "),
               _c("th", [_vm._v("Date of Travel")]),
               _vm._v(" "),
@@ -55274,11 +55320,43 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(2),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-3 mt-3" }, [
+                    _vm._v("Date of Travel")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c("input", {
+                      staticClass: "details-input form-control",
+                      attrs: {
+                        id: "date-travel",
+                        name: "date_travel",
+                        min: _vm.maxDate,
+                        type: "date"
+                      }
+                    })
+                  ])
+                ]),
                 _vm._v(" "),
-                _vm._m(3),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-3 mt-3" }, [
+                    _vm._v("Date of Return")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c("input", {
+                      staticClass: "details-input form-control",
+                      attrs: {
+                        id: "date-return",
+                        name: "date_return",
+                        min: _vm.maxDate,
+                        type: "date"
+                      }
+                    })
+                  ])
+                ]),
                 _vm._v(" "),
-                _vm._m(4)
+                _vm._m(2)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -55323,7 +55401,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(5)
+                _vm._m(3)
               ])
             ]),
             _vm._v(" "),
@@ -55393,42 +55471,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Date of Travel")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-9" }, [
-        _c("input", {
-          staticClass: "details-input form-control",
-          attrs: { name: "date_travel", type: "date", value: "" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Date of Return")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-9" }, [
-        _c("input", {
-          staticClass: "details-input form-control",
-          attrs: { name: "date_return", type: "date", value: "" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
       _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Time of Departure")]),
       _vm._v(" "),
       _c("div", { staticClass: "col-9" }, [
         _c("input", {
           staticClass: "details-input form-control",
-          attrs: { name: "time_depart", type: "time", value: "" }
+          attrs: { name: "time_depart", type: "time" }
         })
       ])
     ])
@@ -55484,10 +55532,22 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("td", [
-              _c("input", {
-                staticClass: "details-input form-control",
-                attrs: { name: "pax_gen_1", type: "text" }
-              })
+              _c(
+                "select",
+                {
+                  staticClass: "details-input form-control",
+                  attrs: { name: "pax_gen_1" }
+                },
+                [
+                  _c("option", { attrs: { value: "" } }),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Male" } }, [_vm._v("Male")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Female" } }, [
+                    _vm._v("Female")
+                  ])
+                ]
+              )
             ])
           ])
         ])

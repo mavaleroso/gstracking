@@ -34,8 +34,8 @@ class TravelStoreRequest extends FormRequest
             'province' => 'required',
             'city' => 'required',
             'brgy' => 'nullable',
-            'date_travel' => 'required',
-            'date_return' => 'required',
+            'date_travel' => 'required|after_or_equal:today',
+            'date_return' => 'required|after_or_equal:today',
             'time_depart' => 'required',
             'pax_total' => 'required',
             'destination_place' => 'nullable'

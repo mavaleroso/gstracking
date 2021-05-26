@@ -95,8 +95,8 @@ class DashboardController extends Controller
                                         ->where(DB::raw('YEAR(travel_date)'),'=',$id)
                                         ->get();
 
-        $data['drivers'] = Driver::where('status',1)->get();
-        $data['vehicles'] = Vehicle::where('status',1)->get();
+        $data['drivers'] = Driver::where('status',1)->where('type',1)->get();
+        $data['vehicles'] = Vehicle::where('status',1)->where('type',1)->get();
 
         return response()->json($data);
     }
