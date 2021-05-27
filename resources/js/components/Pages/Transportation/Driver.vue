@@ -311,7 +311,7 @@ export default {
                         { "data": "contact" },
                         { "data": "status" },
                         { "data": "updated_at" },
-                        { "data": "id" },
+                        { "data": "id" }
                     ],
                     columnDefs: [
                         {

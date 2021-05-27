@@ -15,7 +15,7 @@ class GetListingDriver
      */
     public function execute()
     {
-        $query = Driver::select(['*']);
+        $query = Driver::select(['*'])->where('type',1);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [

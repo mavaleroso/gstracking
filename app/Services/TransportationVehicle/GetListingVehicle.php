@@ -15,7 +15,7 @@ class GetListingVehicle
      */
     public function execute()
     {
-        $query = Vehicle::select(['*']);
+        $query = Vehicle::select(['*'])->where('type', 1);
 
         $result = Datatable::of($query, request(), [
             'searchable' => [

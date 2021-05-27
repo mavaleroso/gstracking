@@ -56636,7 +56636,7 @@ var render = function() {
                                 staticClass:
                                   "mt-0 mb-0 ml-5 label label-primary label-inline"
                               },
-                              [_vm._v(_vm._s(v.template))]
+                              [_vm._v(_vm._s(v.plate_no))]
                             )
                           ]
                         )
@@ -56844,14 +56844,14 @@ var render = function() {
                           },
                           [
                             _c("i", { staticClass: "flaticon2-lorry" }),
-                            _vm._v(" " + _vm._s(v.vehicle_name) + " "),
+                            _vm._v(" " + _vm._s(v.name) + " "),
                             _c(
                               "span",
                               {
                                 staticClass:
                                   "mt-0 mb-0 ml-5 label label-primary label-inline"
                               },
-                              [_vm._v(_vm._s(v.vehicle_template))]
+                              [_vm._v(_vm._s(v.plate_no))]
                             )
                           ]
                         )
@@ -56873,13 +56873,13 @@ var render = function() {
                           { staticClass: "card-body" },
                           _vm._l(
                             _vm.vehicle.rental.filter(function(i) {
-                              return i.rental_id == v.id
+                              return i.vehicle_id == v.id
                             }),
                             function(r) {
                               return _c(
                                 "div",
                                 {
-                                  key: r.rental_id,
+                                  key: r.id,
                                   staticClass: "timeline timeline-5 mt-1"
                                 },
                                 [
