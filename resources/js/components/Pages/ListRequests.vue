@@ -87,11 +87,11 @@
                             </div>
                             <div class="form-group mt-n7">
                                 <label>Date of Travel</label>
-                                <input type="date" name="date_travel" class="form-control details-input" disabled="disabled" v-model="request_travelDate"/>
+                                <input id="date-travel" type="date" name="date_travel" class="form-control details-input date-limit" disabled="disabled" :min="maxDate" v-model="request_travelDate"/>
                             </div>
                             <div class="form-group mt-n7">
                                 <label>Date of Return</label>
-                                <input type="date" name="date_return" class="form-control details-input" disabled="disabled" v-model="request_returnDate"/>
+                                <input id="date-return" type="date" name="date_return" class="form-control details-input date-limit" disabled="disabled" :min="maxDate" v-model="request_returnDate"/>
                             </div>
                             <div class="form-group mt-n7">
                                 <label>Time of Departure</label>
@@ -155,7 +155,14 @@
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
                                             <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
                                             <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
-                                            <td><input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/></td>
+                                            <td>
+                                                <!-- <input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/> -->
+                                                <select :name="'pax_gen_' + paxIndex(index)" class="details-input form-control" disabled="disabled" :value="pax.gender">
+                                                    <option value=""></option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -325,6 +332,7 @@ export default {
             vehicles: [],
             procurements: [],
             drivers: [],
+            maxDate: null,
             staff: {
                 id: null,
                 vehicle: null,
@@ -696,6 +704,7 @@ export default {
                 }, 1500);
                     
             });
+            this.dateConf();
         },
         getPassengers(id) {
             axios.get(BASE_URL + "/api/passenger/" + id).then(response => {
@@ -859,7 +868,7 @@ export default {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td></tr>');
+            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
@@ -968,6 +977,21 @@ export default {
                 $('#kt_datatable_modal').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
             })
+        },
+        dateConf() {
+            var dtToday = new Date();
+    
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+
+            this.maxDate = maxDate;
         },
     },
 }

@@ -78,19 +78,19 @@
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Date of Travel</label>
                                 <div class="col-9">
-                                    <input name="date_travel" class="details-input form-control" type="date" value="" />
+                                    <input id="date-travel" name="date_travel" class="details-input form-control" :min="maxDate" type="date" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Date of Return</label>
                                 <div class="col-9">
-                                    <input name="date_return" class="details-input form-control" type="date" value="" />
+                                    <input id="date-return" name="date_return" class="details-input form-control" :min="maxDate" type="date" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Time of Departure</label>
                                 <div class="col-9">
-                                    <input name="time_depart" class="details-input form-control" type="time" value="" />
+                                    <input name="time_depart" class="details-input form-control" type="time" />
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,13 @@
                                         <td scope="row" class="text-center">1</td>
                                         <td><input name="pax_name_1" class="details-input form-control" type="text"/></td>
                                         <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
-                                        <td><input name="pax_gen_1" class="details-input form-control" type="text"/></td>
+                                        <td>
+                                            <select name="pax_gen_1" class="details-input form-control">
+                                                <option value=""></option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -155,7 +161,10 @@ export default {
             complete: false,
             requestCode: null,
             createdAt: null,
-            section:''
+            section:'',
+            maxDate: null,
+            travelDate: null,
+            returnDate: null
         }
     },
     created() {
@@ -164,10 +173,10 @@ export default {
     },
     mounted() {
         this.ini();
+        this.dateConf();
     },
     methods: {
         ini() {
-
             $(() => { 
 
                 $('#kt_select_province').select2({
@@ -259,13 +268,12 @@ export default {
                 });
 
             });
-            
         },
         addRow(event) {
             event.preventDefault();
             let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><inputname="pax_gen_'+lastTr+'" class="details-input form-control" type="text" /></td></tr>');
+            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
             $('#pax-total').val(lastTr);
             this.names.push('pax_name_'+lastTr);
             this.names.push('pax_des_'+lastTr);
@@ -314,7 +322,7 @@ export default {
                         }
                     } else {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     }
@@ -328,7 +336,7 @@ export default {
                         }
                     } else {
                         if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
                             $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
                         }
                     }
@@ -378,7 +386,6 @@ export default {
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
-
         newRequest() {
             for (let i = 0; i < this.names.length; i++) {
                 if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
@@ -392,7 +399,22 @@ export default {
             this.complete = false;
             this.requestCode = null;
             this.createdAt = null;
-        }
+        },
+        dateConf() {
+            var dtToday = new Date();
+    
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+
+            this.maxDate = maxDate;
+        },
     },
 }
 </script>

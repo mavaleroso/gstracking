@@ -29,11 +29,6 @@
                             <th>Division</th>
                             <th>Section</th>
                             <th>Trip Ticket</th>
-                            <th>Service Provider</th>
-                            <th>Vehicle</th>
-                            <th>Template</th>
-                            <th>Driver</th>
-                            <th>Contact</th>
                             <th>Date of Travel</th>
                             <th>Starting ODO</th>
                             <th>Ending Odo</th>
@@ -189,7 +184,7 @@
                         <div class="checkbox-inline">
                             <select class="form-control select2 details-input" id="kt_select_service_provider" name="service_provider" v-model="filterActive.serviceProviders" >
                                 <option label="Label"></option>
-                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.vehicle_type">{{ svc.vehicle_type }}</option>
+                                <option v-for="svc in filterDropdown.serviceProvider" :key="svc.id" :value="svc.type">{{ (svc.type == 1)?'Office':'Rental' }}</option>
                             </select>
                         </div>
                     </div>
@@ -469,11 +464,6 @@ export default {
                         { "data": "division_code" },
                         { "data": "section_code" },
                         { "data": "trip_ticket" },
-                        { "data": "vehicle_type" },
-                        { "data": "vehicle_name" },
-                        { "data": "vehicle_template" },
-                        { "data": "driver_name" },
-                        { "data": "driver_contact" },
                         { "data": "travel_date" },
                         { "data": "starting_odo" },
                         { "data": "ending_odo" },
@@ -500,38 +490,38 @@ export default {
                             }
                         },
                         {
-                            targets: 9,
+                            targets: 4,
                             render: data => {
                                 return dateEng(data);
                             }
                         },
                         {
-                            targets: [15, 16, 17, 18, 20],
+                            targets: [10, 11, 12, 13, 15],
                             render: data => {
                                 let values = (data)? toParseNum(data):'';
                                 return values;
                             }
                         },
                         {
-                            targets: [13, 19],
+                            targets: [8, 14],
                             render: data => {
                                 let values = (data)? data:'';
                                 return values;
                             }
                         },
                         {
-                            targets: [19, 22],
+                            targets: [14, 17],
                             orderable: false,
                         },
                         {
-                            targets: 23,
+                            targets: 18,
                             orderable: false,
                             render: data => {
                                 return dateTimeEng(data);
                             }
                         },
                         {
-                            targets: 21,
+                            targets: 16,
                             render: data => {
                                 var status = {
                                     1: {'title': 'Pending', 'class': ' label-light-warning'},

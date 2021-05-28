@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Request as TravelRequest;
 use App\Models\Transaction;
+use App\Models\TransactionVehicles;
 
 class ServiceProviderController extends Controller
 {
@@ -16,7 +17,7 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-        return response()->json(Transaction::select('vehicle_type')->groupBy('vehicle_type')->get());
+        return response()->json(TransactionVehicles::select('type')->groupBy('type')->get());
     }
 
     /**
