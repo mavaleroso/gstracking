@@ -5355,6 +5355,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5378,9 +5392,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rate_per_night: 0,
         remarks: null,
         travel_date: null,
+        travel_return: null,
         travel_time: null,
         vehicle_id: null,
         vehicle_name: null,
+        vehicle_type: null,
         status: null,
         total_cost: 0
       },
@@ -5435,6 +5451,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return result.toLocaleString(undefined, {
         minimumFractionDigits: 2
       });
+    },
+    distanceTravelled: function distanceTravelled() {
+      var result = this.formFields.distance_travelled = this.formFields.starting_odo - this.formFields.ending_odo;
+      return result;
     }
   },
   methods: {
@@ -5686,10 +5706,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this2.formFields.rate_per_night = parseFloat(response.data[0].rate_per_night ? response.data[0].rate_per_night : 0);
         _this2.formFields.remarks = response.data[0].remarks;
         _this2.formFields.travel_date = response.data[0].travel_date;
+        _this2.formFields.travel_return = response.data[0].travel_return;
         _this2.formFields.travel_time = response.data[0].depart_time;
         _this2.formFields.vehicle_id = response.data[0].vehicle_id;
-        _this2.formFields.vehicle_name = response.data[0].vehicle_name;
+        _this2.formFields.vehicle_name = response.data[0].name;
         _this2.formFields.status = response.data[0].is_status;
+        _this2.formFields.vehicle_type = response.data[0].vehicle_type;
         response.data[0].is_status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
         $('#is-completed').change(function () {
           if (this.checked) {
@@ -51687,7 +51709,7 @@ var render = function() {
                                                         _vm._s(vehicle.name) +
                                                           " - " +
                                                           _vm._s(
-                                                            vehicle.template
+                                                            vehicle.plate_no
                                                           )
                                                       )
                                                     ]
@@ -51897,7 +51919,7 @@ var render = function() {
                                                 type: "text",
                                                 name: "vehicle_plate_" + index,
                                                 placeholder:
-                                                  "Enter vehicle template no."
+                                                  "Enter vehicle plate no."
                                               }
                                             })
                                           ]),
@@ -52248,43 +52270,79 @@ var render = function() {
               return [
                 _c("form", { staticClass: "form" }, [
                   _c("div", { staticClass: "card-body row" }, [
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("p", [_vm._v("Image:")]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "vehicle-img-viewer",
-                            attrs: {
-                              href: _vm.vehicle_image
-                                ? "/storage/images/" + _vm.vehicle_image
-                                : "/storage/images/vehicle-photo-default.jpg"
-                            }
-                          },
-                          [
-                            _vm.vehicle_image != null
-                              ? _c("img", {
-                                  staticClass:
-                                    "travel-vehicle-img img-fluid img-thumbnail",
-                                  attrs: {
-                                    src: "/storage/images/" + _vm.vehicle_image,
-                                    alt: ""
-                                  }
-                                })
-                              : _c("img", {
-                                  staticClass:
-                                    "travel-vehicle-img img-fluid img-thumbnail",
-                                  attrs: {
-                                    src:
-                                      "/storage/images/vehicle-photo-default.jpg",
-                                    alt: ""
-                                  }
-                                })
-                          ]
+                    _c("div", { staticClass: "col-lg-12 mb-3" }, [
+                      _c("h2", [
+                        _vm._v(
+                          _vm._s(
+                            _vm.formFields.vehicle_type == 1
+                              ? "Office"
+                              : "Rental"
+                          )
                         )
-                      ]),
-                      _vm._v(" "),
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-12" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("p", [_vm._v("Image:")]),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass: "vehicle-img-viewer",
+                                attrs: {
+                                  href: _vm.vehicle_image
+                                    ? "/storage/images/" + _vm.vehicle_image
+                                    : "/storage/images/vehicle-photo-default.jpg"
+                                }
+                              },
+                              [
+                                _vm.vehicle_image != null
+                                  ? _c("img", {
+                                      staticClass:
+                                        "travel-vehicle-img img-fluid img-thumbnail",
+                                      attrs: {
+                                        src:
+                                          "/storage/images/" +
+                                          _vm.vehicle_image,
+                                        alt: ""
+                                      }
+                                    })
+                                  : _c("img", {
+                                      staticClass:
+                                        "travel-vehicle-img img-fluid img-thumbnail",
+                                      attrs: {
+                                        src:
+                                          "/storage/images/vehicle-photo-default.jpg",
+                                        alt: ""
+                                      }
+                                    })
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c(
+                            "div",
+                            { staticClass: "form-group d-flex jumbotron-mini" },
+                            [
+                              _c("h4", { staticClass: "ml-5 mt-3" }, [
+                                _vm._v("Total Cost:")
+                              ]),
+                              _vm._v(" "),
+                              _c("h2", { staticClass: "ml-auto mt-2 mr-5" }, [
+                                _vm._v(_vm._s(_vm.totalCost))
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [_vm._v("Vehicle Name")]),
                         _vm._v(" "),
@@ -52302,7 +52360,7 @@ var render = function() {
                             type: "text",
                             name: "vehicle",
                             id: "vehicle_name",
-                            disabled: ""
+                            readonly: ""
                           },
                           domProps: { value: _vm.formFields.vehicle_name },
                           on: {
@@ -52392,44 +52450,6 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Date submitted to procurement:")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.formFields.date_submitted_proc,
-                              expression: "formFields.date_submitted_proc"
-                            }
-                          ],
-                          staticClass: "form-control required-field",
-                          attrs: {
-                            type: "date",
-                            name: "date_submitted_proc",
-                            id: "date_submitted_proc",
-                            placeholder: "Enter date submitted to procurement",
-                            disabled: _vm.status == "Completed"
-                          },
-                          domProps: {
-                            value: _vm.formFields.date_submitted_proc
-                          },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.formFields,
-                                "date_submitted_proc",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
                         _c("label", [_vm._v("Distance Travelled")]),
                         _vm._v(" "),
                         _c("input", {
@@ -52437,8 +52457,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.formFields.distance_travelled,
-                              expression: "formFields.distance_travelled"
+                              value: _vm.distanceTravelled,
+                              expression: "distanceTravelled"
                             }
                           ],
                           staticClass: "form-control",
@@ -52446,43 +52466,19 @@ var render = function() {
                             type: "number",
                             id: "distance_travelled",
                             placeholder: "Enter distance travelled",
-                            disabled: _vm.status == "Completed"
+                            readonly: ""
                           },
-                          domProps: {
-                            value: _vm.formFields.distance_travelled
-                          },
+                          domProps: { value: _vm.distanceTravelled },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(
-                                _vm.formFields,
-                                "distance_travelled",
-                                $event.target.value
-                              )
+                              _vm.distanceTravelled = $event.target.value
                             }
                           }
                         })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c(
-                        "div",
-                        { staticClass: "form-group d-flex jumbotron-mini" },
-                        [
-                          _c("h4", { staticClass: "ml-5 mt-3" }, [
-                            _vm._v("Total Cost:")
-                          ]),
-                          _vm._v(" "),
-                          _c("h2", { staticClass: "ml-auto mt-2 mr-5" }, [
-                            _vm._v(_vm._s(_vm.totalCost))
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("hr"),
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [_vm._v("Travel Date:")]),
@@ -52513,6 +52509,82 @@ var render = function() {
                               _vm.$set(
                                 _vm.formFields,
                                 "travel_date",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Travel Return:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.travel_return,
+                              expression: "formFields.travel_return"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "date",
+                            name: "travel_return",
+                            id: "travel_return",
+                            placeholder: "Enter travel date",
+                            disabled: _vm.status == "Completed"
+                          },
+                          domProps: { value: _vm.formFields.travel_return },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "travel_return",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-6" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Date submitted to procurement:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.formFields.date_submitted_proc,
+                              expression: "formFields.date_submitted_proc"
+                            }
+                          ],
+                          staticClass: "form-control required-field",
+                          attrs: {
+                            type: "date",
+                            name: "date_submitted_proc",
+                            id: "date_submitted_proc",
+                            placeholder: "Enter date submitted to procurement",
+                            disabled: _vm.status == "Completed"
+                          },
+                          domProps: {
+                            value: _vm.formFields.date_submitted_proc
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.formFields,
+                                "date_submitted_proc",
                                 $event.target.value
                               )
                             }
@@ -52556,7 +52628,16 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Rate per KM:")]),
+                        _c("label", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.formFields.vehicle_type == 1 ||
+                                240 >= _vm.distanceTravelled
+                                ? "Fuel per KM"
+                                : "Rent per KM"
+                            )
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [

@@ -27,20 +27,9 @@ class Transaction extends Model
      */
     protected $fillable = [
         'request_id',
-        'office_id',
-        'rental_id',
-        'vehicle_type',
         'procurement_id',
         'trip_ticket',
-        'starting_odo',
-        'ending_odo',
         'date_submit_proc',
-        'travelled',
-        'rate_per_km',
-        'flat_rate',
-        'rate_per_night',
-        'nights_count',
-        'total_cost',
         'created_at',
         'remarks',
     ];

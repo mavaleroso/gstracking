@@ -30,6 +30,7 @@ class TravelRequest extends FormRequest
             'rate_per_night' => 'nullable',
             'remarks' => 'nullable',
             'travel_date' => 'required',
+            'travel_return' => 'required',
             'travel_time' => 'nullable',
             'vehicle_id' => 'nullable',
             'total_cost' => 'nullable',
@@ -45,6 +46,7 @@ class TravelRequest extends FormRequest
             'rate_per_km' => 'Rate per KM',
             'flat_rate' => 'Flat Rate',
             'travel_date' => 'Date Travelled',
+            'travel_return' => 'Date Return',
         ];
 
     }
@@ -57,6 +59,7 @@ class TravelRequest extends FormRequest
             'rate_per_km' => __('main/validations.required'),
             'flat_rate' => __('main/validations.required'),
             'travel_date' => __('main/validations.required'),
+            'travel_return' => __('main/validations.required'),
         ];
 
     }

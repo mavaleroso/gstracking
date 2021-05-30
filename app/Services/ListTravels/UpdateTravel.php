@@ -2,6 +2,7 @@
 namespace App\Services\ListTravels;
 
 use App\Models\Transaction;
+use App\Models\TransactionVehicles;
 use App\Models\Request;
 
 class UpdateTravel
@@ -14,24 +15,28 @@ class UpdateTravel
      */
     public function execute($id, $fields)
     {
-        $transaction = Transaction::find($id);
-        $transaction->update([
-            'vehicle_id' => $fields['vehicle_id'],
+        $transV = TransactionVehicles::where('id',$id);
+        $transV->update([
             'starting_odo' => $fields['starting_odo'],
             'ending_odo' => $fields['ending_odo'],
-            'date_submit_proc' => $fields['date_submitted_proc'],
             'travelled' => $fields['distance_travelled'],
             'rate_per_km' => $fields['rate_per_km'],
             'flat_rate' => $fields['flat_rate'],
             'rate_per_night' => $fields['rate_per_night'],
             'nights_count' => $fields['no_nights'],
             'total_cost' => $fields['total_cost'],
+        ]);
+
+        $transaction = Transaction::where('id',$transV->transaction_id);
+        $transaction->update([
+            'date_submit_proc' => $fields['date_submitted_proc'],
             'remarks' => $fields['remarks'],
         ]);
 
         $request = Request::find($transaction->request_id);
         $request->update([
             'travel_date' => $fields['travel_date'],
+            'travel_return' => $fields['travel_return'],
             'depart_time' => $fields['travel_time'],
             'is_status' => $fields['status'],
         ]);

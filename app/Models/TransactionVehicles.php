@@ -15,6 +15,14 @@ class TransactionVehicles extends Model
         'type',
         'transaction_id',
         'vehicle_id',
-        'driver_id'
+        'driver_id',
+        'starting_odo',
+        'ending_odo',
+        'travelled',
+        'rate_per_km',
+        'flat_rate',
+        'rate_per_night',
+        'nights_count',
+        'total_cost',
     ];  
 }

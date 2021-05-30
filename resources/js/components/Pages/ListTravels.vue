@@ -72,17 +72,32 @@
             <template v-slot:body>
                 <form class="form">
                     <div class="card-body row">
+                        <div class="col-lg-12 mb-3">
+                            <h2>{{ (formFields.vehicle_type == 1)?'Office':'Rental' }}</h2>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <p>Image:</p>
+                                        <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
+                                            <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
+                                            <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group d-flex jumbotron-mini">
+                                        <h4 class="ml-5 mt-3">Total Cost:</h4>
+                                        <h2 class="ml-auto mt-2 mr-5">{{ totalCost }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <p>Image:</p>
-                                <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
-                                    <img v-if="vehicle_image != null" class="travel-vehicle-img img-fluid img-thumbnail" :src="'/storage/images/' + vehicle_image" alt="">
-                                    <img v-else class="travel-vehicle-img img-fluid img-thumbnail" src="/storage/images/vehicle-photo-default.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="form-group">
                                 <label>Vehicle Name</label>
-                                <input type="text" name="vehicle" id="vehicle_name" v-model="formFields.vehicle_name" class="form-control" disabled/>
+                                <input type="text" name="vehicle" id="vehicle_name" v-model="formFields.vehicle_name" class="form-control" readonly/>
                             </div>
                             <div class="form-group">
                                 <label>Starting ODO:</label>
@@ -93,30 +108,29 @@
                                 <input type="number" class="form-control" id="ending_odo" placeholder="Enter ending ODO" v-model="formFields.ending_odo" :disabled="status=='Completed'" />
                             </div>
                             <div class="form-group">
-                                <label>Date submitted to procurement:</label>
-                                <input type="date" name="date_submitted_proc" id="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
                                 <label>Distance Travelled</label>
-                                <input type="number" class="form-control" id="distance_travelled" placeholder="Enter distance travelled" v-model="formFields.distance_travelled" :disabled="status=='Completed'"/>
+                                <input type="number" class="form-control" id="distance_travelled" placeholder="Enter distance travelled" v-model="distanceTravelled" readonly/>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group d-flex jumbotron-mini">
-                                <h4 class="ml-5 mt-3">Total Cost:</h4>
-                                <h2 class="ml-auto mt-2 mr-5">{{ totalCost }}</h2>
-                            </div>
-                            <hr>
                             <div class="form-group">
                                 <label>Travel Date:</label>
                                 <input type="date" name="travel_date" id="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date" :disabled="status=='Completed'"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Travel Return:</label>
+                                <input type="date" name="travel_return" id="travel_return" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_return" :disabled="status=='Completed'"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Date submitted to procurement:</label>
+                                <input type="date" name="date_submitted_proc" id="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
                                 <label>Travel Time:</label>
                                 <input type="time" class="form-control" id="travel_time" placeholder="Enter travel time" v-model="formFields.travel_time" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
-                                <label>Rate per KM:</label>
+                                <label>{{ (formFields.vehicle_type == 1 || 240 >= distanceTravelled)? 'Fuel per KM':'Rent per KM' }}</label>
                                 <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
                             </div>
                             <div class="form-group">
@@ -313,11 +327,13 @@ export default {
                 rate_per_night: 0,
                 remarks: null,
                 travel_date: null,
+                travel_return: null,
                 travel_time: null,
                 vehicle_id: null,
                 vehicle_name: null,
+                vehicle_type: null,
                 status: null,
-                total_cost: 0
+                total_cost: 0,
             },
             filterDropdown: {
                 tripTicket : [],
@@ -368,6 +384,10 @@ export default {
             this.formFields.total_cost = result;
             // let cost = (this.formFields.distance_travelled * this.formFields.rate_per_km);
             return result.toLocaleString(undefined, {minimumFractionDigits: 2});
+        },
+        distanceTravelled() {
+            let result = this.formFields.distance_travelled = this.formFields.starting_odo - this.formFields.ending_odo;
+            return result;
         }
     },
     methods:{
@@ -604,10 +624,12 @@ export default {
                 this.formFields.rate_per_night = parseFloat((response.data[0].rate_per_night)? response.data[0].rate_per_night:0);
                 this.formFields.remarks = response.data[0].remarks;
                 this.formFields.travel_date = response.data[0].travel_date;
+                this.formFields.travel_return = response.data[0].travel_return;
                 this.formFields.travel_time = response.data[0].depart_time;
                 this.formFields.vehicle_id = response.data[0].vehicle_id;
-                this.formFields.vehicle_name = response.data[0].vehicle_name;
+                this.formFields.vehicle_name = response.data[0].name;
                 this.formFields.status = response.data[0].is_status;
+                this.formFields.vehicle_type = response.data[0].vehicle_type;
                 (response.data[0].is_status == 3)? $('#is-completed').prop('checked', true):$('#is-completed').prop('checked', false);
 
                 $('#is-completed').change(function() {

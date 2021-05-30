@@ -231,7 +231,7 @@
                                             <td>
                                                 <select class="form-control select2 staff-required" :id="'vehicle-select-'+index" :name="'vehicle_'+index">
                                                     <option label="Label"></option>
-                                                    <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.template }}</option>
+                                                    <option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">{{ vehicle.name }} - {{ vehicle.plate_no }}</option>
                                                 </select>
                                             </td>
                                             <td>
@@ -270,7 +270,7 @@
                                         <tr v-for="index in staff.rental.total" :key="index">
                                             <td scope="row" class="text-center">{{ index }}</td>
                                             <td>
-                                                <input type="text" :name="'vehicle_plate_'+index" class="select-remove form-control" placeholder="Enter vehicle template no."/>
+                                                <input type="text" :name="'vehicle_plate_'+index" class="select-remove form-control" placeholder="Enter vehicle plate no."/>
                                             </td>
                                             <td>
                                                 <input type="text" :name="'vehicle_name_'+index" class="form-control" placeholder="Enter vehicle name"/>

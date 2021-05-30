@@ -15,6 +15,7 @@ class CreateDriver
     public function execute($fields)
     {
         $driver = Driver::create([
+            'type' => 1,
             'fullname' => $fields['fullname'],
             'age' => $fields['age'],
             'sex' => $fields['gender'],

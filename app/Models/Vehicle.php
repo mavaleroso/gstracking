@@ -21,7 +21,6 @@ class Vehicle extends Model
      * @var array
      */
     protected $fillable = [
-        'vehicle_type',
         'image',
         'name',
         'description',

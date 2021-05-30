@@ -25,6 +25,7 @@ class CreateVehicle
         
         $vehicle = Vehicle::create([
             (!$file_name)? NULL:'image' => $file_name,
+            'type' => 1,
             'name' => $fields['name'],
             'description' => $fields['description'],
             'plate_no' => $fields['templateNumber'],

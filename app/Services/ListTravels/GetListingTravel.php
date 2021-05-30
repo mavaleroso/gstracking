@@ -16,10 +16,11 @@ class GetListingTravel
     public function execute($fields)
     {
         $query = Transaction::leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
+                        ->leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
                         ->leftJoin('divisions', 'requests.division_id', '=', 'divisions.id')
                         ->leftJoin('sections', 'requests.section_id', '=', 'sections.id')
                         ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')
-                        ->select(['transactions.id','transactions.trip_ticket', 'requests.travel_date', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks', 'divisions.division_code', 'sections.section_code']);
+                        ->select(['transaction_vehicles.id','transactions.trip_ticket', 'requests.travel_date', 'transaction_vehicles.starting_odo','transaction_vehicles.ending_odo','transactions.date_submit_proc','transaction_vehicles.travelled','procurements.po_no','procurements.po_amount','transaction_vehicles.rate_per_km','transaction_vehicles.flat_rate','transaction_vehicles.rate_per_night','transaction_vehicles.nights_count','transaction_vehicles.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks', 'divisions.division_code', 'sections.section_code']);
 
         if ($fields['division']){
             $query->where('requests.division_id', 'like' , '%'.$fields['division'].'%');
