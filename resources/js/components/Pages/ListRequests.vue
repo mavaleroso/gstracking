@@ -38,6 +38,7 @@
                             <th>Status</th>
                             <th>Date Created</th>
                             <th>Request By</th>
+                            <th>Remarks</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -290,11 +291,38 @@
                 </form>
             </template>
             <template v-slot:adminfooter>
-                <button @click="reject" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
+                <button @click="declined" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
+
+                <!-- <button type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto" data-toggle="modal" data-target="#exampleModalCenter">Reject</button> -->
+
+
+
+
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
+
+
         </modal>
+        <div class="modal fade" id="rejectRemarks" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Remarks <small class="">Declined request</small></h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" name="remarks" id="declined" rows="5" v-model="remarks"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                        <button @click="declinedRequest" type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--end::Modal-->
     </div>
 </template>
@@ -352,7 +380,8 @@ export default {
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: [],
             officeNames: ['vehicle_1', 'driver_1'],
-            rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1']
+            rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
+            remarks: null
         }
     },  
     components: {
@@ -466,6 +495,7 @@ export default {
                         { "data": "is_status" },
                         { "data": "created_at" },
                         { "data": "fullname" },
+                        { "data": "remarks" },
                         { "data": "id" },
                     ],
                     columnDefs: [
@@ -970,11 +1000,15 @@ export default {
         parseNum(data) {
             return toParseNum(data);
         },
-        reject(){
-            axios.put(BASE_URL + '/travel/listrequeststaff/' + this.current_id).then(response => {
+        declined(){
+            $('#kt_datatable_modal').modal('toggle');
+            $('#rejectRemarks').modal('show');
+        },
+        declinedRequest(){
+            axios.post(BASE_URL + '/travel/listrequeststaff/declined',{id:this.current_id,remarks:this.remarks}).then(response => {
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
-                $('#kt_datatable_modal').modal('toggle');
+                $('#rejectRemarks').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
             })
         },

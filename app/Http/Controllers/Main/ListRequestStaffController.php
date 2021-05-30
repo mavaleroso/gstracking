@@ -85,11 +85,22 @@ class ListRequestStaffController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update($id, UpdateRequests $updateRequests)
-    {
-        $result = $updateRequests->execute($id);
+    public function declined(Request $request,UpdateRequests $updateRequests){
+        $result = $updateRequests->execute($request);
         return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
+
+    public function update()
+    {
+        // $result = $updateRequests->execute($id);
+        // return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
+    }
+
+
+
+        // $result = $updateStatus->execute($id);
+        // return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
+   
 
     /**
      * Remove the specified resource from storage.

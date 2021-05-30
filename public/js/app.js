@@ -4291,6 +4291,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4343,7 +4371,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       defaultNames: [],
       officeNames: ['vehicle_1', 'driver_1'],
-      rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1']
+      rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      remarks: null
     };
   },
   components: {
@@ -4470,6 +4499,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "created_at"
           }, {
             "data": "fullname"
+          }, {
+            "data": "remarks"
           }, {
             "data": "id"
           }],
@@ -5016,11 +5047,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     parseNum: function parseNum(data) {
       return toParseNum(data);
     },
-    reject: function reject() {
-      axios.put(BASE_URL + '/travel/listrequeststaff/' + this.current_id).then(function (response) {
+    declined: function declined() {
+      $('#kt_datatable_modal').modal('toggle');
+      $('#rejectRemarks').modal('show');
+    },
+    declinedRequest: function declinedRequest() {
+      axios.post(BASE_URL + '/travel/listrequeststaff/declined', {
+        id: this.current_id,
+        remarks: this.remarks
+      }).then(function (response) {
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
-        $('#kt_datatable_modal').modal('toggle');
+        $('#rejectRemarks').modal('toggle');
         $('#request-tbl').DataTable().ajax.reload();
       });
     },
@@ -51963,7 +52001,7 @@ var render = function() {
                       staticClass:
                         "btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto",
                       attrs: { type: "button" },
-                      on: { click: _vm.reject }
+                      on: { click: _vm.declined }
                     },
                     [_vm._v("Reject")]
                   ),
@@ -51996,7 +52034,81 @@ var render = function() {
           null,
           true
         )
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "rejectRemarks",
+            "data-backdrop": "static",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "staticBackdrop",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-dialog-centered",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.remarks,
+                        expression: "remarks"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "remarks", id: "declined", rows: "5" },
+                    domProps: { value: _vm.remarks },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.remarks = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-light-primary font-weight-bold",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary font-weight-bold",
+                      attrs: { type: "button" },
+                      on: { click: _vm.declinedRequest }
+                    },
+                    [_vm._v("Save changes")]
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -52044,9 +52156,41 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Request By")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Actions")])
             ])
           ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h3",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Remarks "), _c("small", {}, [_vm._v("Declined request")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [
+          _c("i", {
+            staticClass: "ki ki-close",
+            attrs: { "aria-hidden": "true" }
+          })
         ]
       )
     ])

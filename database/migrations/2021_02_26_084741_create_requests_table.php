@@ -24,6 +24,7 @@ class CreateRequestsTable extends Migration
             $table->date('return_date')->nullable();
             $table->time('depart_time')->nullable();
             $table->smallInteger('is_status')->default(1);
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

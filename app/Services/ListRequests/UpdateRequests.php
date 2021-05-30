@@ -12,10 +12,11 @@ class UpdateRequests
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($id)
+    public function execute($fields)
     {
-        $requests = Request::where('id', $id)->update([
-            'is_status' => 4
+        $requests = Request::where('id', $fields['id'])->update([
+            'is_status' => 4,
+            'remarks' => $fields['remarks']
         ]);
         return $requests;
     }

@@ -81,6 +81,7 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'destroy' => 'main.printrequest.destroy',
         ]
     ]);
+    Route::post('listrequeststaff/declined/', 'ListRequestStaffController@declined');
 });
 
 Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () {
