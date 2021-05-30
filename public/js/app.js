@@ -4319,6 +4319,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -50604,6 +50610,33 @@ var render = function() {
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.status == 2
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: "print_request?id=" + _vm.current_id,
+                            target: "_blank"
+                          }
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn-print btn btn-sm btn-primary mr-7",
+                              attrs: { type: "button" }
+                            },
+                            [
+                              _c("i", { staticClass: "la la-print icon-md" }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Print")])
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.status == 4
                     ? _c(
                         "a",
                         {

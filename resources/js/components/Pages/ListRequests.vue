@@ -65,6 +65,12 @@
                         <span>Print</span>
                     </button>
                 </a>
+                <a v-if="status == 4" :href="'print_request?id=' + current_id" target="_blank">
+                    <button type="button" class="btn-print btn btn-sm btn-primary mr-7">
+                        <i class="la la-print icon-md"></i>
+                        <span>Print</span>
+                    </button>
+                </a>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
