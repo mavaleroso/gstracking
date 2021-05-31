@@ -809,27 +809,27 @@ export default {
             },500);
         },
         getTripTicket() {
-            axios.get(BASE_URL + "/api/tripticket").then(response => {
+            axios.get(BASE_URL + "/api/v1/tripticket").then(response => {
                 this.filterDropdown.tripTicket = response.data;
             });
         },
         getServiceProviders() {
-            axios.get(BASE_URL + "/api/serviceprovider").then(response => {
+            axios.get(BASE_URL + "/api/v1/serviceprovider").then(response => {
                 this.filterDropdown.serviceProvider = response.data;
             });
         },
         getPoNumber() {
-            axios.get(BASE_URL + "/api/ponumber").then(response => {
+            axios.get(BASE_URL + "/api/v1/ponumber").then(response => {
                 this.filterDropdown.poNumber = response.data;
             });
         },
         getDivision() {
-            axios.get(BASE_URL + "/api/division").then(response => {
+            axios.get(BASE_URL + "/api/v1/division").then(response => {
                 this.filterDropdown.division = response.data;
             });
         },
         getSection(id) {
-            axios.get(BASE_URL + "/api/section/"+id).then(response => {
+            axios.get(BASE_URL + "/api/v1/section/"+id).then(response => {
                 this.filterDropdown.section = response.data;
             });
         },

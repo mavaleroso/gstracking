@@ -94,16 +94,11 @@ class ListRequestStaffController extends Controller
         return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
 
-    public function update()
+    public function update($id, UpdateRequests $updateRequests)
     {
-
+        $result = $updateRequests->execute($id);
+        return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
-
-
-
-        // $result = $updateStatus->execute($id);
-        // return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
-   
 
     /**
      * Remove the specified resource from storage.

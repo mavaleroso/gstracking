@@ -674,24 +674,24 @@ export default {
             });
         },
         getRegion() {
-            axios.get(BASE_URL + "/api/region").then(response => {
+            axios.get(BASE_URL + "/api/v1/region").then(response => {
                 this.regions = response.data;
             });
         },
         getProvince(id) {
-            axios.get(BASE_URL + "/api/province/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/province/" + id).then(response => {
                 this.provinces = response.data;
                 this.provinces.map(i=>i.active="false")
             });
         },
         getCity(id) {
-            axios.get(BASE_URL + "/api/city/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });
         },
         getBrgy(id) {
-            axios.get(BASE_URL + "/api/brgy/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/brgy/" + id).then(response => {
                 this.brgys = response.data;
             });
         },
@@ -705,7 +705,7 @@ export default {
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
             $('#kt_select_region').val();
-            axios.get(BASE_URL + "/api/destination/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/destination/" + id).then(response => {
                 let destination = response.data;
                 this.place = response.data[0].others;
 
@@ -743,7 +743,7 @@ export default {
             this.dateConf();
         },
         getPassengers(id) {
-            axios.get(BASE_URL + "/api/passenger/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/passenger/" + id).then(response => {
                 this.passengers = response.data;
             });
         },
@@ -776,6 +776,7 @@ export default {
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
+                $('#request-tbl').DataTable().ajax.reload();
                 this.getPassengers(this.current_id);
             }).catch((error) => {
                 let data = error.response.data.errors;
@@ -989,17 +990,17 @@ export default {
             }
         },
         getVehicle() {
-            axios.get(BASE_URL + '/api/vehicle').then(response => {
+            axios.get(BASE_URL + '/api/v1/vehicle').then(response => {
                 this.vehicles = response.data;
             });
         },
         getPo() {
-            axios.get(BASE_URL + '/api/po').then(response => {
+            axios.get(BASE_URL + '/api/v1/po').then(response => {
                 this.procurements = response.data;
             });
         },
         getDriver() {
-            axios.get(BASE_URL + '/api/driver').then(response => {
+            axios.get(BASE_URL + '/api/v1/driver').then(response => {
                 this.drivers = response.data;
             });
         },

@@ -347,36 +347,36 @@ export default {
         },
 
         getDivision() {
-            axios.get(BASE_URL + "/api/division").then(response => {
+            axios.get(BASE_URL + "/api/v1/division").then(response => {
                 this.divisions = response.data;
             });
         },
 
         getSection(id) {
-            axios.get(BASE_URL + "/api/section/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/section/" + id).then(response => {
                 this.sections = response.data;
                 this.sections.map(i=>i.active="false")
             });
         },
         getRegion() {
-            axios.get(BASE_URL + "/api/region").then(response => {
+            axios.get(BASE_URL + "/api/v1/region").then(response => {
                 this.regions = response.data;
             });
         },
         getProvince(id) {
-            axios.get(BASE_URL + "/api/province/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/province/" + id).then(response => {
                 this.provinces = response.data;
                 this.provinces.map(i=>i.active="false")
             });
         },
         getCity(id) {
-            axios.get(BASE_URL + "/api/city/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });
         },
         getBrgy(id) {
-            axios.get(BASE_URL + "/api/brgy/" + id).then(response => {
+            axios.get(BASE_URL + "/api/v1/brgy/" + id).then(response => {
                 this.brgys = response.data;
             });
         },

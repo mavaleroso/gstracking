@@ -171,7 +171,7 @@ export default {
             });
         },
         getRoles() {
-            axios.get(BASE_URL + "/api/role").then(response => {
+            axios.get(BASE_URL + "/api/v1/role").then(response => {
                 this.roles = response.data;
             });
         },
