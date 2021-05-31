@@ -15,11 +15,27 @@ class CreateTransactionVehiclesTable extends Migration
     {
         Schema::create('transaction_vehicles', function (Blueprint $table) {
             $table->id();
+            $table->string('trip_ticket')->nullable();
             $table->string('type');
-            $table->bigInteger('transaction_id');
+            $table->bigInteger('request_id');
             $table->bigInteger('vehicle_id');
             $table->bigInteger('driver_id');
+            $table->unsignedBigInteger('procurement_id')->nullable();
+            $table->bigInteger('starting_odo')->nullable();
+            $table->bigInteger('ending_odo')->nullable();
+            $table->integer('travelled')->default(0);
+            $table->double('rate_per_km')->default(0);
+            $table->double('fuel_charge')->default(0);
+            $table->double('fuel_liters')->default(0);
+            $table->double('flat_rate')->default(0);
+            $table->double('rate_per_night')->default(0);
+            $table->integer('nights_count')->default(0);
+            $table->double('total_cost')->nullable();
+            $table->date('date_submit_proc')->nullable();
+            $table->mediumText('remarks')->nullable();
+            $table->smallInteger('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

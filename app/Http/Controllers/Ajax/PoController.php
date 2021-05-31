@@ -16,11 +16,11 @@ class PoController extends Controller
      */
     public function index()
     {
-        $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
-        ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transactions.total_cost)) as totalBalance')])
-        ->where('procurements.status',1)
-        ->groupBy('procurements.id','procurements.po_no')
-        ->get();
+        $query = Procurement::leftJoin('transaction_vehicles','procurements.id','=','transaction_vehicles.procurement_id')
+                            ->select(['procurements.*', DB::raw('(procurements.po_amount - SUM(transaction_vehicles.total_cost)) as totalBalance')])
+                            ->where('procurements.status',1)
+                            ->groupBy('procurements.id','procurements.po_no')
+                            ->get();
         return response()->json($query);
     }
 

@@ -15,19 +15,16 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('request_id')->nullable();
-            $table->unsignedBigInteger('procurement_id')->nullable();
-            $table->string('trip_ticket')->nullable();
-            $table->bigInteger('starting_odo')->nullable();
-            $table->bigInteger('ending_odo')->nullable();
-            $table->date('date_submit_proc')->nullable();
-            $table->integer('travelled')->default(0);
-            $table->double('rate_per_km')->nullable();
-            $table->double('flat_rate')->nullable();
-            $table->double('rate_per_night')->default(0);
-            $table->integer('nights_count')->default(0);
-            $table->double('total_cost')->nullable();
-            $table->mediumText('remarks')->nullable();
+            // $table->unsignedBigInteger('request_id')->nullable();
+            // $table->string('trip_ticket')->nullable();
+            // $table->bigInteger('starting_odo')->nullable();
+            // $table->bigInteger('ending_odo')->nullable();
+            // $table->integer('travelled')->default(0);
+            // $table->double('rate_per_km')->nullable();
+            // $table->double('flat_rate')->nullable();
+            // $table->double('rate_per_night')->default(0);
+            // $table->integer('nights_count')->default(0);
+            // $table->double('total_cost')->nullable();
             $table->timestamps();
         });
     }

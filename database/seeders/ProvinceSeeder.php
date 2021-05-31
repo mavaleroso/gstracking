@@ -13,30 +13,35 @@ class ProvinceSeeder extends Seeder
           'id'=> '71',
           'region_id'=> '16',
           'psgc_province'=> '160200000',
+          'province_code'=> 'ADN',
           'province_name'=> 'AGUSAN DEL NORTE', 
         ],
         [
           'id'=> '72',
           'region_id'=> '16',
           'psgc_province'=> '160300000',
+          'province_code'=> 'ADS',
           'province_name'=> 'AGUSAN DEL SUR', 
         ],
         [
           'id'=> '73',
           'region_id'=> '16',
           'psgc_province'=> '166800000',
+          'province_code'=> 'SDS',
           'province_name'=> 'SURIGAO DEL SUR',    
         ],
         [
           'id'=> '74',
           'region_id'=> '16',
           'psgc_province'=> '166700000',
+          'province_code'=> 'SDN',
           'province_name'=> 'SURIGAO DEL NORTE',   
         ],
         [
           'id'=> '75',
           'region_id'=> '16',
           'psgc_province'=> '168500000',
+          'province_code'=> 'PDI',
           'province_name'=> 'DINAGAT ISLANDS',   
         ]
     ];

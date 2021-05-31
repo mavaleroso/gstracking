@@ -19,45 +19,85 @@ class TravelRequest extends FormRequest
     
     public function rules()
     {
-        return [
+        $rules = [
             'starting_odo' => 'required',
-            'ending_odo' => 'nullable',
+            'ending_odo' => 'required',
             'date_submitted_proc' => 'required',
             'distance_travelled' => 'nullable',
-            'rate_per_km' => 'required',
-            'flat_rate' => 'required',
+            'flat_rate' => 'nullable',
             'no_nights' => 'nullable',
             'rate_per_night' => 'nullable',
             'remarks' => 'nullable',
             'travel_date' => 'required',
+            'travel_return' => 'required',
             'travel_time' => 'nullable',
             'vehicle_id' => 'nullable',
             'total_cost' => 'nullable',
-            'status' => 'nullable'
+            'status' => 'nullable',
+            'vehicle_type' => 'nullable'
         ];
+
+        if ($this->request->get('vehicle_type') == 1) {
+            $rules['fuel_charge'] = 'required';
+            $rules['fuel_liters'] = 'required';
+        } else if ($this->request->get('vehicle_type') == 2) {
+            if ($this->request->get('distance_travelled') <= 240) {
+                $rules['fuel_per_km'] = 'required';
+            } else {
+                $rules['rate_per_km'] = 'required';
+            }
+        }
+
+        return $rules;
     }
 
     public function attributes()
     {
-        return [
+        $attr = [
             'starting_odo' => 'Starting ODO',
+            'ending_odo' => 'Ending ODO',
             'date_submitted_proc' => 'Date Submitted to Procurement',
-            'rate_per_km' => 'Rate per KM',
-            'flat_rate' => 'Flat Rate',
             'travel_date' => 'Date Travelled',
+            'travel_return' => 'Date Return',
         ];
+
+        if ($this->request->get('vehicle_type') == 1) {
+            $attr['fuel_charge'] = 'Fuel Charge';
+            $attr['fuel_liters'] = 'Fuel Liters';
+        } else if ($this->request->get('vehicle_type') == 2) {
+            if ($this->request->get('distance_travelled') <= 240) {
+                $attr['fuel_per_km'] = 'Fuel per KM';
+            } else {
+                $attr['rate_per_km'] = 'Rate per KM';
+            }
+        }
+
+        return $attr;
 
     }
 
     public function messages()
     {
-        return [
+        $msgs = [
             'starting_odo' => __('main/validations.required'),
+            'ending_odo' => __('main/validations.required'),
             'date_submitted_proc' => __('main/validations.required'),
-            'rate_per_km' => __('main/validations.required'),
-            'flat_rate' => __('main/validations.required'),
             'travel_date' => __('main/validations.required'),
+            'travel_return' => __('main/validations.required'),
         ];
+
+        if ($this->request->get('vehicle_type') == 1) {
+            $msgs['fuel_charge'] = __('main/validations.required');
+            $msgs['fuel_liters'] = __('main/validations.required');
+        } else if ($this->request->get('vehicle_type') == 2) {
+            if ($this->request->get('distance_travelled') <= 240) {
+                $msgs['fuel_per_km'] = __('main/validations.required');
+            } else {
+                $msgs['rate_per_km'] = __('main/validations.required');
+            }
+        }
+
+        return $msgs;
 
     }
 }

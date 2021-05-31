@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\ListTravels;
 
-use App\Models\Transaction;
+use App\Models\TransactionVehicles;
 use App\Models\Request;
 
 class UpdateStatus
@@ -14,9 +14,9 @@ class UpdateStatus
      */
     public function execute($id)
     {
-        $requestid = Transaction::where('id' , $id)->first();
+        $requestid = TransactionVehicles::where('id' , $id)->first();
         Request::where('id', $requestid->request_id)->update(['is_status'=> '1']);
-        $requests = Transaction::destroy($id);
+        $requests = TransactionVehicles::destroy($id);
         return $requests;
     }
 }   

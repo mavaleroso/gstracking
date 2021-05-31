@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\ListTravels;
 
-use App\Models\Transaction;
+use App\Models\TransactionVehicles;
 use Illuminate\Support\Facades\DB;
 
 class GetTravelById
@@ -15,13 +15,11 @@ class GetTravelById
     public function execute(int $id)
     {
         
-        $trans = Transaction::where('transactions.id', $id);
-        $data = $trans->leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
-                ->leftJoin('office_vehicles', 'transactions.office_id','=','office_vehicles.id')
-                ->leftJoin('rental_vehicles', 'transactions.rental_id','=','rental_vehicles.id')
-                ->leftJoin('vehicles', 'office_vehicles.vehicle_id', '=', 'vehicles.id')
-                ->leftJoin('procurements', 'transactions.procurement_id', '=', 'procurements.id')
-                ->select(['transactions.id','transactions.trip_ticket', 'transactions.vehicle_type', 'requests.travel_date','requests.depart_time', 'transactions.starting_odo','transactions.ending_odo','transactions.date_submit_proc','transactions.travelled','procurements.po_no','procurements.po_amount','transactions.rate_per_km','transactions.flat_rate','transactions.rate_per_night','transactions.nights_count','transactions.total_cost','transactions.created_at', 'requests.is_status','transactions.remarks','vehicles.id as vehicle_id',DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'),'vehicles.image'])
+        $trans = TransactionVehicles::where('transaction_vehicles.id', $id);
+        $data = $trans->leftJoin('requests', 'transaction_vehicles.request_id', '=', 'requests.id')
+                ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
+                ->leftJoin('procurements', 'transaction_vehicles.procurement_id', '=', 'procurements.id')
+                ->select(['transaction_vehicles.id','transaction_vehicles.trip_ticket', 'requests.travel_date','requests.return_date','requests.depart_time', 'transaction_vehicles.starting_odo','transaction_vehicles.ending_odo','transaction_vehicles.date_submit_proc','transaction_vehicles.travelled','procurements.po_no','procurements.po_amount','transaction_vehicles.rate_per_km', 'transaction_vehicles.fuel_charge', 'transaction_vehicles.fuel_liters','transaction_vehicles.flat_rate','transaction_vehicles.rate_per_night','transaction_vehicles.nights_count','transaction_vehicles.total_cost','transaction_vehicles.created_at', 'transaction_vehicles.status','transaction_vehicles.remarks','vehicles.id as vehicle_id','vehicles.name','vehicles.image', 'vehicles.plate_no', 'transaction_vehicles.type as vehicle_type'])
                 ->get();
 
         return $data;
