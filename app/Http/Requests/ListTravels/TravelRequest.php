@@ -41,11 +41,7 @@ class TravelRequest extends FormRequest
             $rules['fuel_charge'] = 'required';
             $rules['fuel_liters'] = 'required';
         } else if ($this->request->get('vehicle_type') == 2) {
-            if ($this->request->get('distance_travelled') <= 240) {
-                $rules['fuel_per_km'] = 'required';
-            } else {
-                $rules['rate_per_km'] = 'required';
-            }
+            $rules['rate_per_km'] = 'required';
         }
 
         return $rules;
@@ -65,11 +61,7 @@ class TravelRequest extends FormRequest
             $attr['fuel_charge'] = 'Fuel Charge';
             $attr['fuel_liters'] = 'Fuel Liters';
         } else if ($this->request->get('vehicle_type') == 2) {
-            if ($this->request->get('distance_travelled') <= 240) {
-                $attr['fuel_per_km'] = 'Fuel per KM';
-            } else {
-                $attr['rate_per_km'] = 'Rate per KM';
-            }
+            $attr['rate_per_km'] = 'Rate per KM';
         }
 
         return $attr;
@@ -90,11 +82,7 @@ class TravelRequest extends FormRequest
             $msgs['fuel_charge'] = __('main/validations.required');
             $msgs['fuel_liters'] = __('main/validations.required');
         } else if ($this->request->get('vehicle_type') == 2) {
-            if ($this->request->get('distance_travelled') <= 240) {
-                $msgs['fuel_per_km'] = __('main/validations.required');
-            } else {
-                $msgs['rate_per_km'] = __('main/validations.required');
-            }
+            $msgs['rate_per_km'] = __('main/validations.required');
         }
 
         return $msgs;

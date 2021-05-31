@@ -5370,10 +5370,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -52726,52 +52722,6 @@ var render = function() {
                             }
                           })
                         ]),
-                        _vm._v(" "),
-                        _vm.formFields.vehicle_type == 2
-                          ? _c("div", { staticClass: "form-group" }, [
-                              _c("label", [
-                                _vm._v(
-                                  _vm._s(
-                                    240 >= _vm.distanceTravelled
-                                      ? "Fuel per KM"
-                                      : "Rent per KM"
-                                  )
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.formFields.rate_per_km,
-                                    expression: "formFields.rate_per_km"
-                                  }
-                                ],
-                                staticClass: "form-control required-field",
-                                attrs: {
-                                  type: "number",
-                                  name: "rate_per_km",
-                                  id: "rate_per_km",
-                                  placeholder: "Enter rate per kilometer",
-                                  disabled: _vm.status == "Completed"
-                                },
-                                domProps: { value: _vm.formFields.rate_per_km },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.formFields,
-                                      "rate_per_km",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          : _vm._e(),
                         _vm._v(" "),
                         _vm.formFields.vehicle_type == 2
                           ? _c("div", { staticClass: "form-group" }, [

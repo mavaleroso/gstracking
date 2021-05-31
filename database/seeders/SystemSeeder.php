@@ -33,6 +33,10 @@ class SystemSeeder extends Seeder
         [
             'handler' => 'RQT_CODE',
             'value' => 'RQT-21-04-0000'
+        ],
+        [
+            'handler' => 'TRIP_TICKET',
+            'value' => '21-04-0000'
         ]
     ];
     /**
