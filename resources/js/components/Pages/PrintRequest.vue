@@ -16,25 +16,16 @@
                     <tbody>
                         <tr>
                             <td colspan="3">
-                                <h5 class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Request</h5>
+                                <h5 v-if="transaction.is_status == 2" class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Request</h5>
+                                <h5 v-else class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Declined Request</h5>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <p class="text-right my-10">Series: <span class=" text-underline">{{ transaction.trip_ticket }}</span></p>
+                                <p class="text-right my-10">Series: <span class=" text-underline">{{ transaction.serial_code }}</span></p>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="w-35">
-                                <p class="">Type of Motor Vehicle:</p>
-                            </td>
-                            <td class="w-10">
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.vehicle_type" disabled>
-                            </td>
-                            <td>
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" disabled>
-                            </td>
-                        </tr>
+
                         <tr>
                             <td>
                                 <p class="">Program / Division / Section:</p>
@@ -66,6 +57,14 @@
                             </td>
                             <td colspan="2">
                                 <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.travel_date" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="">Date return:</p>
+                            </td>
+                            <td colspan="2">
+                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.return_date" disabled>
                             </td>
                         </tr>
                         <tr>
@@ -102,8 +101,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <hr v-if="passengers.length <= 5" class="dashed-border my-2">
-                <table :class="passengers.length > 5 ? 'break-page':''">
+                
+                <hr  v-if="transaction.is_status == 2" class="dashed-border my-2">
+                <table v-if="transaction.is_status == 2" :class="passengers.length > 5 ? 'break-page':''">
                     <thead v-if="passengers.length > 5">
                             <tr>
                                 <td colspan="3">
@@ -123,7 +123,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <p class="text-right my-8">Series: <span class="text-underline">{{ transaction.trip_ticket }}</span></p>
+                                <p class="text-right my-8">Series: <span class="text-underline">{{ transaction.serial_code }}</span></p>
                             </td>
                         </tr>
                         <tr>
@@ -194,14 +194,15 @@ export default {
                 depart_time: null,
                 department: null,
                 gs_staff: null,
-                vehicle_type: null,
                 driver: null,
                 driver_contact: null,
                 purpose: null,
                 vehicle_name: null,
                 template: null,
                 travel_date: null,
-                trip_ticket: null,
+                return_date: null,
+                serial_code: null,
+                is_status: null,
             },
             destinations: [],
             passengers: []
@@ -289,28 +290,19 @@ export default {
         },
         getData(id) {
             axios.get(BASE_URL + '/travel/printrequest/'+id).then(res => {
-                this.transaction.depart_time = timeEng(res.data.transaction[0].depart_time);
-                // this.transaction.depart_time = res.data.transaction[0].depart_time;
-                this.transaction.department = res.data.transaction[0].department;
-                this.transaction.gs_staff = res.data.transaction[0].first_name + ' ' + res.data.transaction[0].last_name;
-                this.transaction.vehicle_type = res.data.transaction[0].vehicle_type;
-                this.transaction.vehicle_name = res.data.transaction[0].vehicle_name;
-                this.transaction.template = res.data.transaction[0].vehicle_template;
-                this.transaction.driver = res.data.transaction[0].driver_name;
-                this.transaction.driver_contact = res.data.transaction[0].driver_contact;
-                this.transaction.purpose = res.data.transaction[0].purpose;
-                this.transaction.travel_date = dateEng(res.data.transaction[0].travel_date);
-                // this.transaction.travel_date = res.data.transaction[0].travel_date;
-                this.transaction.trip_ticket = res.data.transaction[0].trip_ticket;
-
+                this.transaction.serial_code = res.data.requests[0].serial_code;
+                this.transaction.department = res.data.requests[0].department;
+                this.transaction.purpose = res.data.requests[0].purpose;
+                this.transaction.travel_date = dateEng(res.data.requests[0].travel_date);
+                this.transaction.return_date = dateEng(res.data.requests[0].return_date);
+                this.transaction.depart_time = timeEng(res.data.requests[0].depart_time);
+                this.transaction.is_status = res.data.requests[0].is_status;
                 for (let i = 0; i <  res.data.destinations.length; i++) {
                     let brgy = (res.data.destinations[i].brgy_name) ? res.data.destinations[i].brgy_name : '';
                     let data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n'; 
                     this.destinations.push(data);
                 }
-
                 this.passengers = res.data.passengers;
-
                 autosize($('#kt_autosize_1'));
             });
         }

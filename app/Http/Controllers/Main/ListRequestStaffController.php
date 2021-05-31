@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListRequests\TravelRequestStaff;
+use App\Http\Requests\ListRequests\ListRequestStaff;
 use App\Services\ListRequests\CreateTransaction;
 use App\Services\ListRequests\UpdateRequests;
+
+
+
 
 class ListRequestStaffController extends Controller
 {
@@ -85,15 +89,14 @@ class ListRequestStaffController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function declined(Request $request,UpdateRequests $updateRequests){
+    public function declined(ListRequestStaff $request,UpdateRequests $updateRequests){
         $result = $updateRequests->execute($request);
         return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
 
     public function update()
     {
-        // $result = $updateRequests->execute($id);
-        // return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
+
     }
 
 

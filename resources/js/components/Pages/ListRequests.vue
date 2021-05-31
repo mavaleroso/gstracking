@@ -65,7 +65,7 @@
                         <span>Print</span>
                     </button>
                 </a>
-                <a v-if="status == 4" :href="'print_request?id=' + current_id" target="_blank">
+                <a v-else-if="status === 4" :href="'print_request?id=' + current_id" target="_blank">
                     <button type="button" class="btn-print btn btn-sm btn-primary mr-7">
                         <i class="la la-print icon-md"></i>
                         <span>Print</span>
@@ -297,7 +297,7 @@
                 </form>
             </template>
             <template v-slot:adminfooter>
-                <button @click="declined" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Reject</button>
+                <button @click="declined" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Decline</button>
 
                 <!-- <button type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto" data-toggle="modal" data-target="#exampleModalCenter">Reject</button> -->
 
@@ -320,7 +320,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <textarea class="form-control" name="remarks" id="declined" rows="5" v-model="remarks"></textarea>
+                        <textarea class="form-control" name="declined_remarks" id="declined" rows="5" v-model="remarks"></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
@@ -590,7 +590,7 @@ export default {
                             vm.request_status_lbl = 'modal-status label label-success label-inline mr-5';
                         break;
                     case 4:
-                            vm.request_status = 'Rejected';
+                            vm.request_status = 'Declined';
                             vm.request_status_lbl = 'modal-status label label-danger label-inline mr-5';
                         break; 
                 }
@@ -1007,16 +1007,33 @@ export default {
             return toParseNum(data);
         },
         declined(){
+            this.remarks='';
+            $('.invalid-feedback').remove();
+            $('.is-invalid').removeClass('is-invalid');
             $('#kt_datatable_modal').modal('toggle');
             $('#rejectRemarks').modal('show');
         },
         declinedRequest(){
             axios.post(BASE_URL + '/travel/listrequeststaff/declined',{id:this.current_id,remarks:this.remarks}).then(response => {
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 showToast(response.data.message, 'success');
                 $('#rejectRemarks').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
-            })
+            }).catch(error => {
+                let data = error.response.data.errors;
+                let keys = [];
+                let values = [];
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    values.push(`${value}`);
+                    if ($('[name="declined_'+`${key}`+'"]').next().length == 0 || $('[name="remarks_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                        $('[name="declined_'+`${key}`+'"]').addClass('is-invalid');
+                        $('[name="declined_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                    }
+                }
+            }); 
         },
         dateConf() {
             var dtToday = new Date();
