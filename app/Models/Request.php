@@ -33,7 +33,8 @@ class Request extends Model
         'travel_date',
         'return_date',
         'depart_time',
-        'is_status'    
+        'is_status',
+        'remarks'   
     ];
 
     public function destinations(): HasMany

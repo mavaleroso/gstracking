@@ -4,6 +4,7 @@ namespace App\Services\PrintRequest;
 use App\Models\Transaction;
 use App\Models\Destination;
 use App\Models\Passenger;
+use App\Models\Request;
 use Illuminate\Support\Facades\DB;
 
 class GetPrintRequestById
@@ -16,25 +17,20 @@ class GetPrintRequestById
      */
     public function execute(int $id)
     {
-        $data['transaction'] = Transaction::select(['requests.id', 'transactions.trip_ticket',DB::raw('IFNULL(drivers.contact,rental_vehicles.driver_contact) as driver_contact'),'transactions.vehicle_type',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.purpose','requests.travel_date','requests.depart_time','users_details.first_name','users_details.last_name',DB::raw('IFNULL(vehicles.name,rental_vehicles.vehicle_name) AS vehicle_name'), DB::raw('IFNULL(vehicles.template,rental_vehicles.vehicle_template) as vehicle_template'),DB::raw('IFNULL(drivers.fullname,rental_vehicles.driver_name) as driver_name')])
-                                            ->leftJoin('requests','requests.id','=','transactions.request_id')
-                                            ->leftJoin('users_details','users_details.user_id','=','requests.user_id')
-                                            ->leftJoin('divisions','requests.division_id','=','divisions.id')
-                                            ->leftJoin('sections','requests.section_id','=','sections.id')
-                                            ->leftJoin('office_vehicles','transactions.office_id','=','office_vehicles.id')
-                                            ->leftJoin('rental_vehicles','transactions.rental_id','=','rental_vehicles.id')
-                                            ->leftJoin('vehicles','vehicles.id','=','office_vehicles.vehicle_id')
-                                            ->leftJoin('drivers','drivers.id','=','office_vehicles.driver_id')
-                                            ->where('transactions.id',$id)
-                                            ->get();
+        $data['requests'] = Request::select(['requests.serial_code','requests.purpose',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.travel_date','requests.return_date','requests.depart_time','requests.is_status'])
+                                    ->leftJoin('divisions','requests.division_id','=','divisions.id')   
+                                    ->leftJoin('sections','requests.section_id','=','sections.id')
+                                    ->leftJoin('destinations','destinations.id','=','requests.id')
+                                    ->where('requests.id',$id)->get();
 
         $data['destinations'] = Destination::leftJoin('lib_regions','lib_regions.id','=','destinations.region_id')
-                                            ->leftJoin('lib_provinces','lib_provinces.id','=','destinations.province_id')
-                                            ->leftJoin('lib_cities','lib_cities.id','=','destinations.city_id')
-                                            ->leftJoin('lib_brgys','lib_brgys.id','=','destinations.brgy_id')
-                                            ->where('destinations.request_id', $data['transaction'][0]->id)
-                                            ->get();
-        $data['passengers'] = Passenger::where('request_id', $data['transaction'][0]->id)->get();
+                                    ->leftJoin('lib_provinces','lib_provinces.id','=','destinations.province_id')
+                                    ->leftJoin('lib_cities','lib_cities.id','=','destinations.city_id')
+                                    ->leftJoin('lib_brgys','lib_brgys.id','=','destinations.brgy_id')
+                                    ->where('destinations.request_id', $id)
+                                    ->get();
+
+        $data['passengers'] = Passenger::where('passengers.request_id', $id)->get();
         return $data;
     }
 }
