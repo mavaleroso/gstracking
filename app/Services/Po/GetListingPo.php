@@ -15,8 +15,7 @@ class GetListingPo
      */
     public function execute()
     {
-        $query = Procurement::leftJoin('transactions','procurements.id','=','transactions.procurement_id')
-                            ->leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
+        $query = Procurement::leftJoin('transaction_vehicles','procurements.id','=','transaction_vehicles.procurement_id')
                             ->select(['procurements.*', DB::raw('IF((procurements.po_amount - SUM(transaction_vehicles.total_cost)) > 0, (procurements.po_amount - SUM(transaction_vehicles.total_cost)), procurements.po_amount) as totalBalance')])
                             ->groupBy('procurements.id','procurements.po_no');
         

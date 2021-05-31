@@ -144,10 +144,6 @@
                                 <label>{{ (240 >= distanceTravelled)? 'Fuel per KM':'Rent per KM' }}</label>
                                 <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
                             </div>
-                            <div v-if="formFields.vehicle_type == 2" class="form-group">
-                                <label>{{ (240 >= distanceTravelled)? 'Fuel per KM':'Rent per KM' }}</label>
-                                <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
-                            </div>
                             <div v-if="formFields.vehicle_type == 1" class="form-group">
                                 <label>Fuel Charge</label>
                                 <input type="number" name="fuel_charge" id="fuel_charge" class="form-control required-field" placeholder="Enter fuel charge" v-model="formFields.fuel_charge" :disabled="status=='Completed'"/>
