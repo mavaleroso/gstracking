@@ -17,6 +17,7 @@ class CreateProvincesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('region_id')->nullable();
             $table->bigInteger('psgc_province')->nullable();
+            $table->string('province_code')->nullable();
             $table->string('province_name')->nullable();
             $table->timestamps();
         });
