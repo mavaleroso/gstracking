@@ -6964,6 +6964,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this7 = this;
 
       axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
+        console.log(response.data);
         _this7.cities = response.data;
 
         _this7.cities.map(function (i) {

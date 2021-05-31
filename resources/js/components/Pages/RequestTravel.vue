@@ -246,6 +246,7 @@ export default {
                         }
                     });
                     if(id.length != 0) {
+                      
                         this.getCity(id);
                         this.currentProv();             
                     }
@@ -371,6 +372,7 @@ export default {
         },
         getCity(id) {
             axios.get(BASE_URL + "/api/city/" + id).then(response => {
+                console.log(response.data);
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });

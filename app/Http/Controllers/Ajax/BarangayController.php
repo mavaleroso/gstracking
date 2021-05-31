@@ -46,7 +46,10 @@ class BarangayController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Barangay::whereIn('city_id', [$id])->get());
+        $myArray = explode(',', $id);
+        $users = Barangay::whereIn('city_id', $myArray)
+        ->get();
+        return response()->json($users);
     }
 
     /**
