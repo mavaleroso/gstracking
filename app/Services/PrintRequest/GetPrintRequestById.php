@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\PrintRequest;
 
-use App\Models\Transaction;
+use App\Models\TransactionVehicles;
 use App\Models\Destination;
 use App\Models\Passenger;
 use App\Models\Request;
@@ -17,11 +17,14 @@ class GetPrintRequestById
      */
     public function execute(int $id)
     {
-        $data['requests'] = Request::select(['requests.serial_code','requests.purpose',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.travel_date','requests.return_date','requests.depart_time','requests.is_status'])
+        $data['requests'] = TransactionVehicles::select(['requests.serial_code','requests.purpose',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.travel_date','requests.return_date','requests.depart_time','requests.is_status'])
+                                    ->leftJoin('requests', 'requests.id', '=', 'transaction_vehicles.request_id')
                                     ->leftJoin('divisions','requests.division_id','=','divisions.id')   
                                     ->leftJoin('sections','requests.section_id','=','sections.id')
                                     ->leftJoin('destinations','destinations.id','=','requests.id')
-                                    ->where('requests.id',$id)->get();
+                                    ->where('requests.id',$id)
+                                    ->groupBy('requests.id')
+                                    ->get();
 
         $data['destinations'] = Destination::leftJoin('lib_regions','lib_regions.id','=','destinations.region_id')
                                     ->leftJoin('lib_provinces','lib_provinces.id','=','destinations.province_id')
@@ -31,6 +34,12 @@ class GetPrintRequestById
                                     ->get();
 
         $data['passengers'] = Passenger::where('passengers.request_id', $id)->get();
+
+        $data['vehicles'] = TransactionVehicles::select(['transaction_vehicles.id', 'vehicles.name', 'vehicles.plate_no', 'drivers.fullname', 'drivers.contact'])
+                                    ->leftJoin('vehicles','vehicles.id','=','transaction_vehicles.vehicle_id')
+                                    ->leftJoin('drivers','drivers.id','=','transaction_vehicles.driver_id')
+                                    ->where('transaction_vehicles.request_id', $id)
+                                    ->get();
         return $data;
     }
 }

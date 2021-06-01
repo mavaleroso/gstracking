@@ -76,34 +76,50 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-center table-border" colspan="2">Name of Passenger/s</td>
-                            <td class="text-center table-border">Position/Designation</td>
-                        </tr>
-                        <tr v-for="p in passengers" :key="p.id">
-                            <td class="table-border" colspan="2"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.name"></td>
-                            <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.designation"></td>
-                        </tr>
-                        <tr v-for="f in freePassengers" :key="f.id">
-                            <td class="table-border" colspan="2"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
-                            <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
+                            <td colspan="3">
+                                <table>
+                                    <tr>
+                                        <td class="text-center table-border">Name of Passenger/s</td>
+                                        <td class="text-center table-border">Position/Designation</td>
+                                        <td class="text-center table-border w-10">Gender</td>
+                                    </tr>
+                                    <tr v-for="p in passengers" :key="p.id">
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.name"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.designation"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.gender"></td>
+                                    </tr>
+                                    <tr v-for="f in freePassengers" :key="f.id">
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
+                                    </tr>
+                                </table>
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="p-4 py-10">
-                                <p class="mb-6">Requested by:</p>
-                                <input type="text" class="text-center input-text w-100 text-uppercase" v-model="transaction.gs_staff" disabled>
-                                <p class="text-center">Staff</p>
-                            </td>
-                            <td class="p-4 py-10">
-                                <p class="mb-6">Noted by:</p>
-                                <input type="text" class="input-text w-100" disabled>
-                                <p class="text-center">Section/Program/Division Head</p>
+                            <td colspan="3">
+                                <table>
+                                    <tr>
+                                        <td class="p-4 py-10 w-50">
+                                            <p class="mb-6">Requested by:</p>
+                                            <input type="text" class="text-center input-text w-100 text-uppercase" v-model="transaction.gs_staff" disabled>
+                                            <p class="text-center">Staff</p>
+                                        </td>
+                                        <td class="p-4 py-10">
+                                            <p class="mb-6">Noted by:</p>
+                                            <input type="text" class="input-text w-100" disabled>
+                                            <p class="text-center">Section/Program/Division Head</p>
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
+                        
                     </tbody>
                 </table>
                 
-                <hr  v-if="transaction.is_status == 2" class="dashed-border my-2">
-                <table v-if="transaction.is_status == 2" :class="passengers.length > 5 ? 'break-page':''">
+                <hr  v-if="transaction.is_status == 2" :class="(passengers.length > 5 || vehicles.length > 2) ? 'd-none':'dashed-border my-2'">
+                <table v-if="transaction.is_status == 2" :class="(passengers.length > 5 || vehicles.length > 2) ? 'break-page':''">
                     <thead v-if="passengers.length > 5">
                             <tr>
                                 <td colspan="3">
@@ -127,40 +143,26 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <p class="">Motor Vehicle Description:</p>
-                            </td>
-                            <td>
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.vehicle_name" disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Motor Vehicle Plate No:</p>
-                            </td>
-                            <td>
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.template" disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Name of Driver:</p>
-                            </td>
-                            <td>
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.driver" disabled>
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td class="text-center table-border">Vehicle Name</td>
+                                        <td class="text-center table-border">Plate No.</td>
+                                        <td class="text-center table-border">Driver Name</td>
+                                        <td class="text-center table-border">Contact No.</td>
+                                    </tr>
+                                    <tr v-for="v in vehicles" :key="v.id">
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.name"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.plate_no"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.fullname"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.contact"></td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>Driver Contact:</p>
-                            </td>
-                            <td>
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.driver_contact" disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>Confirmed No. of Passenger/s:</p>
+                                <p class="mt-5">Confirmed No. of Passenger/s:</p>
                             </td>
                             <td>
                                 <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="passengers.length" disabled>
@@ -194,25 +196,22 @@ export default {
                 depart_time: null,
                 department: null,
                 gs_staff: null,
-                driver: null,
-                driver_contact: null,
                 purpose: null,
-                vehicle_name: null,
-                template: null,
                 travel_date: null,
                 return_date: null,
                 serial_code: null,
                 is_status: null,
             },
             destinations: [],
-            passengers: []
+            passengers: [],
+            vehicles: [],
         }
     },
     computed: {
         freePassengers() {
             let result = 5 - this.passengers.length;
             return (result > 0)? result:0;
-        }
+        },
     },
     mounted() {
         this.ini();
@@ -221,12 +220,6 @@ export default {
         ini() {
 
             var scripts = [
-                // "/assets/plugins/global/plugins.bundle.js",
-                // "/assets/plugins/custom/prismjs/prismjs.bundle.js",
-                // "/assets/js/scripts.bundle.js",
-                // "/assets/plugins/custom/datatables/datatables.bundle.js",
-                // "/plugins/fancybox/jquery.fancybox.js",
-                // "/js/jquery-ui.js",
                 "/js/main.js",
             ];
             scripts.forEach(script => {
@@ -303,6 +296,7 @@ export default {
                     this.destinations.push(data);
                 }
                 this.passengers = res.data.passengers;
+                this.vehicles = res.data.vehicles;
                 autosize($('#kt_autosize_1'));
             });
         }
