@@ -6540,6 +6540,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6548,18 +6550,15 @@ __webpack_require__.r(__webpack_exports__);
         depart_time: null,
         department: null,
         gs_staff: null,
-        driver: null,
-        driver_contact: null,
         purpose: null,
-        vehicle_name: null,
-        template: null,
         travel_date: null,
         return_date: null,
         serial_code: null,
         is_status: null
       },
       destinations: [],
-      passengers: []
+      passengers: [],
+      vehicles: []
     };
   },
   computed: {
@@ -6573,13 +6572,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     ini: function ini() {
-      var scripts = [// "/assets/plugins/global/plugins.bundle.js",
-      // "/assets/plugins/custom/prismjs/prismjs.bundle.js",
-      // "/assets/js/scripts.bundle.js",
-      // "/assets/plugins/custom/datatables/datatables.bundle.js",
-      // "/plugins/fancybox/jquery.fancybox.js",
-      // "/js/jquery-ui.js",
-      "/js/main.js"];
+      var scripts = ["/js/main.js"];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
@@ -6662,6 +6655,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         _this.passengers = res.data.passengers;
+        _this.vehicles = res.data.vehicles;
         autosize($('#kt_autosize_1'));
       });
     }
@@ -54712,366 +54706,394 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _c("tr", [
-                  _c("td", { attrs: { colspan: "3" } }, [
-                    _vm.transaction.is_status == 2
-                      ? _c(
-                          "h5",
-                          {
-                            staticClass:
-                              "text-center d-block mr-auto ml-auto mt-5"
-                          },
-                          [_vm._v("Motor Vehicle Request")]
-                        )
-                      : _c(
-                          "h5",
-                          {
-                            staticClass:
-                              "text-center d-block mr-auto ml-auto mt-5"
-                          },
-                          [_vm._v("Motor Vehicle Declined Request")]
-                        )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", { attrs: { colspan: "3" } }, [
-                    _c("p", { staticClass: "text-right my-10" }, [
-                      _vm._v("Series: "),
-                      _c("span", { staticClass: " text-underline" }, [
-                        _vm._v(_vm._s(_vm.transaction.serial_code))
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", [
-                    _c("p", {}, [_vm._v("Program / Division / Section:")])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("input", {
-                      directives: [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _vm.transaction.is_status == 2
+                    ? _c(
+                        "h5",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.transaction.department,
-                          expression: "transaction.department"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.department },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.transaction,
-                            "department",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", [_c("p", {}, [_vm._v("Purpose of travel:")])]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("input", {
-                      directives: [
+                          staticClass:
+                            "text-center d-block mr-auto ml-auto mt-5"
+                        },
+                        [_vm._v("Motor Vehicle Request")]
+                      )
+                    : _c(
+                        "h5",
                         {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.transaction.purpose,
-                          expression: "transaction.purpose"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.purpose },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.transaction,
-                            "purpose",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", [_c("p", {}, [_vm._v("Destination:")])]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.destinations,
-                          expression: "destinations"
-                        }
-                      ],
-                      staticClass: "form-control textarea my-3",
-                      attrs: {
-                        id: "kt_autosize_1",
-                        cols: "60",
-                        rows: "3",
-                        readonly: ""
-                      },
-                      domProps: { value: _vm.destinations },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.destinations = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", [_c("p", {}, [_vm._v("Date of travel:")])]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.transaction.travel_date,
-                          expression: "transaction.travel_date"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.travel_date },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.transaction,
-                            "travel_date",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", [_c("p", {}, [_vm._v("Date return:")])]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.transaction.return_date,
-                          expression: "transaction.return_date"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.return_date },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.transaction,
-                            "return_date",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("td", { staticClass: "pb-8" }, [
-                    _c("p", {}, [_vm._v("Time of departure:")])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.transaction.depart_time,
-                          expression: "transaction.depart_time"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.depart_time },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.transaction,
-                            "depart_time",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "td",
-                    {
-                      staticClass: "text-center table-border",
-                      attrs: { colspan: "2" }
-                    },
-                    [_vm._v("Name of Passenger/s")]
-                  ),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "text-center table-border" }, [
-                    _vm._v("Position/Designation")
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.passengers, function(p) {
-                  return _c("tr", { key: p.id }, [
-                    _c(
-                      "td",
-                      { staticClass: "table-border", attrs: { colspan: "2" } },
-                      [
-                        _c("input", {
-                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                          attrs: { type: "text" },
-                          domProps: { value: p.name }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "table-border" }, [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" },
-                        domProps: { value: p.designation }
-                      })
-                    ])
-                  ])
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.freePassengers, function(f) {
-                  return _c("tr", { key: f.id }, [
-                    _c(
-                      "td",
-                      { staticClass: "table-border", attrs: { colspan: "2" } },
-                      [
-                        _c("input", {
-                          staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                          attrs: { type: "text" }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "table-border" }, [
-                      _c("input", {
-                        staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                        attrs: { type: "text" }
-                      })
-                    ])
-                  ])
-                }),
-                _vm._v(" "),
-                _c("tr", [
-                  _c(
-                    "td",
-                    { staticClass: "p-4 py-10", attrs: { colspan: "2" } },
-                    [
-                      _c("p", { staticClass: "mb-6" }, [
-                        _vm._v("Requested by:")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.transaction.gs_staff,
-                            expression: "transaction.gs_staff"
-                          }
-                        ],
-                        staticClass:
-                          "text-center input-text w-100 text-uppercase",
-                        attrs: { type: "text", disabled: "" },
-                        domProps: { value: _vm.transaction.gs_staff },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.transaction,
-                              "gs_staff",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "text-center" }, [_vm._v("Staff")])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "p-4 py-10" }, [
-                    _c("p", { staticClass: "mb-6" }, [_vm._v("Noted by:")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input-text w-100",
-                      attrs: { type: "text", disabled: "" }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-center" }, [
-                      _vm._v("Section/Program/Division Head")
+                          staticClass:
+                            "text-center d-block mr-auto ml-auto mt-5"
+                        },
+                        [_vm._v("Motor Vehicle Declined Request")]
+                      )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("p", { staticClass: "text-right my-10" }, [
+                    _vm._v("Series: "),
+                    _c("span", { staticClass: " text-underline" }, [
+                      _vm._v(_vm._s(_vm.transaction.serial_code))
                     ])
                   ])
                 ])
-              ],
-              2
-            )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("p", {}, [_vm._v("Program / Division / Section:")])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.department,
+                        expression: "transaction.department"
+                      }
+                    ],
+                    staticClass: "input-text w-100 mb-3 mt-n2",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.department },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "department",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_c("p", {}, [_vm._v("Purpose of travel:")])]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.purpose,
+                        expression: "transaction.purpose"
+                      }
+                    ],
+                    staticClass: "input-text w-100 mb-3 mt-n2",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.purpose },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "purpose",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_c("p", {}, [_vm._v("Destination:")])]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.destinations,
+                        expression: "destinations"
+                      }
+                    ],
+                    staticClass: "form-control textarea my-3",
+                    attrs: {
+                      id: "kt_autosize_1",
+                      cols: "60",
+                      rows: "3",
+                      readonly: ""
+                    },
+                    domProps: { value: _vm.destinations },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.destinations = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_c("p", {}, [_vm._v("Date of travel:")])]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.travel_date,
+                        expression: "transaction.travel_date"
+                      }
+                    ],
+                    staticClass: "input-text w-100 mb-3 mt-n2",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.travel_date },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "travel_date",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_c("p", {}, [_vm._v("Date return:")])]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.return_date,
+                        expression: "transaction.return_date"
+                      }
+                    ],
+                    staticClass: "input-text w-100 mb-3 mt-n2",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.return_date },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "return_date",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "pb-8" }, [
+                  _c("p", {}, [_vm._v("Time of departure:")])
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.depart_time,
+                        expression: "transaction.depart_time"
+                      }
+                    ],
+                    staticClass: "input-text w-100 mb-3 mt-n2",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.depart_time },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "depart_time",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c(
+                    "table",
+                    [
+                      _c("tr", [
+                        _c("td", { staticClass: "text-center table-border" }, [
+                          _vm._v("Name of Passenger/s")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-center table-border" }, [
+                          _vm._v("Position/Designation")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "text-center table-border w-10" },
+                          [_vm._v("Gender")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.passengers, function(p) {
+                        return _c("tr", { key: p.id }, [
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" },
+                              domProps: { value: p.name }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" },
+                              domProps: { value: p.designation }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" },
+                              domProps: { value: p.gender }
+                            })
+                          ])
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.freePassengers, function(f) {
+                        return _c("tr", { key: f.id }, [
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "table-border" }, [
+                            _c("input", {
+                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
+                              attrs: { type: "text" }
+                            })
+                          ])
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("table", [
+                    _c("tr", [
+                      _c("td", { staticClass: "p-4 py-10 w-50" }, [
+                        _c("p", { staticClass: "mb-6" }, [
+                          _vm._v("Requested by:")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.transaction.gs_staff,
+                              expression: "transaction.gs_staff"
+                            }
+                          ],
+                          staticClass:
+                            "text-center input-text w-100 text-uppercase",
+                          attrs: { type: "text", disabled: "" },
+                          domProps: { value: _vm.transaction.gs_staff },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.transaction,
+                                "gs_staff",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center" }, [
+                          _vm._v("Staff")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "p-4 py-10" }, [
+                        _c("p", { staticClass: "mb-6" }, [_vm._v("Noted by:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "input-text w-100",
+                          attrs: { type: "text", disabled: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center" }, [
+                          _vm._v("Section/Program/Division Head")
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
           ]),
           _vm._v(" "),
           _vm.transaction.is_status == 2
-            ? _c("hr", { staticClass: "dashed-border my-2" })
+            ? _c("hr", {
+                class:
+                  _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                    ? "d-none"
+                    : "dashed-border my-2"
+              })
             : _vm._e(),
           _vm._v(" "),
           _vm.transaction.is_status == 2
             ? _c(
                 "table",
-                { class: _vm.passengers.length > 5 ? "break-page" : "" },
+                {
+                  class:
+                    _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                      ? "break-page"
+                      : ""
+                },
                 [
                   _vm.passengers.length > 5
                     ? _c("thead", [
@@ -55130,138 +55152,86 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
-                      _c("td", [
-                        _c("p", {}, [_vm._v("Motor Vehicle Description:")])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.vehicle_name,
-                              expression: "transaction.vehicle_name"
-                            }
-                          ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.vehicle_name },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "vehicle_name",
-                                $event.target.value
+                      _c("td", { attrs: { colspan: "2" } }, [
+                        _c(
+                          "table",
+                          [
+                            _c("tr", [
+                              _c(
+                                "td",
+                                { staticClass: "text-center table-border" },
+                                [_vm._v("Vehicle Name")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "text-center table-border" },
+                                [_vm._v("Plate No.")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "text-center table-border" },
+                                [_vm._v("Driver Name")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "text-center table-border" },
+                                [_vm._v("Contact No.")]
                               )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", [_c("p", [_vm._v("Motor Vehicle Plate No:")])]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.template,
-                              expression: "transaction.template"
-                            }
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.vehicles, function(v) {
+                              return _c("tr", { key: v.id }, [
+                                _c("td", { staticClass: "table-border" }, [
+                                  _c("input", {
+                                    staticClass:
+                                      "w-100 border-0 outline-0 pr-2 pl-2",
+                                    attrs: { type: "text" },
+                                    domProps: { value: v.name }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "table-border" }, [
+                                  _c("input", {
+                                    staticClass:
+                                      "w-100 border-0 outline-0 pr-2 pl-2",
+                                    attrs: { type: "text" },
+                                    domProps: { value: v.plate_no }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "table-border" }, [
+                                  _c("input", {
+                                    staticClass:
+                                      "w-100 border-0 outline-0 pr-2 pl-2",
+                                    attrs: { type: "text" },
+                                    domProps: { value: v.fullname }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "table-border" }, [
+                                  _c("input", {
+                                    staticClass:
+                                      "w-100 border-0 outline-0 pr-2 pl-2",
+                                    attrs: { type: "text" },
+                                    domProps: { value: v.contact }
+                                  })
+                                ])
+                              ])
+                            })
                           ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.template },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "template",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", [_c("p", [_vm._v("Name of Driver:")])]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.driver,
-                              expression: "transaction.driver"
-                            }
-                          ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.driver },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "driver",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", [_c("p", [_vm._v("Driver Contact:")])]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.driver_contact,
-                              expression: "transaction.driver_contact"
-                            }
-                          ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.driver_contact },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "driver_contact",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
+                          2
+                        )
                       ])
                     ]),
                     _vm._v(" "),
                     _c("tr", [
                       _c("td", [
-                        _c("p", [_vm._v("Confirmed No. of Passenger/s:")])
+                        _c("p", { staticClass: "mt-5" }, [
+                          _vm._v("Confirmed No. of Passenger/s:")
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("td", [
