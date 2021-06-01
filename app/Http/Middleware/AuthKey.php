@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Api;
 
 class AuthKey
 {
@@ -16,11 +17,11 @@ class AuthKey
      */
     public function handle(Request $request, Closure $next)
     {
-        echo '123';
-        // $token = $request->header('APP_KEY');
-        // if ($token != 'ABCDEFGHIJK') {
-        //     return response()->json(['message' => 'App key not found'], 401);
-        // }
-        // return $next($request);
+        $host = Api::where('host', $request->header('host'))->first();
+        $token = $request->header('authorization');
+        if ($host == false || $token != 'Bearer '.env('APP_KEY')) {
+            return response()->json(['message' => 'App key not found'], 401);
+        }
+        return $next($request);
     }
 }

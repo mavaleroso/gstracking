@@ -143,10 +143,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.a
     ]);
 });
 
-Route::group(['prefix' => 'v2', 'namespace' => 'Ajax', 'middleware' => 'auth.key'], function () {    
-    Route::get('test', function() {
-        return '123';
-    });
+Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {    
+    Route::resource('external', 'PassengerController', [
+        'names' => [
+            'store' => 'api.external.store',
+        ]
+    ]);
 });
 
 // AXIOS

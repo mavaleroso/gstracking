@@ -59,6 +59,7 @@ class CreateTravel
         }      
         for ($i=1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
+                'type' => 1,
                 'name' => $fields['pax_name_'.$i],
                 'designation' => $fields['pax_des_'.$i],
                 'gender' => $fields['pax_gen_'.$i]

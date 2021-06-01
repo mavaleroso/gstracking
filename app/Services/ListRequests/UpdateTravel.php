@@ -91,12 +91,14 @@ class UpdateTravel
             try {
                 if ($id) {
                     $request->passengers()->where('id', $pax[$i-1]->id)->update([
+                        'type' => 1,
                         'name' => $fields['pax_name_'.$i],
                         'designation' => $fields['pax_des_'.$i],
                         'gender' => $fields['pax_gen_'.$i]
                     ]);
                 } else {
                     $request->passengers()->create([
+                        'type' => 1,
                         'name' => $fields['pax_name_'.$i],
                         'designation' => $fields['pax_des_'.$i],
                         'gender' => $fields['pax_gen_'.$i]
@@ -104,6 +106,7 @@ class UpdateTravel
                 }
             } catch (\Throwable $th) {
                 $request->passengers()->create([
+                    'type' => 1,
                     'name' => $fields['pax_name_'.$i],
                     'designation' => $fields['pax_des_'.$i],
                     'gender' => $fields['pax_gen_'.$i]

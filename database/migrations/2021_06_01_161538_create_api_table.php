@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePassengersTable extends Migration
+class CreateApiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreatePassengersTable extends Migration
      */
     public function up()
     {
-        Schema::create('passengers', function (Blueprint $table) {
+        Schema::create('api', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('type')->nullable();
-            $table->unsignedBigInteger('request_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('designation')->nullable();
-            $table->string('gender')->nullable();
+            $table->string('host');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreatePassengersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('passengers');
+        Schema::dropIfExists('api');
     }
 }
