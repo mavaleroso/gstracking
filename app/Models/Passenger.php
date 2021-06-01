@@ -17,6 +17,8 @@ class Passenger extends Model
      * @var array
      */
     protected $fillable = [
+        'type',
+        'request_id',
         'name',
         'designation',
         'gender',

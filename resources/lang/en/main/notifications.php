@@ -44,5 +44,10 @@ return [
     'list_requests_updated_successfully' => 'Requests has been declined!',
 
     // List travel Page
-    'list_travel_updated_successfully' => 'Transaction has been disapproved!'  
+    'list_travel_updated_successfully' => 'Transaction has been disapproved!',
+
+    // Passenger Page
+    'passenger_created_successfully' => 'Passenger created succesfully',
+    'passenger_updated_successfully' => 'Passenger updated succesfully',
+    'passenger_deleted_successfully' => 'Passenger deleted succesfully',
 ];

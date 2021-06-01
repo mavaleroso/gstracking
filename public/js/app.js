@@ -2691,7 +2691,7 @@ __webpack_require__.r(__webpack_exports__);
     getYear: function getYear() {
       var _this2 = this;
 
-      axios.get(BASE_URL + '/api/config/year').then(function (res) {
+      axios.get(BASE_URL + '/api/v1/config/year').then(function (res) {
         _this2.years = res.data;
 
         _this2.ini().setYear();
@@ -2700,7 +2700,7 @@ __webpack_require__.r(__webpack_exports__);
     getSystem: function getSystem() {
       var _this3 = this;
 
-      axios.get(BASE_URL + '/api/config/system').then(function (res) {
+      axios.get(BASE_URL + '/api/v1/config/system').then(function (res) {
         _this3.system = res.data;
       });
     }
@@ -3103,7 +3103,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var year = $('#year').val();
-      axios.get(BASE_URL + '/api/dash/' + year).then(function (res) {
+      axios.get(BASE_URL + '/api/v1/dash/' + year).then(function (res) {
         for (var i = 0; i < res.data.overview.length; i++) {
           switch (res.data.overview[i]['is_status']) {
             case 1:
@@ -4671,14 +4671,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this2 = this;
 
-      axios.get(BASE_URL + "/api/region").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/region").then(function (response) {
         _this2.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this3 = this;
 
-      axios.get(BASE_URL + "/api/province/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/province/" + id).then(function (response) {
         _this3.provinces = response.data;
 
         _this3.provinces.map(function (i) {
@@ -4689,7 +4689,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this4 = this;
 
-      axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
         _this4.cities = response.data;
 
         _this4.cities.map(function (i) {
@@ -4700,7 +4700,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this5 = this;
 
-      axios.get(BASE_URL + "/api/brgy/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
         _this5.brgys = response.data;
       });
     },
@@ -4720,7 +4720,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('.details-input').attr('disabled', true);
       this.request_edit = 0;
       $('#kt_select_region').val();
-      axios.get(BASE_URL + "/api/destination/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/destination/" + id).then(function (response) {
         var destination = response.data;
         _this6.place = response.data[0].others;
         var data = [];
@@ -4764,7 +4764,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getPassengers: function getPassengers(id) {
       var _this7 = this;
 
-      axios.get(BASE_URL + "/api/passenger/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/passenger/" + id).then(function (response) {
         _this7.passengers = response.data;
       });
     },
@@ -4799,6 +4799,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
+        $('#request-tbl').DataTable().ajax.reload();
 
         _this8.getPassengers(_this8.current_id);
       })["catch"](function (error) {
@@ -5032,21 +5033,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getVehicle: function getVehicle() {
       var _this10 = this;
 
-      axios.get(BASE_URL + '/api/vehicle').then(function (response) {
+      axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
         _this10.vehicles = response.data;
       });
     },
     getPo: function getPo() {
       var _this11 = this;
 
-      axios.get(BASE_URL + '/api/po').then(function (response) {
+      axios.get(BASE_URL + '/api/v1/po').then(function (response) {
         _this11.procurements = response.data;
       });
     },
     getDriver: function getDriver() {
       var _this12 = this;
 
-      axios.get(BASE_URL + '/api/driver').then(function (response) {
+      axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
         _this12.drivers = response.data;
       });
     },
@@ -5982,35 +5983,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getTripTicket: function getTripTicket() {
       var _this4 = this;
 
-      axios.get(BASE_URL + "/api/tripticket").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/tripticket").then(function (response) {
         _this4.filterDropdown.tripTicket = response.data;
       });
     },
     getServiceProviders: function getServiceProviders() {
       var _this5 = this;
 
-      axios.get(BASE_URL + "/api/serviceprovider").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/serviceprovider").then(function (response) {
         _this5.filterDropdown.serviceProvider = response.data;
       });
     },
     getPoNumber: function getPoNumber() {
       var _this6 = this;
 
-      axios.get(BASE_URL + "/api/ponumber").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/ponumber").then(function (response) {
         _this6.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
       var _this7 = this;
 
-      axios.get(BASE_URL + "/api/division").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/division").then(function (response) {
         _this7.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
       var _this8 = this;
 
-      axios.get(BASE_URL + "/api/section/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
         _this8.filterDropdown.section = response.data;
       });
     }
@@ -6206,7 +6207,7 @@ __webpack_require__.r(__webpack_exports__);
     getRoles: function getRoles() {
       var _this2 = this;
 
-      axios.get(BASE_URL + "/api/role").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/role").then(function (response) {
         _this2.roles = response.data;
       });
     },
@@ -7056,14 +7057,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getDivision: function getDivision() {
       var _this3 = this;
 
-      axios.get(BASE_URL + "/api/division").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/division").then(function (response) {
         _this3.divisions = response.data;
       });
     },
     getSection: function getSection(id) {
       var _this4 = this;
 
-      axios.get(BASE_URL + "/api/section/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
         _this4.sections = response.data;
 
         _this4.sections.map(function (i) {
@@ -7074,14 +7075,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getRegion: function getRegion() {
       var _this5 = this;
 
-      axios.get(BASE_URL + "/api/region").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/region").then(function (response) {
         _this5.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
       var _this6 = this;
 
-      axios.get(BASE_URL + "/api/province/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/province/" + id).then(function (response) {
         _this6.provinces = response.data;
 
         _this6.provinces.map(function (i) {
@@ -7092,8 +7093,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this7 = this;
 
-      axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
-        console.log(response.data);
+      axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
         _this7.cities = response.data;
 
         _this7.cities.map(function (i) {
@@ -7104,7 +7104,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getBrgy: function getBrgy(id) {
       var _this8 = this;
 
-      axios.get(BASE_URL + "/api/brgy/" + id).then(function (response) {
+      axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
         _this8.brgys = response.data;
       });
     },

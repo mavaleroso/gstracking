@@ -381,7 +381,7 @@ export default {
         dashData() {
             let year = $('#year').val();
             
-            axios.get(BASE_URL + '/api/dash/' + year).then(res => { 
+            axios.get(BASE_URL + '/api/v1/dash/' + year).then(res => { 
                 for (let i = 0; i <  res.data.overview.length; i++) {
                     switch (res.data.overview[i]['is_status']) {
                         case 1:
