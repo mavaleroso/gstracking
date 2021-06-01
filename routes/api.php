@@ -17,13 +17,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api\V1', 'middleware' => 'locale.api'], function () {    
-    
-});
-
-// AXIOS
-
-Route::group(['namespace' => 'Ajax'], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.api'], function () {    
     Route::resource('region', 'RegionController', [
         'names' => [
             'index' => 'ajax.region.index',
@@ -148,6 +142,17 @@ Route::group(['namespace' => 'Ajax'], function () {
         ]
     ]);
 });
+
+Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {    
+    Route::resource('external', 'PassengerController', [
+        'names' => [
+            'store' => 'api.external.store',
+        ]
+    ]);
+});
+
+// AXIOS
+
 
 
 

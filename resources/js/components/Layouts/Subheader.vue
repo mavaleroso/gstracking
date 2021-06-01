@@ -56,13 +56,13 @@ export default {
 			
 		},
 		getYear() {
-			axios.get(BASE_URL + '/api/config/year').then(res => {
+			axios.get(BASE_URL + '/api/v1/config/year').then(res => {
 				this.years = res.data;
 				this.ini().setYear();
 			});
 		},
 		getSystem() {
-			axios.get(BASE_URL + '/api/config/system').then(res => {
+			axios.get(BASE_URL + '/api/v1/config/system').then(res => {
 				this.system = res.data;
 
 				
