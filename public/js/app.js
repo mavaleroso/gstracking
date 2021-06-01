@@ -6838,6 +6838,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6850,7 +6851,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeProvinces: [],
       activeSections: [],
       activeCities: [],
-      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return'],
+      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
       complete: false,
       requestCode: null,
       createdAt: null,
@@ -7093,7 +7094,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this7 = this;
 
       axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
-        console.log(response.data);
         _this7.cities = response.data;
 
         _this7.cities.map(function (i) {
@@ -7120,7 +7120,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     newRequest: function newRequest() {
       for (var i = 0; i < this.names.length; i++) {
-        if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+        if (this.names[i] == 'division' || this.names[i] == 'section' || this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
           $('#kt_select_' + this.names[i]).empty();
         } else {
           $('[name="' + this.names[i] + '"]').val(null);
@@ -55669,6 +55669,7 @@ var render = function() {
                       staticClass: "details-input form-control",
                       attrs: {
                         name: "destination_place",
+                        id: "destination_place",
                         type: "text",
                         placeholder: "Enter place here"
                       }

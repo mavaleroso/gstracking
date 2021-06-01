@@ -21,6 +21,7 @@
                             <p>{{ createdAt }}</p>
                             <p class="lead">
                                 <router-link :to="{name: 'listRequests'}" class="btn btn-success btn-sm" href="#" role="button">Update request</router-link>
+                                
                                 <a class="btn btn-primary btn-sm" href="#" @click="newRequest" role="button">New request</a>
                             </p>
                         </div>
@@ -71,7 +72,7 @@
                                             <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
                                         </optgroup>
                                     </select>
-                                    <input name="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
+                                    <input name="destination_place" id="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
                                 </div>
                                 
                             </div>
@@ -157,7 +158,7 @@ export default {
             activeProvinces: [],
             activeSections: [],
             activeCities: [],
-            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return'],
+            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
             complete: false,
             requestCode: null,
             createdAt: null,
@@ -372,7 +373,6 @@ export default {
         },
         getCity(id) {
             axios.get(BASE_URL + "/api/city/" + id).then(response => {
-                console.log(response.data);
                 this.cities = response.data;
                 this.cities.map(i=>i.active="false")
             });
@@ -390,10 +390,13 @@ export default {
         },
         newRequest() {
             for (let i = 0; i < this.names.length; i++) {
-                if(this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                if(this.names[i] == 'division' ||this.names[i] == 'section' || this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
                     $('#kt_select_'+this.names[i]).empty();
+
+                    
                 } else {
                     $('[name="'+this.names[i]+'"]').val(null);
+             
                 }
             }
 
