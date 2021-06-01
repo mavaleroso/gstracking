@@ -53,7 +53,7 @@ class CreateTravel
                 'region_id' => $fields['region'],
                 'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
                 'city_id' => $fields['city'][$i],
-                'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
+                'brgy_id' => ($check == 0)? NULL:((isset($fields['brgy'][$i]))? $fields['brgy'][$i]:NULL),
                 'others' => $fields['destination_place']
             ]);    
         }      
