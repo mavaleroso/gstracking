@@ -47,7 +47,10 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        return response()->json(City::whereIn('province_id', [$id])->get());
+        $myArray = explode(',', $id);
+        $users = City::whereIn('province_id', $myArray)
+        ->get();
+        return response()->json($users);
     }
 
     /**

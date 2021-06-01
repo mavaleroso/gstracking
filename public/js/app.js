@@ -7093,7 +7093,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity(id) {
       var _this7 = this;
 
+<<<<<<< HEAD
       axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
+=======
+      axios.get(BASE_URL + "/api/city/" + id).then(function (response) {
+        console.log(response.data);
+>>>>>>> develop
         _this7.cities = response.data;
 
         _this7.cities.map(function (i) {

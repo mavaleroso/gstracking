@@ -246,6 +246,7 @@ export default {
                         }
                     });
                     if(id.length != 0) {
+                      
                         this.getCity(id);
                         this.currentProv();             
                     }
