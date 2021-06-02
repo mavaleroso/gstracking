@@ -7025,7 +7025,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {};
@@ -7100,7 +7099,7 @@ __webpack_require__.r(__webpack_exports__);
       return parms;
     },
     getData: function getData(id) {
-      axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {});
+      axios.get(BASE_URL + '/travel/printtripticket/' + id).then(function (res) {});
     }
   }
 });
@@ -55973,15 +55972,15 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Name of Authorized Passenger :")
                     ]),
-                    _c("span", { staticClass: "underline" }, [_vm._v("asdas")])
+                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asdasd")])
+                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asdas")])
+                    _c("span", { staticClass: "underline" })
                   ])
                 ])
               ]),
@@ -55998,15 +55997,15 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asd")])
+                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asd")])
+                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asd")])
+                    _c("span", { staticClass: "underline" })
                   ])
                 ])
               ]),
@@ -56018,11 +56017,11 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Purpose :")
                     ]),
-                    _c("span", { staticClass: "underline" }, [_vm._v("asdasd")])
+                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" }, [_vm._v("asdasd")])
+                    _c("span", { staticClass: "underline" })
                   ])
                 ])
               ]),
@@ -56404,7 +56403,7 @@ var render = function() {
                         _c("td", [
                           _vm._v("Signature "),
                           _c("br"),
-                          _vm._v("(Passenger/Driver")
+                          _vm._v("(Passenger/Driver)")
                         ])
                       ]),
                       _vm._v(" "),

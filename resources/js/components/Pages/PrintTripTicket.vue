@@ -46,23 +46,23 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="d-flex pl-8 mt-3"><span class="box-number">3</span><p class="m-0 text-nowrap">Name of Authorized Passenger :</p><span class="underline">asdas</span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asdasd</span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asdas</span></div>
+                                <div class="d-flex pl-8 mt-3"><span class="box-number">3</span><p class="m-0 text-nowrap">Name of Authorized Passenger :</p><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div class="d-flex pl-8 mt-3"><span class="box-number">4</span><p class="m-0 text-nowrap">Place to be visited (for Butuan City proper, please indicate specific location)</p></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asd</span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asd</span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asd</span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="d-flex pl-8 mt-3"><span class="box-number">5</span><p class="m-0 text-nowrap">Purpose :</p><span class="underline">asdasd</span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline">asdasd</span></div>
+                                <div class="d-flex pl-8 mt-3"><span class="box-number">5</span><p class="m-0 text-nowrap">Purpose :</p><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +88,6 @@
                         </tr>
                     </tbody>
                 </table>
-                
                 <table class="w-100">
                     <tbody>
                         <tr>
@@ -281,7 +280,7 @@
                                             <td>Reading (Start)</td>
                                             <td>Reading (Arrival)</td>
                                             <td>Distance travelled (km)</td>
-                                            <td>Signature <br>(Passenger/Driver</td>
+                                            <td>Signature <br>(Passenger/Driver)</td>
                                         </tr>
                                         <tr>
                                             <td class="row-height"></td>
@@ -424,7 +423,7 @@ export default {
             return parms;
         },
         getData(id) {
-            axios.get(BASE_URL + '/travel/printrequest/'+id).then(res => {
+            axios.get(BASE_URL + '/travel/printtripticket/'+id).then(res => {
            
             });
         }

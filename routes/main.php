@@ -82,6 +82,18 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'destroy' => 'main.printrequest.destroy',
         ]
     ]);
+
+    Route::resource('printtripticket', 'PrintRequestController', [
+        'names' => [
+            'index' => 'main.printtripticket.index',
+            'create' => 'main.printtripticket.create',
+            'store' => 'main.printtripticket.store',
+            'show' => 'main.printtripticket.show',
+            'edit' => 'main.printtripticket.edit',
+            'update' => 'main.printtripticket.update',
+            'destroy' => 'main.printtripticket.destroy',
+        ]
+    ]);
     Route::post('listrequeststaff/declined/', 'ListRequestStaffController@declined');
 });
 
