@@ -390,20 +390,24 @@ export default {
         },
         newRequest() {
             for (let i = 0; i < this.names.length; i++) {
-                if(this.names[i] == 'division' ||this.names[i] == 'section' || this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
-                    $('#kt_select_'+this.names[i]).empty();
-
-                    
-                } else {
+                if(this.names[i] == 'section' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
+                    $('#kt_select_'+this.names[i]).empty();                           
+                }
+                else if(this.names[i] == 'division' || this.names[i] == 'region' ){
+                    $('#kt_select_'+this.names[i]).val(null).trigger("change");
+                }
+                else {
                     $('[name="'+this.names[i]+'"]').val(null);
-             
                 }
             }
-
             $('.details-input').attr('disabled', false);
             this.complete = false;
             this.requestCode = null;
             this.createdAt = null;
+            setTimeout(() => {
+                $('#kt_select_section').empty();
+                $('#kt_select_province').empty();
+            }, 500);
         },
         dateConf() {
             var dtToday = new Date();
