@@ -7011,31 +7011,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      travel: {
+        fullname: null,
+        purpose: null,
+        vehicle_name: null,
+        vehicle_plate_no: null,
+        vehicle_type: null,
+        travel_date: null,
+        destinations: []
+      },
+      destinations: []
+    };
   },
-  computed: {},
+  computed: {
+    freeDestinations: function freeDestinations() {
+      var res = 5 - this.destinations.length;
+      return res;
+    }
+  },
   mounted: function mounted() {
     this.ini();
   },
   methods: {
     ini: function ini() {
-      var scripts = ["/js/main.js", "/js/jquery.lettering-0.6.1.min.js"];
+      var scripts = ["/js/main.js"];
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
@@ -7072,8 +7074,8 @@ __webpack_require__.r(__webpack_exports__);
         $("#page-1").printThis();
       });
       var url = window.location.href;
-      var data = this.parseURLParams(url); // this.getData(data.id[0]);
-      // document.getElementById("footer").style.pageBreakBefore = "always";
+      var data = this.parseURLParams(url);
+      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
       // $('#footer').css('page-break-before', 'always');
     },
     parseURLParams: function parseURLParams(url) {
@@ -7099,7 +7101,21 @@ __webpack_require__.r(__webpack_exports__);
       return parms;
     },
     getData: function getData(id) {
-      axios.get(BASE_URL + '/travel/printtripticket/' + id).then(function (res) {});
+      var _this = this;
+
+      axios.get(BASE_URL + '/travel/printtripticket/' + id).then(function (res) {
+        _this.travel.fullname = res.data.travel[0].fullname;
+        _this.travel.purpose = res.data.travel[0].purpose;
+        _this.travel.vehicle_name = res.data.travel[0].vehicle_name;
+        _this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
+        _this.travel.vehicle_type = res.data.travel[0].vehicle_type;
+        _this.travel.travel_date = dateEng(res.data.travel[0].travel_date);
+        _this.destinations = res.data.destinations;
+
+        for (var i = 0; i < res.data.destinations.length; i++) {
+          _this.travel.destinations.push(res.data.destinations[i].city_name + ' (' + res.data.destinations[i].province_code + ')');
+        }
+      });
     }
   }
 });
@@ -55925,7 +55941,9 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Date: ")
                     ]),
-                    _c("span", { staticClass: "underline" })
+                    _c("span", { staticClass: "underline text-center" }, [
+                      _vm._v(_vm._s(_vm.travel.travel_date))
+                    ])
                   ])
                 ])
               ]),
@@ -55948,7 +55966,11 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Name of Driver of Vehicle :")
                     ]),
-                    _c("span", { staticClass: "underline" })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.travel.fullname))]
+                    )
                   ])
                 ])
               ]),
@@ -55960,7 +55982,23 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Government Car to be used / Plate Number :")
                     ]),
-                    _c("span", { staticClass: "underline" })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.travel.vehicle_name) +
+                            " (" +
+                            _vm._s(
+                              _vm.travel.vehicle_type == 1
+                                ? " Office "
+                                : " Rental "
+                            ) +
+                            ") " +
+                            _vm._s(_vm.travel.vehicle_plate_no)
+                        )
+                      ]
+                    )
                   ])
                 ])
               ]),
@@ -55997,15 +56035,23 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.travel.destinations.toString()))]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
+                    _c("span", {
+                      staticClass: "underline pl-8 font-weight-bold"
+                    })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
+                    _c("span", {
+                      staticClass: "underline pl-8 font-weight-bold"
+                    })
                   ])
                 ])
               ]),
@@ -56390,71 +56436,62 @@ var render = function() {
               _c("tr", [
                 _c("td", { attrs: { colspan: "2" } }, [
                   _c("table", { staticClass: "w-100 odometer" }, [
-                    _c("tbody", [
-                      _c("tr", [
-                        _c("td", [_vm._v("Destination")]),
+                    _c(
+                      "tbody",
+                      [
+                        _c("tr", [
+                          _c("td", [_vm._v("Destination")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Reading (Start)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Reading (Arrival)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Distance travelled (km)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v("Signature "),
+                            _c("br"),
+                            _vm._v("(Passenger/Driver)")
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v("Reading (Start)")]),
+                        _vm._l(_vm.destinations, function(d, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "row-height" }, [
+                              _vm._v(
+                                _vm._s(d.city_name) +
+                                  " (" +
+                                  _vm._s(d.province_code) +
+                                  ")"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" })
+                          ])
+                        }),
                         _vm._v(" "),
-                        _c("td", [_vm._v("Reading (Arrival)")]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("Distance travelled (km)")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v("Signature "),
-                          _c("br"),
-                          _vm._v("(Passenger/Driver)")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" })
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" })
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" })
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "row-height" })
-                      ])
-                    ])
+                        _vm._l(_vm.freeDestinations, function(index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" })
+                          ])
+                        })
+                      ],
+                      2
+                    )
                   ])
                 ])
               ]),
@@ -56495,9 +56532,9 @@ var render = function() {
                       "p",
                       {
                         staticClass:
-                          "underline mb-1 text-center font-weight-bold"
+                          "underline mb-1 text-center font-weight-bold text-uppercase"
                       },
-                      [_vm._v("MARWEN A. VALEROSO")]
+                      [_vm._v(_vm._s(_vm.travel.fullname))]
                     ),
                     _vm._v(" "),
                     _c("p", { staticClass: "text-center" }, [_vm._v("Driver")])

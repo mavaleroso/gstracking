@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="d-flex w-25 ml-auto"><p class="m-0 text-nowrap">Date: </p><span class="underline"></span></div>
+                                <div class="d-flex w-25 ml-auto"><p class="m-0 text-nowrap">Date: </p><span class="underline text-center">{{ travel.travel_date }}</span></div>
                             </td>
                         </tr>
                         <tr>
@@ -36,12 +36,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="d-flex pl-8 mt-3"><span class="box-number">1</span><p class="m-0 text-nowrap">Name of Driver of Vehicle :</p><span class="underline"></span></div>
+                                <div class="d-flex pl-8 mt-3"><span class="box-number">1</span><p class="m-0 text-nowrap">Name of Driver of Vehicle :</p><span class="underline pl-8 font-weight-bold">{{ travel.fullname }}</span></div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="d-flex pl-8 mt-3"><span class="box-number">2</span><p class="m-0 text-nowrap">Government Car to be used / Plate Number :</p><span class="underline"></span></div>
+                                <div class="d-flex pl-8 mt-3"><span class="box-number">2</span><p class="m-0 text-nowrap">Government Car to be used / Plate Number :</p><span class="underline pl-8 font-weight-bold">{{ travel.vehicle_name }} ({{ (travel.vehicle_type == 1) ? ' Office ' : ' Rental ' }}) {{travel.vehicle_plate_no}}</span></div>
                             </td>
                         </tr>
                         <tr>
@@ -54,9 +54,9 @@
                         <tr>
                             <td>
                                 <div class="d-flex pl-8 mt-3"><span class="box-number">4</span><p class="m-0 text-nowrap">Place to be visited (for Butuan City proper, please indicate specific location)</p></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
-                                <div class="d-flex pl-18 div-height mt-2"><span class="underline"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline pl-8 font-weight-bold">{{ (travel.destinations).toString() }}</span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline pl-8 font-weight-bold"></span></div>
+                                <div class="d-flex pl-18 div-height mt-2"><span class="underline pl-8 font-weight-bold"></span></div>
                             </td>
                         </tr>
                         <tr>
@@ -282,28 +282,14 @@
                                             <td>Distance travelled (km)</td>
                                             <td>Signature <br>(Passenger/Driver)</td>
                                         </tr>
-                                        <tr>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="row-height"></td>
+                                        <tr v-for="(d, index) in destinations" :key="index">
+                                            <td class="row-height">{{ d.city_name }} ({{ d.province_code }})</td>
                                             <td class="row-height"></td>
                                             <td class="row-height"></td>
                                             <td class="row-height"></td>
                                             <td class="row-height"></td>
                                         </tr>
-                                        <tr>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                            <td class="row-height"></td>
-                                        </tr>
-                                        <tr>
+                                        <tr v-for="index in freeDestinations" :key="index">
                                             <td class="row-height"></td>
                                             <td class="row-height"></td>
                                             <td class="row-height"></td>
@@ -331,7 +317,7 @@
                             <td></td>
                             <td>
                                 <div class="mt-5 w-75 ml-auto">
-                                    <p class="underline mb-1 text-center font-weight-bold">MARWEN A. VALEROSO</p>
+                                    <p class="underline mb-1 text-center font-weight-bold text-uppercase">{{ travel.fullname }}</p>
                                     <p class="text-center">Driver</p>
                                 </div>
                             </td>
@@ -347,11 +333,23 @@
 export default {
     data() {
         return {
-            
+            travel: {
+                fullname: null,
+                purpose: null,
+                vehicle_name: null,
+                vehicle_plate_no: null,
+                vehicle_type: null,
+                travel_date: null,
+                destinations: []
+            },
+            destinations: []
         }
     },
     computed: {
-        
+        freeDestinations() {
+            let res = 5 - this.destinations.length;
+            return res;
+        }
     },
     mounted() {
         this.ini();
@@ -360,8 +358,7 @@ export default {
         ini() {
 
             var scripts = [
-                "/js/main.js",
-                "/js/jquery.lettering-0.6.1.min.js"
+                "/js/main.js"
             ];
             scripts.forEach(script => {
                 let tag = document.createElement("script");
@@ -397,7 +394,7 @@ export default {
 
             let url = window.location.href;
             let data = this.parseURLParams(url);
-            // this.getData(data.id[0]);
+            this.getData(data.id[0]);
 
             // document.getElementById("footer").style.pageBreakBefore = "always";
             // $('#footer').css('page-break-before', 'always');
@@ -424,9 +421,20 @@ export default {
         },
         getData(id) {
             axios.get(BASE_URL + '/travel/printtripticket/'+id).then(res => {
-           
+                this.travel.fullname = res.data.travel[0].fullname;
+                this.travel.purpose = res.data.travel[0].purpose;
+                this.travel.vehicle_name = res.data.travel[0].vehicle_name;
+                this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
+                this.travel.vehicle_type = res.data.travel[0].vehicle_type;
+                this.travel.travel_date = dateEng(res.data.travel[0].travel_date);
+                this.destinations = res.data.destinations;
+
+                for (let i = 0; i < res.data.destinations.length; i++) {
+                    this.travel.destinations.push(res.data.destinations[i].city_name + ' ('+ res.data.destinations[i].province_code +')');
+                }
+
             });
-        }
+        },
     },
 }
 </script>

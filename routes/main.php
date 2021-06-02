@@ -83,7 +83,7 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
         ]
     ]);
 
-    Route::resource('printtripticket', 'PrintRequestController', [
+    Route::resource('printtripticket', 'PrintTripTicketController', [
         'names' => [
             'index' => 'main.printtripticket.index',
             'create' => 'main.printtripticket.create',

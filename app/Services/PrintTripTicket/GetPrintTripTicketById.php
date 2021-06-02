@@ -15,17 +15,20 @@ class GetPrintTripTicketById
      */
     public function execute(int $id)
     {
-        $data['travel'] = TransactionVehicles::select(['requests.serial_code','requests.purpose',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.travel_date','requests.return_date','requests.depart_time','requests.is_status'])
+        $data['travel'] = TransactionVehicles::select(['drivers.fullname','vehicles.name as vehicle_name','transaction_vehicles.type as vehicle_type','vehicles.plate_no as vehicle_plate_no', 'requests.purpose','requests.travel_date'])
                                     ->leftJoin('requests', 'requests.id', '=', 'transaction_vehicles.request_id')
-                                    ->leftJoin('divisions','requests.division_id','=','divisions.id')   
-                                    ->leftJoin('sections','requests.section_id','=','sections.id')
-                                    ->leftJoin('destinations','destinations.id','=','requests.id')
-                                    ->where('requests.id',$id)
-                                    ->groupBy('requests.id')
+                                    ->leftJoin('vehicles', 'vehicles.id','=','transaction_vehicles.vehicle_id')
+                                    ->leftJoin('drivers', 'drivers.id','=','transaction_vehicles.driver_id')
+                                    ->where('transaction_vehicles.id',$id)
                                     ->get();
 
-        $data['destinations'] = 
-
+        $data['destinations'] = TransactionVehicles::select(['lib_cities.city_name','lib_provinces.province_code'])
+                                    ->leftJoin('requests','requests.id','=','transaction_vehicles.request_id')
+                                    ->leftJoin('destinations','destinations.request_id','=','requests.id')
+                                    ->leftJoin('lib_provinces','lib_provinces.id','=','destinations.province_id')
+                                    ->leftJoin('lib_cities','lib_cities.id','=','destinations.city_id')
+                                    ->where('transaction_vehicles.id',$id)
+                                    ->get();
 
         return $data;        
     }
