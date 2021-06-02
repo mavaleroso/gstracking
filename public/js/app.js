@@ -5695,7 +5695,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: [7, 8, 11],
             render: function render(data) {
-              return dateEng(data);
+              return data ? dateEng(data) : '';
+            }
+          }, {
+            targets: [12, 20],
+            render: function render(data) {
+              return data ? data : '';
             }
           }, {
             targets: [14, 15, 16, 17, 19, 21, 22, 24],
@@ -5764,7 +5769,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                                 </svg>\
                                             </span>\
                                         </a>\
-                                        <a href="print_request?id=' + id + '" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                        <a href="print_trip_ticket?id=' + id + '" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
                                             <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
                                                     <rect x="0" y="0" width="24" height="24"/> \
@@ -6657,6 +6662,459 @@ __webpack_require__.r(__webpack_exports__);
         _this.passengers = res.data.passengers;
         _this.vehicles = res.data.vehicles;
         autosize($('#kt_autosize_1'));
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      travel: {
+        fullname: null,
+        purpose: null,
+        vehicle_name: null,
+        vehicle_plate_no: null,
+        vehicle_type: null,
+        travel_date: null,
+        destinations: []
+      },
+      destinations: []
+    };
+  },
+  computed: {
+    freeDestinations: function freeDestinations() {
+      var res = 5 - this.destinations.length;
+      return res;
+    }
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var scripts = ["/js/main.js"];
+      scripts.forEach(function (script) {
+        var tag = document.createElement("script");
+        tag.setAttribute("src", script);
+        $('.print-content').append(tag);
+      });
+
+      document.onkeypress = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.onmousedown = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.onkeydown = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.addEventListener('contextmenu', function (e) {// e.preventDefault();
+      });
+      $('.btn-print').click(function () {
+        $("#page-1").printThis();
+      });
+      var url = window.location.href;
+      var data = this.parseURLParams(url);
+      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
+      // $('#footer').css('page-break-before', 'always');
+    },
+    parseURLParams: function parseURLParams(url) {
+      var queryStart = url.indexOf("?") + 1,
+          queryEnd = url.indexOf("#") + 1 || url.length + 1,
+          query = url.slice(queryStart, queryEnd - 1),
+          pairs = query.replace(/\+/g, " ").split("&"),
+          parms = {},
+          i,
+          n,
+          v,
+          nv;
+      if (query === url || query === "") return;
+
+      for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+      }
+
+      return parms;
+    },
+    getData: function getData(id) {
+      var _this = this;
+
+      axios.get(BASE_URL + '/travel/printtripticket/' + id).then(function (res) {
+        _this.travel.fullname = res.data.travel[0].fullname;
+        _this.travel.purpose = res.data.travel[0].purpose;
+        _this.travel.vehicle_name = res.data.travel[0].vehicle_name;
+        _this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
+        _this.travel.vehicle_type = res.data.travel[0].vehicle_type;
+        _this.travel.travel_date = dateEng(res.data.travel[0].travel_date);
+        _this.destinations = res.data.destinations;
+
+        for (var i = 0; i < res.data.destinations.length; i++) {
+          _this.travel.destinations.push(res.data.destinations[i].city_name + ' (' + res.data.destinations[i].province_code + ')');
+        }
       });
     }
   }
@@ -8048,9 +8506,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -8389,7 +8847,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Pages/Dashboard */ "./resources/js/components/Pages/Dashboard.vue");
 /* harmony import */ var _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Pages/RequestTravel */ "./resources/js/components/Pages/RequestTravel.vue");
 /* harmony import */ var _components_Pages_ListRequests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Pages/ListRequests */ "./resources/js/components/Pages/ListRequests.vue");
@@ -8399,8 +8857,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pages_Transportation_Driver__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Pages/Transportation/Driver */ "./resources/js/components/Pages/Transportation/Driver.vue");
 /* harmony import */ var _components_Pages_ListPo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Pages/ListPo */ "./resources/js/components/Pages/ListPo.vue");
 /* harmony import */ var _components_Pages_ListUsers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Pages/ListUsers */ "./resources/js/components/Pages/ListUsers.vue");
-/* harmony import */ var _components_Pages_travelCalendar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Pages/travelCalendar */ "./resources/js/components/Pages/travelCalendar.vue");
+/* harmony import */ var _components_Pages_TravelCalendar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Pages/TravelCalendar */ "./resources/js/components/Pages/TravelCalendar.vue");
 /* harmony import */ var _components_Pages_PrintRequest__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Pages/PrintRequest */ "./resources/js/components/Pages/PrintRequest.vue");
+/* harmony import */ var _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/Pages/PrintTripTicket */ "./resources/js/components/Pages/PrintTripTicket.vue");
+
 
 
 
@@ -8478,7 +8938,7 @@ var routes = [{
   }
 }, {
   path: '/travel_calendar',
-  component: _components_Pages_travelCalendar__WEBPACK_IMPORTED_MODULE_9__.default,
+  component: _components_Pages_TravelCalendar__WEBPACK_IMPORTED_MODULE_9__.default,
   name: 'travelCalendar',
   meta: {
     title: 'Travel Calendar'
@@ -8487,8 +8947,12 @@ var routes = [{
   path: '/print_request',
   component: _components_Pages_PrintRequest__WEBPACK_IMPORTED_MODULE_10__.default,
   name: 'printRequest'
+}, {
+  path: '/print_trip_ticket',
+  component: _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_11__.default,
+  name: 'printTripTicket'
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_11__.default({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_12__.default({
   routes: routes,
   mode: 'history'
 });
@@ -45503,6 +45967,45 @@ component.options.__file = "resources/js/components/Pages/PrintRequest.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/PrintTripTicket.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Pages/PrintTripTicket.vue ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrintTripTicket.vue?vue&type=template&id=26ea3ed8& */ "./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8&");
+/* harmony import */ var _PrintTripTicket_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrintTripTicket.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _PrintTripTicket_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/PrintTripTicket.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue ***!
@@ -45620,9 +46123,9 @@ component.options.__file = "resources/js/components/Pages/Transportation/Vehicle
 
 /***/ }),
 
-/***/ "./resources/js/components/Pages/travelCalendar.vue":
+/***/ "./resources/js/components/Pages/TravelCalendar.vue":
 /*!**********************************************************!*\
-  !*** ./resources/js/components/Pages/travelCalendar.vue ***!
+  !*** ./resources/js/components/Pages/TravelCalendar.vue ***!
   \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -45631,8 +46134,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./travelCalendar.vue?vue&type=template&id=4ffb5d8e& */ "./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&");
-/* harmony import */ var _travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./travelCalendar.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TravelCalendar.vue?vue&type=template&id=8481cca4& */ "./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4&");
+/* harmony import */ var _TravelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TravelCalendar.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -45642,9 +46145,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.render,
-  _travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _TravelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -45654,7 +46157,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Pages/travelCalendar.vue"
+component.options.__file = "resources/js/components/Pages/TravelCalendar.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -45899,6 +46402,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintTripTicket_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrintTripTicket.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintTripTicket_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue?vue&type=script&lang=js& ***!
@@ -45947,9 +46466,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************!*\
-  !*** ./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -45958,8 +46477,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./travelCalendar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TravelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TravelCalendar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TravelCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -46282,6 +46801,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintTripTicket_vue_vue_type_template_id_26ea3ed8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrintTripTicket.vue?vue&type=template&id=26ea3ed8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243&":
 /*!****************************************************************************************!*\
   !*** ./resources/js/components/Pages/RequestTravel.vue?vue&type=template&id=1241b243& ***!
@@ -46333,19 +46869,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&":
+/***/ "./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4&":
 /*!*****************************************************************************************!*\
-  !*** ./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e& ***!
+  !*** ./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4& ***!
   \*****************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_travelCalendar_vue_vue_type_template_id_4ffb5d8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./travelCalendar.vue?vue&type=template&id=4ffb5d8e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TravelCalendar_vue_vue_type_template_id_8481cca4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TravelCalendar.vue?vue&type=template&id=8481cca4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4&");
 
 
 /***/ }),
@@ -54969,7 +55505,7 @@ var render = function() {
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" },
+                              attrs: { type: "text", disabled: "" },
                               domProps: { value: p.name }
                             })
                           ]),
@@ -54977,7 +55513,7 @@ var render = function() {
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" },
+                              attrs: { type: "text", disabled: "" },
                               domProps: { value: p.designation }
                             })
                           ]),
@@ -54985,7 +55521,7 @@ var render = function() {
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" },
+                              attrs: { type: "text", disabled: "" },
                               domProps: { value: p.gender }
                             })
                           ])
@@ -54997,21 +55533,21 @@ var render = function() {
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" }
+                              attrs: { type: "text", disabled: "" }
                             })
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" }
+                              attrs: { type: "text", disabled: "" }
                             })
                           ]),
                           _vm._v(" "),
                           _c("td", { staticClass: "table-border" }, [
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text" }
+                              attrs: { type: "text", disabled: "" }
                             })
                           ])
                         ])
@@ -55194,7 +55730,7 @@ var render = function() {
                                   _c("input", {
                                     staticClass:
                                       "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text" },
+                                    attrs: { type: "text", disabled: "" },
                                     domProps: { value: v.name }
                                   })
                                 ]),
@@ -55203,7 +55739,7 @@ var render = function() {
                                   _c("input", {
                                     staticClass:
                                       "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text" },
+                                    attrs: { type: "text", disabled: "" },
                                     domProps: { value: v.plate_no }
                                   })
                                 ]),
@@ -55212,7 +55748,7 @@ var render = function() {
                                   _c("input", {
                                     staticClass:
                                       "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text" },
+                                    attrs: { type: "text", disabled: "" },
                                     domProps: { value: v.fullname }
                                   })
                                 ]),
@@ -55221,7 +55757,7 @@ var render = function() {
                                   _c("input", {
                                     staticClass:
                                       "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text" },
+                                    attrs: { type: "text", disabled: "" },
                                     domProps: { value: v.contact }
                                   })
                                 ])
@@ -55326,6 +55862,693 @@ var render = function() {
                 ]
               )
             : _vm._e()
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintTripTicket.vue?vue&type=template&id=26ea3ed8& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
+        _c("div", { attrs: { id: "page-1" } }, [
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", [
+                  _c("p", { staticClass: "page-header-right" }, [
+                    _vm._v("DSWD-FO-Caraga-F-AD-GS-003")
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "page-header mt-2" }, [
+                    _c("img", {
+                      staticClass: "print-logo d-block m-auto",
+                      attrs: {
+                        alt: "Print Logo",
+                        src: "assets/media/logos/dswd_print_logo.png"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "header-text d-block m-auto text-center" },
+                      [_vm._v("Field Office Caraga, Capitol Site, Butuan City")]
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [
+                  _c(
+                    "h5",
+                    {
+                      staticClass:
+                        "text-center d-block mr-auto ml-auto mt-5 mb-10"
+                    },
+                    [_vm._v("VEHICLE TRIP TICKET")]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex w-25 ml-auto" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Date: ")
+                    ]),
+                    _c("span", { staticClass: "underline text-center" }, [
+                      _vm._v(_vm._s(_vm.travel.travel_date))
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("span", { staticClass: "box-letter" }, [_vm._v("A")]),
+                    _c("p", { staticClass: "m-0" }, [
+                      _vm._v("To filled-up by the Requesting Party")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Name of Driver of Vehicle :")
+                    ]),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.travel.fullname))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Government Car to be used / Plate Number :")
+                    ]),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [
+                        _vm._v(
+                          _vm._s(_vm.travel.vehicle_name) +
+                            " (" +
+                            _vm._s(
+                              _vm.travel.vehicle_type == 1
+                                ? " Office "
+                                : " Rental "
+                            ) +
+                            ") " +
+                            _vm._s(_vm.travel.vehicle_plate_no)
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Name of Authorized Passenger :")
+                    ]),
+                    _c("span", { staticClass: "underline" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c("span", { staticClass: "underline" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c("span", { staticClass: "underline" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "Place to be visited (for Butuan City proper, please indicate specific location)"
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.travel.destinations.toString()))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c("span", {
+                      staticClass: "underline pl-8 font-weight-bold"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c("span", {
+                      staticClass: "underline pl-8 font-weight-bold"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Purpose :")
+                    ]),
+                    _c("span", { staticClass: "underline" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
+                    _c("span", { staticClass: "underline" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("div", { staticClass: "d-flex mt-10" }, [
+                    _c("div", { staticClass: "w-50" }, [
+                      _c("p", [_vm._v("Requested by:")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "underline mb-1 text-center font-weight-bold"
+                          },
+                          [_vm._v(" User 1")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center" }, [
+                          _vm._v("Division / Project / Unit / Section Head")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-50" }, [
+                      _c("p", [_vm._v("Approved by:")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
+                        _c(
+                          "p",
+                          {
+                            staticClass:
+                              "underline mb-1 text-center font-weight-bold"
+                          },
+                          [_vm._v("TERESA M. BIDAURE, AO-III")]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center" }, [
+                          _vm._v("Head General Services")
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "w-100" }, [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("span", { staticClass: "box-letter" }, [_vm._v("B")]),
+                    _c("p", { staticClass: "m-0" }, [
+                      _vm._v("To filled-up by the Driver")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Time of Departure from Station / Office :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("AM / PM")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Time of Arrival per # 4 above :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("AM / PM")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Time of Departure per # 4 above :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("AM / PM")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Time of Arrival at the Station / Office :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("AM / PM")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("p", { staticClass: "m-0" }, [
+                      _vm._v("Petroleum Oil Lubricant")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Fuel issued, purchased and used")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("a")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Balance in Tank :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("b")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Issued on Office from Stock :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17 " }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("c")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Additional purchase during trip :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("d")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Total :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17 " }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("e")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Used during trip (to and from) :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25 "
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-17 " }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("f")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Balance in tank at the end trip :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25 "
+                    }),
+                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
+                      _vm._v("Liters")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8 " }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("6")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Motor Oil used :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "w-50" }, [
+                  _c("div", { staticClass: "d-flex pl-8" }, [
+                    _c("span", { staticClass: "box-number" }, [_vm._v("7")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Break Fluid used :")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex text-nowrap" }, [
+                    _c("span", {
+                      staticClass: "underline div-height line-height-25"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Odometer Reading")
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("table", { staticClass: "w-100 odometer" }, [
+                    _c(
+                      "tbody",
+                      [
+                        _c("tr", [
+                          _c("td", [_vm._v("Destination")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Reading (Start)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Reading (Arrival)")]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v("Distance travelled (km)")]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v("Signature "),
+                            _c("br"),
+                            _vm._v("(Passenger/Driver)")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.destinations, function(d, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "row-height" }, [
+                              _vm._v(
+                                _vm._s(d.city_name) +
+                                  " (" +
+                                  _vm._s(d.province_code) +
+                                  ")"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" })
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _vm._l(_vm.freeDestinations, function(index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" }),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "row-height" })
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v("Remarks :")
+                    ]),
+                    _c("span", { staticClass: "underline" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex pl-18 div-height" }, [
+                    _c("span", { staticClass: "underline" })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "I hereby certify to the correction of the above statement / record travel"
+                      )
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "mt-5 w-75 ml-auto" }, [
+                    _c(
+                      "p",
+                      {
+                        staticClass:
+                          "underline mb-1 text-center font-weight-bold text-uppercase"
+                      },
+                      [_vm._v(_vm._s(_vm.travel.fullname))]
+                    ),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [_vm._v("Driver")])
+                  ])
+                ])
+              ])
+            ])
+          ])
         ])
       ])
     ],
@@ -56911,9 +58134,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4&":
 /*!********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/travelCalendar.vue?vue&type=template&id=4ffb5d8e& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/TravelCalendar.vue?vue&type=template&id=8481cca4& ***!
   \********************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
