@@ -31,7 +31,8 @@ Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
 Route::get('/travel_calendar', 'base\DashboardController@index');
-Route::get('/print_request', 'base\PrintController@index')->name('main.print');
+Route::get('/print_request', 'base\PrintController@index')->name('main.print_request');
+Route::get('/print_trip_ticket', 'base\PrintController@index')->name('main.print_ticket');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
@@ -79,6 +80,18 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'edit' => 'main.printrequest.edit',
             'update' => 'main.printrequest.update',
             'destroy' => 'main.printrequest.destroy',
+        ]
+    ]);
+
+    Route::resource('printtripticket', 'PrintTripTicketController', [
+        'names' => [
+            'index' => 'main.printtripticket.index',
+            'create' => 'main.printtripticket.create',
+            'store' => 'main.printtripticket.store',
+            'show' => 'main.printtripticket.show',
+            'edit' => 'main.printtripticket.edit',
+            'update' => 'main.printtripticket.update',
+            'destroy' => 'main.printtripticket.destroy',
         ]
     ]);
     Route::post('listrequeststaff/declined/', 'ListRequestStaffController@declined');

@@ -17,7 +17,7 @@ class GetPrintRequestById
      */
     public function execute(int $id)
     {
-        $data['requests'] = TransactionVehicles::select(['requests.serial_code','requests.purpose',DB::raw('CONCAT(divisions.division_code," ", sections.section_code) as department'),'requests.travel_date','requests.return_date','requests.depart_time','requests.is_status'])
+        $data['requests'] = TransactionVehicles::select([''])
                                     ->leftJoin('requests', 'requests.id', '=', 'transaction_vehicles.request_id')
                                     ->leftJoin('divisions','requests.division_id','=','divisions.id')   
                                     ->leftJoin('sections','requests.section_id','=','sections.id')

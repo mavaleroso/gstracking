@@ -539,7 +539,13 @@ export default {
                         {
                             targets: [7,8,11],
                             render: data => {
-                                return dateEng(data);
+                                return (data) ? dateEng(data) : '';
+                            }
+                        },
+                        {
+                            targets: [12, 20],
+                            render: data => {
+                                return (data) ? data : '';
                             }
                         },
                         {
@@ -600,7 +606,7 @@ export default {
                                                 </svg>\
                                             </span>\
                                         </a>\
-                                        <a href="print_request?id='+id+'" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                        <a href="print_trip_ticket?id='+id+'" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
                                             <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
                                                     <rect x="0" y="0" width="24" height="24"/> \

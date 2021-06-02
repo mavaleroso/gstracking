@@ -8,8 +8,9 @@ import Vehicle from './components/Pages/Transportation/Vehicle';
 import Driver from './components/Pages/Transportation/Driver';
 import ListPo from './components/Pages/ListPo';
 import ListUsers from './components/Pages/ListUsers';
-import travelCalendar from './components/Pages/travelCalendar';
+import travelCalendar from './components/Pages/TravelCalendar';
 import printRequest from './components/Pages/PrintRequest';
+import printTripTicket from './components/Pages/PrintTripTicket';
 
 const routes = [
     {
@@ -96,6 +97,11 @@ const routes = [
         path: '/print_request',
         component: printRequest,
         name: 'printRequest'
+    },
+    {
+        path: '/print_trip_ticket',
+        component: printTripTicket,
+        name: 'printTripTicket'
     }
 ]
 
