@@ -84,14 +84,14 @@
                                         <td class="text-center table-border w-10">Gender</td>
                                     </tr>
                                     <tr v-for="p in passengers" :key="p.id">
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.name"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.designation"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.gender"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.name" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.designation" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.gender" disabled></td>
                                     </tr>
                                     <tr v-for="f in freePassengers" :key="f.id">
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" disabled></td>
                                     </tr>
                                 </table>
                             </td>
@@ -152,10 +152,10 @@
                                         <td class="text-center table-border">Contact No.</td>
                                     </tr>
                                     <tr v-for="v in vehicles" :key="v.id">
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.name"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.plate_no"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.fullname"></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.contact"></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.name" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.plate_no" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.fullname" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="v.contact" disabled></td>
                                     </tr>
                                 </table>
                             </td>
