@@ -26,6 +26,7 @@ class PoRequest extends FormRequest
             'created_at' => 'nullable',
             'updated_at' => 'nullable',
             'status' => 'required',
+            'type' => 'required',
         ];
     }
 
@@ -38,6 +39,7 @@ class PoRequest extends FormRequest
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'status' => 'Status',
+            'type' => 'Type',
         ];
 
     }
@@ -49,6 +51,7 @@ class PoRequest extends FormRequest
             'po_no.unique' => __('main/validations.unique'),
             'po_amount.required' => __('main/validations.required'),
             'status.required' => __('main/validations.required'),
+            'type.required' => __('main/validations.required'),
         ];
 
     }

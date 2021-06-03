@@ -12,20 +12,30 @@
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Type:</label>
+                                    <select class="form-control select2" id="type" name="type" v-model="formFields.type">
+                                        <option label="Label"></option>
+                                        <option value="1">Travel</option>
+                                        <option value="2">Fuel</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>PO #:</label>
                                     <input v-if="create == true" type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
                                     <input v-else type="text" class="form-control disabled bg-gray-400" name="po_no" placeholder="PO number" v-model="formFields.po_no" disabled/>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Amount :</label>
                                      <input type="number" min="0" step="any" class="form-control required-field" name="po_amount" placeholder="Amount" v-model="formFields.po_amount"/>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Status:</label>
                                     <select class="form-control select2" id="status" name="status" v-model="formFields.status">
@@ -75,6 +85,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Type</th>
                             <th>PO Number</th>
                             <th>Amount</th>
                             <th>balance</th>
@@ -101,8 +112,9 @@ export default {
                 po_no: '',
                 po_amount: '',
                 status: '',
+                type: '',
             },
-            names: ['po_no', 'po_amount', 'status']
+            names: ['po_no', 'po_amount', 'status', 'type']
         }
     },
     mounted() {
@@ -126,6 +138,15 @@ export default {
 
                     $('#status').change(function() {
                         vm.formFields.status = $(this).val();
+                    });
+
+                    $('#type').select2({
+                        placeholder: "Select type",
+                        minimumResultsForSearch: Infinity
+                    });
+
+                    $('#type').change(function() {
+                        vm.formFields.type = $(this).val();
                     });
 
                     $('.card-label span').text(lbl);
@@ -165,6 +186,7 @@ export default {
             formD.append('po_no', this.formFields.po_no);
             formD.append('po_amount', this.formFields.po_amount);
             formD.append('status', this.formFields.status);
+            formD.append('type', this.formFields.type);
 
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
@@ -189,9 +211,9 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(key == 'status'){
-                            if ($('#status').next().next().length == 0) {
-                                $('#status').next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        if(key == 'status' || key == 'type'){
+                            if ($('#' + `${key}`).next().next().length == 0) {
+                                $('#' + `${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
                             }
                         } else {
                             if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -202,10 +224,10 @@ export default {
                     }
                     
                     for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'status') {
+                        if (this.names[i] == 'status' || this.names[i] == 'type') {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#status').next().next().length != 0) {
-                                    $('#status').next().next('.invalid-feedback').remove();
+                                if ($('#' + `${key}`).next().next().length != 0) {
+                                    $('#' + `${key}`).next().next('.invalid-feedback').remove();
                                 }
                             }
                         } else {
@@ -275,6 +297,7 @@ export default {
                     },
                     columns: [
                         { "data": "id" },
+                        { "data": "type" },
                         { "data": "po_no" },
                         { "data": "po_amount" },
                         { "data": "totalBalance" },
@@ -284,11 +307,22 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 2,
+                            targets: 1,
                             render: data => {
-                                return toParseNum(data);
+                                var type = {
+                                    1: {
+                                        'title' : 'Travel',
+                                        'class': ' label-light-primary'
+                                    },
+                                    2: {
+                                        'title' : 'Fuel',
+                                        'class': ' label-light-primary'
+                                    },
+                                }
+
+                                return '<span class="btn-details label label-lg font-weight-bold ' + type[data].class + ' label-inline">' + type[data].title + '</span>';
                             }
-                        },
+                        },  
                         {
                             targets: 3,
                             render: data => {
@@ -297,6 +331,12 @@ export default {
                         },
                         {
                             targets: 4,
+                            render: data => {
+                                return toParseNum(data);
+                            }
+                        },
+                        {
+                            targets: 5,
                             render: data => {
                                 var status = {
                                     0: {
@@ -320,7 +360,7 @@ export default {
                             }
                         },
                         {
-                            targets: 5,
+                            targets: 6,
                             render: data => {
                                 return dateTimeEng(data);
                             }

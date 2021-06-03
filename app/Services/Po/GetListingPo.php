@@ -23,6 +23,7 @@ class GetListingPo
             'searchable' => [
                 'id',
                 'po_no',
+                'type',
                 'po_amount',
                 'totalBalance',
                 'created_at',
@@ -31,6 +32,7 @@ class GetListingPo
             'orderable' => [
                 'id',
                 'po_no',
+                'type',
                 'po_amount',
                 'totalBalance',
                 'created_at',
