@@ -3674,6 +3674,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3683,9 +3694,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         id: '',
         po_no: '',
         po_amount: '',
-        status: ''
+        status: '',
+        type: ''
       },
-      names: ['po_no', 'po_amount', 'status']
+      names: ['po_no', 'po_amount', 'status', 'type']
     };
   },
   mounted: function mounted() {
@@ -3711,6 +3723,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           });
           $('#status').change(function () {
             vm.formFields.status = $(this).val();
+          });
+          $('#type').select2({
+            placeholder: "Select type",
+            minimumResultsForSearch: Infinity
+          });
+          $('#type').change(function () {
+            vm.formFields.type = $(this).val();
           });
           $('.card-label span').text(lbl);
         });
@@ -3748,6 +3767,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append('po_no', this.formFields.po_no);
       formD.append('po_amount', this.formFields.po_amount);
       formD.append('status', this.formFields.status);
+      formD.append('type', this.formFields.type);
       method = this.create ? 'POST' : 'PUT';
       putParams = this.create ? '' : '/' + this.formFields.id;
       axios({
@@ -3774,29 +3794,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
           var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
+              _key = _Object$entries$_i[0],
               value = _Object$entries$_i[1];
 
-          keys.push("".concat(key));
+          keys.push("".concat(_key));
           values.push("".concat(value));
 
-          if (key == 'status') {
-            if ($('#status').next().next().length == 0) {
-              $('#status').next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if (_key == 'status' || _key == 'type') {
+            if ($('#' + "".concat(_key)).next().next().length == 0) {
+              $('#' + "".concat(_key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
             }
           } else {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="' + "".concat(_key) + '"]').next().length == 0 || $('[name="' + "".concat(_key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('[name="' + "".concat(_key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(_key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
             }
           }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'status') {
+          if (_this2.names[i] == 'status' || _this2.names[i] == 'type') {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#status').next().next().length != 0) {
-                $('#status').next().next('.invalid-feedback').remove();
+              if ($('#' + "".concat(key)).next().next().length != 0) {
+                $('#' + "".concat(key)).next().next('.invalid-feedback').remove();
               }
             }
           } else {
@@ -3860,6 +3880,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columns: [{
             "data": "id"
           }, {
+            "data": "type"
+          }, {
             "data": "po_no"
           }, {
             "data": "po_amount"
@@ -3873,9 +3895,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 2,
+            targets: 1,
             render: function render(data) {
-              return toParseNum(data);
+              var type = {
+                1: {
+                  'title': 'Travel',
+                  'class': ' label-light-primary'
+                },
+                2: {
+                  'title': 'Fuel',
+                  'class': ' label-light-primary'
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + type[data]["class"] + ' label-inline">' + type[data].title + '</span>';
             }
           }, {
             targets: 3,
@@ -3884,6 +3916,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }, {
             targets: 4,
+            render: function render(data) {
+              return toParseNum(data);
+            }
+          }, {
+            targets: 5,
             render: function render(data) {
               var status = {
                 0: {
@@ -3906,7 +3943,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
-            targets: 5,
+            targets: 6,
             render: function render(data) {
               return dateTimeEng(data);
             }
@@ -50731,7 +50768,60 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "col-lg-3" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Type:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.type,
+                                  expression: "formFields.type"
+                                }
+                              ],
+                              staticClass: "form-control select2",
+                              attrs: { id: "type", name: "type" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "type",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "1" } }, [
+                                _vm._v("Travel")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "2" } }, [
+                                _vm._v("Fuel")
+                              ])
+                            ]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-3" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("PO #:")]),
                           _vm._v(" "),
@@ -50799,7 +50889,7 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "col-lg-3" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Amount :")]),
                           _vm._v(" "),
@@ -50837,7 +50927,7 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "col-lg-3" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Status:")]),
                           _vm._v(" "),
@@ -51042,6 +51132,8 @@ var staticRenderFns = [
           _c("thead", [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Type")]),
               _vm._v(" "),
               _c("th", [_vm._v("PO Number")]),
               _vm._v(" "),

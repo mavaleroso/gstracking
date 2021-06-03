@@ -14,7 +14,8 @@ class UpdateMigrationForTableProcurement extends Migration
     public function up()
     {
         Schema::table('procurements', function (Blueprint $table) {
-            $table->string('status', 50)->nullable();
+            $table->smallInteger('status')->nullable()->after('po_amount');
+            $table->smallInteger('type')->nullable()->after('id');
             $table->SoftDeletes()->after('status');
         });
     }

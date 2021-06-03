@@ -20,9 +20,9 @@ class Procurement extends Model
         'id',
         'po_no',
         'po_amount',
-        'balance',
         'status',
         'created_at',
         'updated_at',
+        'type',
     ];
 }

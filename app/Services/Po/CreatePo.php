@@ -18,6 +18,7 @@ class CreatePo
             'po_no' => $fields['po_no'],
             'po_amount' => $fields['po_amount'],
             'status' => $fields['status'],
+            'type' => $fields['type'],
         ]);
 
         return $data;
