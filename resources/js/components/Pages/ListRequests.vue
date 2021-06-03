@@ -204,11 +204,18 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div v-if="staff.vehicle_rental" class="form-group">
-                                    <label>Po Number</label>
-                                    <select name="po" class="form-control select2 staff-required" id="po-select">
+                                <div v-if="staff.vehicle_office" class="form-group">
+                                    <label>Fuel Po Number</label>
+                                    <select name="fuel_po" class="form-control select2 staff-required" id="fuel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type === 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                    </select>
+                                </div>
+                                <div v-if="staff.vehicle_rental" class="form-group">
+                                    <label>Travel Po Number</label>
+                                    <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
+                                        <option label="Label"></option>
+                                        <option v-for="po in procurements.filter(i => i.type === 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -371,22 +378,23 @@ export default {
                 id: null,
                 vehicle: null,
                 driver: null,
-                po: null,
                 vehicle_office: false,
                 vehicle_rental: false,
                 office: {
                     total: 1,
-                    data: []
+                    data: [],
+                    po: null,
                 }, 
                 rental: {
                     total: 1,
+                    po: null,
                     data: []
                 }
             },
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: [],
-            officeNames: ['vehicle_1', 'driver_1'],
-            rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
+            officeNames: ['fuel_po','vehicle_1', 'driver_1'],
+            rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
             remarks: null
         }
     },  
@@ -632,17 +640,25 @@ export default {
                             $('#driver-select-1').on('change', function() {
                                 vm.staff.driver = $(this).val();
                             });
+
+                            $('#fuel_po-select').select2({
+                                placeholder: "Select a Travel PO",
+                            });
+
+                            $('#fuel_po-select').on('change', function() {
+                                vm.staff.office.po = $(this).val();
+                            });
                         } else {
                             vm.officeNames = ['vehicle_1', 'driver_1'];
                         }
                         
                         if (vm.staff.vehicle_rental) {
-                            $('#po-select').select2({
-                                placeholder: "Select a PO",
+                            $('#travel_po-select').select2({
+                                placeholder: "Select a Travel PO",
                             });
 
-                            $('#po-select').on('change', function() {
-                                vm.staff.po = $(this).val();
+                            $('#travel_po-select').on('change', function() {
+                                vm.staff.rental.po = $(this).val();
                             });
 
                             $('.select-remove').siblings('.select2').remove();
@@ -848,7 +864,7 @@ export default {
                         if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
                             $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (`${key}` == 'po') {
+                    } else if (`${key}` == 'travel_po' || `${key}` == 'fuel_po') {
                         if($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
@@ -875,7 +891,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < this.rentalNames.length; i++) {
-                    if (this.rentalNames[i] == 'po') {
+                    if (this.rentalNames[i] == 'travel_po' || this.rentalNames[i] == 'fuel_po') {
                         if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
                             if ($('#'+this.rentalNames[i]+'-select').next().next().length != 0) {
                                 $('#'+this.rentalNames[i]+'-select').next().next('.invalid-feedback').remove();
