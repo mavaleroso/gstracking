@@ -35,7 +35,7 @@
                             <th>Date of Travel</th>
                             <th>Date of Return</th>
                             <th>Starting ODO</th>
-                            <th>Ending Odo</th>
+                            <th>Ending ODO</th>
                             <th>Date Submitted to Procurement</th>
                             <th>Distance Travelled</th>
                             <th>PO Number</th>
@@ -367,7 +367,7 @@ export default {
                 numberofNights: null,
             },
             dialogshow: false,
-            names: ['starting_odo', 'starting_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date','travel_date','fuel_charge', 'fuel_liters']
+            names: ['starting_odo', 'ending_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date','travel_date','fuel_charge', 'fuel_liters']
         }
     },
     components: {

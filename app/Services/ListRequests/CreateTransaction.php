@@ -33,7 +33,7 @@ class CreateTransaction
                     'vehicle_id' => $fields['vehicle_'.$i],
                     'driver_id' => $fields['driver_'.$i],
                     'request_id' => $fields['id'],
-                    'procurement_id' => (isset($fields['po']))? $fields['po']:NULL,
+                    'procurement_id' => (isset($fields['fuel_po']))? $fields['fuel_po']:NULL,
                     'trip_ticket' => $trip_ticket,
                     'status' => 2
                 ]);
@@ -63,7 +63,7 @@ class CreateTransaction
                     'vehicle_id' => $vehicle->id,
                     'driver_id' => $driver->id,
                     'request_id' => $fields['id'],
-                    'procurement_id' => (isset($fields['po']))? $fields['po']:NULL,
+                    'procurement_id' => (isset($fields['travel_po']))? $fields['travel_po']:NULL,
                     'trip_ticket' => $trip_ticket,
                     'status' => 2
                 ]);

@@ -4362,6 +4362,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4399,22 +4406,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         id: null,
         vehicle: null,
         driver: null,
-        po: null,
         vehicle_office: false,
         vehicle_rental: false,
         office: {
           total: 1,
-          data: []
+          data: [],
+          po: null
         },
         rental: {
           total: 1,
+          po: null,
           data: []
         }
       },
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       defaultNames: [],
-      officeNames: ['vehicle_1', 'driver_1'],
-      rentalNames: ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      officeNames: ['fuel_po', 'vehicle_1', 'driver_1'],
+      rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       remarks: null
     };
   },
@@ -4669,16 +4677,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               $('#driver-select-1').on('change', function () {
                 vm.staff.driver = $(this).val();
               });
+              $('#fuel_po-select').select2({
+                placeholder: "Select a Travel PO"
+              });
+              $('#fuel_po-select').on('change', function () {
+                vm.staff.office.po = $(this).val();
+              });
             } else {
               vm.officeNames = ['vehicle_1', 'driver_1'];
             }
 
             if (vm.staff.vehicle_rental) {
-              $('#po-select').select2({
-                placeholder: "Select a PO"
+              $('#travel_po-select').select2({
+                placeholder: "Select a Travel PO"
               });
-              $('#po-select').on('change', function () {
-                vm.staff.po = $(this).val();
+              $('#travel_po-select').on('change', function () {
+                vm.staff.rental.po = $(this).val();
               });
               $('.select-remove').siblings('.select2').remove();
               $('.select-remove').siblings('.select2').remove();
@@ -4926,7 +4940,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
               $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if ("".concat(key) == 'po') {
+          } else if ("".concat(key) == 'travel_po' || "".concat(key) == 'fuel_po') {
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
@@ -4955,7 +4969,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var _i3 = 0; _i3 < _this9.rentalNames.length; _i3++) {
-          if (_this9.rentalNames[_i3] == 'po') {
+          if (_this9.rentalNames[_i3] == 'travel_po' || _this9.rentalNames[_i3] == 'fuel_po') {
             if (keys.indexOf('' + _this9.rentalNames[_i3] + '') == -1) {
               if ($('#' + _this9.rentalNames[_i3] + '-select').next().next().length != 0) {
                 $('#' + _this9.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
@@ -5537,7 +5551,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         numberofNights: null
       },
       dialogshow: false,
-      names: ['starting_odo', 'starting_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date', 'travel_date', 'fuel_charge', 'fuel_liters']
+      names: ['starting_odo', 'ending_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date', 'travel_date', 'fuel_charge', 'fuel_liters']
     };
   },
   components: {
@@ -52268,44 +52282,108 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "col-lg-6" }, [
-                            _vm.staff.vehicle_rental
+                            _vm.staff.vehicle_office
                               ? _c("div", { staticClass: "form-group" }, [
-                                  _c("label", [_vm._v("Po Number")]),
+                                  _c("label", [_vm._v("Fuel Po Number")]),
                                   _vm._v(" "),
                                   _c(
                                     "select",
                                     {
                                       staticClass:
                                         "form-control select2 staff-required",
-                                      attrs: { name: "po", id: "po-select" }
+                                      attrs: {
+                                        name: "fuel_po",
+                                        id: "fuel_po-select"
+                                      }
                                     },
                                     [
                                       _c("option", {
                                         attrs: { label: "Label" }
                                       }),
                                       _vm._v(" "),
-                                      _vm._l(_vm.procurements, function(po) {
-                                        return _c(
-                                          "option",
-                                          {
-                                            key: po.id,
-                                            domProps: { value: po.id }
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(po.po_no) +
-                                                " - ₱ " +
-                                                _vm._s(
-                                                  po.totalBalance
-                                                    ? _vm.parseNum(
-                                                        po.totalBalance
-                                                      )
-                                                    : _vm.parseNum(po.po_amount)
-                                                )
-                                            )
-                                          ]
-                                        )
-                                      })
+                                      _vm._l(
+                                        _vm.procurements.filter(function(i) {
+                                          return i.type === 2
+                                        }),
+                                        function(po) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: po.id,
+                                              domProps: { value: po.id }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(po.po_no) +
+                                                  " - ₱ " +
+                                                  _vm._s(
+                                                    po.totalBalance
+                                                      ? _vm.parseNum(
+                                                          po.totalBalance
+                                                        )
+                                                      : _vm.parseNum(
+                                                          po.po_amount
+                                                        )
+                                                  )
+                                              )
+                                            ]
+                                          )
+                                        }
+                                      )
+                                    ],
+                                    2
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.staff.vehicle_rental
+                              ? _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Travel Po Number")]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      staticClass:
+                                        "form-control select2 staff-required",
+                                      attrs: {
+                                        name: "travel_po",
+                                        id: "travel_po-select"
+                                      }
+                                    },
+                                    [
+                                      _c("option", {
+                                        attrs: { label: "Label" }
+                                      }),
+                                      _vm._v(" "),
+                                      _vm._l(
+                                        _vm.procurements.filter(function(i) {
+                                          return i.type === 1
+                                        }),
+                                        function(po) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: po.id,
+                                              domProps: { value: po.id }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(po.po_no) +
+                                                  " - ₱ " +
+                                                  _vm._s(
+                                                    po.totalBalance
+                                                      ? _vm.parseNum(
+                                                          po.totalBalance
+                                                        )
+                                                      : _vm.parseNum(
+                                                          po.po_amount
+                                                        )
+                                                  )
+                                              )
+                                            ]
+                                          )
+                                        }
+                                      )
                                     ],
                                     2
                                   )
@@ -54671,7 +54749,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Starting ODO")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Ending Odo")]),
+              _c("th", [_vm._v("Ending ODO")]),
               _vm._v(" "),
               _c("th", [_vm._v("Date Submitted to Procurement")]),
               _vm._v(" "),
