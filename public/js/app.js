@@ -40,6 +40,14 @@ module.exports = function xhrAdapter(config) {
 
     var request = new XMLHttpRequest();
 
+
+    // Vue.prototype.$appName = () => {
+
+    // };
+   
+
+    
+
     // HTTP basic authentication
     if (config.auth) {
       var username = config.auth.username || '';
@@ -7661,9 +7669,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
+    saveLogs: function saveLogs() {
+      // var url = window.location.href.split('/').pop();
+      // var action ="Save";
+      // var page ="Request Travel";
+      // axios.post(BASE_URL + "/travel/request/logs", url).then(response => {
+      // });
+      console.log(this.$appName);
+    },
     saveForm: function saveForm() {
       var _this2 = this;
 
+      this.saveLogs();
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();

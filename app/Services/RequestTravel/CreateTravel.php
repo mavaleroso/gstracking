@@ -33,6 +33,7 @@ class CreateTravel
     {
  
 
+
         $rqt_code = $this->getCode->request_code();
 
         $request = Request::create([

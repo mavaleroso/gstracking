@@ -6,8 +6,8 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListRequests\TravelRequestStaff;
 use App\Http\Requests\ListRequests\ListRequestStaff;
-use App\Services\ListRequests\CreateTransaction;
-use App\Services\ListRequests\UpdateRequests;
+use App\Services\LocalRequest\CreateTransaction;
+use App\Services\LocalRequest\UpdateRequests;
 
 
 
