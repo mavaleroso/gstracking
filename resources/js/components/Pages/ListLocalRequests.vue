@@ -1,5 +1,5 @@
 <template>
-    <div id="list-requests-page">
+    <div id="local-requests-page">
         <!--begin::Card-->
         <div class="card card-custom gutter-b animate__animated animate__fadeIn">
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -496,7 +496,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/travel/listrequest',
+                        url: BASE_URL + '/travel/localrequest',
                         type: 'GET'
                     },
                     columns: [
@@ -583,7 +583,7 @@ export default {
         },
         show(id, app = null) {
             let vm = this;
-            axios.get(BASE_URL + '/travel/listrequest/' + id).then(response => {
+            axios.get(BASE_URL + '/travel/localrequest/' + id).then(response => {
                 switch (response.data[0].is_status) {
                     case 1:
                             vm.request_status = 'Pending';
@@ -783,7 +783,7 @@ export default {
         },
         save(id) {
             let requestform = $('#request-form').serialize();
-            axios.put(BASE_URL + "/travel/listrequest/" + id, requestform).then(response => {
+            axios.put(BASE_URL + "/travel/localrequest/" + id, requestform).then(response => {
                 $('.new-row').remove();
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;

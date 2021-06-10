@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListRequests;
+namespace App\Services\LocalRequest;
 
 use App\Models\Request;
 use App\Models\Destination;

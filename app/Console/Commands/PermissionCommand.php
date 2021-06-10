@@ -40,6 +40,8 @@ class PermissionCommand extends Command
         'po',
         'log',
         'listtravel',
+        'localrequest',
+        'ritorequest',
         'listuser',
         'printrequest',
     ];
