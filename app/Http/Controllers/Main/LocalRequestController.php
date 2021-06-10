@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestTravel\TravelStoreRequest;
-use App\Services\ListRequests\UpdateTravel;
-use App\Services\ListRequests\GetListingRequest;
-use App\Services\ListRequests\GetRequestById;
+use App\Services\LocalRequest\UpdateTravel;
+use App\Services\LocalRequest\GetListingRequest;
+use App\Services\LocalRequest\GetRequestById;
 use Illuminate\Support\Facades\DB;
 
-class ListRequestController extends Controller
+class LocalRequestController extends Controller
 {
     /**
      * Initialization
@@ -19,11 +19,11 @@ class ListRequestController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:listrequest-list', ['only' => ['index']]);
-        $this->middleware('permission:listrequest-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:listrequest-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:listrequest-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:listrequest-view', ['only' => ['show']]);
+        $this->middleware('permission:localrequest-list', ['only' => ['index']]);
+        $this->middleware('permission:localrequest-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:localrequest-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:localrequest-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:localrequest-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.

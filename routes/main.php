@@ -21,7 +21,8 @@ Route::get('/dashboard', 'base\DashboardController@index')->name('main.dashboard
 
 // SPA
 Route::get('/request_travel', 'base\DashboardController@index');
-Route::get('/list_requests', 'base\DashboardController@index');
+Route::get('/local_requests', 'base\DashboardController@index');
+Route::get('/rito_requests', 'base\DashboardController@index');
 Route::get('/list_travels', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/transaction_logs', 'base\DashboardController@index');
@@ -47,15 +48,27 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
         ]
     ]);
 
-    Route::resource('listrequest', 'ListRequestController', [
+    Route::resource('localrequest', 'LocalRequestController', [
         'names' => [
-            'index' => 'main.listrequest.index',
-            'create' => 'main.listrequest.create',
-            'store' => 'main.listrequest.store',
-            'show' => 'main.listrequest.show',
-            'edit' => 'main.listrequest.edit',
-            'update' => 'main.listrequest.update',
-            'destroy' => 'main.listrequest.destroy',
+            'index' => 'main.localrequest.index',
+            'create' => 'main.localrequest.create',
+            'store' => 'main.localrequest.store',
+            'show' => 'main.localrequest.show',
+            'edit' => 'main.localrequest.edit',
+            'update' => 'main.localrequest.update',
+            'destroy' => 'main.localrequest.destroy',
+        ]
+    ]);
+
+    Route::resource('ritorequest', 'RitoRequestController', [
+        'names' => [
+            'index' => 'main.ritorequest.index',
+            'create' => 'main.ritorequest.create',
+            'store' => 'main.ritorequest.store',
+            'show' => 'main.ritorequest.show',
+            'edit' => 'main.ritorequest.edit',
+            'update' => 'main.ritorequest.update',
+            'destroy' => 'main.ritorequest.destroy',
         ]
     ]);
 
