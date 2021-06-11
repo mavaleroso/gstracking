@@ -2304,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['status']
+  props: ['status', 'size']
 });
 
 /***/ }),
@@ -3931,12 +3931,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5181,6 +5175,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
 //
 //
 //
@@ -5218,13 +5213,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      data: []
+      size: 'modal-lg',
+      current_row: null,
+      data: [],
+      passengers: []
     };
   },
-  components: {},
+  components: {
+    Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   created: function created() {},
   mounted: function mounted() {
     this.ini();
@@ -5247,7 +5276,6 @@ __webpack_require__.r(__webpack_exports__);
       var initTable = function initTable() {
         var table = $('#rito-tbl');
         table.DataTable({
-          scrollY: '50vh',
           scrollX: true,
           scrollCollapse: true,
           processing: true,
@@ -5274,7 +5302,7 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "id"
           }],
-          order: [[1, 'asc']],
+          order: [[3, 'asc']],
           headerCallback: function headerCallback(thead, data, start, end, display) {
             thead.getElementsByTagName('th')[0].innerHTML = "";
           },
@@ -5294,12 +5322,23 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             targets: -1,
             sortable: false,
-            render: function render(data) {
-              return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
-                                            <i class="flaticon2-document"></i> Details\
+            render: function render(data, type, full, meta) {
+              return '<button data-record-id="' + data + '" data-row-idx="' + meta.row + '" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
+                                            <i class="flaticon2-document"></i> Passengers\
                                         </button>';
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $('.btn-passengers').off().on('click', function () {
+              var id = $(this).data('record-id');
+              var idx = $(this).data('row-idx');
+              axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
+                vm.passengers = res.data;
+                vm.current_row = idx;
+                $('#kt_datatable_modal').modal('show');
+              });
+            });
+          }
         });
         table.on('change', 'tbody tr .checkbox', function () {
           $(this).parents('tr').toggleClass('active');
@@ -48380,7 +48419,11 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "modal-dialog modal-xl modal-dialog-centered" },
+        {
+          class: !_vm.size
+            ? "modal-dialog modal-xl modal-dialog-centered"
+            : "modal-dialog modal-dialog-centered " + _vm.size
+        },
         [
           _c(
             "div",
@@ -53373,73 +53416,164 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { attrs: { id: "rito-requests-page" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("modal", {
+        attrs: { size: _vm.size },
+        scopedSlots: _vm._u([
+          {
+            key: "header",
+            fn: function() {
+              return [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _c("span", { staticClass: "m-title" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.passengers.length
+                          ? _vm.data[_vm.current_row].tracking_no
+                          : null
+                      )
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-block text-muted font-size-sm" },
+                    [_vm._v("Tracking Number")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "ki ki-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "body",
+            fn: function() {
+              return [
+                _c("table", { staticClass: "w-100 table" }, [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Position / Designation")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Gender")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.passengers, function(p, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(p.first_name) +
+                              " " +
+                              _vm._s(p.middle_name[0]) +
+                              " " +
+                              _vm._s(p.last_name)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(p.position))]),
+                        _vm._v(" "),
+                        _c("td")
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "rito-requests-page" } }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "card card-custom gutter-b animate__animated animate__fadeIn"
-        },
-        [
-          _c(
-            "div",
-            { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" },
-            [
-              _c("div", { staticClass: "card-title" }, [
-                _c("h3", { staticClass: "card-label" }, [
-                  _c("span", {
-                    staticClass: "d-block text-muted pt-2 font-size-sm"
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-toolbar" })
-            ]
-          ),
+    return _c(
+      "div",
+      {
+        staticClass:
+          "card card-custom gutter-b animate__animated animate__fadeIn"
+      },
+      [
+        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
+          _c("div", { staticClass: "card-title" }, [
+            _c("h3", { staticClass: "card-label" }, [
+              _c("span", {
+                staticClass: "d-block text-muted pt-2 font-size-sm"
+              })
+            ])
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c(
-              "table",
-              {
-                staticClass:
-                  "table table-separate table-head-custom table-checkable",
-                attrs: { id: "rito-tbl" }
-              },
-              [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("ID")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Tracking No.")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Destination")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Travel Date")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Return Date")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Purpose")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Means of Transportation")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Status")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Action")])
-                  ])
+          _c("div", { staticClass: "card-toolbar" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "table",
+            {
+              staticClass:
+                "table table-separate table-head-custom table-checkable",
+              attrs: { id: "rito-tbl" }
+            },
+            [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("ID")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Tracking No.")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Destination")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Travel Date")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Return Date")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Purpose")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Means of Transportation")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Status")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Action")])
                 ])
-              ]
-            )
-          ])
-        ]
-      )
-    ])
+              ])
+            ]
+          )
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true

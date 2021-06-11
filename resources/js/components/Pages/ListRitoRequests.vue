@@ -32,17 +32,50 @@
             </div>
         </div>
         <!--end::Card-->
+        <!--begin::Modal-->
+        <modal :size="size">
+            <template v-slot:header>
+                <h5 class="modal-title"><span class="m-title">{{ (passengers.length)?data[current_row].tracking_no:null }}</span>
+                <span class="d-block text-muted font-size-sm">Tracking Number</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </template>
+            <template v-slot:body>
+                <table class="w-100 table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position / Designation</th>
+                            <th>Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(p,index) in passengers" :key="index">
+                            <td>{{ p.first_name }} {{ p.middle_name[0] }} {{ p.last_name }}</td>
+                            <td>{{ p.position }}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+        </modal>
     </div>
 </template>
 
 <script>
+import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
-            data:[]
+            size: 'modal-lg',
+            current_row: null,
+            data:[],
+            passengers:[]
         }
     },  
     components: {
+        Modal
     },
     created() {
     },
@@ -64,7 +97,6 @@ export default {
             var initTable = () => {
             var table = $('#rito-tbl');
                 table.DataTable({
-                    scrollY: '50vh',
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
@@ -83,7 +115,7 @@ export default {
                         { "data": "id" },
                         { "data": "id" },
                     ],
-                    order: [[1, 'asc']],
+                    order: [[3, 'asc']],
                     headerCallback: function(thead, data, start, end, display) {
                         thead.getElementsByTagName('th')[0].innerHTML = ``;
                     },
@@ -110,13 +142,24 @@ export default {
                         {
                             targets: -1,
                             sortable: false,
-                            render: data => {
-                                return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
-                                            <i class="flaticon2-document"></i> Details\
+                            render: function(data, type, full, meta) {
+                                return '<button data-record-id="' + data + '" data-row-idx="'+ meta.row +'" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
+                                            <i class="flaticon2-document"></i> Passengers\
                                         </button>';
                             }
                         }
-                    ]
+                    ],
+                    drawCallback: () => {
+                        $('.btn-passengers').off().on('click', function() {
+                            let id = $(this).data('record-id');
+                            let idx = $(this).data('row-idx');
+                            axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res=>{
+                                vm.passengers = res.data;
+                                vm.current_row =  idx;
+                                $('#kt_datatable_modal').modal('show');
+                            });
+                        });
+                    }
                 });
 
                 table.on('change', 'tbody tr .checkbox', function() {
