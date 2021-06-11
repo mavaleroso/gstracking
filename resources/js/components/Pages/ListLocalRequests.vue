@@ -305,12 +305,6 @@
             </template>
             <template v-slot:adminfooter>
                 <button @click="declined" type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto">Decline</button>
-
-                <!-- <button type="button" class="btn btn-sm btn-danger font-weight-bold text-uppercase mr-auto" data-toggle="modal" data-target="#exampleModalCenter">Reject</button> -->
-
-
-
-
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>

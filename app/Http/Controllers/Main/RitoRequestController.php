@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Services\RitoRequest\GetListingRito;
+use App\Services\RitoRequest\GetPassengerById;
 
 class RitoRequestController extends Controller
 {
@@ -59,9 +60,10 @@ class RitoRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetPassengerById $getPassengerById)
     {
-        //
+        $data = $getPassengerById->execute($id);
+        return response()->json($data);
     }
 
     /**
