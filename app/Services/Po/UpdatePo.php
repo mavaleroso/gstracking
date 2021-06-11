@@ -11,8 +11,11 @@ class UpdatePo
      *
      * @param string $email
      */
-    public function execute($id, $fields)
+    public function execute($id, $fields, $url)
     {
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'List_po' , 'lurl' => $url, 'laction' => 'edit');
+        $createLogs = createLogs($arr);
 
         $po = Procurement::find($id);
         $po->update([

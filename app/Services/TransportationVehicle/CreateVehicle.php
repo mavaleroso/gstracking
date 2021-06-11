@@ -12,14 +12,17 @@ class CreateVehicle
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($fields)
+    public function execute($fields, $url)
     {
 
-        // dd($fields);
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Office_vehicle' , 'lurl' => $url, 'laction' => 'create');
+        $createLogs = createLogs($arr);
+
         $file_name = NULL;
         
         if($fields['picture']) {
-            $file = $fields['picture'];
+            $file = $fields['picture']; 
             $file_name = 'vehicle-photo-' . time() . '.' . $file->getClientOriginalExtension();
         }
         

@@ -90,12 +90,14 @@ class ListTravelController extends Controller
      */
     public function update(TravelRequest $travelRequest, UpdateTravel $updateTravel , $id)
     {
-        $result = $updateTravel->execute($id, $travelRequest->validated());
+        $url = $travelRequest->url();
+        $result = $updateTravel->execute($id, $travelRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
-    public function undo($id, UpdateStatus $updateStatus){
-        $result = $updateStatus->execute($id);
+    public function undo($id,Request $request, UpdateStatus $updateStatus){
+        $url = $request->url();
+        $result = $updateStatus->execute($id, $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
     }
 

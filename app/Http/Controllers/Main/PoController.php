@@ -56,7 +56,8 @@ class PoController extends Controller
      */
     public function store(PoRequest $poRequest, CreatePo $createPo)
     {
-        $result = $createPo->execute($poRequest->validated());
+        $url = $poRequest->url();
+        $result = $createPo->execute($poRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.po_created_successfully'), 'result' => $result]);
     }
 
@@ -92,7 +93,8 @@ class PoController extends Controller
      */
     public function update(Request $request, UpdatePo $updatePo, $id)
     {
-        $result = $updatePo->execute($id, $request);
+        $url = $request->url();
+        $result = $updatePo->execute($id, $request, $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.po_updated_successfully'), 'result' => $result]);
     }
 
@@ -102,9 +104,10 @@ class PoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, DeletePo $deletePo)
+    public function destroy($id, DeletePo $deletePo, Request $request)
     {
-        $result = $deletePo->execute($id);
+        $url = $request->url();
+        $result = $deletePo->execute($id, $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.po_deleted_successfully'), 'result' => $result]);
     }
 }

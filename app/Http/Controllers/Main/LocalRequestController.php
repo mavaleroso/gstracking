@@ -89,7 +89,8 @@ class LocalRequestController extends Controller
      */
     public function update($id, TravelStoreRequest $travelStoreRequest, UpdateTravel $updateTravel)
     {
-        $result = $updateTravel->execute($id, $travelStoreRequest->validated());
+        $url = $travelStoreRequest->url();
+        $result = $updateTravel->execute($id, $travelStoreRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 

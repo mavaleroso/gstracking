@@ -20,8 +20,14 @@ class CreateTransaction
         $this->genTripTicket = $genTripTicket;
     }
 
-    public function execute($fields)
+    public function execute($fields, $url)
     {
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Local_requests' , 'lurl' => $url, 'laction' => 'approved');
+        $createLogs = createLogs($arr);
+
+
         $request = Request::where('id', $fields['id'])->first();
 
         if(isset($fields['vehicle_office'])) {

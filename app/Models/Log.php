@@ -9,6 +9,17 @@ use Ccore\Core\Traits\ExtendedEloquentTrait;
 
 class Log extends Model
 {
-    use ExtendedEloquentTrait;
-    use WithPaginate;
+    protected $table = 'logs';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'page',
+        'url',
+        'action',
+    ];
 }

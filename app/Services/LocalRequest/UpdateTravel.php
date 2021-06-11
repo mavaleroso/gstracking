@@ -29,8 +29,12 @@ class UpdateTravel
      *
      * @return object
      */
-    public function execute($id, $fields)
+    public function execute($id, $fields, $url)
     {
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Local_requests' , 'lurl' => $url, 'laction' => 'edit');
+        $createLogs = createLogs($arr);
 
         $request = Request::find($id);
         

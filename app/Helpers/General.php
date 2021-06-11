@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Log;
+
 //
 if (!function_exists('toPathOS'))
 {
@@ -87,3 +89,15 @@ if( !function_exists('validateDate') )
         return $d && $d->format($format) === $date;
     }
 }
+
+if( !function_exists('createLogs')){
+    function createLogs($arr){
+        $request = Log::create([
+            'user_id' => $arr['luser'],
+            'page' => $arr['lpage'],
+            'url' => $arr['lurl'],
+            'action' => $arr['laction']
+        ]);
+        return $request;
+    }
+}   

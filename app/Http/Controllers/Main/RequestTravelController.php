@@ -50,10 +50,9 @@ class RequestTravelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
-    {
+    {   
         $url = $travelStoreRequest->url();
-        
-        $result = $createTravel->execute($travelStoreRequest->validated());
+        $result = $createTravel->execute($travelStoreRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
