@@ -208,14 +208,14 @@
                                     <label>Fuel Po Number</label>
                                     <select name="fuel_po" class="form-control select2 staff-required" id="fuel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type === 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type == 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                                 <div v-if="staff.vehicle_rental" class="form-group">
                                     <label>Travel Po Number</label>
                                     <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type === 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                             </div>

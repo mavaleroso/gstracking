@@ -2304,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['status', 'size']
+  props: ['id', 'status', 'size']
 });
 
 /***/ }),
@@ -5241,11 +5241,153 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      size: 'modal-lg',
+      modal: {
+        passengers_id: 'modal-passengers',
+        approved_id: 'modal-approved',
+        size: 'modal-lg'
+      },
       current_row: null,
       data: [],
       passengers: []
@@ -5300,6 +5442,8 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "id"
           }, {
+            "data": "requested_by"
+          }, {
             "data": "id"
           }],
           order: [[3, 'asc']],
@@ -5312,7 +5456,7 @@ __webpack_require__.r(__webpack_exports__);
             className: 'dt-left',
             orderable: false,
             render: function render(data, type, full, meta) {
-              return "\n                                <label class=\"checkbox checkbox-single ml-4\">\n                                    <input type=\"checkbox\" value=\"\" class=\"checkable\"/>\n                                    <span></span>\n                                </label>";
+              return "\n                                <label class=\"checkbox checkbox-single ml-4\">\n                                    <input type=\"checkbox\" value=\"" + data + "\" class=\"checkable\"/>\n                                    <span></span>\n                                </label>";
             }
           }, {
             targets: [3, 4],
@@ -5324,7 +5468,7 @@ __webpack_require__.r(__webpack_exports__);
             sortable: false,
             render: function render(data, type, full, meta) {
               return '<button data-record-id="' + data + '" data-row-idx="' + meta.row + '" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
-                                            <i class="flaticon2-document"></i> Passengers\
+                                            <i class="flaticon2-document"></i>\
                                         </button>';
             }
           }],
@@ -5335,7 +5479,7 @@ __webpack_require__.r(__webpack_exports__);
               axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
                 vm.passengers = res.data;
                 vm.current_row = idx;
-                $('#kt_datatable_modal').modal('show');
+                $('#modal-passengers').modal('show');
               });
             });
           }
@@ -5350,6 +5494,16 @@ __webpack_require__.r(__webpack_exports__);
           initTable();
         }
       };
+    },
+    assignVehicle: function assignVehicle() {
+      var arr = [];
+      $('input.checkable:checkbox:checked').each(function () {
+        arr.push($(this).val());
+      });
+
+      if (arr.length > 0) {
+        $('#modal-approved').modal('show');
+      }
     }
   }
 });
@@ -48414,7 +48568,11 @@ var render = function() {
     "div",
     {
       staticClass: "modal fade",
-      attrs: { id: "kt_datatable_modal", role: "dialog", "aria-hidden": "true" }
+      attrs: {
+        id: !_vm.id ? "kt_datatable_modal" : _vm.id,
+        role: "dialog",
+        "aria-hidden": "true"
+      }
     },
     [
       _c(
@@ -52239,7 +52397,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _vm._l(
                                         _vm.procurements.filter(function(i) {
-                                          return i.type === 2
+                                          return i.type == 2
                                         }),
                                         function(po) {
                                           return _c(
@@ -52293,7 +52451,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _vm._l(
                                         _vm.procurements.filter(function(i) {
-                                          return i.type === 1
+                                          return i.type == 1
                                         }),
                                         function(po) {
                                           return _c(
@@ -53420,10 +53578,96 @@ var render = function() {
     "div",
     { attrs: { id: "rito-requests-page" } },
     [
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass:
+            "card card-custom gutter-b animate__animated animate__fadeIn"
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-toolbar" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary font-weight-bolder",
+                    on: { click: _vm.assignVehicle }
+                  },
+                  [
+                    _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                            width: "24px",
+                            height: "24px",
+                            viewBox: "0 0 24 24",
+                            version: "1.1"
+                          }
+                        },
+                        [
+                          _c(
+                            "g",
+                            {
+                              attrs: {
+                                stroke: "none",
+                                "stroke-width": "1",
+                                fill: "none",
+                                "fill-rule": "evenodd"
+                              }
+                            },
+                            [
+                              _c("rect", {
+                                attrs: {
+                                  x: "0",
+                                  y: "0",
+                                  width: "24",
+                                  height: "24"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("circle", {
+                                attrs: {
+                                  fill: "#000000",
+                                  cx: "9",
+                                  cy: "15",
+                                  r: "6"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                                  fill: "#000000",
+                                  opacity: "0.3"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v("Confirm Request")
+                  ]
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      ),
       _vm._v(" "),
       _c("modal", {
-        attrs: { size: _vm.size },
+        attrs: { size: _vm.modal.size, id: _vm.modal.passengers_id },
         scopedSlots: _vm._u([
           {
             key: "header",
@@ -53499,11 +53743,404 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(p.position))]),
                         _vm._v(" "),
-                        _c("td")
+                        _c("td", [_vm._v(_vm._s(p.gender))])
                       ])
                     }),
                     0
                   )
+                ])
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("modal", {
+        attrs: { id: _vm.modal.approved_id },
+        scopedSlots: _vm._u([
+          {
+            key: "header",
+            fn: function() {
+              return [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Motor Vehicle")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "ki ki-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "body",
+            fn: function() {
+              return [
+                _c("div", { staticClass: "w-100 row" }, [
+                  _c("div", { staticClass: "col-lg-12" }, [
+                    _c(
+                      "button",
+                      { staticClass: "btn font-weight-bold btn-primary mr-2" },
+                      [
+                        _vm._v("Request "),
+                        _c(
+                          "span",
+                          { staticClass: "label label-sm label-white ml-2" },
+                          [_vm._v("5")]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn btn-light-danger pulse pulse-danger float-right",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c("i", { staticClass: "flaticon2-information" }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "pulse-ring mt-n9 ml-n3" }),
+                        _vm._v(
+                          "\n                        PUV\n                    "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("hr", { staticClass: "col-lg-12" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Type of Motor Vehicle")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "checkbox-inline" }, [
+                        _c(
+                          "label",
+                          { staticClass: "checkbox checkbox-solid" },
+                          [
+                            _c("input", {
+                              staticClass: "checkbox-vehicle",
+                              attrs: {
+                                type: "checkbox",
+                                name: "vehicle_office",
+                                id: "checkbox-office",
+                                value: "office"
+                              }
+                            }),
+                            _vm._v(" RP\n                                "),
+                            _c("span")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          { staticClass: "checkbox checkbox-solid" },
+                          [
+                            _c("input", {
+                              staticClass: "checkbox-vehicle",
+                              attrs: {
+                                type: "checkbox",
+                                name: "vehicle_rental",
+                                id: "checkbox-rental",
+                                value: "rental"
+                              }
+                            }),
+                            _vm._v(" Hired\n                                "),
+                            _c("span")
+                          ]
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Travel Po Number")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-control select2 staff-required",
+                          attrs: { name: "travel_po", id: "travel_po-select" }
+                        },
+                        [
+                          _c("option", { attrs: { label: "Label" } }),
+                          _vm._v(" "),
+                          _c("option")
+                        ]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr", { staticClass: "col-lg-12" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-lg-12 row" }, [
+                  _c("div", { staticClass: "col-lg-12 d-flex" }, [
+                    _c("input", {
+                      attrs: {
+                        id: "office-vehicle-total",
+                        type: "hidden",
+                        name: "office_vehicle_total"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { staticClass: "h5" }, [_vm._v("RP Vehicle")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-auto" }, [
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-plus-square p-0" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-minus-square p-0" })]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-12" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table w-100",
+                        attrs: { id: "vehicle-office-tbl" }
+                      },
+                      [
+                        _c("thead", [
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("#")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Vehicle Name")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Driver")]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", {
+                              staticClass: "text-center",
+                              attrs: { scope: "row" }
+                            }),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  staticClass:
+                                    "form-control select2 staff-required"
+                                },
+                                [
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _c("option")
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  staticClass:
+                                    "form-control select2 staff-required"
+                                },
+                                [
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _c("option")
+                                ]
+                              )
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr", { staticClass: "col-lg-12" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-lg-12 row" }, [
+                  _c("div", { staticClass: "col-lg-12 d-flex" }, [
+                    _c("input", {
+                      attrs: {
+                        id: "rental-vehicle-total",
+                        type: "hidden",
+                        name: "rental_vehicle_total"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { staticClass: "h5" }, [
+                      _vm._v("Hired Vehicle")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-auto" }, [
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-plus-square p-0" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        { staticClass: "btn btn-sm btn-outline-primary" },
+                        [_c("i", { staticClass: "fa fa-minus-square p-0" })]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-12" }, [
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table w-100",
+                        attrs: { id: "vehicle-rental-tbl" }
+                      },
+                      [
+                        _c("thead", [
+                          _c("tr", [
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("#")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Plate #")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Vehicle Name")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Driver Name")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "th",
+                              {
+                                staticClass: "text-center",
+                                attrs: { scope: "col" }
+                              },
+                              [_vm._v("Contact #")]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", {
+                              staticClass: "text-center",
+                              attrs: { scope: "row" }
+                            }),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                staticClass: "select-remove form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Enter vehicle plate no."
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Enter vehicle name"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Enter driver name"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                staticClass: "select-remove form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Enter driver contact no."
+                                }
+                              })
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  ])
                 ])
               ]
             },
@@ -53520,60 +54157,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "card card-custom gutter-b animate__animated animate__fadeIn"
-      },
-      [
-        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [
-              _c("span", {
-                staticClass: "d-block text-muted pt-2 font-size-sm"
-              })
+    return _c("div", { staticClass: "card-title" }, [
+      _c("h3", { staticClass: "card-label" }, [
+        _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          attrs: { id: "rito-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Tracking No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Destination")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Travel Date")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Return Date")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Purpose")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Means of Transportation")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Requested By")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-toolbar" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "table",
-            {
-              staticClass:
-                "table table-separate table-head-custom table-checkable",
-              attrs: { id: "rito-tbl" }
-            },
-            [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [_vm._v("ID")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Tracking No.")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Destination")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Travel Date")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Return Date")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Purpose")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Means of Transportation")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Status")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Action")])
-                ])
-              ])
-            ]
-          )
-        ])
-      ]
-    )
+          ])
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -57341,7 +57968,7 @@ var render = function() {
                           {
                             staticClass: "btn btn-success btn-sm",
                             attrs: {
-                              to: { name: "listRequests" },
+                              to: { name: "listLocalRequests" },
                               href: "#",
                               role: "button"
                             }
