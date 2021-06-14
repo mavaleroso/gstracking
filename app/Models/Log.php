@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\WithPaginate;
 use Ccore\Core\Traits\ExtendedEloquentTrait;
 
+
 class Log extends Model
 {
+    use ExtendedEloquentTrait;
+    use WithPaginate;
+
     protected $table = 'logs';
 
     /**
@@ -20,6 +24,6 @@ class Log extends Model
         'user_id',
         'page',
         'url',
-        'action',
+        'action'
     ];
 }

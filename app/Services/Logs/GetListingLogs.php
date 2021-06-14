@@ -15,10 +15,9 @@ class GetListingLogs
      */
     public function execute()
     {
-        // $query = Vehicle::select(['*']);
         $query = Log::select(['*']);
         
-       
+        
         $result = Datatable::of($query, request(), [
             'searchable' => [
                 'page',
@@ -26,6 +25,7 @@ class GetListingLogs
                 'action'
             ],
             'orderable' => [
+                'id',
                 'page',
                 'url',
                 'action'
