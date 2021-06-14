@@ -13,8 +13,7 @@ class GetPoById
      */
     public function execute(int $id)
     {
-        
-        $po = Procurement::find($id)->get();
+        $po = Procurement::where('id', $id)->get();
         return $po;
     }
 }

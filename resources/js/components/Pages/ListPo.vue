@@ -15,7 +15,12 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Type:</label>
-                                    <select class="form-control select2" id="type" name="type" v-model="formFields.type">
+                                    <select v-if="create == true" class="form-control select2" id="type" name="type" v-model="formFields.type" >
+                                        <option label="Label"></option>
+                                        <option value="1">Travel</option>
+                                        <option value="2">Fuel</option>
+                                    </select>
+                                    <select v-else class="form-control disabled bg-gray-400 select2" id="type" name="type" v-model="formFields.type" disabled>
                                         <option label="Label"></option>
                                         <option value="1">Travel</option>
                                         <option value="2">Fuel</option>
@@ -173,7 +178,7 @@ export default {
             this.formFields.po_no = '';
             this.formFields.po_amount =  '';
             this.formFields.status =  '';
-
+            this.formFields.type =  '';
             this.create = false;
             this.edit = false;
             this.ini().init();
@@ -251,10 +256,13 @@ export default {
                 vm.formFields.po_no = response.data[0].po_no;
                 vm.formFields.po_amount = response.data[0].po_amount;
                 vm.formFields.status = response.data[0].status;
+                vm.formFields.type = response.data[0].type;
                 
                 setTimeout(() => {
                     $('#status').val(vm.formFields.status);
                     $('#status').trigger('change');
+                    $('#type').val(vm.formFields.type);
+                    $('#type').trigger('change');
                 }, 500);
 
             });

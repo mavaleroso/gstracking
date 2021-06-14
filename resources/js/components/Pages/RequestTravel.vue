@@ -179,6 +179,7 @@ export default {
     methods: {
         ini() {
             $(() => { 
+                $('#kt_select_section').attr('disabled', 'disabled');
 
                 $('#kt_select_province').select2({
                     placeholder: "Select a Province",
@@ -211,13 +212,20 @@ export default {
 
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
-
                 $('#kt_select_division').on('change', () => {
-                    let id  = $('#kt_select_division').val();
-                    this.getSection(id);
-                    this.sections= [];
-                    this.activeSections = [];
-
+                    $('#kt_select_section').attr('disabled', 'disabled');
+                    setTimeout(() => {
+                        if($('#kt_select_division').val() != ""){
+                            $('#kt_select_section').select2('enable'); 
+                            let id  = $('#kt_select_division').val();
+                            this.getSection(id);
+                            this.sections= [];
+                            this.activeSections = [];
+                        }
+                        else{
+                            $("#kt_select_section").empty();
+                        }
+                    }, 500);
                 });
 
                 $('#kt_select_section').on('change', () => {
@@ -298,8 +306,13 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },  
+        saveLogs(){
+            console.log(this.$appName);
         },
         saveForm() {
+            this.saveLogs();
+
             let requestform = $('#kt_form').serialize();
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
@@ -393,25 +406,21 @@ export default {
                 if(this.names[i] == 'section' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
                     $('#kt_select_'+this.names[i]).empty();                           
                 }
-                else if(this.names[i] == 'division' || this.names[i] == 'region' ){
-                    $('#kt_select_'+this.names[i]).val(null).trigger("change");
+                else if(this.names[i] == 'division' || this.names[i] == 'region'  ){
+                    $('#kt_select_region').val(null).trigger("change");
                 }
                 else {
                     $('[name="'+this.names[i]+'"]').val(null);
                 }
+                $('#kt_select_division').val(null).trigger("change");
             }
             $('.details-input').attr('disabled', false);
             this.complete = false;
             this.requestCode = null;
             this.createdAt = null;
-            setTimeout(() => {
-                $('#kt_select_section').empty();
-                $('#kt_select_province').empty();
-            }, 500);
         },
         dateConf() {
             var dtToday = new Date();
-    
             var month = dtToday.getMonth() + 1;
             var day = dtToday.getDate();
             var year = dtToday.getFullYear();
@@ -419,9 +428,7 @@ export default {
                 month = '0' + month.toString();
             if(day < 10)
                 day = '0' + day.toString();
-            
             var maxDate = year + '-' + month + '-' + day;
-
             this.maxDate = maxDate;
         },
     },

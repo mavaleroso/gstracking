@@ -29,9 +29,12 @@ class CreateTravel
      *
      * @return object
      */
-    public function execute($fields)
+    public function execute($fields, $url)
     {
- 
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
+        $createLogs = createLogs($arr);
 
         $rqt_code = $this->getCode->request_code();
 
