@@ -4846,6 +4846,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4915,6 +4920,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.po_no = '';
       this.formFields.po_amount = '';
       this.formFields.status = '';
+      this.formFields.type = '';
       this.create = false;
       this.edit = false;
       this.ini().init();
@@ -5000,9 +5006,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.po_no = response.data[0].po_no;
         vm.formFields.po_amount = response.data[0].po_amount;
         vm.formFields.status = response.data[0].status;
+        vm.formFields.type = response.data[0].type;
         setTimeout(function () {
           $('#status').val(vm.formFields.status);
           $('#status').trigger('change');
+          $('#type').val(vm.formFields.type);
+          $('#type').trigger('change');
         }, 500);
       });
     },
@@ -53013,52 +53022,108 @@ var render = function() {
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Type:")]),
                           _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
+                          _vm.create == true
+                            ? _c(
+                                "select",
                                 {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.type,
-                                  expression: "formFields.type"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: { id: "type", name: "type" },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "type",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Travel")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Fuel")
-                              ])
-                            ]
-                          )
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.type,
+                                      expression: "formFields.type"
+                                    }
+                                  ],
+                                  staticClass: "form-control select2",
+                                  attrs: { id: "type", name: "type" },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.formFields,
+                                        "type",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "1" } }, [
+                                    _vm._v("Travel")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "2" } }, [
+                                    _vm._v("Fuel")
+                                  ])
+                                ]
+                              )
+                            : _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.formFields.type,
+                                      expression: "formFields.type"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "form-control disabled bg-gray-400 select2",
+                                  attrs: {
+                                    id: "type",
+                                    name: "type",
+                                    disabled: ""
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.formFields,
+                                        "type",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("option", { attrs: { label: "Label" } }),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "1" } }, [
+                                    _vm._v("Travel")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "2" } }, [
+                                    _vm._v("Fuel")
+                                  ])
+                                ]
+                              )
                         ])
                       ]),
                       _vm._v(" "),
