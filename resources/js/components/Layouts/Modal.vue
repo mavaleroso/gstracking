@@ -1,6 +1,6 @@
 <template>
     <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div :class="(!size) ? 'modal-dialog modal-xl modal-dialog-centered':'modal-dialog modal-dialog-centered '+size">
             <div class="modal-content" style="min-height: 100px; !important">
                 <div class="modal-header py-5">
                     <slot name="header"></slot>
@@ -25,7 +25,8 @@
 <script>
 export default {
     props: [
-        'status'
+        'status',
+        'size'
     ],
 }
 </script>

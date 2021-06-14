@@ -1,7 +1,8 @@
 import VueRouter from 'vue-router';
 import Dashboard from './components/Pages/Dashboard';
 import RequestTravel from './components/Pages/RequestTravel';
-import ListRequest from './components/Pages/ListRequests';
+import ListLocalRequest from './components/Pages/ListLocalRequests';
+import ListRitoRequest from './components/Pages/ListRitoRequests';
 import ListTravel from './components/Pages/ListTravels';
 import Log from './components/Pages/Logs';
 import Vehicle from './components/Pages/Transportation/Vehicle';
@@ -30,11 +31,19 @@ const routes = [
         }
     },
     {
-        path: '/list_requests',
-        component: ListRequest,
-        name: 'listRequests',
+        path: '/local_requests',
+        component: ListLocalRequest,
+        name: 'listLocalRequests',
         meta: {
-            title: 'List of Requests'
+            title: 'Local Requests'
+        }
+    },
+    {
+        path: '/rito_requests',
+        component: ListRitoRequest,
+        name: 'listRitoRequests',
+        meta: {
+            title: 'RITO Requests'
         }
     },
     {

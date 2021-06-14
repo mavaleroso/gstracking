@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\ListRequests;
+namespace App\Services\LocalRequest;
 
 // use Illuminate\Http\Request;
 use App\Models\Request;
