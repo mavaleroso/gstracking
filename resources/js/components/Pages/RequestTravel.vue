@@ -306,8 +306,13 @@ export default {
                 lastTr.remove();
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+        },  
+        saveLogs(){
+            console.log(this.$appName);
         },
         saveForm() {
+            this.saveLogs();
+
             let requestform = $('#kt_form').serialize();
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();

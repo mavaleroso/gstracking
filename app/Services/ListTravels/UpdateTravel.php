@@ -12,8 +12,13 @@ class UpdateTravel
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($id, $fields)
+    public function execute($id, $fields, $url)
     {
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Local_requests' , 'lurl' => $url, 'laction' => 'edit');
+        $createLogs = createLogs($arr);
+
         $trans = TransactionVehicles::where('id',$id);
         $trans->update([
             'starting_odo' => $fields['starting_odo'],

@@ -6,8 +6,8 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ListRequests\TravelRequestStaff;
 use App\Http\Requests\ListRequests\ListRequestStaff;
-use App\Services\ListRequests\CreateTransaction;
-use App\Services\ListRequests\UpdateRequests;
+use App\Services\LocalRequest\CreateTransaction;
+use App\Services\LocalRequest\UpdateRequests;
 
 
 
@@ -55,7 +55,8 @@ class ListRequestStaffController extends Controller
      */
     public function store(TravelRequestStaff $travelRequestStaff, CreateTransaction $createTransaction)
     {
-        $result = $createTransaction->execute($travelRequestStaff->validated());
+        $url = $travelRequestStaff->url();
+        $result = $createTransaction->execute($travelRequestStaff->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.request_created_successfully'), 'result' => $result]);
     }
 
@@ -90,7 +91,8 @@ class ListRequestStaffController extends Controller
      */
 
     public function declined(ListRequestStaff $request,UpdateRequests $updateRequests){
-        $result = $updateRequests->execute($request);
+        $url = $request->url();
+        $result = $updateRequests->execute($request, $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.list_requests_updated_successfully'), 'result' => $result]);
     }
 

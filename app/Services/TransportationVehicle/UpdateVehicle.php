@@ -13,8 +13,12 @@ class UpdateVehicle
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($id, $fields)
+    public function execute($id, $fields, $url)
     {
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Office_vehicle' , 'lurl' => $url, 'laction' => 'edit');
+        $createLogs = createLogs($arr);
+
         $data = [
             'name' => $fields['name'],
             'description' => $fields['description'],

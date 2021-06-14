@@ -8163,9 +8163,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
+    saveLogs: function saveLogs() {
+      console.log(this.$appName);
+    },
     saveForm: function saveForm() {
       var _this2 = this;
 
+      this.saveLogs();
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();

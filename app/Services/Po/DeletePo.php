@@ -10,8 +10,12 @@ class DeletePo
      *
      * @return object
      */
-    public function execute($id)
+    public function execute($id, $url)
     {
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'List_po' , 'lurl' => $url, 'laction' => 'delete');
+        $createLogs = createLogs($arr);
+
         $po = Procurement::destroy($id);
         return $po;
     }

@@ -55,7 +55,8 @@ class TransportationVehicleController extends Controller
      */
     public function store(VehicleRequest $vehicleRequest, CreateVehicle $createVehicle)
     {
-        $result = $createVehicle->execute($vehicleRequest->validated());
+        $url = $vehicleRequest->url();
+        $result = $createVehicle->execute($vehicleRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
@@ -91,7 +92,8 @@ class TransportationVehicleController extends Controller
      */
     public function update($id, VehicleRequest $vehicleRequest, UpdateVehicle $updateVehicle)
     {
-        $result = $updateVehicle->execute($id, $vehicleRequest->validated());
+        $url = $vehicleRequest->url();
+        $result = $updateVehicle->execute($id, $vehicleRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_updated_successfully'), 'result' => $result]);
     }
 
@@ -101,8 +103,17 @@ class TransportationVehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
+
+
+        
+        $url = $request->url();
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Office_vehicle' , 'lurl' => $url, 'laction' => 'delete');
+        $createLogs = createLogs($arr);
+
         $result = Vehicle::destroy($id);
         return json_encode(['type' => 'success','message' => __('main/notifications.vehicle_deleted_successfully'), 'result' => $result]);
     }

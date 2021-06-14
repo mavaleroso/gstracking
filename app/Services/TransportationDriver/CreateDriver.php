@@ -12,8 +12,13 @@ class CreateDriver
      * @param string $email
      * @return App\Models\User
      */
-    public function execute($fields)
+    public function execute($fields, $url)
     {
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'Office_driver' , 'lurl' => $url, 'laction' => 'create');
+        $createLogs = createLogs($arr);
+
         $driver = Driver::create([
             'type' => 1,
             'fullname' => $fields['fullname'],

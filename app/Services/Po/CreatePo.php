@@ -11,8 +11,12 @@ class CreatePo
      *
      * @param string $email
      */
-    public function execute($fields)
+    public function execute($fields, $url)
     {
+
+        $user = auth()->user()->id;
+        $arr = array('luser' => $user, 'lpage' => 'List_po' , 'lurl' => $url, 'laction' => 'create');
+        $createLogs = createLogs($arr);
 
         $data = Procurement::create([
             'po_no' => $fields['po_no'],
