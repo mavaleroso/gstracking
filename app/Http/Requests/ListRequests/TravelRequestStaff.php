@@ -26,7 +26,6 @@ class TravelRequestStaff extends FormRequest
         ];
 
         if ($this->request->has('vehicle_office')) {
-            $data['fuel_po'] = 'required';
             $data['office_vehicle_total'] = 'nullable';
             for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
                 $data['vehicle_'.$i] = 'required';
@@ -57,7 +56,6 @@ class TravelRequestStaff extends FormRequest
         ];
 
         if ($this->request->has('vehicle_office')) {
-            $data['fuel_po'] = 'Fuel PO';
             for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
                 $data['vehicle_'.$i] = 'Vehicle';
                 $data['driver_'.$i] = 'Driver';
@@ -86,7 +84,6 @@ class TravelRequestStaff extends FormRequest
         ];
 
         if ($this->request->has('vehicle_office')) {
-            $data['fuel_po'] =  __('main/validations.required');
             for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
                 $data['vehicle_'.$i] = __('main/validations.required');
                 $data['driver_'.$i] = __('main/validations.required');
