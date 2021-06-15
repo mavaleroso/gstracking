@@ -20,7 +20,7 @@
                             <hr class="my-4">
                             <p>{{ createdAt }}</p>
                             <p class="lead">
-                                <router-link :to="{name: 'listRequests'}" class="btn btn-success btn-sm" href="#" role="button">Update request</router-link>
+                                <router-link :to="{name: 'listLocalRequests'}" class="btn btn-success btn-sm" href="#" role="button">Update request</router-link>
                                 
                                 <a class="btn btn-primary btn-sm" href="#" @click="newRequest" role="button">New request</a>
                             </p>

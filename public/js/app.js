@@ -2304,7 +2304,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['status', 'size']
+  props: ['id', 'status', 'size']
 });
 
 /***/ }),
@@ -3966,8 +3966,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       maxDate: null,
       staff: {
         id: null,
-        vehicle: null,
-        driver: null,
         vehicle_office: false,
         vehicle_rental: false,
         office: {
@@ -4238,12 +4236,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               });
               $('#driver-select-1').on('change', function () {
                 vm.staff.driver = $(this).val();
-              }); // $('#fuel_po-select').select2({
-              //     placeholder: "Select a Travel PO",
-              // });
-              // $('#fuel_po-select').on('change', function() {
-              //     vm.staff.office.po = $(this).val();
-              // });
+              });
             } else {
               vm.officeNames = ['vehicle_1', 'driver_1'];
             }
@@ -4251,9 +4244,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if (vm.staff.vehicle_rental) {
               $('#travel_po-select').select2({
                 placeholder: "Select a Travel PO"
-              });
-              $('#travel_po-select').on('change', function () {
-                vm.staff.rental.po = $(this).val();
               });
               $('.select-remove').siblings('.select2').remove();
               $('.select-remove').siblings('.select2').remove();
@@ -4603,12 +4593,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $("#driver-select-".concat(count)).select2({
           placeholder: "Select a driver"
-        });
-        $("#vehicle-select-".concat(count)).on('change', function () {
-          vm.staff.vehicle = $(this).val();
-        });
-        $("#driver-select-".concat(count)).on('change', function () {
-          vm.staff.driver = $(this).val();
         });
       }, 100);
       this.officeNames.push("vehicle_".concat(count));
@@ -5184,6 +5168,165 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Layouts/Modal */ "./resources/js/components/Layouts/Modal.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5253,10 +5396,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      size: 'modal-lg',
+      modal: {
+        passengers_id: 'modal-passengers',
+        approved_id: 'modal-approved',
+        size: 'modal-lg'
+      },
       current_row: null,
+      selected: [],
       data: [],
-      passengers: []
+      passengers: [],
+      passengers_count: 0,
+      pos: [],
+      vehicles: [],
+      drivers: [],
+      rp: {
+        status: false,
+        total: 1
+      },
+      hired: {
+        status: false,
+        total: 1
+      },
+      defaultNames: [],
+      rpNames: ['vehicle_1', 'driver_1'],
+      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1']
     };
   },
   components: {
@@ -5264,20 +5427,44 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {},
   mounted: function mounted() {
-    this.ini();
+    this.ini().datatable_ini('1');
+    this.getPos();
+    this.getVehicles();
+    this.getDrivers();
   },
   methods: {
-    ini: function ini() {
+    ini: function (_ini) {
+      function ini() {
+        return _ini.apply(this, arguments);
+      }
+
+      ini.toString = function () {
+        return _ini.toString();
+      };
+
+      return ini;
+    }(function () {
       var _this = this;
 
-      $(function () {
-        axios.get(BASE_URL + '/travel/ritorequest').then(function (res) {
-          _this.data = res.data.results;
-
-          _this.tdatatable().init();
+      var table = function table(type) {
+        $(function () {
+          axios.get(BASE_URL + '/travel/ritorequest').then(function (res) {
+            _this.data = res.data.results;
+            type == 1 ? _this.tdatatable().init() : null;
+          });
         });
-      });
-    },
+      };
+
+      return {
+        init: function init() {
+          ini();
+        },
+        datatable_ini: function datatable_ini() {
+          var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+          table(type);
+        }
+      };
+    }),
     tdatatable: function tdatatable() {
       var vm = this;
 
@@ -5308,6 +5495,10 @@ __webpack_require__.r(__webpack_exports__);
           }, {
             "data": "id"
           }, {
+            "data": "passenger_count"
+          }, {
+            "data": "requested_by"
+          }, {
             "data": "id"
           }],
           order: [[3, 'asc']],
@@ -5320,7 +5511,7 @@ __webpack_require__.r(__webpack_exports__);
             className: 'dt-left',
             orderable: false,
             render: function render(data, type, full, meta) {
-              return "\n                                <label class=\"checkbox checkbox-single ml-4\">\n                                    <input type=\"checkbox\" value=\"\" class=\"checkable\"/>\n                                    <span></span>\n                                </label>";
+              return "\n                                <label class=\"checkbox checkbox-single ml-4\">\n                                    <input type=\"checkbox\" value=\"" + data + "\" class=\"checkable\"/>\n                                    <span></span>\n                                </label>";
             }
           }, {
             targets: [3, 4],
@@ -5332,7 +5523,7 @@ __webpack_require__.r(__webpack_exports__);
             sortable: false,
             render: function render(data, type, full, meta) {
               return '<button data-record-id="' + data + '" data-row-idx="' + meta.row + '" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
-                                            <i class="flaticon2-document"></i> Passengers\
+                                            <i class="flaticon2-document"></i>\
                                         </button>';
             }
           }],
@@ -5343,7 +5534,7 @@ __webpack_require__.r(__webpack_exports__);
               axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
                 vm.passengers = res.data;
                 vm.current_row = idx;
-                $('#kt_datatable_modal').modal('show');
+                $('#modal-passengers').modal('show');
               });
             });
           }
@@ -5358,6 +5549,217 @@ __webpack_require__.r(__webpack_exports__);
           initTable();
         }
       };
+    },
+    assignVehicle: function assignVehicle() {
+      var vm = this;
+      var arr = [];
+      vm.passengers_count = 0;
+      var count = 0;
+      $('input.checkable:checkbox:checked').each(function () {
+        arr.push($(this).val());
+        vm.selected.push($(this).val());
+        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];
+        ;
+        vm.passengers_count += parseInt(pasColumn.textContent);
+        count++;
+      });
+
+      if (arr.length > 0) {
+        $('#modal-approved').modal('show');
+        $('.checkbox-vehicle').change(function () {
+          vm.rp.total = vm.hired.total = 1;
+
+          if (vm.rp.status) {
+            $('#vehicle-select-1').select2({
+              placeholder: "Select a vehicle"
+            });
+            $('#driver-select-1').select2({
+              placeholder: "Select a driver"
+            });
+          } else {
+            vm.rpNames = ['vehicle_1', 'driver_1'];
+          }
+
+          if (vm.hired.status) {
+            $('#travel_po-select').select2({
+              placeholder: "Select a Travel PO"
+            });
+            $('.select-remove').siblings('.select2').remove();
+            $('.select-remove').siblings('.select2').remove();
+          } else {
+            vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
+          }
+
+          if ($('#checkbox-office').is(":checked")) {
+            vm.defaultNames.push('office_vehicle');
+          } else {
+            vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
+          }
+
+          if ($('#checkbox-rental').is(":checked")) {
+            vm.defaultNames.push('rental_vehicle');
+          } else {
+            vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
+          }
+        });
+        $('.checkbox-vehicle').on('change', function () {
+          $('.invalid-feedback-admin').remove();
+          $('.invalid-admin').removeClass('is-invalid');
+        });
+      }
+    },
+    incrementRpVehicle: function incrementRpVehicle(event) {
+      event.preventDefault();
+      var count = this.rp.total += 1;
+      setTimeout(function () {
+        $("#vehicle-select-".concat(count)).select2({
+          placeholder: "Select a vehicle"
+        });
+        $("#driver-select-".concat(count)).select2({
+          placeholder: "Select a driver"
+        });
+      }, 100);
+      this.rpNames.push("vehicle_".concat(count));
+      this.rpNames.push("driver_".concat(count));
+    },
+    decrementRpVehicle: function decrementRpVehicle(event) {
+      event.preventDefault();
+
+      if (this.rp.total != 1) {
+        this.rpNames.pop();
+        this.rpNames.pop();
+        this.rp.total -= 1;
+      }
+    },
+    incrementHiredlVehicle: function incrementHiredlVehicle(event) {
+      event.preventDefault();
+      var count = this.hired.total += 1;
+      this.hiredNames.push('vehicle_name_' + count);
+      this.hiredNames.push('vehicle_plate_' + count);
+      this.hiredNames.push('driver_name_' + count);
+      this.hiredNames.push('driver_contact_' + count);
+    },
+    decrementHiredVehicle: function decrementHiredVehicle(event) {
+      event.preventDefault();
+
+      if (this.hired.total != 1) {
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hired.total -= 1;
+      }
+    },
+    getPos: function getPos() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + '/api/v1/po').then(function (response) {
+        _this2.pos = response.data;
+      });
+    },
+    getVehicles: function getVehicles() {
+      var _this3 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
+        _this3.vehicles = response.data;
+      });
+    },
+    getDrivers: function getDrivers() {
+      var _this4 = this;
+
+      axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
+        _this4.drivers = response.data;
+      });
+    },
+    parseNum: function parseNum(data) {
+      return toParseNum(data);
+    },
+    approved: function approved() {
+      var _this5 = this;
+
+      var ritoData = $('#rito-form').serialize();
+      axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(function (response) {
+        $('.invalid-feedback-admin').remove();
+        $('.invalid-admin').removeClass('is-invalid');
+        Swal.fire("Good job!", response.data.message, "success");
+        showToast(response.data.message, 'success');
+
+        _this5.ini().datatable_ini();
+
+        $('#modal-approved').modal('toggle');
+        $('input.checkable:checkbox:checked').click();
+      })["catch"](function (error) {
+        var data = error.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          var _keys = "".concat(key).replace(/[0-9]/g, '');
+
+          if ("".concat(key) == 'rp_vehicle' || "".concat(key) == 'hired_vehicle') {
+            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
+              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+            }
+          } else if ("".concat(key) == 'travel_po') {
+            if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
+              $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+            }
+          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
+              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            }
+          } else {
+            if ($('[name="' + "".concat(key) + '"]').next().next().length == 0) {
+              $('[name="' + "".concat(key) + '"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+            }
+          }
+        }
+
+        ;
+
+        for (var i = 0; i < _this5.defaultNames.length; i++) {
+          if (_this5.defaultNames[i] == 'rp_vehicle' || _this5.defaultNames[i] == 'hired_vehicle') {
+            if (keys.indexOf('' + _this5.defaultNames[i] + '') == -1) {
+              if ($('.radio-inline').next().length != 0) {
+                $('.radio-inline').next('.invalid-feedback').remove();
+              }
+            }
+          }
+        }
+
+        for (var _i2 = 0; _i2 < _this5.hiredNames.length; _i2++) {
+          if (_this5.hiredNames[_i2] == 'travel_po') {
+            if (keys.indexOf('' + _this5.hiredNames[_i2] + '') == -1) {
+              if ($('#' + _this5.hiredNames[_i2] + '-select').next().next().length != 0) {
+                $('#' + _this5.hiredNames[_i2] + '-select').next().next('.invalid-feedback').remove();
+              }
+            }
+          } else {
+            if (keys.indexOf('' + _this5.hiredNames[_i2] + '') == -1) {
+              $('[name="' + _this5.hiredNames[_i2] + '"]').removeClass('is-invalid');
+              $('[name="' + _this5.hiredNames[_i2] + '"]').next('.invalid-feedback').remove();
+            }
+          }
+        }
+
+        for (var _i3 = 0; _i3 < _this5.rpNames.length; _i3++) {
+          if (keys.indexOf('' + _this5.rpNames[_i3] + '') == -1) {
+            if ($('[name="' + _this5.rpNames[_i3] + '"]').next().next().length != 0) {
+              $('[name="' + _this5.rpNames[_i3] + '"]').next().next('.invalid-feedback').remove();
+            }
+          }
+        }
+
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+      });
     }
   }
 });
@@ -48433,7 +48835,11 @@ var render = function() {
     "div",
     {
       staticClass: "modal fade",
-      attrs: { id: "kt_datatable_modal", role: "dialog", "aria-hidden": "true" }
+      attrs: {
+        id: !_vm.id ? "kt_datatable_modal" : _vm.id,
+        role: "dialog",
+        "aria-hidden": "true"
+      }
     },
     [
       _c(
@@ -52258,7 +52664,7 @@ var render = function() {
                                       _vm._v(" "),
                                       _vm._l(
                                         _vm.procurements.filter(function(i) {
-                                          return i.type === 1
+                                          return i.type == 1
                                         }),
                                         function(po) {
                                           return _c(
@@ -53441,10 +53847,96 @@ var render = function() {
     "div",
     { attrs: { id: "rito-requests-page" } },
     [
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass:
+            "card card-custom gutter-b animate__animated animate__fadeIn"
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-toolbar" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary font-weight-bolder",
+                    on: { click: _vm.assignVehicle }
+                  },
+                  [
+                    _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                            width: "24px",
+                            height: "24px",
+                            viewBox: "0 0 24 24",
+                            version: "1.1"
+                          }
+                        },
+                        [
+                          _c(
+                            "g",
+                            {
+                              attrs: {
+                                stroke: "none",
+                                "stroke-width": "1",
+                                fill: "none",
+                                "fill-rule": "evenodd"
+                              }
+                            },
+                            [
+                              _c("rect", {
+                                attrs: {
+                                  x: "0",
+                                  y: "0",
+                                  width: "24",
+                                  height: "24"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("circle", {
+                                attrs: {
+                                  fill: "#000000",
+                                  cx: "9",
+                                  cy: "15",
+                                  r: "6"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z",
+                                  fill: "#000000",
+                                  opacity: "0.3"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v("Confirm Request")
+                  ]
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      ),
       _vm._v(" "),
       _c("modal", {
-        attrs: { size: _vm.size },
+        attrs: { size: _vm.modal.size, id: _vm.modal.passengers_id },
         scopedSlots: _vm._u([
           {
             key: "header",
@@ -53520,7 +54012,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(p.position))]),
                         _vm._v(" "),
-                        _c("td")
+                        _c("td", [_vm._v(_vm._s(p.gender))])
                       ])
                     }),
                     0
@@ -53531,6 +54023,751 @@ var render = function() {
             proxy: true
           }
         ])
+      }),
+      _vm._v(" "),
+      _c("modal", {
+        attrs: { id: _vm.modal.approved_id },
+        scopedSlots: _vm._u(
+          [
+            {
+              key: "header",
+              fn: function() {
+                return [
+                  _c("h5", { staticClass: "modal-title" }, [
+                    _vm._v("Motor Vehicle")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close"
+                      }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "ki ki-close",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ]
+                  )
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "body",
+              fn: function() {
+                return [
+                  _c(
+                    "form",
+                    { staticClass: "form", attrs: { id: "rito-form" } },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selected,
+                            expression: "selected"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "selected" },
+                        domProps: { value: _vm.selected },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.selected = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.rp.total,
+                            expression: "rp.total"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "rp_total" },
+                        domProps: { value: _vm.rp.total },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.rp, "total", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.hired.total,
+                            expression: "hired.total"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "hired_total" },
+                        domProps: { value: _vm.hired.total },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.hired, "total", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "w-100 row" }, [
+                        _c("div", { staticClass: "col-lg-12" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "btn font-weight-bold btn-primary mr-2"
+                            },
+                            [
+                              _vm._v("Request "),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "label label-sm label-white ml-2"
+                                },
+                                [_vm._v(_vm._s(_vm.selected.length))]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "btn font-weight-bold btn-primary mr-2"
+                            },
+                            [
+                              _vm._v("Passengers "),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "label label-sm label-white ml-2"
+                                },
+                                [_vm._v(_vm._s(_vm.passengers_count))]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn btn-light-danger pulse pulse-danger float-right",
+                              attrs: { href: "#" }
+                            },
+                            [
+                              _c("i", { staticClass: "flaticon2-information" }),
+                              _vm._v(" "),
+                              _c("span", {
+                                staticClass: "pulse-ring mt-n9 ml-n3"
+                              }),
+                              _vm._v(
+                                "\n                            PUV\n                        "
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("hr", { staticClass: "col-lg-12" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Type of Motor Vehicle")]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "checkbox-inline" }, [
+                              _c(
+                                "label",
+                                { staticClass: "checkbox checkbox-solid" },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.rp.status,
+                                        expression: "rp.status"
+                                      }
+                                    ],
+                                    staticClass: "checkbox-vehicle",
+                                    attrs: {
+                                      type: "checkbox",
+                                      name: "rp_vehicle",
+                                      id: "checkbox-office",
+                                      value: "office"
+                                    },
+                                    domProps: {
+                                      checked: Array.isArray(_vm.rp.status)
+                                        ? _vm._i(_vm.rp.status, "office") > -1
+                                        : _vm.rp.status
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$a = _vm.rp.status,
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = "office",
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              _vm.$set(
+                                                _vm.rp,
+                                                "status",
+                                                $$a.concat([$$v])
+                                              )
+                                          } else {
+                                            $$i > -1 &&
+                                              _vm.$set(
+                                                _vm.rp,
+                                                "status",
+                                                $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1))
+                                              )
+                                          }
+                                        } else {
+                                          _vm.$set(_vm.rp, "status", $$c)
+                                        }
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(
+                                    " RP\n                                    "
+                                  ),
+                                  _c("span")
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                { staticClass: "checkbox checkbox-solid" },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.hired.status,
+                                        expression: "hired.status"
+                                      }
+                                    ],
+                                    staticClass: "checkbox-vehicle",
+                                    attrs: {
+                                      type: "checkbox",
+                                      name: "hired_vehicle",
+                                      id: "checkbox-rental",
+                                      value: "rental"
+                                    },
+                                    domProps: {
+                                      checked: Array.isArray(_vm.hired.status)
+                                        ? _vm._i(_vm.hired.status, "rental") >
+                                          -1
+                                        : _vm.hired.status
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$a = _vm.hired.status,
+                                          $$el = $event.target,
+                                          $$c = $$el.checked ? true : false
+                                        if (Array.isArray($$a)) {
+                                          var $$v = "rental",
+                                            $$i = _vm._i($$a, $$v)
+                                          if ($$el.checked) {
+                                            $$i < 0 &&
+                                              _vm.$set(
+                                                _vm.hired,
+                                                "status",
+                                                $$a.concat([$$v])
+                                              )
+                                          } else {
+                                            $$i > -1 &&
+                                              _vm.$set(
+                                                _vm.hired,
+                                                "status",
+                                                $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1))
+                                              )
+                                          }
+                                        } else {
+                                          _vm.$set(_vm.hired, "status", $$c)
+                                        }
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(
+                                    " Hired\n                                    "
+                                  ),
+                                  _c("span")
+                                ]
+                              )
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _vm.hired.status
+                            ? _c("div", { staticClass: "form-group" }, [
+                                _c("label", [_vm._v("Travel Po Number")]),
+                                _vm._v(" "),
+                                _c(
+                                  "select",
+                                  {
+                                    staticClass:
+                                      "form-control select2 staff-required",
+                                    attrs: {
+                                      name: "travel_po",
+                                      id: "travel_po-select"
+                                    }
+                                  },
+                                  [
+                                    _c("option", { attrs: { label: "Label" } }),
+                                    _vm._v(" "),
+                                    _vm._l(
+                                      _vm.pos.filter(function(i) {
+                                        return i.type == 1
+                                      }),
+                                      function(po) {
+                                        return _c(
+                                          "option",
+                                          {
+                                            key: po.id,
+                                            domProps: { value: po.id }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(po.po_no) +
+                                                " - ₱ " +
+                                                _vm._s(
+                                                  po.totalBalance
+                                                    ? _vm.parseNum(
+                                                        po.totalBalance
+                                                      )
+                                                    : _vm.parseNum(po.po_amount)
+                                                )
+                                            )
+                                          ]
+                                        )
+                                      }
+                                    )
+                                  ],
+                                  2
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.rp.status
+                        ? _c("hr", { staticClass: "col-lg-12" })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.rp.status
+                        ? _c("div", { staticClass: "col-lg-12 row" }, [
+                            _c("div", { staticClass: "col-lg-12 d-flex" }, [
+                              _c("label", { staticClass: "h5" }, [
+                                _vm._v("RP Vehicle")
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "ml-auto" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-sm btn-outline-primary",
+                                    on: { click: _vm.incrementRpVehicle }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-plus-square p-0"
+                                    })
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-sm btn-outline-primary",
+                                    on: { click: _vm.decrementRpVehicle }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-minus-square p-0"
+                                    })
+                                  ]
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-lg-12" }, [
+                              _c(
+                                "table",
+                                {
+                                  staticClass: "table w-100",
+                                  attrs: { id: "vehicle-office-tbl" }
+                                },
+                                [
+                                  _c("thead", [
+                                    _c("tr", [
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("#")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Vehicle Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Driver")]
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "tbody",
+                                    _vm._l(_vm.rp.total, function(index) {
+                                      return _c("tr", { key: index }, [
+                                        _c(
+                                          "td",
+                                          {
+                                            staticClass: "text-center",
+                                            attrs: { scope: "row" }
+                                          },
+                                          [_vm._v(_vm._s(index))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c(
+                                            "select",
+                                            {
+                                              staticClass:
+                                                "form-control select2 staff-required",
+                                              attrs: {
+                                                id: "vehicle-select-" + index,
+                                                name: "vehicle_" + index
+                                              }
+                                            },
+                                            [
+                                              _c("option", {
+                                                attrs: { label: "Label" }
+                                              }),
+                                              _vm._v(" "),
+                                              _vm._l(_vm.vehicles, function(
+                                                vehicle
+                                              ) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    key: vehicle.id,
+                                                    domProps: {
+                                                      value: vehicle.id
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(vehicle.name) +
+                                                        " - " +
+                                                        _vm._s(vehicle.plate_no)
+                                                    )
+                                                  ]
+                                                )
+                                              })
+                                            ],
+                                            2
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c(
+                                            "select",
+                                            {
+                                              staticClass:
+                                                "form-control select2 staff-required",
+                                              attrs: {
+                                                id: "driver-select-" + index,
+                                                name: "driver_" + index
+                                              }
+                                            },
+                                            [
+                                              _c("option", {
+                                                attrs: { label: "Label" }
+                                              }),
+                                              _vm._v(" "),
+                                              _vm._l(_vm.drivers, function(
+                                                driver
+                                              ) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    key: driver.id,
+                                                    domProps: {
+                                                      value: driver.id
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(driver.fullname)
+                                                    )
+                                                  ]
+                                                )
+                                              })
+                                            ],
+                                            2
+                                          )
+                                        ])
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.hired.status
+                        ? _c("hr", { staticClass: "col-lg-12" })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.hired.status
+                        ? _c("div", { staticClass: "col-lg-12 row" }, [
+                            _c("div", { staticClass: "col-lg-12 d-flex" }, [
+                              _c("label", { staticClass: "h5" }, [
+                                _vm._v("Hired Vehicle")
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "ml-auto" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-sm btn-outline-primary",
+                                    on: { click: _vm.incrementHiredlVehicle }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-plus-square p-0"
+                                    })
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-sm btn-outline-primary",
+                                    on: { click: _vm.decrementHiredVehicle }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-minus-square p-0"
+                                    })
+                                  ]
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-lg-12" }, [
+                              _c(
+                                "table",
+                                {
+                                  staticClass: "table w-100",
+                                  attrs: { id: "vehicle-rental-tbl" }
+                                },
+                                [
+                                  _c("thead", [
+                                    _c("tr", [
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("#")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Plate #")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Vehicle Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Driver Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "th",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { scope: "col" }
+                                        },
+                                        [_vm._v("Contact #")]
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "tbody",
+                                    _vm._l(_vm.hired.total, function(index) {
+                                      return _c("tr", { key: index }, [
+                                        _c(
+                                          "td",
+                                          {
+                                            staticClass: "text-center",
+                                            attrs: { scope: "row" }
+                                          },
+                                          [_vm._v(_vm._s(index))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            staticClass:
+                                              "select-remove form-control",
+                                            attrs: {
+                                              type: "text",
+                                              placeholder:
+                                                "Enter vehicle plate no.",
+                                              name: "vehicle_plate_" + index
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "Enter vehicle name",
+                                              name: "vehicle_name_" + index
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            staticClass: "form-control",
+                                            attrs: {
+                                              type: "text",
+                                              placeholder: "Enter driver name",
+                                              name: "driver_name_" + index
+                                            }
+                                          })
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _c("input", {
+                                            staticClass:
+                                              "select-remove form-control",
+                                            attrs: {
+                                              type: "text",
+                                              placeholder:
+                                                "Enter driver contact no.",
+                                              name: "driver_contact_" + index
+                                            }
+                                          })
+                                        ])
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        : _vm._e()
+                    ]
+                  )
+                ]
+              },
+              proxy: true
+            },
+            _vm.rp.status || _vm.hired.status
+              ? {
+                  key: "footer",
+                  fn: function() {
+                    return [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Close")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-sm btn-primary font-weight-bold text-uppercase",
+                          attrs: { type: "button" },
+                          on: { click: _vm.approved }
+                        },
+                        [_vm._v("Approved")]
+                      )
+                    ]
+                  },
+                  proxy: true
+                }
+              : null
+          ],
+          null,
+          true
+        )
       })
     ],
     1
@@ -53541,60 +54778,52 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "card card-custom gutter-b animate__animated animate__fadeIn"
-      },
-      [
-        _c("div", { staticClass: "card-header flex-wrap border-0 pt-6 pb-0" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [
-              _c("span", {
-                staticClass: "d-block text-muted pt-2 font-size-sm"
-              })
+    return _c("div", { staticClass: "card-title" }, [
+      _c("h3", { staticClass: "card-label" }, [
+        _c("span", { staticClass: "d-block text-muted pt-2 font-size-sm" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom table-checkable",
+          attrs: { id: "rito-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Tracking No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Destination")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Travel Date")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Return Date")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Purpose")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Means of Transportation")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Passengers")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Requested By")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-toolbar" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "table",
-            {
-              staticClass:
-                "table table-separate table-head-custom table-checkable",
-              attrs: { id: "rito-tbl" }
-            },
-            [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [_vm._v("ID")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Tracking No.")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Destination")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Travel Date")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Return Date")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Purpose")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Means of Transportation")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Status")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Action")])
-                ])
-              ])
-            ]
-          )
-        ])
-      ]
-    )
+          ])
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -57362,7 +58591,7 @@ var render = function() {
                           {
                             staticClass: "btn btn-success btn-sm",
                             attrs: {
-                              to: { name: "listRequests" },
+                              to: { name: "listLocalRequests" },
                               href: "#",
                               role: "button"
                             }
