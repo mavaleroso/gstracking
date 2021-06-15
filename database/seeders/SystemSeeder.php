@@ -37,6 +37,10 @@ class SystemSeeder extends Seeder
         [
             'handler' => 'TRIP_TICKET',
             'value' => '21-04-0000'
+        ],
+        [
+            'handler' => 'REQUEST_GROUP',
+            'value' => '1'
         ]
     ];
     /**

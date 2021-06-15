@@ -50,4 +50,6 @@ return [
     'passenger_created_successfully' => 'Passenger created succesfully',
     'passenger_updated_successfully' => 'Passenger updated succesfully',
     'passenger_deleted_successfully' => 'Passenger deleted succesfully',
+
+    'requestTransaction_created_successfully' => 'Request Transactions created successfully'
 ];
