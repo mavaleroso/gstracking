@@ -204,13 +204,13 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div v-if="staff.vehicle_office" class="form-group">
+                                <!-- <div v-if="staff.vehicle_office" class="form-group">
                                     <label>Fuel Po Number</label>
                                     <select name="fuel_po" class="form-control select2 staff-required" id="fuel_po-select">
                                         <option label="Label"></option>
                                         <option v-for="po in procurements.filter(i => i.type == 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div v-if="staff.vehicle_rental" class="form-group">
                                     <label>Travel Po Number</label>
                                     <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
@@ -385,7 +385,7 @@ export default {
             },
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: [],
-            officeNames: ['fuel_po','vehicle_1', 'driver_1'],
+            officeNames: ['vehicle_1', 'driver_1'],
             rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
             remarks: null
         }
@@ -625,9 +625,14 @@ export default {
                                 placeholder: "Select a driver",
                             });
 
-                            $('#fuel_po-select').select2({
-                                placeholder: "Select a Travel PO",
+                            $('#vehicle-select-1').on('change', function() {
+                                vm.staff.vehicle = $(this).val();
                             });
+
+                            $('#driver-select-1').on('change', function() {
+                                vm.staff.driver = $(this).val();
+                            });
+
                         } else {
                             vm.officeNames = ['vehicle_1', 'driver_1'];
                         }
@@ -840,7 +845,7 @@ export default {
                         if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
                             $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (`${key}` == 'travel_po' || `${key}` == 'fuel_po') {
+                    } else if (`${key}` == 'travel_po') {
                         if($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
@@ -867,7 +872,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < this.rentalNames.length; i++) {
-                    if (this.rentalNames[i] == 'travel_po' || this.rentalNames[i] == 'fuel_po') {
+                    if (this.rentalNames[i] == 'travel_po') {
                         if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
                             if ($('#'+this.rentalNames[i]+'-select').next().next().length != 0) {
                                 $('#'+this.rentalNames[i]+'-select').next().next('.invalid-feedback').remove();

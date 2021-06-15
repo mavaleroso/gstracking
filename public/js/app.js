@@ -3981,7 +3981,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       },
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       defaultNames: [],
-      officeNames: ['fuel_po', 'vehicle_1', 'driver_1'],
+      officeNames: ['vehicle_1', 'driver_1'],
       rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       remarks: null
     };
@@ -4231,8 +4231,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               $('#driver-select-1').select2({
                 placeholder: "Select a driver"
               });
-              $('#fuel_po-select').select2({
-                placeholder: "Select a Travel PO"
+              $('#vehicle-select-1').on('change', function () {
+                vm.staff.vehicle = $(this).val();
+              });
+              $('#driver-select-1').on('change', function () {
+                vm.staff.driver = $(this).val();
               });
             } else {
               vm.officeNames = ['vehicle_1', 'driver_1'];
@@ -4488,7 +4491,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
               $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if ("".concat(key) == 'travel_po' || "".concat(key) == 'fuel_po') {
+          } else if ("".concat(key) == 'travel_po') {
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
@@ -4517,7 +4520,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var _i3 = 0; _i3 < _this9.rentalNames.length; _i3++) {
-          if (_this9.rentalNames[_i3] == 'travel_po' || _this9.rentalNames[_i3] == 'fuel_po') {
+          if (_this9.rentalNames[_i3] == 'travel_po') {
             if (keys.indexOf('' + _this9.rentalNames[_i3] + '') == -1) {
               if ($('#' + _this9.rentalNames[_i3] + '-select').next().next().length != 0) {
                 $('#' + _this9.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
@@ -52640,60 +52643,6 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "col-lg-6" }, [
-                            _vm.staff.vehicle_office
-                              ? _c("div", { staticClass: "form-group" }, [
-                                  _c("label", [_vm._v("Fuel Po Number")]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      staticClass:
-                                        "form-control select2 staff-required",
-                                      attrs: {
-                                        name: "fuel_po",
-                                        id: "fuel_po-select"
-                                      }
-                                    },
-                                    [
-                                      _c("option", {
-                                        attrs: { label: "Label" }
-                                      }),
-                                      _vm._v(" "),
-                                      _vm._l(
-                                        _vm.procurements.filter(function(i) {
-                                          return i.type == 2
-                                        }),
-                                        function(po) {
-                                          return _c(
-                                            "option",
-                                            {
-                                              key: po.id,
-                                              domProps: { value: po.id }
-                                            },
-                                            [
-                                              _vm._v(
-                                                _vm._s(po.po_no) +
-                                                  " - ₱ " +
-                                                  _vm._s(
-                                                    po.totalBalance
-                                                      ? _vm.parseNum(
-                                                          po.totalBalance
-                                                        )
-                                                      : _vm.parseNum(
-                                                          po.po_amount
-                                                        )
-                                                  )
-                                              )
-                                            ]
-                                          )
-                                        }
-                                      )
-                                    ],
-                                    2
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
                             _vm.staff.vehicle_rental
                               ? _c("div", { staticClass: "form-group" }, [
                                   _c("label", [_vm._v("Travel Po Number")]),
