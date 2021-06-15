@@ -6,6 +6,8 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Services\RitoRequest\GetListingRito;
 use App\Services\RitoRequest\GetPassengerById;
+use App\Services\RitoRequest\CreateRequestTransactions;
+use App\Http\Requests\RitoRequests\RequestTransactionStoreRequest;
 
 class RitoRequestController extends Controller
 {
@@ -49,9 +51,10 @@ class RitoRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestTransactionStoreRequest $requestTransactionStoreRequest, CreateRequestTransactions $createRequestTransactions)
     {
-        //
+        $result = $createRequestTransactions->execute($requestTransactionStoreRequest->validated());
+        return json_encode(['type' => 'success','message' => __('main/notifications.requestTransaction_created_successfully'), 'result' => $result]);
     }
 
     /**

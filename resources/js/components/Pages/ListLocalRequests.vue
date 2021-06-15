@@ -208,14 +208,14 @@
                                     <label>Fuel Po Number</label>
                                     <select name="fuel_po" class="form-control select2 staff-required" id="fuel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type === 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type == 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                                 <div v-if="staff.vehicle_rental" class="form-group">
                                     <label>Travel Po Number</label>
                                     <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type === 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -370,8 +370,6 @@ export default {
             maxDate: null,
             staff: {
                 id: null,
-                vehicle: null,
-                driver: null,
                 vehicle_office: false,
                 vehicle_rental: false,
                 office: {
@@ -627,20 +625,8 @@ export default {
                                 placeholder: "Select a driver",
                             });
 
-                            $('#vehicle-select-1').on('change', function() {
-                                vm.staff.vehicle = $(this).val();
-                            });
-
-                            $('#driver-select-1').on('change', function() {
-                                vm.staff.driver = $(this).val();
-                            });
-
                             $('#fuel_po-select').select2({
                                 placeholder: "Select a Travel PO",
-                            });
-
-                            $('#fuel_po-select').on('change', function() {
-                                vm.staff.office.po = $(this).val();
                             });
                         } else {
                             vm.officeNames = ['vehicle_1', 'driver_1'];
@@ -649,10 +635,6 @@ export default {
                         if (vm.staff.vehicle_rental) {
                             $('#travel_po-select').select2({
                                 placeholder: "Select a Travel PO",
-                            });
-
-                            $('#travel_po-select').on('change', function() {
-                                vm.staff.rental.po = $(this).val();
                             });
 
                             $('.select-remove').siblings('.select2').remove();
@@ -955,14 +937,6 @@ export default {
 
                 $(`#driver-select-${count}`).select2({
                     placeholder: "Select a driver",
-                });
-
-                $(`#vehicle-select-${count}`).on('change', function() {
-                    vm.staff.vehicle = $(this).val();
-                });
-
-                $(`#driver-select-${count}`).on('change', function() {
-                    vm.staff.driver = $(this).val();
                 });
             }, 100);
 
