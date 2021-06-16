@@ -5392,6 +5392,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5448,10 +5461,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var table = function table(type) {
         $(function () {
-          axios.get(BASE_URL + '/travel/ritorequest').then(function (res) {
-            _this.data = res.data.results;
-            type == 1 ? _this.tdatatable().init() : null;
-          });
+          // axios.get(BASE_URL + '/travel/ritorequest').then(res=>{
+          //     this.data = res.data.results;                    
+          // });
+          _this.tdatatable().init(1);
         });
       };
 
@@ -5468,16 +5481,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     tdatatable: function tdatatable() {
       var vm = this;
 
-      var initTable = function initTable() {
+      var initTable = function initTable(currentPage) {
         var table = $('#rito-tbl');
         table.DataTable({
           scrollX: true,
           scrollCollapse: true,
           processing: true,
-          language: {
-            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+          serverSide: true,
+          lengthChange: false,
+          pageLength: 100,
+          ajax: {
+            url: BASE_URL + '/travel/ritorequest',
+            type: 'GET'
           },
-          data: vm.data,
           columns: [{
             "data": "id"
           }, {
@@ -5546,7 +5562,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       return {
         init: function init() {
-          initTable();
+          var currentPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+          initTable(currentPage);
         }
       };
     },
@@ -54820,7 +54837,9 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c("tbody")
         ]
       )
     ])

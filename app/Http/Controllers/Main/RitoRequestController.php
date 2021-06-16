@@ -29,10 +29,16 @@ class RitoRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingRito $getListingRito)
+    public function index(GetListingRito $getListingRito, Request $request)
     {
-        $records = $getListingRito->execute();
-        return response()->json($records);
+        $records = $getListingRito->execute($request);
+        $data = [
+            'draw' => $request->draw,
+            'data' => $records->results,
+            'recordsFiltered' => $records->count,
+            'recordsTotal' => $records->count,
+        ];
+        return response()->json($data);
     }
 
     /**
@@ -63,10 +69,13 @@ class RitoRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, GetPassengerById $getPassengerById)
+    // public function show($id, GetPassengerById $getPassengerById)
+    public function show($page, GetListingRito $getListingRito)
     {
-        $data = $getPassengerById->execute($id);
-        return response()->json($data);
+        // $records = $getListingRito->execute($page);
+        // return response()->json($records);
+        // $data = $getPassengerById->execute($id);
+        // return response()->json($data);
     }
 
     /**

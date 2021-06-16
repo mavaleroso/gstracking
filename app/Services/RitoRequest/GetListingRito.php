@@ -11,13 +11,13 @@ class GetListingRito
      *1
      * @param string $email
      */
-    public function execute()
+    public function execute($page)
     {
-
+        $pager = ($page['start']) ? preg_replace("/\.?0+$/", "",$page['start']) : $page['start'];
         $curl = curl_init();
-
+        
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details/',
+            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details?page='.(intval($pager) + 1),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

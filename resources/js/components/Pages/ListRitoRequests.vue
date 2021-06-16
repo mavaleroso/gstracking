@@ -25,7 +25,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <!--begin: Datatable-->
                 <table class="table table-separate table-head-custom table-checkable" id="rito-tbl">
                     <thead>
                         <tr>
@@ -42,8 +41,22 @@
                             <th>Action</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <!-- <tr v-for="d in data" :key="d.id">
+                            <td>{{ d.id }}</td>
+                            <td>{{ d.tracking_no }}</td>
+                            <td>{{ d.place }}</td>
+                            <td>{{ d.inclusive_from }}</td>
+                            <td>{{ d.inclusive_to }}</td>
+                            <td>{{ d.purpose }}</td>
+                            <td>{{ d.means_of_transportation }}</td>
+                            <td>{{ d.id }}</td>
+                            <td>{{ d.passenger_count }}</td>
+                            <td>{{ d.requested_by }}</td>
+                            <td>{{ d.id }}</td>
+                        </tr> -->
+                    </tbody>
                 </table>
-                <!--end: Datatable-->
             </div>
         </div>
         <!--end::Card-->
@@ -256,10 +269,10 @@ export default {
         ini() {
             let table = (type) => {
                 $(()=>{
-                    axios.get(BASE_URL + '/travel/ritorequest').then(res=>{
-                        this.data = res.data.results;                    
-                        (type == 1) ? this.tdatatable().init() : null;
-                    });
+                    // axios.get(BASE_URL + '/travel/ritorequest').then(res=>{
+                    //     this.data = res.data.results;                    
+                    // });
+                    this.tdatatable().init(1);
                 }); 
             }
             
@@ -274,16 +287,19 @@ export default {
         },
         tdatatable() {
             let vm = this;
-            var initTable = () => {
+            var initTable = (currentPage) => {
             var table = $('#rito-tbl');
                 table.DataTable({
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
-                    language: {
-                        processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+                    serverSide: true,
+                    lengthChange: false,
+                    pageLength: 100,
+                    ajax: {
+                        url: BASE_URL + '/travel/ritorequest',
+                        type: 'GET',
                     },
-                    data: vm.data,
                     columns: [
                         { "data": "id" },
                         { "data": "tracking_no" },
@@ -350,8 +366,8 @@ export default {
             };
             
             return {
-                init: function() {
-                    initTable();
+                init: function(currentPage = 1) {
+                    initTable(currentPage);
                 },
             };
         },
