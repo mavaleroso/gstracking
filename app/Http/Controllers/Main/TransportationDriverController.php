@@ -8,6 +8,7 @@ use App\Http\Requests\TransportationDriver\DriverRequest;
 use App\Services\TransportationDriver\CreateDriver;
 use App\Services\TransportationDriver\UpdateDriver;
 use App\Services\TransportationDriver\GetListingDriver;
+use App\Services\TransportationDriver\GetListingDriverApi;
 use App\Models\Driver;
 
 class TransportationDriverController extends Controller
@@ -94,6 +95,11 @@ class TransportationDriverController extends Controller
         $url = $driverRequest->url();
         $result = $updateDriver->execute($id, $driverRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.driver_updated_successfully'), 'result' => $result]);
+    }
+
+    public function typehead($data, GetListingDriverApi $getlist){
+        $result = $getlist->execute($data);
+        return response()->json($result);
     }
 
     /**

@@ -8430,7 +8430,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         age: '',
         gender: '',
         contactNumber: '',
-        status: ''
+        status: '',
+        results: []
       },
       names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
     };
@@ -8466,6 +8467,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.status = $(this).val();
         });
         $('.card-label span').text('Create Driver');
+      });
+    },
+    autoComplete: function autoComplete() {
+      var vm = this;
+      var driveInfo = vm.formFields.fullname;
+      axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(function (response) {
+        console.log(response.data); // vm.formFields.results = response.data;
       });
     },
     editEntry: function editEntry(id) {
@@ -59173,6 +59181,7 @@ var render = function() {
                             },
                             domProps: { value: _vm.formFields.fullname },
                             on: {
+                              keyup: _vm.autoComplete,
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return

@@ -15,7 +15,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <input type="text" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname"/>
+                                    <input type="text" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname" v-on:keyup="autoComplete"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Gender:</label>
@@ -114,6 +114,7 @@ export default {
                 gender: '',
                 contactNumber: '',
                 status: '',
+                results: []
             },
             names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
         }
@@ -153,6 +154,18 @@ export default {
                 });
 
                 $('.card-label span').text('Create Driver');
+            });
+        },
+        autoComplete(){
+            let vm = this;
+            let driveInfo = vm.formFields.fullname;
+            axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+
+                console.log(response.data);
+               
+             
+                // vm.formFields.results = response.data;
+
             });
         },
         editEntry(id) {
