@@ -41,28 +41,13 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- <tr v-for="d in data" :key="d.id">
-                            <td>{{ d.id }}</td>
-                            <td>{{ d.tracking_no }}</td>
-                            <td>{{ d.place }}</td>
-                            <td>{{ d.inclusive_from }}</td>
-                            <td>{{ d.inclusive_to }}</td>
-                            <td>{{ d.purpose }}</td>
-                            <td>{{ d.means_of_transportation }}</td>
-                            <td>{{ d.id }}</td>
-                            <td>{{ d.passenger_count }}</td>
-                            <td>{{ d.requested_by }}</td>
-                            <td>{{ d.id }}</td>
-                        </tr> -->
-                    </tbody>
                 </table>
             </div>
         </div>
         <!--end::Card-->
         <modal :size="modal.size" :id="modal.passengers_id">
             <template v-slot:header>
-                <h5 class="modal-title"><span class="m-title">{{ (passengers.length)?data[current_row].tracking_no:null }}</span>
+                <h5 class="modal-title"><span class="m-title">{{ (passengers.length)?current_to:null }}</span>
                 <span class="d-block text-muted font-size-sm">Tracking Number</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
@@ -233,9 +218,8 @@ export default {
                 approved_id: 'modal-approved',
                 size: 'modal-lg',
             },
-            current_row: null,
+            current_to: null,
             selected: [],
-            data:[],
             passengers:[],
             passengers_count: 0,
             pos: [],
@@ -267,11 +251,12 @@ export default {
     },
     methods: {
         ini() {
+            let ini = () => {
+
+            }
+
             let table = (type) => {
                 $(()=>{
-                    // axios.get(BASE_URL + '/travel/ritorequest').then(res=>{
-                    //     this.data = res.data.results;                    
-                    // });
                     this.tdatatable().init(1);
                 }); 
             }
@@ -353,7 +338,8 @@ export default {
                             let idx = $(this).data('row-idx');
                             axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res=>{
                                 vm.passengers = res.data;
-                                vm.current_row =  idx;
+                                let current_row = $('#rito-tbl tr')[idx+1];
+                                vm.current_to =  current_row.children[1].textContent;
                                 $('#modal-passengers').modal('show');
                             });
                         });

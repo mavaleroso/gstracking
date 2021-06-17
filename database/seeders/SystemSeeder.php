@@ -41,6 +41,10 @@ class SystemSeeder extends Seeder
         [
             'handler' => 'REQUEST_GROUP',
             'value' => '1'
+        ],
+        [
+            'handler' => 'PORTAL_TOKEN',
+            'value' => 'Token 7a8203defd27f14ca23dacd19ed898dd3ff38ef6'
         ]
     ];
     /**

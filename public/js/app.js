@@ -5390,21 +5390,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5414,9 +5399,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         approved_id: 'modal-approved',
         size: 'modal-lg'
       },
-      current_row: null,
+      current_to: null,
       selected: [],
-      data: [],
       passengers: [],
       passengers_count: 0,
       pos: [],
@@ -5446,24 +5430,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getDrivers();
   },
   methods: {
-    ini: function (_ini) {
-      function ini() {
-        return _ini.apply(this, arguments);
-      }
-
-      ini.toString = function () {
-        return _ini.toString();
-      };
-
-      return ini;
-    }(function () {
+    ini: function ini() {
       var _this = this;
+
+      var ini = function ini() {};
 
       var table = function table(type) {
         $(function () {
-          // axios.get(BASE_URL + '/travel/ritorequest').then(res=>{
-          //     this.data = res.data.results;                    
-          // });
           _this.tdatatable().init(1);
         });
       };
@@ -5477,7 +5450,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           table(type);
         }
       };
-    }),
+    },
     tdatatable: function tdatatable() {
       var vm = this;
 
@@ -5549,7 +5522,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               var idx = $(this).data('row-idx');
               axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
                 vm.passengers = res.data;
-                vm.current_row = idx;
+                var current_row = $('#rito-tbl tr')[idx + 1];
+                vm.current_to = current_row.children[1].textContent;
                 $('#modal-passengers').modal('show');
               });
             });
@@ -53962,11 +53936,7 @@ var render = function() {
                 _c("h5", { staticClass: "modal-title" }, [
                   _c("span", { staticClass: "m-title" }, [
                     _vm._v(
-                      _vm._s(
-                        _vm.passengers.length
-                          ? _vm.data[_vm.current_row].tracking_no
-                          : null
-                      )
+                      _vm._s(_vm.passengers.length ? _vm.current_to : null)
                     )
                   ]),
                   _vm._v(" "),
@@ -54837,9 +54807,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])
-          ]),
-          _vm._v(" "),
-          _c("tbody")
+          ])
         ]
       )
     ])
