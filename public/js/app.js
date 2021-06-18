@@ -4726,6 +4726,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4828,12 +4851,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      travels: []
+      travels: [],
+      total: null,
+      pages: {
+        totalPages: null,
+        prevPage: null,
+        currentPage: 1,
+        nextPage: 2,
+        display: 5
+      },
+      loading: true
     };
   },
-  created: function created() {},
   mounted: function mounted() {
     this.ini();
+  },
+  computed: {
+    pagination: function pagination() {
+      var result = null;
+      var current = this.pages.currentPage;
+
+      if (current <= 3) {
+        result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+          return ++x;
+        });
+      } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+        result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+      } else {
+        result = [current - 2, current - 1, current, current + 1, current + 2];
+      }
+
+      return result;
+    }
   },
   methods: {
     ini: function ini() {
@@ -4843,8 +4892,34 @@ __webpack_require__.r(__webpack_exports__);
         _this.getTravels();
       });
     },
+    indexers: function indexers(idx) {
+      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 100 + idx;
+    },
     getTravels: function getTravels() {
-      axios.get(BASE_URL + '').then(function (res) {});
+      var _this2 = this;
+
+      this.loading = true;
+      axios.get(BASE_URL + '/tracking/pendingtravels?pages=' + this.pages.currentPage).then(function (res) {
+        _this2.travels = res.data.results;
+        _this2.total = res.data.count;
+        _this2.pages.totalPages = Math.ceil(res.data.count / 100);
+        _this2.loading = false;
+      });
+    },
+    pageSet: function pageSet(type) {
+      var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      if (type == 'jump') {
+        this.pages.prevPage = page - 1;
+        this.pages.currentPage = page;
+        this.pages.nextPage = page + 1;
+      } else if (type == 'next' || type == 'prev') {
+        type == 'next' ? this.pages.currentPage++ : this.pages.currentPage--;
+        this.pages.prevPage = this.pages.currentPage - 1;
+        this.pages.nextPage = this.pages.currentPage + 1;
+      }
+
+      this.getTravels();
     }
   }
 });
@@ -53804,9 +53879,169 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          class: _vm.loading ? "card-body overlay overlay-block" : "card-body"
+        },
+        [
+          _vm.loading
+            ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                _c("div", { staticClass: "spinner spinner-primary" })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-scroll" }, [
+            _c(
+              "table",
+              {
+                staticClass: "table rounded table-sm table-hover",
+                attrs: { id: "pending-travels-tbl" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.travels, function(t, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.tracking_no))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.place))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.passenger_count))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.means_of_transportation))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.inclusive_from))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(t.inclusive_to))]),
+                      _vm._v(" "),
+                      _vm._m(1, true)
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
+        ]
+      ),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "card-footer" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center flex-wrap"
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "d-flex flex-wrap py-2 mr-3" },
+              [
+                _c(
+                  "a",
+                  {
+                    class: _vm.loading
+                      ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                      : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        return _vm.pageSet("prev")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
+                ),
+                _vm._v(" "),
+                _vm.pages.currentPage > 3
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v("...")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.pagination, function(p) {
+                  return _c(
+                    "a",
+                    {
+                      key: p,
+                      class: _vm.loading
+                        ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                        : p == _vm.pages.currentPage
+                        ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                        : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                      attrs: { href: "#", disabled: _vm.loading },
+                      on: {
+                        click: function($event) {
+                          return _vm.pageSet("jump", p)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(p))]
+                  )
+                }),
+                _vm._v(" "),
+                _vm.pages.currentPage != _vm.pages.totalPages &&
+                _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                _vm.pages.currentPage != _vm.pages.totalPages - 2
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v("...")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    class: _vm.loading
+                      ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                      : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        return _vm.pageSet("next")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
+                )
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+              _vm.loading
+                ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                    _c("div", { staticClass: "mr-2 text-muted" }, [
+                      _vm._v("Loading...")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spinner mr-10" })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-muted" }, [
+                _vm._v("Displaying 100 of " + _vm._s(_vm.total) + " records")
+              ])
+            ])
+          ]
+        )
+      ])
     ]
   )
 }
@@ -53815,63 +54050,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "card-scroll" }, [
-        _c(
-          "table",
-          {
-            staticClass: "table rounded table-sm table-hover",
-            attrs: { id: "pending-travels-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Tracking Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Destination")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Passengers")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Vehicles")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Travel Date")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Return Date")]),
-                _vm._v(" "),
-                _c("th", { staticStyle: { width: "120px" } }, [
-                  _vm._v("Action")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("TO-2020-01-0001, TO-2020-01-0002")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Cantilan SDS")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("9")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("July 12, 2021")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("July 13, 2021")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("button", { staticClass: "btn btn-sm btn-clean" }, [
-                    _c("i", { staticClass: "flaticon2-check-mark" }),
-                    _vm._v(" Approved\n                            ")
-                  ])
-                ])
-              ])
-            ])
-          ]
-        )
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tracking Number")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Destination")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Passengers")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Vehicles")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Travel Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Return Date")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { width: "120px" } }, [_vm._v("Action")])
       ])
     ])
   },
@@ -53879,140 +54074,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "d-flex justify-content-between align-items-center flex-wrap"
-        },
-        [
-          _c("div", { staticClass: "d-flex flex-wrap py-2 mr-3" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-double-arrow-back icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("...")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("23")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass:
-                  "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("24")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("25")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("26")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("27")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("28")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("...")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-double-arrow-next icon-xs" })]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-center py-3" }, [
-            _c("div", { staticClass: "d-flex align-items-center" }, [
-              _c("div", { staticClass: "mr-2 text-muted" }, [
-                _vm._v("Loading...")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "spinner mr-10" })
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "text-muted" }, [
-              _vm._v("Displaying 10 of 230 records")
-            ])
-          ])
-        ]
-      )
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-sm btn-clean" }, [
+        _c("i", { staticClass: "flaticon2-check-mark" }),
+        _vm._v(" Approved\n                            ")
+      ])
     ])
   }
 ]

@@ -44,6 +44,7 @@ class PermissionCommand extends Command
         'ritorequest',
         'listuser',
         'printrequest',
+        'pendingtravels',
     ];
 
     /**
