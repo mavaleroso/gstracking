@@ -69,13 +69,10 @@ class RitoRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function show($id, GetPassengerById $getPassengerById)
-    public function show($page, GetListingRito $getListingRito)
+    public function show($id, GetPassengerById $getPassengerById)
     {
-        // $records = $getListingRito->execute($page);
-        // return response()->json($records);
-        // $data = $getPassengerById->execute($id);
-        // return response()->json($data);
+        $data = $getPassengerById->execute($id);
+        return response()->json($data);
     }
 
     /**

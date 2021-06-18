@@ -3,6 +3,7 @@ namespace App\Services\RitoRequest;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\System;
 
 class GetListingRito 
 {
@@ -14,6 +15,13 @@ class GetListingRito
     public function execute($page)
     {
         $pager = ($page['start']) ? preg_replace("/\.?0+$/", "",$page['start']) : $page['start'];
+
+        if (strlen($page['start']) == 4 && strlen($pager) == 1) {
+            $pager = $pager . '0';
+        }
+
+        $portal_token = System::where('handler', 'PORTAL_TOKEN')->pluck('value')->first();
+        
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
@@ -28,7 +36,7 @@ class GetListingRito
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Token 7a8203defd27f14ca23dacd19ed898dd3ff38ef6',
+                'Authorization: '.$portal_token,
             ),
         ));
 

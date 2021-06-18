@@ -111,3 +111,7 @@
 .w-15 {
     width: 15% !important;
 }
+
+#pending-travels-tbl th {
+    text-align: center;
+}
