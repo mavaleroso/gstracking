@@ -23,7 +23,8 @@ Route::get('/dashboard', 'base\DashboardController@index')->name('main.dashboard
 Route::get('/request_travel', 'base\DashboardController@index');
 Route::get('/local_requests', 'base\DashboardController@index');
 Route::get('/rito_requests', 'base\DashboardController@index');
-Route::get('/list_travels', 'base\DashboardController@index');
+Route::get('/pending_travels', 'base\DashboardController@index');
+Route::get('/approved_travels', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/transaction_logs', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');

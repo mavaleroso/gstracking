@@ -12,6 +12,7 @@ import ListUsers from './components/Pages/ListUsers';
 import travelCalendar from './components/Pages/TravelCalendar';
 import printRequest from './components/Pages/PrintRequest';
 import printTripTicket from './components/Pages/PrintTripTicket';
+import ListPendingTravels from './components/Pages/ListPendingTravels';
 
 const routes = [
     {
@@ -47,11 +48,19 @@ const routes = [
         }
     },
     {
-        path: '/list_travels',
+        path: '/pending_travels',
+        component: ListPendingTravels,
+        name: 'ListPendingTravels',
+        meta: {
+            title: 'List of Pending Travels'
+        }  
+    },
+    {
+        path: '/approved_travels',
         component: ListTravel,
         name: 'listTravels',
         meta: {
-            title: 'List of Travels'
+            title: 'List of Approved Travels'
         }
     },
     {
