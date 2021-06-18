@@ -15,8 +15,24 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <input type="text" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname" v-on:keyup="autoComplete"/>
-                                </div>
+
+                                   
+                                    <select class="details-input form-control select2" id="kt_typeahead" name="fullname" v-model="formFields.fullname">
+                                        <option label="Label"></option>
+                                        <option value="s">s</option>
+                                        <!-- <option><option> -->
+                                        <!-- <option v-for="result in formFields.results" :key="result.id" :value="result.id">{{ result.first_name }}</option> -->
+                                        
+                                    </select>
+                              
+                                     <!-- <div class="typeahead">
+                                        <input class="form-control" id="kt_typeahead_1" type="text" placeholder="States of USA"/>
+                                    </div> -->
+                                        <!-- <div class="typeahead">
+                                            <input class="form-control" id="kt_typeahead_1" type="text" placeholder="States of USA"  v-model="formFields.fullname" v-on:keyup="autoComplete"/>
+                                            <input type="text" id="kt_typeahead_1" dir="ltr" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname" v-on:keyup="autoComplete"/>
+										</div> -->
+                                  </div>
                                 <div class="form-group">
                                     <label>Gender:</label>
                                     <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
@@ -102,7 +118,9 @@
 </template>
 
 <script>
+import Dialog from '../../Layouts/Dialog.vue';
 export default {
+  components: { Dialog },
     data() {
         return {
             create: false,
@@ -116,6 +134,7 @@ export default {
                 status: '',
                 results: []
             },
+            states:[],
             names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
         }
     },
@@ -129,9 +148,14 @@ export default {
         ini() {
             $(()=>{
                 this.tdatatable().init();
+
+              
+           
+               
             });
         },
         newEntry() {
+
             this.create = true;
             let vm = this;
             $(() => {
@@ -154,20 +178,167 @@ export default {
                 });
 
                 $('.card-label span').text('Create Driver');
-            });
-        },
-        autoComplete(){
-            let vm = this;
-            let driveInfo = vm.formFields.fullname;
-            axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+                $('#kt_typeahead').select2({
+                    placeholder: "Select a Division",
+                    allowClear: true
+                });
 
-                console.log(response.data);
+
+            $(document).on('keyup','.select2-search__field',
+            function (e) {       
                
-             
-                // vm.formFields.results = response.data;
+               
+                vm.formFields.results = [];
+                let driveInfo = vm.formFields.fullname;
+                axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+                console.log(response.data);     
+                });
 
+            }
+            );
+             
             });
         },
+
+        
+        autoComplete() {
+            console.log("heelo");
+
+                            // let vm = this;
+                // this.formFields.results = [];
+                // let driveInfo = this.formFields.fullname;
+                // if (this.autoCompleteTimeout) {
+                //     clearTimeout(this.autoCompleteTimeout);
+                //     }
+                // vm.autoCompleteTimeout = setTimeout(() => {
+                //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+                //     // console.log(response.data);  
+                //     vm.formFields.results = response.data.results;
+                //     this.test();
+                //     });
+                // }, 2000);
+
+
+        },
+
+        test() {
+            let vm = this;
+            var KTTypeahead = function() {
+                
+
+                    for (let i = 0; i < vm.formFields.results.length; i++) {
+                    vm.states.push(`${vm.formFields.results[i].first_name} ${vm.formFields.results[i].middle_name} ${vm.formFields.results[i].last_name}`);
+                    
+                }
+                var states = vm.states;
+                
+                console.log(vm.states);
+
+
+                // Private functions
+                var demo1 = function() {
+                    var substringMatcher = function(strs) {
+                        return function findMatches(q, cb) {
+                            var matches, substringRegex;
+
+                            // an array that will be populated with substring matches
+                            matches = [];
+
+                            // regex used to determine if a string contains the substring `q`
+                            var substrRegex = new RegExp(q, 'i');
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            $.each(strs, function(i, str) {
+                                if (substrRegex.test(str)) {
+                                    matches.push(str);
+                                }
+                            });
+
+                            cb(matches);
+                        };
+                    };
+
+                    $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
+                        hint: true,
+                        highlight: true,
+                        minLength: 1
+                    }, {
+                        name: 'states',
+                        source: substringMatcher(states)
+                    });
+                }
+                return {
+                    // public functions
+                    init: function() {
+                        demo1();
+                    }
+                };
+            }();
+
+            jQuery(document).ready(function() {
+                KTTypeahead.init();
+            });
+        },
+
+
+        bew() {
+            let vm = this;
+            var KTTypeahead = function() {
+                var states = [];
+                for (let i = 0; i < vm.formFields.results.length; i++) {
+
+                    console.log(`${vm.formFields.results[i].first_name} ${vm.formFields.results[i].middle_name} ${vm.formFields.results[i].last_name}`);
+                    // states.push(`${vm.formFields.results[i].first_name} ${vm.formFields.results[i].middle_name} ${vm.formFields.results[i].last_name}`);
+                }
+
+                // Private functions
+                var demo1 = function() {
+                    var substringMatcher = function(strs) {
+                        return function findMatches(q, cb) {
+                            var matches, substringRegex;
+
+                            // an array that will be populated with substring matches
+                            matches = [];
+
+                            // regex used to determine if a string contains the substring `q`
+                            var substrRegex = new RegExp(q, 'i');
+
+                            // iterate through the pool of strings and for any string that
+                            // contains the substring `q`, add it to the `matches` array
+                            $.each(strs, function(i, str) {
+                                if (substrRegex.test(str)) {
+                                    matches.push(str);
+                                }
+                            });
+
+                            cb(matches);
+                        };
+                    };
+
+                    $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
+                        hint: true,
+                        highlight: true,
+                        minLength: 1
+                    }, {
+                        name: 'states',
+                        source: substringMatcher(states)
+                    });
+                }
+                return {
+                    // public functions
+                    init: function() {
+                        demo1();
+                    }
+                };
+            }();
+
+            jQuery(document).ready(function() {
+                KTTypeahead.init();
+            });
+        },
+
+
         editEntry(id) {
             this.edit = true;
             let vm = this;

@@ -8304,6 +8304,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Layouts_Dialog_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Layouts/Dialog.vue */ "./resources/js/components/Layouts/Dialog.vue");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -8419,7 +8420,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Dialog: _Layouts_Dialog_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       create: false,
@@ -8433,6 +8454,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         status: '',
         results: []
       },
+      states: [],
       names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
     };
   },
@@ -8467,13 +8489,136 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.status = $(this).val();
         });
         $('.card-label span').text('Create Driver');
+        $('#kt_typeahead').select2({
+          placeholder: "Select a Division",
+          allowClear: true
+        });
+        $(document).on('keyup', '.select2-search__field', function (e) {
+          vm.formFields.results = [];
+          var driveInfo = vm.formFields.fullname;
+          axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(function (response) {
+            console.log(response.data);
+          });
+        });
       });
     },
     autoComplete: function autoComplete() {
+      console.log("heelo"); // let vm = this;
+      // this.formFields.results = [];
+      // let driveInfo = this.formFields.fullname;
+      // if (this.autoCompleteTimeout) {
+      //     clearTimeout(this.autoCompleteTimeout);
+      //     }
+      // vm.autoCompleteTimeout = setTimeout(() => {
+      //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+      //     // console.log(response.data);  
+      //     vm.formFields.results = response.data.results;
+      //     this.test();
+      //     });
+      // }, 2000);
+    },
+    test: function test() {
       var vm = this;
-      var driveInfo = vm.formFields.fullname;
-      axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(function (response) {
-        console.log(response.data); // vm.formFields.results = response.data;
+
+      var KTTypeahead = function () {
+        for (var i = 0; i < vm.formFields.results.length; i++) {
+          vm.states.push("".concat(vm.formFields.results[i].first_name, " ").concat(vm.formFields.results[i].middle_name, " ").concat(vm.formFields.results[i].last_name));
+        }
+
+        var states = vm.states;
+        console.log(vm.states); // Private functions
+
+        var demo1 = function demo1() {
+          var substringMatcher = function substringMatcher(strs) {
+            return function findMatches(q, cb) {
+              var matches, substringRegex; // an array that will be populated with substring matches
+
+              matches = []; // regex used to determine if a string contains the substring `q`
+
+              var substrRegex = new RegExp(q, 'i'); // iterate through the pool of strings and for any string that
+              // contains the substring `q`, add it to the `matches` array
+
+              $.each(strs, function (i, str) {
+                if (substrRegex.test(str)) {
+                  matches.push(str);
+                }
+              });
+              cb(matches);
+            };
+          };
+
+          $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+          }, {
+            name: 'states',
+            source: substringMatcher(states)
+          });
+        };
+
+        return {
+          // public functions
+          init: function init() {
+            demo1();
+          }
+        };
+      }();
+
+      jQuery(document).ready(function () {
+        KTTypeahead.init();
+      });
+    },
+    bew: function bew() {
+      var vm = this;
+
+      var KTTypeahead = function () {
+        var states = [];
+
+        for (var i = 0; i < vm.formFields.results.length; i++) {
+          console.log("".concat(vm.formFields.results[i].first_name, " ").concat(vm.formFields.results[i].middle_name, " ").concat(vm.formFields.results[i].last_name)); // states.push(`${vm.formFields.results[i].first_name} ${vm.formFields.results[i].middle_name} ${vm.formFields.results[i].last_name}`);
+        } // Private functions
+
+
+        var demo1 = function demo1() {
+          var substringMatcher = function substringMatcher(strs) {
+            return function findMatches(q, cb) {
+              var matches, substringRegex; // an array that will be populated with substring matches
+
+              matches = []; // regex used to determine if a string contains the substring `q`
+
+              var substrRegex = new RegExp(q, 'i'); // iterate through the pool of strings and for any string that
+              // contains the substring `q`, add it to the `matches` array
+
+              $.each(strs, function (i, str) {
+                if (substrRegex.test(str)) {
+                  matches.push(str);
+                }
+              });
+              cb(matches);
+            };
+          };
+
+          $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+          }, {
+            name: 'states',
+            source: substringMatcher(states)
+          });
+        };
+
+        return {
+          // public functions
+          init: function init() {
+            demo1();
+          }
+        };
+      }();
+
+      jQuery(document).ready(function () {
+        KTTypeahead.init();
       });
     },
     editEntry: function editEntry(id) {
@@ -59164,36 +59309,48 @@ var render = function() {
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Fullname:")]),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.fullname,
-                                expression: "formFields.fullname"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "driver_fullname",
-                              placeholder: "Enter fullname"
-                            },
-                            domProps: { value: _vm.formFields.fullname },
-                            on: {
-                              keyup: _vm.autoComplete,
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.fullname,
+                                  expression: "formFields.fullname"
                                 }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "fullname",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "details-input form-control select2",
+                              attrs: { id: "kt_typeahead", name: "fullname" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "fullname",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
-                            }
-                          })
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "s" } }, [
+                                _vm._v("s")
+                              ])
+                            ]
+                          )
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
