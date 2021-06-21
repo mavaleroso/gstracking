@@ -16,14 +16,17 @@
                                 <div class="form-group">
                                     <label>Fullname:</label>
 
-                                   
-                                    <select class="details-input form-control select2" id="kt_typeahead" name="fullname" v-model="formFields.fullname">
+                                    <select class="details-input form-control select2" id="kt_typeahead" name="fullname">
                                         <option label="Label"></option>
-                                        <option value="s">s</option>
-                                        <!-- <option><option> -->
-                                        <!-- <option v-for="result in formFields.results" :key="result.id" :value="result.id">{{ result.first_name }}</option> -->
-                                        
+                                        <option v-for="result in results" :key="result.id" :value="result.id">{{ formFields.fullname }}</option>
                                     </select>
+
+                                   
+                                    <!-- <select class="details-input form-control select2" id="kt_typeahead" name="fullname" v-model="formFields.fullname">
+                                        <option label="Label"></option>
+
+                                        
+                                    </select> -->
                               
                                      <!-- <div class="typeahead">
                                         <input class="form-control" id="kt_typeahead_1" type="text" placeholder="States of USA"/>
@@ -183,26 +186,47 @@ export default {
                     allowClear: true
                 });
 
+                vm.autoComplete();
 
-            $(document).on('keyup','.select2-search__field',
-            function (e) {       
+
+            // $(document).on('keyup','.select2-search__field',
+            // function (e) {       
                
                
-                vm.formFields.results = [];
-                let driveInfo = vm.formFields.fullname;
-                axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
-                console.log(response.data);     
-                });
+            //     vm.formFields.results = [];
+            //     let driveInfo = vm.formFields.fullname;
+            //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+            //     console.log(response.data);     
+            //     });
 
-            }
-            );
+            // }
+            // );
              
             });
         },
 
+         autoComplete() {
+             var b = 2;
+            axios.put(BASE_URL + '/transportation/driver/autoComplete/' + b).then(response => {
+
+                //  axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
+
+                this.results = response.data;
+            });
+        },
+
         
-        autoComplete() {
+        autoCompleteold() {
             console.log("heelo");
+
+                axios.get(BASE_URL + "/transportation/driver/"+id).then(response => {
+                    vm.formFields.id = response.data[0].id;
+                    vm.formFields.fullname = response.data[0].fullname;
+                    vm.formFields.age = response.data[0].age;
+                    vm.formFields.gender = response.data[0].sex;
+                    vm.formFields.contactNumber = response.data[0].contact;
+                    vm.formFields.status = response.data[0].status;
+                });
 
                             // let vm = this;
                 // this.formFields.results = [];

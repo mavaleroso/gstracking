@@ -8436,6 +8436,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -8493,17 +8496,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a Division",
           allowClear: true
         });
-        $(document).on('keyup', '.select2-search__field', function (e) {
-          vm.formFields.results = [];
-          var driveInfo = vm.formFields.fullname;
-          axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(function (response) {
-            console.log(response.data);
-          });
-        });
+        vm.autoComplete(); // $(document).on('keyup','.select2-search__field',
+        // function (e) {       
+        //     vm.formFields.results = [];
+        //     let driveInfo = vm.formFields.fullname;
+        //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
+        //     console.log(response.data);     
+        //     });
+        // }
+        // );
       });
     },
     autoComplete: function autoComplete() {
-      console.log("heelo"); // let vm = this;
+      var _this2 = this;
+
+      var b = 2;
+      axios.put(BASE_URL + '/transportation/driver/autoComplete/' + b).then(function (response) {
+        //  axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
+        _this2.results = response.data;
+      });
+    },
+    autoCompleteold: function autoCompleteold() {
+      console.log("heelo");
+      axios.get(BASE_URL + "/transportation/driver/" + id).then(function (response) {
+        vm.formFields.id = response.data[0].id;
+        vm.formFields.fullname = response.data[0].fullname;
+        vm.formFields.age = response.data[0].age;
+        vm.formFields.gender = response.data[0].sex;
+        vm.formFields.contactNumber = response.data[0].contact;
+        vm.formFields.status = response.data[0].status;
+      }); // let vm = this;
       // this.formFields.results = [];
       // let driveInfo = this.formFields.fullname;
       // if (this.autoCompleteTimeout) {
@@ -8668,7 +8690,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formD = new FormData();
       var method = null;
@@ -8694,7 +8716,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this2.cancelEntry();
+          _this3.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -8721,17 +8743,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'gender' || _this2.names[i] == 'status') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (_this3.names[i] == 'gender' || _this3.names[i] == 'status') {
+            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this3.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this3.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
+              $('[name="driver_' + _this3.names[i] + '"]').removeClass('is-invalid');
+              $('[name="driver_' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
@@ -59312,44 +59334,24 @@ var render = function() {
                           _c(
                             "select",
                             {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.fullname,
-                                  expression: "formFields.fullname"
-                                }
-                              ],
                               staticClass: "details-input form-control select2",
-                              attrs: { id: "kt_typeahead", name: "fullname" },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "fullname",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
+                              attrs: { id: "kt_typeahead", name: "fullname" }
                             },
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _c("option", { attrs: { value: "s" } }, [
-                                _vm._v("s")
-                              ])
-                            ]
+                              _vm._l(_vm.results, function(result) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: result.id,
+                                    domProps: { value: result.id }
+                                  },
+                                  [_vm._v(_vm._s(_vm.formFields.fullname))]
+                                )
+                              })
+                            ],
+                            2
                           )
                         ]),
                         _vm._v(" "),

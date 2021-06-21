@@ -33,6 +33,7 @@ class TransportationDriverController extends Controller
      */
     public function index(GetListingDriver $getListingDriver)
     {
+
         $records = $getListingDriver->execute();
         return response()->json($records);
     }
@@ -98,6 +99,7 @@ class TransportationDriverController extends Controller
     }
 
     public function typehead($data, GetListingDriverApi $getlist){
+        dd("sheshe");
         $result = $getlist->execute($data);
         return response()->json($result);
     }
