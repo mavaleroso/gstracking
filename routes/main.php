@@ -148,6 +148,10 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
         ]
     ]);
 
+    Route::post('driver/autoComplete', 'TransportationDriverController@typehead');
+
+    
+
 });
 Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
     Route::resource('log', 'LogController', [

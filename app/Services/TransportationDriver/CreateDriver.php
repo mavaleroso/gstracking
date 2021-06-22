@@ -14,7 +14,7 @@ class CreateDriver
      */
     public function execute($fields, $url)
     {
-
+      
         $user = auth()->user()->id;
         $arr = array('luser' => $user, 'lpage' => 'Office_driver' , 'lurl' => $url, 'laction' => 'create');
         $createLogs = createLogs($arr);
@@ -22,7 +22,7 @@ class CreateDriver
         $driver = Driver::create([
             'type' => 1,
             'fullname' => $fields['fullname'],
-            'age' => $fields['age'],
+            'birthdate' => $fields['birthdate'],
             'sex' => $fields['gender'],
             'contact' => $fields['contactNumber'],
             'status' => $fields['status'],

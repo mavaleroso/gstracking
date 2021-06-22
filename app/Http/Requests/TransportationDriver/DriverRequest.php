@@ -22,7 +22,7 @@ class DriverRequest extends FormRequest
         return [
             'id' => 'nullable',
             'fullname' => 'required',
-            'age' => 'required',
+            'birthdate' => 'required',
             'gender' => 'required',
             'contactNumber' => 'required',
             'status' => 'required'
@@ -33,7 +33,7 @@ class DriverRequest extends FormRequest
     {
         return [
             'fullname' => 'Fullname',
-            'age' => 'Age',
+            'birthdate' => 'Birthdate',
             'gender' => 'Gender',
             'contactNumber' => 'Contact Number',
             'status' => 'Status'
@@ -45,7 +45,7 @@ class DriverRequest extends FormRequest
     {
         return [
             'fullname.required' => __('main/validations.required'),
-            'age.required' => __('main/validations.required'),
+            'birthdate.required' => __('main/validations.required'),
             'gender.required' => __('main/validations.required'),
             'contactNumber.required' => __('main/validations.required'),
             'status.required' => __('main/validations.required')

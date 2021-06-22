@@ -12,37 +12,50 @@
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
+                            <div v-if="formFields.image!=''" class="col-lg-12">
+                                 <div class="form-group">
+                                    <label>Image: </label> <br>
+                                    
+                                    <img :src="formFields.image" style="width:100px;height:100px;" >
+                                </div>
+                            </div>
                             <div class="col-lg-6">
+                               
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <input type="text" class="form-control required-field" name="driver_fullname" placeholder="Enter fullname" v-model="formFields.fullname"/>
-                                </div>
+                                    <select class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname">
+                                        <option label="Label"></option>
+                                        <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                    </select>
+                                  </div>
                                 <div class="form-group">
                                     <label>Gender:</label>
-                                    <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
+                                    <input type="text" class="form-control required-field" name="driver_gender" placeholder="Gender" v-model="formFields.gender" disabled/>
+                                    <!-- <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="others">Others</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Status:</label>
-                                    <select class="form-control select2" id="kt_select_status" name="driver_status" v-model="formFields.status">
+                                    <input type="text" class="form-control required-field" name="driver_status" placeholder="Status" v-model="formFields.status" disabled/>
+                                    <!-- <select class="form-control select2" id="kt_select_status" name="driver_status" v-model="formFields.status">
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Age:</label>
-                                    <input type="number" class="form-control required-field" name="driver_age" placeholder="Enter age" v-model="formFields.age"/>
+                                    <label>Birthdate:</label>
+                                    <input type="text" class="form-control required-field" name="driver_birthdate" placeholder="Birthdate" v-model="formFields.birthdate" disabled/>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number:</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="la la-mobile-phone icon-lg"></i></span></div>
-                                        <input type="text" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber"/>
+                                        <input type="number" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber" disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +99,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Fullname</th>
-                            <th>Age</th>
+                            <th>Birthdate</th>
                             <th>Sex</th>
                             <th>Contact No.</th>
                             <th>Status</th>
@@ -98,11 +111,13 @@
                 <!--end: Datatable-->
             </div>
         </div>
-    </div>
+    </div>      
 </template>
 
 <script>
+import Dialog from '../../Layouts/Dialog.vue';
 export default {
+  components: { Dialog },
     data() {
         return {
             create: false,
@@ -110,12 +125,15 @@ export default {
             formFields: {
                 id: '',
                 fullname: '',
-                age: '',
+                birthdate: '',
                 gender: '',
                 contactNumber: '',
                 status: '',
+                results: [],
+                image:''
             },
-            names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
+            states:[],
+            names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
         }
     },
     created() {
@@ -127,33 +145,43 @@ export default {
     methods: {
         ini() {
             $(()=>{
-                this.tdatatable().init();
+                this.tdatatable().init();   
             });
         },
         newEntry() {
+
             this.create = true;
             let vm = this;
+            
             $(() => {
-                $('#kt_select_gender').select2({
-                    placeholder: "Select gender",
-                    minimumResultsForSearch: Infinity
+                vm.autoComplete();
+                $('#kt_select_fullname').on('change', () => {
+                    this.getData();
                 });
-
-                $('#kt_select_status').select2({
-                    placeholder: "Select status",
-                    minimumResultsForSearch: Infinity
-                });
-
-                $('#kt_select_gender').change(function() {
-                    vm.formFields.gender = $(this).val();
-                });
-
-                $('#kt_select_status').change(function() {
-                    vm.formFields.status = $(this).val();
-                });
-
                 $('.card-label span').text('Create Driver');
+
+                $('#kt_select_fullname').select2({
+                    placeholder: "Select fullname",
+                    allowClear: true
+                });
             });
+        },
+
+        autoComplete() {
+            axios.post(BASE_URL + '/transportation/driver/autoComplete').then(response => {
+                this.formFields.results = response.data;
+            });
+        },
+        getData(){
+            let vm = this;
+            let id  = $('#kt_select_fullname').val();
+            let fullname = vm.formFields.results[id].first_name +' '+vm.formFields.results[id].middle_name+' '+vm.formFields.results[id].last_name;
+            vm.formFields.contactNumber = vm.formFields.results[id].contact;
+            vm.formFields.gender = vm.formFields.results[id].gender;    
+            vm.formFields.status = vm.formFields.results[id].status;
+            vm.formFields.birthdate = vm.formFields.results[id].birthdate;
+            vm.formFields.fullname = fullname;
+            vm.formFields.image = vm.formFields.results[id].image_path;
         },
         editEntry(id) {
             this.edit = true;
@@ -164,7 +192,7 @@ export default {
                 axios.get(BASE_URL + "/transportation/driver/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
                     vm.formFields.fullname = response.data[0].fullname;
-                    vm.formFields.age = response.data[0].age;
+                    vm.formFields.birthdate = response.data[0].birthdate;
                     vm.formFields.gender = response.data[0].sex;
                     vm.formFields.contactNumber = response.data[0].contact;
                     vm.formFields.status = response.data[0].status;
@@ -200,7 +228,7 @@ export default {
         cancelEntry() {
             this.formFields.id = '';
             this.formFields.fullname = '';
-            this.formFields.age = '';
+            this.formFields.birthdate = '';
             this.formFields.gender = '';
             this.formFields.contactNumber = '';
             this.formFields.status = '';
@@ -215,7 +243,7 @@ export default {
 
             formD.append('id', this.formFields.id);
             formD.append('fullname', this.formFields.fullname);
-            formD.append('age', this.formFields.age);
+            formD.append('birthdate', this.formFields.birthdate);
             formD.append('gender', this.formFields.gender);
             formD.append('contactNumber', this.formFields.contactNumber);
             formD.append('status', this.formFields.status);
@@ -239,9 +267,10 @@ export default {
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(`${key}` == 'gender' || `${key}` == 'status'){
+                        if(`${key}` == 'fullname'){
                             if ($('#kt_select_'+`${key}`).next().next().length == 0) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                                console.log("Head");
                             }
                         } else {
                             if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -251,7 +280,7 @@ export default {
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'gender' || this.names[i] == 'status') {
+                        if (this.names[i] == 'fullname') {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
                                 if ($('#kt_select_'+ this.names[i]).next().next().length != 0) {
                                     $('#kt_select_'+ this.names[i]).next().next('.invalid-feedback').remove();
@@ -306,7 +335,7 @@ export default {
                     columns: [
                         { "data": "id" },
                         { "data": "fullname" },
-                        { "data": "age" },
+                        { "data": "birthdate" },
                         { "data": "sex" },
                         { "data": "contact" },
                         { "data": "status" },

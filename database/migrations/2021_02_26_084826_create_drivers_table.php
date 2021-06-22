@@ -17,7 +17,7 @@ class CreateDriversTable extends Migration
             $table->id();
             $table->string('type');
             $table->string('fullname')->nullable();
-            $table->integer('age')->nullable();
+            $table->date('birthdate')->nullable();
             $table->string('sex')->nullable();
             $table->string('contact')->nullable();
             $table->tinyInteger('status')->nullable();
