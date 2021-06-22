@@ -4830,24 +4830,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4860,7 +4842,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         nextPage: 2,
         display: 5
       },
-      loading: true
+      loading: true,
+      searchData: null
     };
   },
   mounted: function mounted() {
@@ -4871,14 +4854,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var result = null;
       var current = this.pages.currentPage;
 
-      if (current <= 3) {
-        result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+      if (this.pages.totalPages < 5) {
+        result = _toConsumableArray(Array(this.pages.totalPages).keys()).map(function (x) {
           return ++x;
         });
-      } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
-        result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
       } else {
-        result = [current - 2, current - 1, current, current + 1, current + 2];
+        if (current <= 3) {
+          result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+            return ++x;
+          });
+        } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+          result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+        } else {
+          result = [current - 2, current - 1, current, current + 1, current + 2];
+        }
       }
 
       return result;
@@ -4893,16 +4882,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     indexers: function indexers(idx) {
-      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 100 + idx;
+      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
     },
     getTravels: function getTravels() {
       var _this2 = this;
 
       this.loading = true;
       axios.get(BASE_URL + '/tracking/pendingtravels?pages=' + this.pages.currentPage).then(function (res) {
-        _this2.travels = res.data.results;
+        _this2.travels = res.data.data;
         _this2.total = res.data.count;
-        _this2.pages.totalPages = Math.ceil(res.data.count / 100);
+        _this2.pages.totalPages = Math.ceil(res.data.count / 10);
         _this2.loading = false;
       });
     },
@@ -4920,7 +4909,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       this.getTravels();
-    }
+    },
+    search: function search() {}
   }
 });
 
@@ -9794,7 +9784,7 @@ var routes = [{
   component: _components_Pages_ListPendingTravels__WEBPACK_IMPORTED_MODULE_13__.default,
   name: 'ListPendingTravels',
   meta: {
-    title: 'List of Pending Travels'
+    title: 'List of Travels Status'
   }
 }, {
   path: '/approved_travels',
@@ -49924,7 +49914,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("span", { staticClass: "menu-text" }, [
-                          _vm._v("Pending Travels")
+                          _vm._v("Travels Status")
                         ])
                       ]
                     )
@@ -53817,8 +53807,25 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchData,
+                    expression: "searchData"
+                  }
+                ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "", placeholder: "Search" }
+                attrs: { type: "text", name: "", placeholder: "Search" },
+                domProps: { value: _vm.searchData },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchData = $event.target.value
+                  }
+                }
               })
             ])
           ])
@@ -53907,19 +53914,115 @@ var render = function() {
                     return _c("tr", { key: index }, [
                       _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.tracking_no))]),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "button",
+                            {
+                              key: index,
+                              staticClass:
+                                "btn btn-sm btn-rounded btn-inline btn-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.tracking_no))]
+                          )
+                        }),
+                        0
+                      ),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.place))]),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.place))]
+                          )
+                        }),
+                        0
+                      ),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.passenger_count))]),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-sm btn-rounded btn-inline btn-primary m-1"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                t.tracking_no.reduce(function(acc, item) {
+                                  return acc + parseInt(item.passenger_count)
+                                }, 0)
+                              )
+                            )
+                          ]
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.means_of_transportation))]),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "label label-lg label-rounded label-inline label-light-primary m-1"
+                          },
+                          [_vm._v(_vm._s(t.transactions.length))]
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.inclusive_from))]),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.inclusive_from))]
+                          )
+                        }),
+                        0
+                      ),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(t.inclusive_to))]),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.inclusive_to))]
+                          )
+                        }),
+                        0
+                      ),
                       _vm._v(" "),
-                      _vm._m(1, true)
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.status))]
+                          )
+                        }),
+                        0
+                      )
                     ])
                   }),
                   0
@@ -53945,9 +54048,10 @@ var render = function() {
                 _c(
                   "a",
                   {
-                    class: _vm.loading
-                      ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                      : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    class:
+                      _vm.loading || this.pages.currentPage < 2
+                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
                     attrs: { href: "#" },
                     on: {
                       click: function($event) {
@@ -54008,9 +54112,11 @@ var render = function() {
                 _c(
                   "a",
                   {
-                    class: _vm.loading
-                      ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                      : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    class:
+                      _vm.loading ||
+                      this.pages.currentPage == this.pages.totalPages
+                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
                     attrs: { href: "#" },
                     on: {
                       click: function($event) {
@@ -54036,7 +54142,13 @@ var render = function() {
                 : _vm._e(),
               _vm._v(" "),
               _c("span", { staticClass: "text-muted" }, [
-                _vm._v("Displaying 100 of " + _vm._s(_vm.total) + " records")
+                _vm._v(
+                  "Displaying " +
+                    _vm._s(_vm.travels.length) +
+                    " of " +
+                    _vm._s(_vm.total) +
+                    " records"
+                )
               ])
             ])
           ]
@@ -54066,18 +54178,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "120px" } }, [_vm._v("Action")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-sm btn-clean" }, [
-        _c("i", { staticClass: "flaticon2-check-mark" }),
-        _vm._v(" Approved\n                            ")
+        _c("th", { staticStyle: { width: "200px" } }, [_vm._v("Status")])
       ])
     ])
   }
