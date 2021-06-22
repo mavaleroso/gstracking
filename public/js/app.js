@@ -8433,12 +8433,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -8451,14 +8445,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formFields: {
         id: '',
         fullname: '',
-        age: '',
+        birthdate: '',
         gender: '',
         contactNumber: '',
         status: '',
-        results: []
+        results: [],
+        image: ''
       },
       states: [],
-      names: ['fullname', 'age', 'gender', 'contactNumber', 'status']
+      names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
     };
   },
   created: function created() {},
@@ -8474,174 +8469,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     newEntry: function newEntry() {
+      var _this2 = this;
+
       this.create = true;
       var vm = this;
       $(function () {
-        $('#kt_select_gender').select2({
-          placeholder: "Select gender",
-          minimumResultsForSearch: Infinity
-        });
-        $('#kt_select_status').select2({
-          placeholder: "Select status",
-          minimumResultsForSearch: Infinity
-        });
-        $('#kt_select_gender').change(function () {
-          vm.formFields.gender = $(this).val();
-        });
-        $('#kt_select_status').change(function () {
-          vm.formFields.status = $(this).val();
+        vm.autoComplete();
+        $('#kt_select_fullname').on('change', function () {
+          _this2.getData();
         });
         $('.card-label span').text('Create Driver');
-        $('#kt_typeahead').select2({
-          placeholder: "Select a Division",
+        $('#kt_select_fullname').select2({
+          placeholder: "Select fullname",
           allowClear: true
         });
-        vm.autoComplete(); // $(document).on('keyup','.select2-search__field',
-        // function (e) {       
-        //     vm.formFields.results = [];
-        //     let driveInfo = vm.formFields.fullname;
-        //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
-        //     console.log(response.data);     
-        //     });
-        // }
-        // );
       });
     },
     autoComplete: function autoComplete() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var b = 2;
-      axios.put(BASE_URL + '/transportation/driver/autoComplete/' + b).then(function (response) {
-        //  axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
-        _this2.results = response.data;
+      axios.post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
+        _this3.formFields.results = response.data;
       });
     },
-    autoCompleteold: function autoCompleteold() {
-      console.log("heelo");
-      axios.get(BASE_URL + "/transportation/driver/" + id).then(function (response) {
-        vm.formFields.id = response.data[0].id;
-        vm.formFields.fullname = response.data[0].fullname;
-        vm.formFields.age = response.data[0].age;
-        vm.formFields.gender = response.data[0].sex;
-        vm.formFields.contactNumber = response.data[0].contact;
-        vm.formFields.status = response.data[0].status;
-      }); // let vm = this;
-      // this.formFields.results = [];
-      // let driveInfo = this.formFields.fullname;
-      // if (this.autoCompleteTimeout) {
-      //     clearTimeout(this.autoCompleteTimeout);
-      //     }
-      // vm.autoCompleteTimeout = setTimeout(() => {
-      //     axios.put(BASE_URL + '/transportation/driver/autoComplete/' + driveInfo).then(response => {
-      //     // console.log(response.data);  
-      //     vm.formFields.results = response.data.results;
-      //     this.test();
-      //     });
-      // }, 2000);
-    },
-    test: function test() {
+    getData: function getData() {
       var vm = this;
-
-      var KTTypeahead = function () {
-        for (var i = 0; i < vm.formFields.results.length; i++) {
-          vm.states.push("".concat(vm.formFields.results[i].first_name, " ").concat(vm.formFields.results[i].middle_name, " ").concat(vm.formFields.results[i].last_name));
-        }
-
-        var states = vm.states;
-        console.log(vm.states); // Private functions
-
-        var demo1 = function demo1() {
-          var substringMatcher = function substringMatcher(strs) {
-            return function findMatches(q, cb) {
-              var matches, substringRegex; // an array that will be populated with substring matches
-
-              matches = []; // regex used to determine if a string contains the substring `q`
-
-              var substrRegex = new RegExp(q, 'i'); // iterate through the pool of strings and for any string that
-              // contains the substring `q`, add it to the `matches` array
-
-              $.each(strs, function (i, str) {
-                if (substrRegex.test(str)) {
-                  matches.push(str);
-                }
-              });
-              cb(matches);
-            };
-          };
-
-          $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-          }, {
-            name: 'states',
-            source: substringMatcher(states)
-          });
-        };
-
-        return {
-          // public functions
-          init: function init() {
-            demo1();
-          }
-        };
-      }();
-
-      jQuery(document).ready(function () {
-        KTTypeahead.init();
-      });
-    },
-    bew: function bew() {
-      var vm = this;
-
-      var KTTypeahead = function () {
-        var states = [];
-
-        for (var i = 0; i < vm.formFields.results.length; i++) {
-          console.log("".concat(vm.formFields.results[i].first_name, " ").concat(vm.formFields.results[i].middle_name, " ").concat(vm.formFields.results[i].last_name)); // states.push(`${vm.formFields.results[i].first_name} ${vm.formFields.results[i].middle_name} ${vm.formFields.results[i].last_name}`);
-        } // Private functions
-
-
-        var demo1 = function demo1() {
-          var substringMatcher = function substringMatcher(strs) {
-            return function findMatches(q, cb) {
-              var matches, substringRegex; // an array that will be populated with substring matches
-
-              matches = []; // regex used to determine if a string contains the substring `q`
-
-              var substrRegex = new RegExp(q, 'i'); // iterate through the pool of strings and for any string that
-              // contains the substring `q`, add it to the `matches` array
-
-              $.each(strs, function (i, str) {
-                if (substrRegex.test(str)) {
-                  matches.push(str);
-                }
-              });
-              cb(matches);
-            };
-          };
-
-          $('#kt_typeahead_1, #kt_typeahead_1_modal').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-          }, {
-            name: 'states',
-            source: substringMatcher(states)
-          });
-        };
-
-        return {
-          // public functions
-          init: function init() {
-            demo1();
-          }
-        };
-      }();
-
-      jQuery(document).ready(function () {
-        KTTypeahead.init();
-      });
+      var id = $('#kt_select_fullname').val();
+      var fullname = vm.formFields.results[id].first_name + ' ' + vm.formFields.results[id].middle_name + ' ' + vm.formFields.results[id].last_name;
+      vm.formFields.contactNumber = vm.formFields.results[id].contact;
+      vm.formFields.gender = vm.formFields.results[id].gender;
+      vm.formFields.status = vm.formFields.results[id].status;
+      vm.formFields.birthdate = vm.formFields.results[id].birthdate;
+      vm.formFields.fullname = fullname;
+      vm.formFields.image = vm.formFields.results[id].image_path;
     },
     editEntry: function editEntry(id) {
       this.edit = true;
@@ -8651,7 +8511,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         axios.get(BASE_URL + "/transportation/driver/" + id).then(function (response) {
           vm.formFields.id = response.data[0].id;
           vm.formFields.fullname = response.data[0].fullname;
-          vm.formFields.age = response.data[0].age;
+          vm.formFields.birthdate = response.data[0].birthdate;
           vm.formFields.gender = response.data[0].sex;
           vm.formFields.contactNumber = response.data[0].contact;
           vm.formFields.status = response.data[0].status;
@@ -8681,7 +8541,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     cancelEntry: function cancelEntry() {
       this.formFields.id = '';
       this.formFields.fullname = '';
-      this.formFields.age = '';
+      this.formFields.birthdate = '';
       this.formFields.gender = '';
       this.formFields.contactNumber = '';
       this.formFields.status = '';
@@ -8690,14 +8550,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this3 = this;
+      var _this4 = this;
 
       var formD = new FormData();
       var method = null;
       var putParams = null;
       formD.append('id', this.formFields.id);
       formD.append('fullname', this.formFields.fullname);
-      formD.append('age', this.formFields.age);
+      formD.append('birthdate', this.formFields.birthdate);
       formD.append('gender', this.formFields.gender);
       formD.append('contactNumber', this.formFields.contactNumber);
       formD.append('status', this.formFields.status);
@@ -8716,7 +8576,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this3.cancelEntry();
+          _this4.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -8731,9 +8591,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'gender' || "".concat(key) == 'status') {
+          if ("".concat(key) == 'fullname') {
             if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
               $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+              console.log("Head");
             }
           } else {
             if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -8743,17 +8604,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this3.names.length; i++) {
-          if (_this3.names[i] == 'gender' || _this3.names[i] == 'status') {
-            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this3.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this3.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (_this4.names[i] == 'fullname') {
+            if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this4.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this4.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
-              $('[name="driver_' + _this3.names[i] + '"]').removeClass('is-invalid');
-              $('[name="driver_' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+              $('[name="driver_' + _this4.names[i] + '"]').removeClass('is-invalid');
+              $('[name="driver_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
@@ -8797,7 +8658,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             "data": "fullname"
           }, {
-            "data": "age"
+            "data": "birthdate"
           }, {
             "data": "sex"
           }, {
@@ -59327,6 +59188,24 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card-body" }, [
                     _c("div", { staticClass: "row" }, [
+                      _vm.formFields.image != ""
+                        ? _c("div", { staticClass: "col-lg-12" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _c("label", [_vm._v("Image: ")]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("img", {
+                                staticStyle: {
+                                  width: "100px",
+                                  height: "100px"
+                                },
+                                attrs: { src: _vm.formFields.image }
+                              })
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c("div", { staticClass: "col-lg-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Fullname:")]),
@@ -59334,20 +59213,59 @@ var render = function() {
                           _c(
                             "select",
                             {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.fullname,
+                                  expression: "formFields.fullname"
+                                }
+                              ],
                               staticClass: "details-input form-control select2",
-                              attrs: { id: "kt_typeahead", name: "fullname" }
+                              attrs: {
+                                id: "kt_select_fullname",
+                                name: "fullname"
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "fullname",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
                             },
                             [
                               _c("option", { attrs: { label: "Label" } }),
                               _vm._v(" "),
-                              _vm._l(_vm.results, function(result) {
+                              _vm._l(_vm.formFields.results, function(
+                                result,
+                                index
+                              ) {
                                 return _c(
                                   "option",
-                                  {
-                                    key: result.id,
-                                    domProps: { value: result.id }
-                                  },
-                                  [_vm._v(_vm._s(_vm.formFields.fullname))]
+                                  { key: index, domProps: { value: index } },
+                                  [
+                                    _vm._v(
+                                      _vm._s(result.first_name) +
+                                        " " +
+                                        _vm._s(result.middle_name) +
+                                        " " +
+                                        _vm._s(result.last_name)
+                                    )
+                                  ]
                                 )
                               })
                             ],
@@ -59358,132 +59276,23 @@ var render = function() {
                         _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Gender:")]),
                           _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.gender,
-                                  expression: "formFields.gender"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select_gender",
-                                name: "driver_gender"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "gender",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { value: "male" } }, [
-                                _vm._v("Male")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "female" } }, [
-                                _vm._v("Female")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "others" } }, [
-                                _vm._v("Others")
-                              ])
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Status:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.status,
-                                  expression: "formFields.status"
-                                }
-                              ],
-                              staticClass: "form-control select2",
-                              attrs: {
-                                id: "kt_select_status",
-                                name: "driver_status"
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "status",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Active")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "0" } }, [
-                                _vm._v("Inactive")
-                              ])
-                            ]
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Age:")]),
-                          _vm._v(" "),
                           _c("input", {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.formFields.age,
-                                expression: "formFields.age"
+                                value: _vm.formFields.gender,
+                                expression: "formFields.gender"
                               }
                             ],
                             staticClass: "form-control required-field",
                             attrs: {
-                              type: "number",
-                              name: "driver_age",
-                              placeholder: "Enter age"
+                              type: "text",
+                              name: "driver_gender",
+                              placeholder: "Gender",
+                              disabled: ""
                             },
-                            domProps: { value: _vm.formFields.age },
+                            domProps: { value: _vm.formFields.gender },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
@@ -59491,7 +59300,79 @@ var render = function() {
                                 }
                                 _vm.$set(
                                   _vm.formFields,
-                                  "age",
+                                  "gender",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Status:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.status,
+                                expression: "formFields.status"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "text",
+                              name: "driver_status",
+                              placeholder: "Status",
+                              disabled: ""
+                            },
+                            domProps: { value: _vm.formFields.status },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "status",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Birthdate:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.formFields.birthdate,
+                                expression: "formFields.birthdate"
+                              }
+                            ],
+                            staticClass: "form-control required-field",
+                            attrs: {
+                              type: "text",
+                              name: "driver_birthdate",
+                              placeholder: "Birthdate",
+                              disabled: ""
+                            },
+                            domProps: { value: _vm.formFields.birthdate },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.formFields,
+                                  "birthdate",
                                   $event.target.value
                                 )
                               }
@@ -59516,9 +59397,10 @@ var render = function() {
                               ],
                               staticClass: "form-control required-field",
                               attrs: {
-                                type: "text",
+                                type: "number",
                                 name: "driver_contactNumber",
-                                placeholder: "Enter contact number"
+                                placeholder: "Enter contact number",
+                                disabled: ""
                               },
                               domProps: { value: _vm.formFields.contactNumber },
                               on: {
@@ -59699,7 +59581,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Fullname")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Age")]),
+              _c("th", [_vm._v("Birthdate")]),
               _vm._v(" "),
               _c("th", [_vm._v("Sex")]),
               _vm._v(" "),

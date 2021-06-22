@@ -13,12 +13,12 @@ class GetListingDriverApi
      *
      * @param string $email
      */
-    public function execute($data)
+    public function execute()
     {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/employee/list/search/?q='.$data,
+        CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/employee/list/load',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -34,7 +34,7 @@ class GetListingDriverApi
         ));
 
         $driver = curl_exec($curl);
-        curl_close($curl);        
+        curl_close($curl);   
         return json_decode($driver);
     }
 }   

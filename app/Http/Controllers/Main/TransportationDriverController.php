@@ -98,9 +98,9 @@ class TransportationDriverController extends Controller
         return json_encode(['type' => 'success','message' => __('main/notifications.driver_updated_successfully'), 'result' => $result]);
     }
 
-    public function typehead($data, GetListingDriverApi $getlist){
-        dd("sheshe");
-        $result = $getlist->execute($data);
+    public function typehead(GetListingDriverApi $getlist){
+        $result = $getlist->execute();
+        
         return response()->json($result);
     }
 
