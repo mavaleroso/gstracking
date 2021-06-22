@@ -15,9 +15,10 @@
                                 </svg>
                             </span>
                         </div>
-                        <input type="text" class="form-control" name="" placeholder="Search"/>
+                        <input type="text" class="form-control" name="" placeholder="Search" v-model="searchData"/>
                     </div>
                 </a>
+                
             </div>
             <div class="card-toolbar">
                 <a href="#" class="btn btn-primary font-weight-bolder">
@@ -32,7 +33,10 @@
                 Advance Filter</a>
             </div>
         </div>
-        <div class="card-body">
+        <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                <div class="spinner spinner-primary"></div>
+            </div>
             <div class="card-scroll">
                 <table id="pending-travels-tbl" class="table rounded table-sm table-hover">
                     <thead>
@@ -44,23 +48,19 @@
                             <th>Vehicles</th>
                             <th>Travel Date</th>
                             <th>Return Date</th>
-                            <th style="width: 120px">Action</th>
+                            <th style="width: 200px">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>TO-2020-01-0001, TO-2020-01-0002</td>
-                            <td>Cantilan SDS</td>
-                            <td>9</td>
-                            <td>2</td>
-                            <td>July 12, 2021</td>
-                            <td>July 13, 2021</td>
-                            <td>
-                                <button class="btn btn-sm btn-clean">
-                                    <i class="flaticon2-check-mark"></i> Approved
-                                </button>
-                            </td>
+                        <tr v-for="(t, index) in travels" :key="index">
+                            <td>{{ indexers(index + 1) }}</td>
+                            <td><button v-for="(t,index) in t.tracking_no" :key="index" class="btn btn-sm btn-rounded btn-inline btn-primary m-1">{{t.tracking_no}}</button></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.place}}</span></td>
+                            <td><button class="btn btn-sm btn-rounded btn-inline btn-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</button></td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.transactions.length}}</span></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_from}}</span></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_to}}</span></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.status}}</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,27 +70,20 @@
             <!--begin::Pagination-->
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div class="d-flex flex-wrap py-2 mr-3">
-                    <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i class="ki ki-bold-double-arrow-back icon-xs"></i></a>
-                    <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
+                    <a href="#" :class="(loading || this.pages.currentPage < 2) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('prev')"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
 
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">23</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1">24</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">25</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">26</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">27</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">28</a>
-                    <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+                    <a v-if="pages.currentPage > 3" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+                    <a v-for="p in pagination" :key="p" href="#" :class="(loading) ? 'btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled':(p == pages.currentPage) ? 'btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1':'btn btn-icon btn-sm border-0 btn-light mr-2 my-1'" @click="pageSet('jump', p)" :disabled="loading">{{ p }}</a>
+                    <a v-if="pages.currentPage != pages.totalPages && pages.currentPage != (pages.totalPages-1) && pages.currentPage != (pages.totalPages-2)" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
 
-                    <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i class="ki ki-bold-arrow-next icon-xs"></i></a>
-                    <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>
+                    <a href="#" :class="(loading || this.pages.currentPage == this.pages.totalPages) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('next')"><i class="ki ki-bold-arrow-next icon-xs"></i></a>
                 </div>
                 <div class="d-flex align-items-center py-3">
-                    <div class="d-flex align-items-center">
+                    <div v-if="loading" class="d-flex align-items-center">
                         <div class="mr-2 text-muted">Loading...</div>
                         <div class="spinner mr-10"></div>
                     </div>
-                    <span class="text-muted">Displaying 10 of 230 records</span>
+                    <span class="text-muted">Displaying {{ travels.length }} of {{ total }} records</span>
                 </div>
             </div>
             <!--end:: Pagination-->
@@ -101,13 +94,41 @@
 export default {
     data() {
         return {
-            travels: []
+            travels: [],
+            total: null,
+            pages: {
+                totalPages: null,
+                prevPage: null,
+                currentPage: 1,
+                nextPage: 2,
+                display: 5,
+            },
+            loading: true,
+            searchData: null
         }
-    },
-    created() {
     },
     mounted() {
         this.ini();
+    },
+    computed: {
+        pagination() {
+            let result = null;
+            let current = this.pages.currentPage;
+            if (this.pages.totalPages < 5) {
+                result = [...Array(this.pages.totalPages).keys()].map(x => ++x);
+            } else {
+                if (current <= 3) {
+                    result = [...Array(this.pages.display).keys()].map(x => ++x);
+                } else if (current == (this.pages.totalPages - 1) || current == this.pages.totalPages) {
+                    result = [(this.pages.totalPages - 4), (this.pages.totalPages - 3), (this.pages.totalPages - 2), (this.pages.totalPages - 1), this.pages.totalPages];
+                }
+                else {
+                    result = [current - 2, current -1, current, current + 1, current + 2];
+                }
+            }
+            
+            return result;
+        },
     },
     methods: {
         ini() {
@@ -115,10 +136,32 @@ export default {
                 this.getTravels();
             }); 
         },
+        indexers(idx) {
+            return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
+        },
         getTravels() {
-            axios.get(BASE_URL + '').then(res => {
-
+            this.loading = true;
+            axios.get(BASE_URL + '/tracking/pendingtravels?pages='+this.pages.currentPage).then(res => {
+                this.travels = res.data.data;
+                this.total = res.data.count;
+                this.pages.totalPages = Math.ceil(res.data.count / 10);
+                this.loading = false;
             });
+        },
+        pageSet(type, page = null) {
+            if (type == 'jump') {
+                this.pages.prevPage = page - 1;
+                this.pages.currentPage = page;
+                this.pages.nextPage = page + 1;
+            } else if (type == 'next' || type == 'prev') {
+                (type == 'next')?this.pages.currentPage++:this.pages.currentPage--;
+                this.pages.prevPage = this.pages.currentPage - 1;
+                this.pages.nextPage = this.pages.currentPage + 1;
+            } 
+            this.getTravels();
+        },
+        search() {
+
         }
     },
 }
