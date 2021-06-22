@@ -10,6 +10,8 @@ import 'nprogress/nprogress.css';
 
 window.Vue = require('vue').default;
 
+import store from "./store"
+
 Vue.use(VueRouter);
 
 router.beforeResolve((to, from, next) => {
@@ -29,4 +31,5 @@ const app = new Vue({
     el: '#app',
     components: { Index, Login, Print },
     router,
+    store,
 });
