@@ -54,9 +54,9 @@
                     <tbody>
                         <tr v-for="(t, index) in travels" :key="index">
                             <td>{{ indexers(index + 1) }}</td>
-                            <td><button v-for="(t,index) in t.tracking_no" :key="index" class="btn btn-sm btn-rounded btn-inline btn-primary m-1">{{t.tracking_no}}</button></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.place}}</span></td>
-                            <td><button class="btn btn-sm btn-rounded btn-inline btn-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</button></td>
+                            <td><span class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.transactions.length}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_from}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_to}}</span></td>
