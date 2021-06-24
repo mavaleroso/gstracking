@@ -380,9 +380,9 @@ export default {
         this.ini().init();
         this.ini().events();
         this.$store.dispatch('currentUser/loadEmployee');
-    
     },
     methods: {
+
         dashData() {
             let year = $('#year').val();
             
