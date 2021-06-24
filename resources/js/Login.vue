@@ -128,6 +128,7 @@
                 email: '',
                 password: '',
                 errors: [],
+				listdata:[],
                 req: axios.create({
                     baseUrl: BASE_URL
                 })
@@ -135,6 +136,7 @@
         },
         methods: {
             login() {
+				
                 this.errors = [];
                 if (!this.email) {
                     this.errors.push('Email is required.');

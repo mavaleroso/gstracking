@@ -132,6 +132,7 @@ export default {
                 results: [],
                 image:''
             },
+            listdata:[],
             states:[],
             names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
         }
@@ -141,20 +142,22 @@ export default {
     },
     mounted() {
         this.ini();
+        console.log(this.$store.getters['currentUser/employee']);
+        this.formFields.results = this.$store.getters['currentUser/employee'];
+
     },
     methods: {
         ini() {
             $(()=>{
                 this.tdatatable().init();   
+
             });
         },
         newEntry() {
-
             this.create = true;
             let vm = this;
             
             $(() => {
-                vm.autoComplete();
                 $('#kt_select_fullname').on('change', () => {
                     this.getData();
                 });
@@ -164,12 +167,6 @@ export default {
                     placeholder: "Select fullname",
                     allowClear: true
                 });
-            });
-        },
-
-        autoComplete() {
-            axios.post(BASE_URL + '/transportation/driver/autoComplete').then(response => {
-                this.formFields.results = response.data;
             });
         },
         getData(){
