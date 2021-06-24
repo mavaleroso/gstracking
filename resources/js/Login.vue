@@ -136,7 +136,7 @@
         },
         methods: {
             login() {
-				this.$store.dispatch('currentUser/loadEmployee', this.listdata);
+				
                 this.errors = [];
                 if (!this.email) {
                     this.errors.push('Email is required.');

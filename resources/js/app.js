@@ -7,7 +7,9 @@ import Login from './Login.vue';
 import Print from './Print.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-
+import Vue from "vue";
+import Vuex from "vuex";
+Vue.use (Vuex);
 window.Vue = require('vue').default;
 
 import store from "./store"

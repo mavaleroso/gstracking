@@ -2086,7 +2086,6 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      this.$store.dispatch('currentUser/loadEmployee', this.listdata);
       this.errors = [];
 
       if (!this.email) {
@@ -3089,6 +3088,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3117,12 +3117,14 @@ __webpack_require__.r(__webpack_exports__);
         count: []
       },
       drivers: [],
-      vehicles: []
+      vehicles: [],
+      listdata: []
     };
   },
   mounted: function mounted() {
     this.ini().init();
     this.ini().events();
+    this.$store.dispatch('currentUser/loadEmployee');
   },
   methods: {
     dashData: function dashData() {
@@ -8576,6 +8578,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         results: [],
         image: ''
       },
+      listdata: [],
       states: [],
       names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
     };
@@ -8583,6 +8586,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   created: function created() {},
   mounted: function mounted() {
     this.ini();
+    console.log(this.$store.getters['currentUser/employee']);
+    this.formFields.results = this.$store.getters['currentUser/employee'];
   },
   methods: {
     ini: function ini() {
@@ -8598,7 +8603,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
-        vm.autoComplete();
         $('#kt_select_fullname').on('change', function () {
           _this2.getData();
         });
@@ -8607,13 +8611,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select fullname",
           allowClear: true
         });
-      });
-    },
-    autoComplete: function autoComplete() {
-      var _this3 = this;
-
-      axios.post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
-        _this3.formFields.results = response.data;
       });
     },
     getData: function getData() {
@@ -8674,7 +8671,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this4 = this;
+      var _this3 = this;
 
       var formD = new FormData();
       var method = null;
@@ -8700,7 +8697,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this4.cancelEntry();
+          _this3.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -8728,17 +8725,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this4.names.length; i++) {
-          if (_this4.names[i] == 'fullname') {
-            if (keys.indexOf('' + _this4.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this4.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this4.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (_this3.names[i] == 'fullname') {
+            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this3.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this3.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this4.names[i] + '') == -1) {
-              $('[name="driver_' + _this4.names[i] + '"]').removeClass('is-invalid');
-              $('[name="driver_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
+              $('[name="driver_' + _this3.names[i] + '"]').removeClass('is-invalid');
+              $('[name="driver_' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
@@ -9598,14 +9595,16 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _Index_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue */ "./resources/js/Index.vue");
 /* harmony import */ var _Login_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Login.vue */ "./resources/js/Login.vue");
 /* harmony import */ var _Print_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Print.vue */ "./resources/js/Print.vue");
 /* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! nprogress */ "./node_modules/nprogress/nprogress.js");
 /* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(nprogress__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var nprogress_nprogress_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! nprogress/nprogress.css */ "./node_modules/nprogress/nprogress.css");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -9615,9 +9614,12 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+
+
+vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vuex__WEBPACK_IMPORTED_MODULE_7__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_7__.default);
+vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_9__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {
   if (to.path) {
     nprogress__WEBPACK_IMPORTED_MODULE_4___default().done();
@@ -9629,7 +9631,7 @@ _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, n
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.afterEach(function () {
   nprogress__WEBPACK_IMPORTED_MODULE_4___default().done();
 });
-var app = new Vue({
+var app = new vue__WEBPACK_IMPORTED_MODULE_6__.default({
   el: '#app',
   components: {
     Index: _Index_vue__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -9637,7 +9639,7 @@ var app = new Vue({
     Print: _Print_vue__WEBPACK_IMPORTED_MODULE_3__.default
   },
   router: _routes__WEBPACK_IMPORTED_MODULE_0__.default,
-  store: _store__WEBPACK_IMPORTED_MODULE_6__.default
+  store: _store__WEBPACK_IMPORTED_MODULE_8__.default
 });
 
 /***/ }),
@@ -9867,25 +9869,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
-
 
 var state = {
-  transansportDrivers: []
+  employee: []
 };
-var getters = {};
+var getters = {
+  employee: function employee(state) {
+    return state.employee;
+  }
+};
 var actions = {
   loadEmployee: function loadEmployee(_ref) {
-    _objectDestructuringEmpty(_ref);
-
+    var commit = _ref.commit;
     axios__WEBPACK_IMPORTED_MODULE_0___default().post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
-      commit('setTransportDrivers', response.data);
+      commit('setEmployee', response.data);
     });
   }
 };
 var mutations = {
-  setTransportDrivers: function setTransportDrivers(state, drivers) {
-    state.transansportDrivers = drivers;
+  setEmployee: function setEmployee(state, drivers) {
+    state.employee = drivers;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({

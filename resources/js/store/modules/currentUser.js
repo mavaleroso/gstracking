@@ -1,18 +1,24 @@
-import axios from "axios";
+import axios from "axios";  
 const state = {
-    transansportDrivers: [] 
+    employee: [] 
 };
-const getters = {};
+const getters = {
+
+    employee(state){
+        return state.employee
+    }
+
+};
 const actions = {
-    loadEmployee({}){
+    loadEmployee({commit}){
         axios.post(BASE_URL + '/transportation/driver/autoComplete').then(response => {
-            commit('setTransportDrivers', response.data)
+            commit('setEmployee', response.data) 
         });
     }
 };
 const mutations = {
-    setTransportDrivers: (state, drivers) => {
-        state.transansportDrivers= drivers;
+    setEmployee: (state, drivers) => {
+        state.employee= drivers;
     },
 };
 
