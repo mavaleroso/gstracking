@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\ListTravels;
+namespace App\Http\Requests\VehicleTravels;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class TravelRequest extends FormRequest
+class VehicleTravelRequest extends FormRequest
 {
      /**
      * Determine if the user is authorized to make this request.
@@ -37,10 +37,7 @@ class TravelRequest extends FormRequest
             'vehicle_type' => 'nullable'
         ];
 
-        if ($this->request->get('vehicle_type') == 1) {
-            $rules['fuel_charge'] = 'required';
-            $rules['fuel_liters'] = 'required';
-        } else if ($this->request->get('vehicle_type') == 2) {
+        if ($this->request->get('vehicle_type') == 2) {
             $rules['rate_per_km'] = 'required';
         }
 
@@ -57,10 +54,7 @@ class TravelRequest extends FormRequest
             'travel_return' => 'Date Return',
         ];
 
-        if ($this->request->get('vehicle_type') == 1) {
-            $attr['fuel_charge'] = 'Fuel Charge';
-            $attr['fuel_liters'] = 'Fuel Liters';
-        } else if ($this->request->get('vehicle_type') == 2) {
+        if ($this->request->get('vehicle_type') == 2) {
             $attr['rate_per_km'] = 'Rate per KM';
         }
 
@@ -78,10 +72,7 @@ class TravelRequest extends FormRequest
             'travel_return' => __('main/validations.required'),
         ];
 
-        if ($this->request->get('vehicle_type') == 1) {
-            $msgs['fuel_charge'] = __('main/validations.required');
-            $msgs['fuel_liters'] = __('main/validations.required');
-        } else if ($this->request->get('vehicle_type') == 2) {
+        if ($this->request->get('vehicle_type') == 2) {
             $msgs['rate_per_km'] = __('main/validations.required');
         }
 

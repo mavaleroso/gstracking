@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Services\PendingTravels\GetListingPendingTravels;
+use App\Services\TravelsStatus\GetListingTravelsStatus;
 
-class PendingTravelsController extends Controller
+class TravelsStatusController extends Controller
 {
      /**
      * Initialization
@@ -15,20 +15,20 @@ class PendingTravelsController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:pendingtravels-list', ['only' => ['index']]);
-        $this->middleware('permission:pendingtravels-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:pendingtravels-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:pendingtravels-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:pendingtravels-view', ['only' => ['show']]);
+        $this->middleware('permission:travelsstatus-list', ['only' => ['index']]);
+        $this->middleware('permission:travelsstatus-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:travelsstatus-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:travelsstatus-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:travelsstatus-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, GetListingPendingTravels $getListingPendingTravels)
+    public function index(Request $request, GetListingTravelsStatus $getListingTravelsStatus)
     {
-        $data = $getListingPendingTravels->execute($request);
+        $data = $getListingTravelsStatus->execute($request);
         return response()->json($data);
     }
 

@@ -3,7 +3,7 @@ import Dashboard from './components/Pages/Dashboard';
 import RequestTravel from './components/Pages/RequestTravel';
 import ListLocalRequest from './components/Pages/ListLocalRequests';
 import ListRitoRequest from './components/Pages/ListRitoRequests';
-import ListTravel from './components/Pages/ListTravels';
+import VehicleTravels from './components/Pages/VehicleTravels';
 import Log from './components/Pages/Logs';
 import Vehicle from './components/Pages/Transportation/Vehicle';
 import Driver from './components/Pages/Transportation/Driver';
@@ -12,7 +12,7 @@ import ListUsers from './components/Pages/ListUsers';
 import travelCalendar from './components/Pages/TravelCalendar';
 import printRequest from './components/Pages/PrintRequest';
 import printTripTicket from './components/Pages/PrintTripTicket';
-import ListPendingTravels from './components/Pages/ListPendingTravels';
+import TravelsStatus from './components/Pages/TravelsStatus';
 
 const routes = [
     {
@@ -48,19 +48,19 @@ const routes = [
         }
     },
     {
-        path: '/pending_travels',
-        component: ListPendingTravels,
-        name: 'ListPendingTravels',
+        path: '/travels_status',
+        component: TravelsStatus,
+        name: 'travelsStatus',
         meta: {
             title: 'List of Travels Status'
         }  
     },
     {
-        path: '/approved_travels',
-        component: ListTravel,
-        name: 'listTravels',
+        path: '/vehicle_travels',
+        component: VehicleTravels,
+        name: 'vehicleTravels',
         meta: {
-            title: 'List of Approved Travels'
+            title: 'List of Vehicle Travels'
         }
     },
     {

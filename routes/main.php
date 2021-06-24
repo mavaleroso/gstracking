@@ -23,8 +23,8 @@ Route::get('/dashboard', 'base\DashboardController@index')->name('main.dashboard
 Route::get('/request_travel', 'base\DashboardController@index');
 Route::get('/local_requests', 'base\DashboardController@index');
 Route::get('/rito_requests', 'base\DashboardController@index');
-Route::get('/pending_travels', 'base\DashboardController@index');
-Route::get('/approved_travels', 'base\DashboardController@index');
+Route::get('/travels_status', 'base\DashboardController@index');
+Route::get('/vehicle_travels', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/transaction_logs', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
@@ -180,27 +180,27 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
         ]
     ]);
 
-    Route::resource('listtravel', 'ListTravelController', [
+    Route::resource('vehicletravels', 'VehicleTravelsController', [
         'names' => [
-            'index' => 'main.listtravel.index',
-            'create' => 'main.listtravel.create',
-            'store' => 'main.listtravel.store',
-            'show' => 'main.listtravel.show',
-            'edit' => 'main.listtravel.edit',
-            'update' => 'main.listtravel.update',
-            'destroy' => 'main.listtravel.destroy',
+            'index' => 'main.vehicletravels.index',
+            'create' => 'main.vehicletravels.create',
+            'store' => 'main.vehicletravels.store',
+            'show' => 'main.vehicletravels.show',
+            'edit' => 'main.vehicletravels.edit',
+            'update' => 'main.vehicletravels.update',
+            'destroy' => 'main.vehicletravels.destroy',
         ]
     ]);
 
-    Route::resource('pendingtravels', 'PendingTravelsController', [
+    Route::resource('travelsstatus', 'TravelsStatusController', [
         'names' => [
-            'index' => 'main.pendingtravels.index',
-            'create' => 'main.pendingtravels.create',
-            'store' => 'main.pendingtravels.store',
-            'show' => 'main.pendingtravels.show',
-            'edit' => 'main.pendingtravels.edit',
-            'update' => 'main.pendingtravels.update',
-            'destroy' => 'main.pendingtravels.destroy',
+            'index' => 'main.travelsstatus.index',
+            'create' => 'main.travelsstatus.create',
+            'store' => 'main.travelsstatus.store',
+            'show' => 'main.travelsstatus.show',
+            'edit' => 'main.travelsstatus.edit',
+            'update' => 'main.travelsstatus.update',
+            'destroy' => 'main.travelsstatus.destroy',
         ]
     ]);
 
@@ -215,7 +215,7 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'destroy' => 'main.travelcalendar.destroy',
         ]
     ]);
-    Route::put('listtravel/undo/{id}', 'ListTravelController@undo');
+    Route::put('vehicletravels/undo/{id}', 'VehicleTravelsController@undo');
 });
 
 Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
