@@ -1,6 +1,6 @@
 <template>
-    <div id="list-travel-page">
-        <div class="card card-custom gutter-b" >
+    <div id="list-travel-page" class="h-100 w-100">
+        <div class="card card-custom card-stretch"  id="kt_page_stretched_card">
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title"></div>
                 <div class="card-toolbar">
@@ -20,68 +20,95 @@
                     <!--end::Button-->
                 </div>
             </div>
-            <div class="card-body">
-                <table class="table table-separate table-head-custom table-checkable table-responsive w-100" id="list-travel-tbl">
+            <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+                <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                    <div class="spinner spinner-primary"></div>
+                </div>
+                <table class="table table-responsive card-scroll" id="list-travel-tbl">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Request Code</th>
-                            <th>Trip Ticket</th>
-                            <th>Vehicle Type</th>
-                            <th>Plate No</th>
-                            <th>Destination</th>
-                            <th>Purpose</th>
-                            <th>Date of Travel</th>
-                            <th>Date of Return</th>
-                            <th>Starting ODO</th>
-                            <th>Ending ODO</th>
-                            <th>Date Submitted to Procurement</th>
-                            <th>Distance Travelled</th>
-                            <th>PO Number</th>
-                            <th>PO Amount</th>
-                            <th>Rate per Km</th>
-                            <th>Fuel per Km</th>
-                            <th>Fuel Charge</th>
-                            <th>Fuel Liters</th>
-                            <th>Flat Rate</th>
-                            <th>Rate per night</th>
-                            <th>No. of Nights</th>
-                            <th>Total Cost</th>
-                            <th>Status</th>
-                            <th>Remarks</th>
-                            <th>Created at</th>
-                            <th>Action</th>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Type</th>
+                            <th class="text-center">Group</th>
+                            <th class="text-center">Tracking No.</th>
+                            <th class="text-center">Trip Ticket</th>
+                            <th class="text-center">Vehicle Type</th>
+                            <th class="text-center">Plate No</th>
+                            <th class="text-center">Destination</th>
+                            <th class="text-center">Purpose</th>
+                            <th class="text-center">Date of Travel</th>
+                            <th class="text-center">Date of Return</th>
+                            <th class="text-center">Starting ODO</th>
+                            <th class="text-center">Ending ODO</th>
+                            <th class="text-center">Date Submitted to Procurement</th>
+                            <th class="text-center">Distance Travelled</th>
+                            <th class="text-center">PO Number</th>
+                            <th class="text-center">PO Amount</th>
+                            <th class="text-center">Rate per Km</th>
+                            <th class="text-center">Fuel Charge</th>
+                            <th class="text-center">Flat Rate</th>
+                            <th class="text-center">Rate per night</th>
+                            <th class="text-center">No. of Nights</th>
+                            <th class="text-center">Total Cost</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Remarks</th>
+                            <th class="text-center">Created at</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr v-for="(t,index) in travels" :key="index" :style="(t.results.group%2) ? 'background:' + row_color : null">
+                            <td><span class="mx-1">{{ indexers(index + 1) }}</span></td>
+                            <td><span class="label label-lg label-inline label-light-primary">{{ t.results.type }}</span></td>
+                            <td><span class="label label-lg label-inline label-light-primary">{{ t.results.group }}</span></td>
+                            <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-lg label-inline label-primary m-1 text-nowrap">{{ track.tracking_no }}</span></td>
+                            <td><span class="label label-lg label-inline label-light-primary text-nowrap">{{ t.results.trip_ticket }}</span></td>
+                            <td>{{ t.results.vehicle_type }}</td>
+                            <td>{{ t.results.plate_no }}</td>
+                            <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ track.place }}</span></td>
+                            <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ track.purpose }}</span></td>
+                            <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ dateEng(track.inclusive_from) }}</span></td>
+                            <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ dateEng(track.inclusive_to) }}</span></td>
+                            <td>{{ t.results.starting_odo }}</td>
+                            <td>{{ t.results.ending_odo }}</td>
+                            <td>{{ (t.results.date_submit_proc) ? dateEng(t.results.date_submit_proc) : '' }}</td>
+                            <td>{{ (t.results.travelled) ? t.results.travelled : '' }}</td>
+                            <td><span v-if="t.results.po_no" class="label label-inline label-light-primary m-1 text-nowrap">{{ t.results.po_no }}</span></td>
+                            <td>{{ (t.results.po_amount) ? toParseNum(t.results.po_amount) : '' }}</td>
+                            <td>{{ (t.results.rate_per_km) ? t.results.rate_per_km : '' }}</td>
+                            <td>{{ (t.results.rate_per_km) ? t.results.rate_per_km : '' }}</td>
+                            <td>{{ (t.results.flat_rate) ? t.results.flat_rate : '' }}</td>
+                            <td>{{ (t.results.rate_per_night) ? t.results.rate_per_night : '' }}</td>
+                            <td>{{ (t.results.nights_count) ? t.results.nights_count : '' }}</td>
+                            <td>{{ t.results.total_cost }}</td>
+                            <td><span class="label label-inline label-light-primary m-1 text-nowrap">{{ travelStatus(t.results.status) }}</span></td>
+                            <td>{{ t.results.remarks }}</td>
+                            <td>{{ dateEng(t.results.created_at, 1) }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    <a href="javascript:;" @click="show(t.results.id)" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">
+                                        <span class="svg-icon svg-icon-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"/>
+                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>
+                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <a :href="'print_trip_ticket?id=' + t.results.id" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">
+                                        <span class="svg-icon svg-icon-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> 
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> 
+                                                <rect x="0" y="0" width="24" height="24"/> 
+                                                <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/> 
+                                                <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/> 
+                                            </g> 
+                                        </svg></span> 
+                                    </a> 
+                                </div> 
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,7 +162,7 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" v-if="formFields.vehicle_type == 1 && vehicle_image">
                                     <div class="form-group">
                                         <p>Image:</p>
                                         <a class="vehicle-img-viewer" :href="(vehicle_image)? '/storage/images/' +  vehicle_image:'/storage/images/vehicle-photo-default.jpg'">
@@ -144,7 +171,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" v-if="formFields.vehicle_type == 2">
                                     <div class="form-group d-flex jumbotron-mini">
                                         <h4 class="ml-5 mt-3">Total Cost:</h4>
                                         <h2 class="ml-auto mt-2 mr-5">{{ totalCost }}</h2>
@@ -152,75 +179,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Vehicle Plate</label>
-                                <input type="text" name="vehicle_plate" id="vehicle_plate" v-model="formFields.plate_no" class="form-control" readonly/>
-                            </div>
-                            <div class="form-group">
-                                <label>Vehicle Name</label>
-                                <input type="text" name="vehicle" id="vehicle_name" v-model="formFields.vehicle_name" class="form-control" readonly/>
-                            </div>
-                            <div class="form-group">
-                                <label>Starting ODO:</label>
-                                <input type="number" name="starting_odo" id="starting_odo" class="form-control required-field" placeholder="Enter starting ODO" v-model="formFields.starting_odo" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Ending ODO:</label>
-                                <input type="number" name="ending_odo" id="ending_odo" class="form-control required-field" placeholder="Enter ending ODO" v-model="formFields.ending_odo" :disabled="status=='Completed'" />
-                            </div>
-                            <div class="form-group">
-                                <label>Distance Travelled</label>
-                                <input type="number" class="form-control" id="distance_travelled" placeholder="Enter distance travelled" v-model="distanceTravelled" readonly/>
-                            </div>
-                            <div class="form-group">
-                                <label>Travel Date:</label>
-                                <input type="date" name="travel_date" id="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Travel Return:</label>
-                                <input type="date" name="travel_return" id="travel_return" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_return" :disabled="status=='Completed'"/>
-                            </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Vehicle Plate</label>
+                            <input type="text" name="vehicle_plate" id="vehicle_plate" v-model="formFields.plate_no" class="form-control" readonly/>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Date submitted to procurement:</label>
-                                <input type="date" name="date_submitted_proc" id="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Travel Time:</label>
-                                <input type="time" class="form-control" id="travel_time" placeholder="Enter travel time" v-model="formFields.travel_time" :disabled="status=='Completed'"/>
-                            </div>
-                            <div v-if="formFields.vehicle_type == 2" class="form-group">
-                                <label>{{ (240 >= distanceTravelled)? 'Fuel per KM':'Rent per KM' }}</label>
-                                <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
-                            </div>
-                            <div v-if="formFields.vehicle_type == 1" class="form-group">
-                                <label>Fuel Charge</label>
-                                <input type="number" name="fuel_charge" id="fuel_charge" class="form-control required-field" placeholder="Enter fuel charge" v-model="formFields.fuel_charge" :disabled="status=='Completed'"/>
-                            </div>
-                            <div v-if="formFields.vehicle_type == 1" class="form-group">
-                                <label>Fuel Liters</label>
-                                <input type="number" name="fuel_liters" id="fuel_liters" class="form-control required-field" placeholder="Enter fuel liters" v-model="formFields.fuel_liters" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Flat Rate:</label>
-                                <input type="number" name="flat_rate" id="flat_rate" class="form-control" placeholder="Enter flat rate" v-model="formFields.flat_rate" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>No. of Nights:</label>
-                                <input type="number" class="form-control" id="no_of_nights" placeholder="Enter number of nights" v-model="formFields.no_nights" :disabled="status=='Completed'"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Rate per Night:</label>
-                                <input type="number" class="form-control" id="rate_per_night" placeholder="Enter rate per night" v-model="formFields.rate_per_night" :disabled="status=='Completed'"/>
-                            </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Vehicle Name</label>
+                            <input type="text" name="vehicle" id="vehicle_name" v-model="formFields.vehicle_name" class="form-control" readonly/>
                         </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Remarks:</label>
-                                <textarea class="form-control" name="" id="remarks" cols="30" rows="3" v-model="formFields.remarks" :disabled="status=='Completed'"></textarea>
-                            </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Starting ODO:</label>
+                            <input type="number" name="starting_odo" id="starting_odo" class="form-control required-field" placeholder="Enter starting ODO" v-model="formFields.starting_odo" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Ending ODO:</label>
+                            <input type="number" name="ending_odo" id="ending_odo" class="form-control required-field" placeholder="Enter ending ODO" v-model="formFields.ending_odo" :disabled="status=='Completed'" />
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Distance Travelled</label>
+                            <input type="number" class="form-control" id="distance_travelled" placeholder="Enter distance travelled" v-model="distanceTravelled" readonly/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Travel Date:</label>
+                            <input type="date" name="travel_date" id="travel_date" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_date" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Travel Return:</label>
+                            <input type="date" name="travel_return" id="travel_return" class="form-control required-field" placeholder="Enter travel date" v-model="formFields.travel_return" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Date submitted to procurement:</label>
+                            <input type="date" name="date_submitted_proc" id="date_submitted_proc" class="form-control required-field" placeholder="Enter date submitted to procurement" v-model="formFields.date_submitted_proc" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Travel Time:</label>
+                            <input type="time" class="form-control" id="travel_time" placeholder="Enter travel time" v-model="formFields.travel_time" :disabled="status=='Completed'"/>
+                        </div>
+                        <div v-if="formFields.vehicle_type == 2" class="form-group">
+                            <label>{{ (240 >= distanceTravelled)? 'Fuel per KM':'Rent per KM' }}</label>
+                            <input type="number" name="rate_per_km" id="rate_per_km" class="form-control required-field" placeholder="Enter rate per kilometer" v-model="formFields.rate_per_km" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Flat Rate:</label>
+                            <input type="number" name="flat_rate" id="flat_rate" class="form-control" placeholder="Enter flat rate" v-model="formFields.flat_rate" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>No. of Nights:</label>
+                            <input type="number" class="form-control" id="no_of_nights" placeholder="Enter number of nights" v-model="formFields.no_nights" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-6 form-group" v-if="formFields.vehicle_type == 2">
+                            <label>Rate per Night:</label>
+                            <input type="number" class="form-control" id="rate_per_night" placeholder="Enter rate per night" v-model="formFields.rate_per_night" :disabled="status=='Completed'"/>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Remarks:</label>
+                            <textarea class="form-control" name="" id="remarks" cols="30" rows="3" v-model="formFields.remarks" :disabled="status=='Completed'"></textarea>
                         </div>
                      </div>
                 </form>
@@ -361,6 +374,7 @@ import Filterdialog from '../../components/Layouts/Dialog';
 export default {
     data() {
         return {
+            row_color: '#ECF0F3',
             travels: [],
             total: null,
             pages: {
@@ -397,8 +411,6 @@ export default {
                 vehicle_type: null,
                 status: null,
                 total_cost: 0,
-                fuel_charge: null,
-                fuel_liters: null,
                 plate_no: null,
             },
             filterDropdown: {
@@ -428,7 +440,7 @@ export default {
                 numberofNights: null,
             },
             dialogshow: false,
-            names: ['starting_odo', 'ending_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date','travel_date','fuel_charge', 'fuel_liters']
+            names: ['starting_odo', 'ending_odo', 'date_submitted_proc', 'rate_per_km', 'travel_date','travel_date']
         }
     },
     components: {
@@ -447,14 +459,8 @@ export default {
     },
     computed: {
         totalCost() {
-            let result = 0;
-            if (this.formFields.vehicle_type == 1) {
-                result = ((this.formFields.fuel_liters * this.formFields.fuel_charge) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
-            } else {
-                result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
-            }
+            let  result = ((this.formFields.distance_travelled * this.formFields.rate_per_km) + (this.formFields.no_nights * this.formFields.rate_per_night)) + parseInt(this.formFields.flat_rate);
             this.formFields.total_cost = result;
-            // let cost = (this.formFields.distance_travelled * this.formFields.rate_per_km);
             return result.toLocaleString(undefined, {minimumFractionDigits: 2});
         },
         distanceTravelled() {
@@ -483,250 +489,38 @@ export default {
     methods:{
         ini() {
             $(()=>{
+                let vm = this;
                 if (this.dialogshow ==true){
                     $("#list-travel-tbl").DataTable().destroy();
                     showToast('Filtered successfully!', 'success');
                 }
-                // this.tdatatable().init();
             });
         },
         getData() {
             this.loading = true;
-            axios.get(BASE_URL + '/tracking/listtravel?=pages'+this.pages.currentPage).then(res => {
+            axios.get(BASE_URL + '/tracking/vehicletravels?pages='+this.pages.currentPage).then(res => {
                 this.travels = res.data.data;
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;
             });
         },
-        tdatatable() {
-            let vm = this;
-            var initTable = () => {
-            var table = $('#list-travel-tbl');
-                table.DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'copy',
-                            exportOptions: {
-                                columns: ':not(:last-child)',
-                            }
-                        },
-                        {
-                            extend: 'csv',
-                            exportOptions: {
-                                columns: ':not(:last-child)',
-                            }
-                        },
-                        {
-                            extend: 'excel',
-                            exportOptions: {
-                                columns: ':not(:last-child)',
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5', 
-                            orientation: 'landscape', 
-                            pageSize: 'Legal',
-                            exportOptions: {
-                                columns: ':not(:last-child)',
-                            }
-                        }, 
-                        {
-                            extend: "print",
-                            exportOptions: {
-                                columns: ':not(:last-child)',
-                            },
-                            customize: function(win)
-                            {
-                
-                                var last = null;
-                                var current = null;
-                                var bod = [];
-                
-                                var css = '@page { size: landscape; }',
-                                    head = win.document.head || win.document.getElementsByTagName('head')[0],
-                                    style = win.document.createElement('style');
-                
-                                style.type = 'text/css';
-                                style.media = 'print';
-                
-                                if (style.styleSheet)
-                                {
-                                style.styleSheet.cssText = css;
-                                }
-                                else
-                                {
-                                style.appendChild(win.document.createTextNode(css));
-                                }
-                
-                                head.appendChild(style);
-                            }
-                        }
-                    ],
-                    searchDelay: 500,
-                    scrollX: true,
-                    scrollCollapse: true,
-                    processing: true,
-                    serverSide: true,
-                    fixedColumns:   {
-        				leftColumns: false,
-                        rightColumns: 1,
-                    },
-                    ajax: {
-                        url: BASE_URL + '/tracking/listtravel',
-                        type: 'GET',
-                        data: vm.filterActive
-                    },
-                    columns: [
-                        { "data": "id" },
-                        { "data": "serial_code" },
-                        { "data": "trip_ticket" },
-                        { "data": "vehicle_type" },
-                        { "data": "plate_no" },
-                        { "data": "destined" },
-                        { "data": "purpose" },
-                        { "data": "travel_date" },
-                        { "data": "return_date" },
-                        { "data": "starting_odo" },
-                        { "data": "ending_odo" },
-                        { "data": "date_submit_proc" },
-                        { "data": "travelled" },
-                        { "data": "po_no" },
-                        { "data": "po_amount" },
-                        { "data": "rate_per_km" },
-                        { "data": "rate_per_km" },
-                        { "data": "fuel_charge" },
-                        { "data": "fuel_liters" },
-                        { "data": "flat_rate" },
-                        { "data": "rate_per_night" },
-                        { "data": "nights_count" },
-                        { "data": "total_cost" },
-                        { "data": "status" },
-                        { "data": "remarks" },
-                        { "data": "created_at" },
-                        { "data": "id" }
-                        
-                    ],
-                    columnDefs: [
-                        {
-                            targets: [1,2],
-                            render: data => {
-                                return '<span class="text-nowrap label label-lg font-weight-bold label-light-primary label-inline">'+data+'</span>';
-                            }
-                        },
-                        {
-                            targets: 3,
-                            render: data => {
-                                var type = {
-                                    1: {'title': 'Office', 'class': ' label-light-primary'},
-                                    2: {'title': 'Rental', 'class': ' label-light-warning'}
-                                }
-                                return '<span class="label text-nowrap label-lg font-weight-bold ' + type[data].class + ' label-inline">' + type[data].title + '</span>';
-                            }
-                        },
-                        {
-                            targets: [7,8,11],
-                            render: data => {
-                                return (data) ? dateEng(data) : '';
-                            }
-                        },
-                        {
-                            targets: [12, 20],
-                            render: data => {
-                                return (data) ? data : '';
-                            }
-                        },
-                        {
-                            targets: [14, 15, 16, 17, 19, 21, 22, 24],
-                            render: data => {
-                                let values = (data)? toParseNum(data):'';
-                                return values;
-                            }
-                        },
-                        {
-                            targets: [14, 22],
-                            render: data => {
-                                let values = (data)? data:'';
-                                return values;
-                            }
-                        },
-                        {
-                            targets: [22, 24],
-                            orderable: false,
-                        },
-                        {
-                            targets: 25,
-                            orderable: false,
-                            render: data => {
-                                return dateTimeEng(data);
-                            }
-                        },
-                        {
-                            targets: 23,
-                            render: data => {
-                                var status = {
-                                    1: {'title': 'Pending', 'class': ' label-light-warning'},
-                                    2: {'title': 'Approved', 'class': ' label-light-primary'},
-                                    3: {'title': 'Completed', 'class': ' label-light-success'},
-                                    4: {'title': 'Declined', 'class': ' label-light-danger'},
-                                };
-                                if (typeof status[data] === 'undefined') {
-                                    return data;
-                                }
-                                return '<span class="label text-nowrap label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
-                            },
-                        },
-                        {
-                            targets: -1,
-                            orderable: false,
-                            render: data => {
-                                let id = parseInt(data);
-                                return '\
-                                    <div class="d-flex">\
-                                        <a href="javascript:;" data-id="'+ data +'" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
-                                            <span class="svg-icon svg-icon-md">\
-                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                        <rect x="0" y="0" width="24" height="24"/>\
-                                                        <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                    </g>\
-                                                </svg>\
-                                            </span>\
-                                        </a>\
-                                        <a href="print_trip_ticket?id='+id+'" target="_blank" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
-                                            <span class="svg-icon svg-icon-md"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Devices\Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"> \
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> \
-                                                    <rect x="0" y="0" width="24" height="24"/> \
-                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/> \
-                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/> \
-                                                </g> \
-                                            </svg><!--end::Svg Icon--></span> \
-                                        </a> \
-                                    </div> \
-                                ';
-                            }
-                        }
-                    ],
-                    drawCallback: () => {
-                        $('.btn-edit').off().on('click', function() {
-                            let id = $(this).data('id');
-                            vm.show(id);
-                        });
-                    }
-                });
-            };
-            return {
-                init: function() {
-                    initTable();
-                },
-            };
+        pageSet(type, page = null) {
+            if (type == 'jump') {
+                this.pages.prevPage = page - 1;
+                this.pages.currentPage = page;
+                this.pages.nextPage = page + 1;
+            } else if (type == 'next' || type == 'prev') {
+                (type == 'next')?this.pages.currentPage++:this.pages.currentPage--;
+                this.pages.prevPage = this.pages.currentPage - 1;
+                this.pages.nextPage = this.pages.currentPage + 1;
+            } 
+            this.getData();
         },
         show(id) {
             this.reset();
             let vm = this;
-            axios.get(BASE_URL + "/tracking/listtravel/" + id).then(response => {
+            axios.get(BASE_URL + "/tracking/vehicletravels/" + id).then(response => {
 
                 this.id = id;
                 this.created_at = dateTimeEng(response.data[0].created_at);
@@ -742,8 +536,6 @@ export default {
                 this.formFields.date_submitted_proc = response.data[0].date_submit_proc;
                 this.formFields.distance_travelled = parseInt((response.data[0].travelled)? response.data[0].travelled:0);
                 this.formFields.rate_per_km = parseFloat((response.data[0].rate_per_km)? response.data[0].rate_per_km:0);
-                this.formFields.fuel_charge = parseFloat((response.data[0].fuel_charge)? response.data[0].fuel_charge:0);
-                this.formFields.fuel_liters = parseFloat((response.data[0].fuel_liters)? response.data[0].fuel_liters:0);
                 this.formFields.flat_rate = parseFloat((response.data[0].flat_rate)? response.data[0].flat_rate:0);
                 this.formFields.no_nights = parseInt((response.data[0].nights_count)? response.data[0].nights_count:0);
                 this.formFields.rate_per_night = parseFloat((response.data[0].rate_per_night)? response.data[0].rate_per_night:0);
@@ -777,7 +569,7 @@ export default {
             $(".vehicle-img-viewer").fancybox();
         },
         update(id) {
-            axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(response => {
+            axios.put(BASE_URL + '/tracking/vehicletravels/' + id, this.formFields).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
@@ -836,7 +628,7 @@ export default {
                     confirmButtonText: "Yes, Undo it!"
                 }).then(function(result) {
                     if (result.value) {
-                        axios.put(BASE_URL + '/tracking/listtravel/undo/' + id).then(response => {
+                        axios.put(BASE_URL + '/tracking/vehicletravels/undo/' + id).then(response => {
                         Swal.fire(
                             "Good job!",
                             response.data.message,
@@ -928,6 +720,27 @@ export default {
                 this.filterDropdown.section = response.data;
             });
         },
+        indexers(idx) {
+            return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
+        },
+        dateEng(dt, type=null) {
+            return (type) ? dateTimeEng(dt) : dateEng(dt);
+        },
+        toParseNum(num) {
+            return toParseNum(num);
+        },
+        travelStatus(stats) {
+            var status = {
+                1: {'title': 'Pending'},
+                2: {'title': 'Approved'},
+                3: {'title': 'Completed'},
+                4: {'title': 'Declined'},
+            };
+            if (typeof status[stats] === 'undefined') {
+                return data;
+            }
+            return status[stats].title;
+        }
     }
 
 }

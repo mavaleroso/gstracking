@@ -17,7 +17,6 @@ class CreateTransactionVehiclesTable extends Migration
             $table->id();
             $table->string('trip_ticket')->nullable();
             $table->string('type');
-            $table->bigInteger('request_id');
             $table->bigInteger('vehicle_id');
             $table->bigInteger('driver_id');
             $table->unsignedBigInteger('procurement_id')->nullable();
@@ -25,8 +24,6 @@ class CreateTransactionVehiclesTable extends Migration
             $table->bigInteger('ending_odo')->nullable();
             $table->integer('travelled')->default(0);
             $table->double('rate_per_km')->default(0);
-            $table->double('fuel_charge')->default(0);
-            $table->double('fuel_liters')->default(0);
             $table->double('flat_rate')->default(0);
             $table->double('rate_per_night')->default(0);
             $table->integer('nights_count')->default(0);

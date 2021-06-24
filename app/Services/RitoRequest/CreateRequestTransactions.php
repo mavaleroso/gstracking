@@ -39,7 +39,7 @@ class CreateRequestTransactions
                 for ($x=0; $x < count($request_id); $x++) { 
 
                     $rt = RequestTransactions::create([
-                        'type' => 2,
+                        'type' => 'rito',
                         'group' => $rg->value,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,

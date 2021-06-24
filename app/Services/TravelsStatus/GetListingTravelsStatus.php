@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\PendingTravels;
+namespace App\Services\TravelsStatus;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -7,7 +7,7 @@ use App\Models\RequestTransactions;
 use App\Models\transactionVehicles;
 use App\Models\System;
 
-class GetListingPendingTravels
+class GetListingTravelsStatus
 {
     /**
      * Get user by email
@@ -19,13 +19,14 @@ class GetListingPendingTravels
         
         $results = [];
 
-        $reqt = RequestTransactions::select('group',DB::raw('GROUP_CONCAT(DISTINCT request_id) AS requests'),DB::raw('GROUP_CONCAT(DISTINCT transaction_vehicles_id) AS transveid'))
+        $reqt = RequestTransactions::select('type','group',DB::raw('GROUP_CONCAT(DISTINCT request_id) AS requests'),DB::raw('GROUP_CONCAT(DISTINCT transaction_vehicles_id) AS transveid'))
                                     ->groupBy('group')
                                     ->paginate(10, ['*'], 'page', $fields['pages']);
         
 
         for ($i=0; $i < count($reqt); $i++) { 
              $results['data'][] = [
+                'type' => $reqt[$i]->type,
                 'tracking_no' => $this->api($reqt[$i]->requests),
                 'transactions' => $this->transaction($reqt[$i]->transveid)
             ];
