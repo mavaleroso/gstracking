@@ -63,6 +63,7 @@ export default {
     },
 	mounted() {
 		this.ini();
+		this.vuexStore();
 	},
 	methods: {
 		ini() {
@@ -80,7 +81,19 @@ export default {
                 tag.setAttribute("src", script);
                 document.getElementById("kt_body").appendChild(tag);
             });
-		}
+		},
+		vuexStore(){
+			if (localStorage.getItem("ListEmployee") === null) {
+				// this.$store.dispatch('currentUser/loadEmployee');
+				this.test();
+			}	
+		},
+		async test(){
+			localStorage.setItem('loadingStatus', 'true');
+            await this.$store.dispatch('currentUser/loadEmployee');
+            this.$store.getters['currentUser/employee'];  //console
+			localStorage.setItem('loadingStatus', 'false');
+        },
 	},
 }
 </script>

@@ -8,7 +8,10 @@
                     <small class="">Form</small></h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div :class="(loadingStatus) ? 'card-body overlay overlay-block' : 'card-body'">
+                <div v-if="loadingStatus=='true'" class="overlay-layer bg-dark-o-10">
+                    <div class="spinner spinner-primary"></div>
+                </div>
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
@@ -132,6 +135,7 @@ export default {
                 results: [],
                 image:''
             },
+            loadingStatus: 'true',
             listdata:[],
             states:[],
             names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
@@ -146,6 +150,10 @@ export default {
         // this.formFields.results = this.$store.getters['currentUser/employee'];
         this.EmployeeList();
 
+        
+            // console.log(localStorage.getItem('loadingStatus'))
+        
+
     },
     methods: {
         ini() {
@@ -155,7 +163,9 @@ export default {
             });
         },
         EmployeeList(){
-            this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'))
+            this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+            // this.loadingStatus =localStorage.getItem('loadingStatus');
+            this.loadingStatus = localStorage.getItem('loadingStatus');
         },
         newEntry() {
             this.create = true;
