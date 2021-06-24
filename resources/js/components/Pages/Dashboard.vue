@@ -342,6 +342,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 export default {
     data() {
         return {
@@ -370,12 +371,16 @@ export default {
                 count: [],
             },
             drivers:[],
-            vehicles:[]
+            vehicles:[],
+            listdata: []
         }
     },
+
     mounted() {
         this.ini().init();
         this.ini().events();
+        this.$store.dispatch('currentUser/loadEmployee');
+    
     },
     methods: {
         dashData() {
