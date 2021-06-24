@@ -7532,8 +7532,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   created: function created() {},
   mounted: function mounted() {
     this.ini();
-    console.log(this.$store.getters['currentUser/employee']);
-    this.formFields.results = this.$store.getters['currentUser/employee'];
+    console.log(this.$store.getters['currentUser/employee']); // this.formFields.results = this.$store.getters['currentUser/employee'];
+
+    this.EmployeeList();
   },
   methods: {
     ini: function ini() {
@@ -7542,6 +7543,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(function () {
         _this.tdatatable().init();
       });
+    },
+    EmployeeList: function EmployeeList() {
+      this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
     },
     newEntry: function newEntry() {
       var _this2 = this;
@@ -9873,8 +9877,9 @@ var getters = {
 var actions = {
   loadEmployee: function loadEmployee(_ref) {
     var commit = _ref.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
       commit('setEmployee', response.data);
+      localStorage.setItem('ListEmployee', JSON.stringify(response.data));
     });
   }
 };

@@ -143,7 +143,8 @@ export default {
     mounted() {
         this.ini();
         console.log(this.$store.getters['currentUser/employee']);
-        this.formFields.results = this.$store.getters['currentUser/employee'];
+        // this.formFields.results = this.$store.getters['currentUser/employee'];
+        this.EmployeeList();
 
     },
     methods: {
@@ -152,6 +153,9 @@ export default {
                 this.tdatatable().init();   
 
             });
+        },
+        EmployeeList(){
+            this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'))
         },
         newEntry() {
             this.create = true;

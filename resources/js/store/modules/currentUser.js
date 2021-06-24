@@ -11,8 +11,9 @@ const getters = {
 };
 const actions = {
     loadEmployee({commit}){
-        axios.post(BASE_URL + '/transportation/driver/autoComplete').then(response => {
+        return axios.post(BASE_URL + '/transportation/driver/autoComplete').then(response => {
             commit('setEmployee', response.data) 
+            localStorage.setItem('ListEmployee', JSON.stringify(response.data));
         });
     }
 };
