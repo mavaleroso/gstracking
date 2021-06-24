@@ -1,10 +1,10 @@
 <?php
-namespace App\Services\ListTravels;
+namespace App\Services\VehicleTravels;
 
 use App\Models\TransactionVehicles;
 use App\Models\Request;
 
-class UpdateStatus
+class UpdateVehicleStatus
 {
     /**
      * Get user by email

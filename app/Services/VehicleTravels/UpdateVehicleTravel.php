@@ -1,10 +1,10 @@
 <?php
-namespace App\Services\ListTravels;
+namespace App\Services\VehicleTravels;
 
 use App\Models\TransactionVehicles;
 use App\Models\Request;
 
-class UpdateTravel
+class UpdateVehicleTravel
 {
     /**
      * Get user by email
@@ -25,8 +25,6 @@ class UpdateTravel
             'ending_odo' => $fields['ending_odo'],
             'travelled' => $fields['distance_travelled'],
             'rate_per_km' => ($fields['vehicle_type'] == 2) ? $fields['rate_per_km'] : NULL,
-            'fuel_charge' => ($fields['vehicle_type'] == 1) ? $fields['fuel_charge'] : NULL,
-            'fuel_liters' => ($fields['vehicle_type'] == 1) ? $fields['fuel_liters'] : NULL,
             'flat_rate' => $fields['flat_rate'],
             'rate_per_night' => $fields['rate_per_night'],
             'nights_count' => $fields['no_nights'],

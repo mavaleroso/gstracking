@@ -42,6 +42,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Type</th>
                             <th>Tracking Number</th>
                             <th>Destination</th>
                             <th>Passengers</th>
@@ -54,6 +55,7 @@
                     <tbody>
                         <tr v-for="(t, index) in travels" :key="index">
                             <td>{{ indexers(index + 1) }}</td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.type}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.place}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</span></td>
@@ -141,7 +143,7 @@ export default {
         },
         getTravels() {
             this.loading = true;
-            axios.get(BASE_URL + '/tracking/pendingtravels?pages='+this.pages.currentPage).then(res => {
+            axios.get(BASE_URL + '/tracking/travelsstatus?pages='+this.pages.currentPage).then(res => {
                 this.travels = res.data.data;
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);

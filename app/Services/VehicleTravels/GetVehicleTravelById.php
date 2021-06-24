@@ -1,10 +1,10 @@
 <?php
-namespace App\Services\ListTravels;
+namespace App\Services\VehicleTravels;
 
 use App\Models\TransactionVehicles;
 use Illuminate\Support\Facades\DB;
 
-class GetTravelById
+class GetVehicleTravelById
 {
     /**
      * Get user by id

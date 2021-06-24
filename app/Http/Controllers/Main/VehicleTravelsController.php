@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\ListTravels\TravelRequest;
-use App\Services\ListTravels\GetListingTravel;
-use App\Services\ListTravels\GetTravelById;
-use App\Services\ListTravels\UpdateTravel;
-use App\Services\ListTravels\UpdateStatus;
+use App\Http\Requests\VehicleTravels\VehicleTravelRequest;
+use App\Services\VehicleTravels\GetListingVehicleTravel;
+use App\Services\VehicleTravels\GetVehicleTravelById;
+use App\Services\VehicleTravels\UpdateVehicleTravel;
+use App\Services\VehicleTravels\UpdateVehicleStatus;
 
-class ListTravelController extends Controller
+class VehicleTravelsController extends Controller
 {
 
      /**
@@ -20,20 +20,20 @@ class ListTravelController extends Controller
     {
         parent::__construct();
         // permissions
-        $this->middleware('permission:listtravel-list', ['only' => ['index']]);
-        $this->middleware('permission:listtravel-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:listtravel-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:listtravel-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:listtravel-view', ['only' => ['show']]);
+        $this->middleware('permission:vehicletravels-list', ['only' => ['index']]);
+        $this->middleware('permission:vehicletravels-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:vehicletravels-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:vehicletravels-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:vehicletravels-view', ['only' => ['show']]);
     } 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingTravel $getListingTravel, Request $request)
+    public function index(GetListingVehicleTravel $getListingVehicleTravel, Request $request)
     {
-        $records = $getListingTravel->execute($request);
+        $records = $getListingVehicleTravel->execute($request);
         return response()->json($records);
     }
 
@@ -64,9 +64,9 @@ class ListTravelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, GetTravelById $getTravelById)
+    public function show($id, GetVehicleTravelById $getVehicleTravelById)
     {
-        $data = $getTravelById->execute($id);
+        $data = $getVehicleTravelById->execute($id);
         return response()->json($data);
     }
 
@@ -88,16 +88,16 @@ class ListTravelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TravelRequest $travelRequest, UpdateTravel $updateTravel , $id)
+    public function update(VehicleTravelRequest $vehicleTravelRequest, UpdateVehicleTravel $updateVehicleTravel , $id)
     {
-        $url = $travelRequest->url();
-        $result = $updateTravel->execute($id, $travelRequest->validated(), $url);
+        $url = $vehicleTravelRequest->url();
+        $result = $updateVehicleTravel->execute($id, $vehicleTravelRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
-    public function undo($id,Request $request, UpdateStatus $updateStatus){
+    public function undo($id,Request $request, UpdateVehicleStatus $updateVehicleStatus){
         $url = $request->url();
-        $result = $updateStatus->execute($id, $url);
+        $result = $updateVehicleStatus->execute($id, $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
     }
 

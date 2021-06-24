@@ -39,12 +39,12 @@ class PermissionCommand extends Command
         'listrequeststaff',
         'po',
         'log',
-        'listtravel',
+        'vehicletravels',
         'localrequest',
         'ritorequest',
         'listuser',
         'printrequest',
-        'pendingtravels',
+        'travelsstatus',
     ];
 
     /**
