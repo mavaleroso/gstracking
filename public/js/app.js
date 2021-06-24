@@ -4730,13 +4730,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 //
 //
 //
@@ -4832,12 +4837,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      travels: []
+      travels: [],
+      total: null,
+      pages: {
+        totalPages: null,
+        prevPage: null,
+        currentPage: 1,
+        nextPage: 2,
+        display: 5
+      },
+      loading: true,
+      searchData: null
     };
   },
-  created: function created() {},
   mounted: function mounted() {
     this.ini();
+  },
+  computed: {
+    pagination: function pagination() {
+      var result = null;
+      var current = this.pages.currentPage;
+
+      if (this.pages.totalPages < 5) {
+        result = _toConsumableArray(Array(this.pages.totalPages).keys()).map(function (x) {
+          return ++x;
+        });
+      } else {
+        if (current <= 3) {
+          result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+            return ++x;
+          });
+        } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+          result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+        } else {
+          result = [current - 2, current - 1, current, current + 1, current + 2];
+        }
+      }
+
+      return result;
+    }
   },
   methods: {
     ini: function ini() {
@@ -4847,9 +4885,36 @@ __webpack_require__.r(__webpack_exports__);
         _this.getTravels();
       });
     },
+    indexers: function indexers(idx) {
+      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
+    },
     getTravels: function getTravels() {
-      axios.get(BASE_URL + '').then(function (res) {});
-    }
+      var _this2 = this;
+
+      this.loading = true;
+      axios.get(BASE_URL + '/tracking/pendingtravels?pages=' + this.pages.currentPage).then(function (res) {
+        _this2.travels = res.data.data;
+        _this2.total = res.data.count;
+        _this2.pages.totalPages = Math.ceil(res.data.count / 10);
+        _this2.loading = false;
+      });
+    },
+    pageSet: function pageSet(type) {
+      var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      if (type == 'jump') {
+        this.pages.prevPage = page - 1;
+        this.pages.currentPage = page;
+        this.pages.nextPage = page + 1;
+      } else if (type == 'next' || type == 'prev') {
+        type == 'next' ? this.pages.currentPage++ : this.pages.currentPage--;
+        this.pages.prevPage = this.pages.currentPage - 1;
+        this.pages.nextPage = this.pages.currentPage + 1;
+      }
+
+      this.getTravels();
+    },
+    search: function search() {}
   }
 });
 
@@ -5926,14 +5991,73 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6245,6 +6369,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      travels: [],
+      total: null,
+      pages: {
+        totalPages: null,
+        prevPage: null,
+        currentPage: 1,
+        nextPage: 2,
+        display: 5
+      },
+      loading: true,
       id: null,
       trip_ticket: null,
       created_at: null,
@@ -6310,6 +6444,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Filterdialog: _components_Layouts_Dialog__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
+    this.getData();
     this.getTripTicket();
     this.getServiceProviders();
     this.getPoNumber();
@@ -6337,6 +6472,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     distanceTravelled: function distanceTravelled() {
       var result = this.formFields.distance_travelled = this.formFields.ending_odo - this.formFields.starting_odo;
       return result;
+    },
+    pagination: function pagination() {
+      var result = null;
+      var current = this.pages.currentPage;
+
+      if (this.pages.totalPages < 5) {
+        result = _toConsumableArray(Array(this.pages.totalPages).keys()).map(function (x) {
+          return ++x;
+        });
+      } else {
+        if (current <= 3) {
+          result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+            return ++x;
+          });
+        } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+          result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+        } else {
+          result = [current - 2, current - 1, current, current + 1, current + 2];
+        }
+      }
+
+      return result;
     }
   },
   methods: {
@@ -6347,9 +6504,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (_this.dialogshow == true) {
           $("#list-travel-tbl").DataTable().destroy();
           showToast('Filtered successfully!', 'success');
-        }
+        } // this.tdatatable().init();
 
-        _this.tdatatable().init();
+      });
+    },
+    getData: function getData() {
+      var _this2 = this;
+
+      this.loading = true;
+      axios.get(BASE_URL + '/tracking/listtravel?=pages' + this.pages.currentPage).then(function (res) {
+        _this2.travels = res.data.data;
+        _this2.total = res.data.count;
+        _this2.pages.totalPages = Math.ceil(res.data.count / 10);
+        _this2.loading = false;
       });
     },
     tdatatable: function tdatatable() {
@@ -6600,38 +6767,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     show: function show(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.reset();
       var vm = this;
       axios.get(BASE_URL + "/tracking/listtravel/" + id).then(function (response) {
-        _this2.id = id;
-        _this2.created_at = dateTimeEng(response.data[0].created_at);
-        _this2.trip_ticket = response.data[0].trip_ticket;
-        _this2.vehicle_image = response.data[0].image;
-        _this2.finalStatus = response.data[0].status;
-        _this2.status = response.data[0].status == 2 ? 'Approved' : 'Completed';
-        _this2.status_class = response.data[0].status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+        _this3.id = id;
+        _this3.created_at = dateTimeEng(response.data[0].created_at);
+        _this3.trip_ticket = response.data[0].trip_ticket;
+        _this3.vehicle_image = response.data[0].image;
+        _this3.finalStatus = response.data[0].status;
+        _this3.status = response.data[0].status == 2 ? 'Approved' : 'Completed';
+        _this3.status_class = response.data[0].status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
 
-        _this2.formFields.starting_odo = response.data[0].starting_odo;
-        _this2.formFields.ending_odo = response.data[0].ending_odo;
-        _this2.formFields.date_submitted_proc = response.data[0].date_submit_proc;
-        _this2.formFields.distance_travelled = parseInt(response.data[0].travelled ? response.data[0].travelled : 0);
-        _this2.formFields.rate_per_km = parseFloat(response.data[0].rate_per_km ? response.data[0].rate_per_km : 0);
-        _this2.formFields.fuel_charge = parseFloat(response.data[0].fuel_charge ? response.data[0].fuel_charge : 0);
-        _this2.formFields.fuel_liters = parseFloat(response.data[0].fuel_liters ? response.data[0].fuel_liters : 0);
-        _this2.formFields.flat_rate = parseFloat(response.data[0].flat_rate ? response.data[0].flat_rate : 0);
-        _this2.formFields.no_nights = parseInt(response.data[0].nights_count ? response.data[0].nights_count : 0);
-        _this2.formFields.rate_per_night = parseFloat(response.data[0].rate_per_night ? response.data[0].rate_per_night : 0);
-        _this2.formFields.remarks = response.data[0].remarks;
-        _this2.formFields.travel_date = response.data[0].travel_date;
-        _this2.formFields.travel_return = response.data[0].return_date;
-        _this2.formFields.travel_time = response.data[0].depart_time;
-        _this2.formFields.vehicle_id = response.data[0].vehicle_id;
-        _this2.formFields.vehicle_name = response.data[0].name;
-        _this2.formFields.plate_no = response.data[0].plate_no;
-        _this2.formFields.status = response.data[0].status;
-        _this2.formFields.vehicle_type = response.data[0].vehicle_type;
+        _this3.formFields.starting_odo = response.data[0].starting_odo;
+        _this3.formFields.ending_odo = response.data[0].ending_odo;
+        _this3.formFields.date_submitted_proc = response.data[0].date_submit_proc;
+        _this3.formFields.distance_travelled = parseInt(response.data[0].travelled ? response.data[0].travelled : 0);
+        _this3.formFields.rate_per_km = parseFloat(response.data[0].rate_per_km ? response.data[0].rate_per_km : 0);
+        _this3.formFields.fuel_charge = parseFloat(response.data[0].fuel_charge ? response.data[0].fuel_charge : 0);
+        _this3.formFields.fuel_liters = parseFloat(response.data[0].fuel_liters ? response.data[0].fuel_liters : 0);
+        _this3.formFields.flat_rate = parseFloat(response.data[0].flat_rate ? response.data[0].flat_rate : 0);
+        _this3.formFields.no_nights = parseInt(response.data[0].nights_count ? response.data[0].nights_count : 0);
+        _this3.formFields.rate_per_night = parseFloat(response.data[0].rate_per_night ? response.data[0].rate_per_night : 0);
+        _this3.formFields.remarks = response.data[0].remarks;
+        _this3.formFields.travel_date = response.data[0].travel_date;
+        _this3.formFields.travel_return = response.data[0].return_date;
+        _this3.formFields.travel_time = response.data[0].depart_time;
+        _this3.formFields.vehicle_id = response.data[0].vehicle_id;
+        _this3.formFields.vehicle_name = response.data[0].name;
+        _this3.formFields.plate_no = response.data[0].plate_no;
+        _this3.formFields.status = response.data[0].status;
+        _this3.formFields.vehicle_type = response.data[0].vehicle_type;
         response.data[0].status == 3 ? $('#is-completed').prop('checked', true) : $('#is-completed').prop('checked', false);
         $('#is-completed').change(function () {
           if (this.checked) {
@@ -6651,7 +6818,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(".vehicle-img-viewer").fancybox();
     },
     update: function update(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.put(BASE_URL + '/tracking/listtravel/' + id, this.formFields).then(function (response) {
         $('.invalid-feedback').remove();
@@ -6659,7 +6826,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
 
-        _this3.show(id);
+        _this4.show(id);
 
         $('#list-travel-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
@@ -6681,10 +6848,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this3.names.length; i++) {
-          if (keys.indexOf('' + _this3.names[i] + '') == -1) {
-            $('[name="' + _this3.names[i] + '"]').removeClass('is-invalid');
-            $('[name="' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (keys.indexOf('' + _this4.names[i] + '') == -1) {
+            $('[name="' + _this4.names[i] + '"]').removeClass('is-invalid');
+            $('[name="' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
           }
         }
 
@@ -6788,38 +6955,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 500);
     },
     getTripTicket: function getTripTicket() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get(BASE_URL + "/api/v1/tripticket").then(function (response) {
-        _this4.filterDropdown.tripTicket = response.data;
+        _this5.filterDropdown.tripTicket = response.data;
       });
     },
     getServiceProviders: function getServiceProviders() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/v1/serviceprovider").then(function (response) {
-        _this5.filterDropdown.serviceProvider = response.data;
+        _this6.filterDropdown.serviceProvider = response.data;
       });
     },
     getPoNumber: function getPoNumber() {
-      var _this6 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/ponumber").then(function (response) {
-        _this6.filterDropdown.poNumber = response.data;
+        _this7.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
-      var _this7 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/division").then(function (response) {
-        _this7.filterDropdown.division = response.data;
+        _this8.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
-        _this8.filterDropdown.section = response.data;
+        _this9.filterDropdown.section = response.data;
       });
     }
   }
@@ -9762,7 +9929,7 @@ var routes = [{
   component: _components_Pages_ListPendingTravels__WEBPACK_IMPORTED_MODULE_13__.default,
   name: 'ListPendingTravels',
   meta: {
-    title: 'List of Pending Travels'
+    title: 'List of Travels Status'
   }
 }, {
   path: '/approved_travels',
@@ -50011,7 +50178,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("span", { staticClass: "menu-text" }, [
-                          _vm._v("Pending Travels")
+                          _vm._v("Travels Status")
                         ])
                       ]
                     )
@@ -53904,8 +54071,25 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchData,
+                    expression: "searchData"
+                  }
+                ],
                 staticClass: "form-control",
-                attrs: { type: "text", name: "", placeholder: "Search" }
+                attrs: { type: "text", name: "", placeholder: "Search" },
+                domProps: { value: _vm.searchData },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchData = $event.target.value
+                  }
+                }
               })
             ])
           ])
@@ -53966,9 +54150,274 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          class: _vm.loading ? "card-body overlay overlay-block" : "card-body"
+        },
+        [
+          _vm.loading
+            ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                _c("div", { staticClass: "spinner spinner-primary" })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-scroll" }, [
+            _c(
+              "table",
+              {
+                staticClass: "table rounded table-sm table-hover",
+                attrs: { id: "pending-travels-tbl" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.travels, function(t, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.tracking_no))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.place))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "label label-lg label-rounded label-inline label-primary m-1"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                t.tracking_no.reduce(function(acc, item) {
+                                  return acc + parseInt(item.passenger_count)
+                                }, 0)
+                              )
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "label label-lg label-rounded label-inline label-light-primary m-1"
+                          },
+                          [_vm._v(_vm._s(t.transactions.length))]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.inclusive_from))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.inclusive_to))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        _vm._l(t.tracking_no, function(t, index) {
+                          return _c(
+                            "span",
+                            {
+                              key: index,
+                              staticClass:
+                                "label label-lg label-rounded label-inline label-light-primary m-1"
+                            },
+                            [_vm._v(_vm._s(t.status))]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
+        ]
+      ),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "card-footer" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center flex-wrap"
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "d-flex flex-wrap py-2 mr-3" },
+              [
+                _c(
+                  "a",
+                  {
+                    class:
+                      _vm.loading || this.pages.currentPage < 2
+                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        return _vm.pageSet("prev")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
+                ),
+                _vm._v(" "),
+                _vm.pages.currentPage > 3
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v("...")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.pagination, function(p) {
+                  return _c(
+                    "a",
+                    {
+                      key: p,
+                      class: _vm.loading
+                        ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                        : p == _vm.pages.currentPage
+                        ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                        : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                      attrs: { href: "#", disabled: _vm.loading },
+                      on: {
+                        click: function($event) {
+                          return _vm.pageSet("jump", p)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(p))]
+                  )
+                }),
+                _vm._v(" "),
+                _vm.pages.currentPage != _vm.pages.totalPages &&
+                _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                _vm.pages.currentPage != _vm.pages.totalPages - 2
+                  ? _c(
+                      "a",
+                      {
+                        staticClass:
+                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v("...")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    class:
+                      _vm.loading ||
+                      this.pages.currentPage == this.pages.totalPages
+                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        return _vm.pageSet("next")
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
+                )
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+              _vm.loading
+                ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                    _c("div", { staticClass: "mr-2 text-muted" }, [
+                      _vm._v("Loading...")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "spinner mr-10" })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-muted" }, [
+                _vm._v(
+                  "Displaying " +
+                    _vm._s(_vm.travels.length) +
+                    " of " +
+                    _vm._s(_vm.total) +
+                    " records"
+                )
+              ])
+            ])
+          ]
+        )
+      ])
     ]
   )
 }
@@ -53977,204 +54426,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "card-scroll" }, [
-        _c(
-          "table",
-          {
-            staticClass: "table rounded table-sm table-hover",
-            attrs: { id: "pending-travels-tbl" }
-          },
-          [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("ID")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Tracking Number")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Destination")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Passengers")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Vehicles")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Travel Date")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Return Date")]),
-                _vm._v(" "),
-                _c("th", { staticStyle: { width: "120px" } }, [
-                  _vm._v("Action")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("TO-2020-01-0001, TO-2020-01-0002")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Cantilan SDS")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("9")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("July 12, 2021")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("July 13, 2021")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("button", { staticClass: "btn btn-sm btn-clean" }, [
-                    _c("i", { staticClass: "flaticon2-check-mark" }),
-                    _vm._v(" Approved\n                            ")
-                  ])
-                ])
-              ])
-            ])
-          ]
-        )
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tracking Number")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Destination")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Passengers")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Vehicles")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Travel Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Return Date")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { width: "200px" } }, [_vm._v("Status")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "d-flex justify-content-between align-items-center flex-wrap"
-        },
-        [
-          _c("div", { staticClass: "d-flex flex-wrap py-2 mr-3" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-double-arrow-back icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("...")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("23")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass:
-                  "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("24")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("25")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("26")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("27")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("28")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_vm._v("...")]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-icon btn-sm btn-light mr-2 my-1",
-                attrs: { href: "#" }
-              },
-              [_c("i", { staticClass: "ki ki-bold-double-arrow-next icon-xs" })]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-center py-3" }, [
-            _c("div", { staticClass: "d-flex align-items-center" }, [
-              _c("div", { staticClass: "mr-2 text-muted" }, [
-                _vm._v("Loading...")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "spinner mr-10" })
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "text-muted" }, [
-              _vm._v("Displaying 10 of 230 records")
-            ])
-          ])
-        ]
-      )
     ])
   }
 ]
@@ -55769,7 +56038,129 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex justify-content-between align-items-center flex-wrap"
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "d-flex flex-wrap py-2 mr-3" },
+                [
+                  _c(
+                    "a",
+                    {
+                      class:
+                        _vm.loading || this.pages.currentPage < 2
+                          ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                          : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.pageSet("prev")
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
+                  ),
+                  _vm._v(" "),
+                  _vm.pages.currentPage > 3
+                    ? _c(
+                        "a",
+                        {
+                          staticClass:
+                            "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("...")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm._l(_vm.pagination, function(p) {
+                    return _c(
+                      "a",
+                      {
+                        key: p,
+                        class: _vm.loading
+                          ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                          : p == _vm.pages.currentPage
+                          ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                          : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                        attrs: { href: "#", disabled: _vm.loading },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("jump", p)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(p))]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm.pages.currentPage != _vm.pages.totalPages &&
+                  _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                  _vm.pages.currentPage != _vm.pages.totalPages - 2
+                    ? _c(
+                        "a",
+                        {
+                          staticClass:
+                            "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("...")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      class:
+                        _vm.loading ||
+                        this.pages.currentPage == this.pages.totalPages
+                          ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                          : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          return _vm.pageSet("next")
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
+                  )
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+                _vm.loading
+                  ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                      _c("div", { staticClass: "mr-2 text-muted" }, [
+                        _vm._v("Loading...")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "spinner mr-10" })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-muted" }, [
+                  _vm._v(
+                    "Displaying " +
+                      _vm._s(_vm.travels.length) +
+                      " of " +
+                      _vm._s(_vm.total) +
+                      " records"
+                  )
+                ])
+              ])
+            ]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("modal", {
@@ -57367,8 +57758,8 @@ var staticRenderFns = [
       _c(
         "table",
         {
-          staticClass: "table table-separate table-head-custom table-checkable",
-          staticStyle: { width: "500px !important" },
+          staticClass:
+            "table table-separate table-head-custom table-checkable table-responsive w-100",
           attrs: { id: "list-travel-tbl" }
         },
         [
@@ -57427,6 +57818,64 @@ var staticRenderFns = [
               _c("th", [_vm._v("Created at")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tbody", [
+            _c("tr", [
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c("td")
             ])
           ])
         ]

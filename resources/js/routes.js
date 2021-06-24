@@ -52,7 +52,7 @@ const routes = [
         component: ListPendingTravels,
         name: 'ListPendingTravels',
         meta: {
-            title: 'List of Pending Travels'
+            title: 'List of Travels Status'
         }  
     },
     {

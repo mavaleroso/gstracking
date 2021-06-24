@@ -192,6 +192,18 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
         ]
     ]);
 
+    Route::resource('pendingtravels', 'PendingTravelsController', [
+        'names' => [
+            'index' => 'main.pendingtravels.index',
+            'create' => 'main.pendingtravels.create',
+            'store' => 'main.pendingtravels.store',
+            'show' => 'main.pendingtravels.show',
+            'edit' => 'main.pendingtravels.edit',
+            'update' => 'main.pendingtravels.update',
+            'destroy' => 'main.pendingtravels.destroy',
+        ]
+    ]);
+
     Route::resource('travelcalendar', 'TravelCalendarController', [
         'names' => [
             'index' => 'main.travelcalendar.index',

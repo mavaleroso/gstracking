@@ -21,8 +21,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <!--begin: Datatable-->
-                <table class="table table-separate table-head-custom table-checkable" id="list-travel-tbl" style="width:500px !important">
+                <table class="table table-separate table-head-custom table-checkable table-responsive w-100" id="list-travel-tbl">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -54,8 +53,60 @@
                             <th>Action</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
-                <!--end: Datatable-->
+            </div>
+             <div class="card-footer">
+                <!--begin::Pagination-->
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex flex-wrap py-2 mr-3">
+                        <a href="#" :class="(loading || this.pages.currentPage < 2) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('prev')"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
+
+                        <a v-if="pages.currentPage > 3" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+                        <a v-for="p in pagination" :key="p" href="#" :class="(loading) ? 'btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled':(p == pages.currentPage) ? 'btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1':'btn btn-icon btn-sm border-0 btn-light mr-2 my-1'" @click="pageSet('jump', p)" :disabled="loading">{{ p }}</a>
+                        <a v-if="pages.currentPage != pages.totalPages && pages.currentPage != (pages.totalPages-1) && pages.currentPage != (pages.totalPages-2)" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+
+                        <a href="#" :class="(loading || this.pages.currentPage == this.pages.totalPages) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('next')"><i class="ki ki-bold-arrow-next icon-xs"></i></a>
+                    </div>
+                    <div class="d-flex align-items-center py-3">
+                        <div v-if="loading" class="d-flex align-items-center">
+                            <div class="mr-2 text-muted">Loading...</div>
+                            <div class="spinner mr-10"></div>
+                        </div>
+                        <span class="text-muted">Displaying {{ travels.length }} of {{ total }} records</span>
+                    </div>
+                </div>
+                <!--end:: Pagination-->
             </div>
         </div>
         <modal>
@@ -310,6 +361,16 @@ import Filterdialog from '../../components/Layouts/Dialog';
 export default {
     data() {
         return {
+            travels: [],
+            total: null,
+            pages: {
+                totalPages: null,
+                prevPage: null,
+                currentPage: 1,
+                nextPage: 2,
+                display: 5,
+            },
+            loading: true,
             id: null,
             trip_ticket: null,
             created_at: null,
@@ -375,6 +436,7 @@ export default {
         Filterdialog
     },
     created() {
+        this.getData();
         this.getTripTicket();
         this.getServiceProviders();
         this.getPoNumber();
@@ -399,6 +461,24 @@ export default {
             let result = this.formFields.distance_travelled = this.formFields.ending_odo - this.formFields.starting_odo;
             return result;
         },
+        pagination() {
+            let result = null;
+            let current = this.pages.currentPage;
+            if (this.pages.totalPages < 5) {
+                result = [...Array(this.pages.totalPages).keys()].map(x => ++x);
+            } else {
+                if (current <= 3) {
+                    result = [...Array(this.pages.display).keys()].map(x => ++x);
+                } else if (current == (this.pages.totalPages - 1) || current == this.pages.totalPages) {
+                    result = [(this.pages.totalPages - 4), (this.pages.totalPages - 3), (this.pages.totalPages - 2), (this.pages.totalPages - 1), this.pages.totalPages];
+                }
+                else {
+                    result = [current - 2, current -1, current, current + 1, current + 2];
+                }
+            }
+            
+            return result;
+        },
     },
     methods:{
         ini() {
@@ -407,7 +487,16 @@ export default {
                     $("#list-travel-tbl").DataTable().destroy();
                     showToast('Filtered successfully!', 'success');
                 }
-                this.tdatatable().init();
+                // this.tdatatable().init();
+            });
+        },
+        getData() {
+            this.loading = true;
+            axios.get(BASE_URL + '/tracking/listtravel?=pages'+this.pages.currentPage).then(res => {
+                this.travels = res.data.data;
+                this.total = res.data.count;
+                this.pages.totalPages = Math.ceil(res.data.count / 10);
+                this.loading = false;
             });
         },
         tdatatable() {
