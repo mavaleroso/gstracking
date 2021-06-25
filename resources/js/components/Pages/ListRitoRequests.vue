@@ -20,7 +20,7 @@
                             </g>
                         </svg>
                         <!--end::Svg Icon-->
-                    </span>Confirm Request</button>
+                    </span>Assign Vehicle</button>
                     <!--end::Button-->
                 </div>
             </div>
@@ -140,14 +140,15 @@
                             <div class="form-group">
                                 <label>Type of Motor Vehicle</label>
                                 <div class="checkbox-inline">
-                                    <label class="checkbox checkbox-solid">
-                                        <input type="checkbox" name="rp_vehicle" id="checkbox-office" class="checkbox-vehicle" value="office" v-model="rp.status"/> RP
-                                        <span></span>
+                                    <label class="checkbox checkbox-solid" v-for="(v, index) in vehiclemodes" :key='index'>
+                                        <input type="checkbox" name="rp_vehicle" id="checkbox-office" class="checkbox-vehicle" value="office" v-model="rp.status"/> {{ v.name }}
                                     </label>
-                                    <label class="checkbox checkbox-solid">
+                                    <span></span>
+
+                                    <!-- <label class="checkbox checkbox-solid">
                                         <input type="checkbox" name="hired_vehicle" id="checkbox-rental" class="checkbox-vehicle" value="rental" v-model="hired.status"/> Hired
                                         <span></span>
-                                    </label>
+                                    </label> -->
                                 </div>
                             </div>
                         </div>
@@ -256,6 +257,7 @@ export default {
         return {
             rito: [],
             total: null,
+            vehiclemodes: [],
             pages: {
                 totalPages: null,
                 prevPage: null,
@@ -318,15 +320,24 @@ export default {
         this.getPos();
         this.getVehicles();
         this.getDrivers();
+        this.getVehicleModes();
     },
     methods: {
-        getRITO() {
+        async getRITO() {
             this.loading = true;
-            axios.get(BASE_URL + '/travel/ritorequest?pages='+this.pages.currentPage).then(res => {
+            await axios.get(BASE_URL + '/travel/ritorequest?pages='+this.pages.currentPage).then(res => {
                 this.rito = res.data.data;
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;
+            });
+
+            $('input.checkable:checkbox').change(function() {
+                if ($(this).is(":checked")) {
+                    $(this).closest('tr').addClass('bg-gray');
+                } else {
+                    $(this).closest('tr').removeClass('bg-gray');
+                }
             });
         },
         indexers(idx) {
@@ -334,6 +345,7 @@ export default {
         },
         pageSet(type, page = null) {
             $('input.checkable:checkbox:checked').click();
+            $('input.checkable:checkbox').closest('tr').removeClass('bg-gray');
             if (type == 'jump') {
                 this.pages.prevPage = page - 1;
                 this.pages.currentPage = page;
@@ -545,6 +557,11 @@ export default {
                         
                     
                 this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
+            });
+        },
+        getVehicleModes() {
+            axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
+                this.vehiclemodes = res.data.results;
             });
         }
     },
