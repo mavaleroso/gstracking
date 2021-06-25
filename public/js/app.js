@@ -5188,14 +5188,63 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5410,6 +5459,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      rito: [],
+      total: null,
+      pages: {
+        totalPages: null,
+        prevPage: null,
+        currentPage: 1,
+        nextPage: 2,
+        display: 5
+      },
+      loading: true,
+      searchData: null,
       modal: {
         passengers_id: 'modal-passengers',
         approved_id: 'modal-approved',
@@ -5438,128 +5498,80 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   components: {
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  created: function created() {},
-  mounted: function mounted() {
-    this.ini().datatable_ini('1');
+  computed: {
+    pagination: function pagination() {
+      var result = null;
+      var current = this.pages.currentPage;
+
+      if (this.pages.totalPages < 5) {
+        result = _toConsumableArray(Array(this.pages.totalPages).keys()).map(function (x) {
+          return ++x;
+        });
+      } else {
+        if (current <= 3) {
+          result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+            return ++x;
+          });
+        } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+          result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+        } else {
+          result = [current - 2, current - 1, current, current + 1, current + 2];
+        }
+      }
+
+      return result;
+    }
+  },
+  created: function created() {
+    this.getRITO();
     this.getPos();
     this.getVehicles();
     this.getDrivers();
   },
   methods: {
-    ini: function ini() {
+    getRITO: function getRITO() {
       var _this = this;
 
-      var ini = function ini() {};
-
-      var table = function table(type) {
-        $(function () {
-          _this.tdatatable().init(1);
-        });
-      };
-
-      return {
-        init: function init() {
-          ini();
-        },
-        datatable_ini: function datatable_ini() {
-          var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-          table(type);
-        }
-      };
+      this.loading = true;
+      axios.get(BASE_URL + '/travel/ritorequest?pages=' + this.pages.currentPage).then(function (res) {
+        _this.rito = res.data.data;
+        _this.total = res.data.count;
+        _this.pages.totalPages = Math.ceil(res.data.count / 10);
+        _this.loading = false;
+      });
     },
-    tdatatable: function tdatatable() {
-      var vm = this;
+    indexers: function indexers(idx) {
+      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
+    },
+    pageSet: function pageSet(type) {
+      var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      $('input.checkable:checkbox:checked').click();
 
-      var initTable = function initTable(currentPage) {
-        var table = $('#rito-tbl');
-        table.DataTable({
-          scrollX: true,
-          scrollCollapse: true,
-          processing: true,
-          serverSide: true,
-          lengthChange: false,
-          pageLength: 100,
-          ajax: {
-            url: BASE_URL + '/travel/ritorequest',
-            type: 'GET'
-          },
-          columns: [{
-            "data": "id"
-          }, {
-            "data": "tracking_no"
-          }, {
-            "data": "place"
-          }, {
-            "data": "inclusive_from"
-          }, {
-            "data": "inclusive_to"
-          }, {
-            "data": "purpose"
-          }, {
-            "data": "means_of_transportation"
-          }, {
-            "data": "id"
-          }, {
-            "data": "passenger_count"
-          }, {
-            "data": "requested_by"
-          }, {
-            "data": "id"
-          }],
-          order: [[3, 'asc']],
-          headerCallback: function headerCallback(thead, data, start, end, display) {
-            thead.getElementsByTagName('th')[0].innerHTML = "";
-          },
-          columnDefs: [{
-            targets: 0,
-            width: '30px',
-            className: 'dt-left',
-            orderable: false,
-            render: function render(data, type, full, meta) {
-              return "\n                                <label class=\"checkbox checkbox-single ml-4\">\n                                    <input type=\"checkbox\" value=\"" + data + "\" class=\"checkable\"/>\n                                    <span></span>\n                                </label>";
-            }
-          }, {
-            targets: [3, 4],
-            render: function render(data) {
-              return dateEng(data);
-            }
-          }, {
-            targets: -1,
-            sortable: false,
-            render: function render(data, type, full, meta) {
-              return '<button data-record-id="' + data + '" data-row-idx="' + meta.row + '" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
-                                            <i class="flaticon2-document"></i>\
-                                        </button>';
-            }
-          }],
-          drawCallback: function drawCallback() {
-            $('.btn-passengers').off().on('click', function () {
-              var id = $(this).data('record-id');
-              var idx = $(this).data('row-idx');
-              axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
-                vm.passengers = res.data;
-                var current_row = $('#rito-tbl tr')[idx + 1];
-                vm.current_to = current_row.children[1].textContent;
-                $('#modal-passengers').modal('show');
-              });
-            });
-          }
-        });
-        table.on('change', 'tbody tr .checkbox', function () {
-          $(this).parents('tr').toggleClass('active');
-        });
-      };
+      if (type == 'jump') {
+        this.pages.prevPage = page - 1;
+        this.pages.currentPage = page;
+        this.pages.nextPage = page + 1;
+      } else if (type == 'next' || type == 'prev') {
+        type == 'next' ? this.pages.currentPage++ : this.pages.currentPage--;
+        this.pages.prevPage = this.pages.currentPage - 1;
+        this.pages.nextPage = this.pages.currentPage + 1;
+      }
 
-      return {
-        init: function init() {
-          var currentPage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-          initTable(currentPage);
-        }
-      };
+      this.getRITO();
+    },
+    getPassengers: function getPassengers(id, TO) {
+      var _this2 = this;
+
+      axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
+        _this2.passengers = res.data;
+        _this2.current_to = TO;
+        $('#modal-passengers').modal('show');
+      });
     },
     assignVehicle: function assignVehicle() {
       var vm = this;
       var arr = [];
+      vm.selected = [];
       vm.passengers_count = 0;
       var count = 0;
       $('input.checkable:checkbox:checked').each(function () {
@@ -5658,40 +5670,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getPos: function getPos() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get(BASE_URL + '/api/v1/po').then(function (response) {
-        _this2.pos = response.data;
+        _this3.pos = response.data;
       });
     },
     getVehicles: function getVehicles() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
-        _this3.vehicles = response.data;
+        _this4.vehicles = response.data;
       });
     },
     getDrivers: function getDrivers() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
-        _this4.drivers = response.data;
+        _this5.drivers = response.data;
       });
     },
-    parseNum: function parseNum(data) {
-      return toParseNum(data);
-    },
     approved: function approved() {
-      var _this5 = this;
+      var _this6 = this;
 
       var ritoData = $('#rito-form').serialize();
       axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(function (response) {
         $('.invalid-feedback-admin').remove();
         $('.invalid-admin').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
 
-        _this5.ini().datatable_ini();
+        _this6.$showToast(response.data.message, 'success');
+
+        _this6.ini().datatable_ini();
 
         $('#modal-approved').modal('toggle');
         $('input.checkable:checkbox:checked').click();
@@ -5732,9 +5742,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         ;
 
-        for (var i = 0; i < _this5.defaultNames.length; i++) {
-          if (_this5.defaultNames[i] == 'rp_vehicle' || _this5.defaultNames[i] == 'hired_vehicle') {
-            if (keys.indexOf('' + _this5.defaultNames[i] + '') == -1) {
+        for (var i = 0; i < _this6.defaultNames.length; i++) {
+          if (_this6.defaultNames[i] == 'rp_vehicle' || _this6.defaultNames[i] == 'hired_vehicle') {
+            if (keys.indexOf('' + _this6.defaultNames[i] + '') == -1) {
               if ($('.radio-inline').next().length != 0) {
                 $('.radio-inline').next('.invalid-feedback').remove();
               }
@@ -5742,30 +5752,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var _i2 = 0; _i2 < _this5.hiredNames.length; _i2++) {
-          if (_this5.hiredNames[_i2] == 'travel_po') {
-            if (keys.indexOf('' + _this5.hiredNames[_i2] + '') == -1) {
-              if ($('#' + _this5.hiredNames[_i2] + '-select').next().next().length != 0) {
-                $('#' + _this5.hiredNames[_i2] + '-select').next().next('.invalid-feedback').remove();
+        for (var _i2 = 0; _i2 < _this6.hiredNames.length; _i2++) {
+          if (_this6.hiredNames[_i2] == 'travel_po') {
+            if (keys.indexOf('' + _this6.hiredNames[_i2] + '') == -1) {
+              if ($('#' + _this6.hiredNames[_i2] + '-select').next().next().length != 0) {
+                $('#' + _this6.hiredNames[_i2] + '-select').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this5.hiredNames[_i2] + '') == -1) {
-              $('[name="' + _this5.hiredNames[_i2] + '"]').removeClass('is-invalid');
-              $('[name="' + _this5.hiredNames[_i2] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this6.hiredNames[_i2] + '') == -1) {
+              $('[name="' + _this6.hiredNames[_i2] + '"]').removeClass('is-invalid');
+              $('[name="' + _this6.hiredNames[_i2] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this5.rpNames.length; _i3++) {
-          if (keys.indexOf('' + _this5.rpNames[_i3] + '') == -1) {
-            if ($('[name="' + _this5.rpNames[_i3] + '"]').next().next().length != 0) {
-              $('[name="' + _this5.rpNames[_i3] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i3 = 0; _i3 < _this6.rpNames.length; _i3++) {
+          if (keys.indexOf('' + _this6.rpNames[_i3] + '') == -1) {
+            if ($('[name="' + _this6.rpNames[_i3] + '"]').next().next().length != 0) {
+              $('[name="' + _this6.rpNames[_i3] + '"]').next().next('.invalid-feedback').remove();
             }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this6.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     }
   }
@@ -8665,8 +8675,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       searchData: null
     };
   },
-  mounted: function mounted() {
-    this.ini();
+  created: function created() {
+    this.getTravels();
   },
   computed: {
     pagination: function pagination() {
@@ -8693,25 +8703,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }
   },
   methods: {
-    ini: function ini() {
-      var _this = this;
-
-      $(function () {
-        _this.getTravels();
-      });
-    },
     indexers: function indexers(idx) {
       return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
     },
     getTravels: function getTravels() {
-      var _this2 = this;
+      var _this = this;
 
       this.loading = true;
       axios.get(BASE_URL + '/tracking/travelsstatus?pages=' + this.pages.currentPage).then(function (res) {
-        _this2.travels = res.data.data;
-        _this2.total = res.data.count;
-        _this2.pages.totalPages = Math.ceil(res.data.count / 10);
-        _this2.loading = false;
+        _this.travels = res.data.data;
+        _this.total = res.data.count;
+        _this.pages.totalPages = Math.ceil(res.data.count / 10);
+        _this.loading = false;
       });
     },
     pageSet: function pageSet(type) {
@@ -9578,6 +9581,89 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/config.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/config.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    $showToast: function $showToast(data, type) {
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "5000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+      type == 'error' ? toastr.error(data) : type == 'info' ? toastr.info(data) : toastr.success(data);
+    },
+    $timeEng: function $timeEng(nTime) {
+      var time = nTime.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+      if (time.length > 1) {
+        time = time.slice(1);
+        time[3] = +time[0] < 12 ? ' AM' : ' PM';
+        time[0] = +time[0] % 12 || 12;
+      }
+
+      return time.join('');
+    },
+    $dateEng: function $dateEng(nDate) {
+      var date = new Date(nDate);
+      var options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      return date.toLocaleDateString('en-US', options);
+    },
+    $dateEng2: function $dateEng2(nDate) {
+      var date = new Date(nDate);
+      var options = {
+        month: 'short',
+        day: 'numeric'
+      };
+      return date.toLocaleDateString('en-US', options);
+    },
+    $dateTimeEng: function $dateTimeEng(nDateTime) {
+      var date = new Date(nDateTime);
+      var options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      };
+      return date.toLocaleDateString('en-US', options);
+    },
+    $toParseNum: function $toParseNum(num) {
+      var number = parseFloat(num);
+      return number.toLocaleString(undefined, {
+        minimumFractionDigits: 2
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -9587,16 +9673,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _Index_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue */ "./resources/js/Index.vue");
 /* harmony import */ var _Login_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Login.vue */ "./resources/js/Login.vue");
 /* harmony import */ var _Print_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Print.vue */ "./resources/js/Print.vue");
 /* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! nprogress */ "./node_modules/nprogress/nprogress.js");
 /* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(nprogress__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var nprogress_nprogress_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! nprogress/nprogress.css */ "./node_modules/nprogress/nprogress.css");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mixins/config.vue */ "./resources/js/mixins/config.vue");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -9608,10 +9695,12 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vuex__WEBPACK_IMPORTED_MODULE_7__.default);
+
+vue__WEBPACK_IMPORTED_MODULE_7__.default.mixin(_mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__.default);
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
 
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_9__.default);
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {
   if (to.path) {
     nprogress__WEBPACK_IMPORTED_MODULE_4___default().done();
@@ -9623,7 +9712,7 @@ _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, n
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.afterEach(function () {
   nprogress__WEBPACK_IMPORTED_MODULE_4___default().done();
 });
-var app = new vue__WEBPACK_IMPORTED_MODULE_6__.default({
+var app = new vue__WEBPACK_IMPORTED_MODULE_7__.default({
   el: '#app',
   components: {
     Index: _Index_vue__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -9631,7 +9720,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_6__.default({
     Print: _Print_vue__WEBPACK_IMPORTED_MODULE_3__.default
   },
   router: _routes__WEBPACK_IMPORTED_MODULE_0__.default,
-  store: _store__WEBPACK_IMPORTED_MODULE_8__.default
+  store: _store__WEBPACK_IMPORTED_MODULE_9__.default
 });
 
 /***/ }),
@@ -47221,6 +47310,44 @@ component.options.__file = "resources/js/components/Pages/VehicleTravels.vue"
 
 /***/ }),
 
+/***/ "./resources/js/mixins/config.vue":
+/*!****************************************!*\
+  !*** ./resources/js/mixins/config.vue ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _config_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config.vue?vue&type=script&lang=js& */ "./resources/js/mixins/config.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+;
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  _config_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/mixins/config.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/Index.vue?vue&type=script&lang=js&":
 /*!*********************************************************!*\
   !*** ./resources/js/Index.vue?vue&type=script&lang=js& ***!
@@ -47570,6 +47697,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VehicleTravels_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VehicleTravels.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/VehicleTravels.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VehicleTravels_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/mixins/config.vue?vue&type=script&lang=js&":
+/*!*****************************************************************!*\
+  !*** ./resources/js/mixins/config.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_config_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./config.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/mixins/config.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_config_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -54309,13 +54452,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "rito-requests-page" } },
+    { staticClass: "h-100 v-100", attrs: { id: "rito-requests-page" } },
     [
       _c(
         "div",
         {
           staticClass:
-            "card card-custom gutter-b animate__animated animate__fadeIn"
+            "card card-custom card-stretch animate__animated animate__fadeIn",
+          attrs: { id: "kt_page_stretched_card" }
         },
         [
           _c(
@@ -54395,7 +54539,228 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(1)
+          _c(
+            "div",
+            {
+              class: _vm.loading
+                ? "card-body overlay overlay-block"
+                : "card-body"
+            },
+            [
+              _vm.loading
+                ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                    _c("div", { staticClass: "spinner spinner-primary" })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "table",
+                { staticClass: "table", attrs: { id: "rito-tbl card-scroll" } },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.rito, function(r, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", [
+                          _c(
+                            "label",
+                            { staticClass: "checkbox checkbox-single ml-4" },
+                            [
+                              _c("input", {
+                                staticClass: "checkable",
+                                attrs: { type: "checkbox" },
+                                domProps: { value: r.id }
+                              }),
+                              _vm._v(" "),
+                              _c("span")
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "label label-lg label-inline label-light-primary text-nowrap"
+                            },
+                            [_vm._v(_vm._s(r.tracking_no))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.place))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm.$dateEng(r.inclusive_from)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm.$dateEng(r.inclusive_to)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.purpose))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.means_of_transportation))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.status))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-light-primary px-2 py-1",
+                              on: {
+                                click: function($event) {
+                                  return _vm.getPassengers(r.id, r.tracking_no)
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(r.passenger_count))]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.requested_by))])
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center flex-wrap"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "d-flex flex-wrap py-2 mr-3" },
+                  [
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading || this.pages.currentPage < 2
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("prev")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-back icon-xs"
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.pages.currentPage > 3
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.pagination, function(p) {
+                      return _c(
+                        "a",
+                        {
+                          key: p,
+                          class: _vm.loading
+                            ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                            : p == _vm.pages.currentPage
+                            ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                            : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                          attrs: { href: "#", disabled: _vm.loading },
+                          on: {
+                            click: function($event) {
+                              return _vm.pageSet("jump", p)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(p))]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm.pages.currentPage != _vm.pages.totalPages &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 2
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading ||
+                          this.pages.currentPage == this.pages.totalPages
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("next")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-next icon-xs"
+                        })
+                      ]
+                    )
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+                  _vm.loading
+                    ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                        _c("div", { staticClass: "mr-2 text-muted" }, [
+                          _vm._v("Loading...")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spinner mr-10" })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(
+                      "Displaying " +
+                        _vm._s(_vm.rito.length) +
+                        " of " +
+                        _vm._s(_vm.total) +
+                        " records"
+                    )
+                  ])
+                ])
+              ]
+            )
+          ])
         ]
       ),
       _vm._v(" "),
@@ -54819,10 +55184,12 @@ var render = function() {
                                                 " - ₱ " +
                                                 _vm._s(
                                                   po.totalBalance
-                                                    ? _vm.parseNum(
+                                                    ? _vm.$toParseNum(
                                                         po.totalBalance
                                                       )
-                                                    : _vm.parseNum(po.po_amount)
+                                                    : _vm.$toParseNum(
+                                                        po.po_amount
+                                                      )
                                                 )
                                             )
                                           ]
@@ -55248,41 +55615,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-separate table-head-custom table-checkable",
-          attrs: { id: "rito-tbl" }
-        },
-        [
-          _c("thead", [
-            _c("tr", [
-              _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Tracking No.")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Destination")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Travel Date")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Return Date")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Purpose")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Means of Transportation")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Passengers")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Requested By")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
-            ])
-          ])
-        ]
-      )
+    return _c("thead", [
+      _c("tr", [
+        _c("th"),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Tracking No.")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Destination")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Travel Date")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Return Date")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Purpose")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [
+          _vm._v("Means of Transportation")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Passengers")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Requested By")])
+      ])
     ])
   }
 ]
