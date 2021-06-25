@@ -15,7 +15,7 @@
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div v-if="formFields.image!=''" class="col-lg-12">
+                            <div v-if="formFields.image!=''" class="col-lg-12" id="images">
                                  <div class="form-group">
                                     <label>Image: </label> <br>
                                     
@@ -176,10 +176,11 @@ export default {
         newEntry() {
             this.create = true;
             let vm = this;
-            
             $(() => {
+                $('#images').hide();
                 $('#kt_select_fullname').on('change', () => {
                     this.getData();
+                    $('#images').show();
                 });
                 $('.card-label span').text('Create Driver');
 

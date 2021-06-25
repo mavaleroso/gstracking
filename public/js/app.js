@@ -7578,8 +7578,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
+        $('#images').hide();
         $('#kt_select_fullname').on('change', function () {
           _this2.getData();
+
+          $('#images').show();
         });
         $('.card-label span').text('Create Driver');
         $('#kt_select_fullname').select2({
@@ -57881,21 +57884,28 @@ var render = function() {
                     _c("div", { staticClass: "card-body" }, [
                       _c("div", { staticClass: "row" }, [
                         _vm.formFields.image != ""
-                          ? _c("div", { staticClass: "col-lg-12" }, [
-                              _c("div", { staticClass: "form-group" }, [
-                                _c("label", [_vm._v("Image: ")]),
-                                _vm._v(" "),
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("img", {
-                                  staticStyle: {
-                                    width: "100px",
-                                    height: "100px"
-                                  },
-                                  attrs: { src: _vm.formFields.image }
-                                })
-                              ])
-                            ])
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "col-lg-12",
+                                attrs: { id: "images" }
+                              },
+                              [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Image: ")]),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("img", {
+                                    staticStyle: {
+                                      width: "100px",
+                                      height: "100px"
+                                    },
+                                    attrs: { src: _vm.formFields.image }
+                                  })
+                                ])
+                              ]
+                            )
                           : _vm._e(),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
