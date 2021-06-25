@@ -8,8 +8,8 @@
                     <small class="">Form</small></h3>
                 </div>
             </div>
-            <div :class="(loadingStatus) ? 'card-body overlay overlay-block' : 'card-body'">
-                <div v-if="loadingStatus=='true'" class="overlay-layer bg-dark-o-10">
+            <div :class="(loadingStats) ? 'card-body overlay overlay-block' : 'card-body'">
+                <div v-if="loadingStats" class="overlay-layer bg-dark-o-10">
                     <div class="spinner spinner-primary"></div>
                 </div>
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
@@ -26,7 +26,11 @@
                                
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <select class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname">
+                                    <select v-if="$store.getters['currentUser/loadingStats']" class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname" disabled>
+                                        <option label="Label"></option>
+                                        <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                    </select>
+                                    <select v-else class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname">
                                         <option label="Label"></option>
                                         <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                     </select>
@@ -146,14 +150,17 @@ export default {
     },
     mounted() {
         this.ini();
-        console.log(this.$store.getters['currentUser/employee']);
-        // this.formFields.results = this.$store.getters['currentUser/employee'];
         this.EmployeeList();
 
-        
-            // console.log(localStorage.getItem('loadingStatus'))
-        
-
+    },
+    computed: {
+        loadingStats() {
+            let res = this.$store.getters['currentUser/loadingStats'];
+            if(!res) {
+                this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+            }
+            return res;
+        }
     },
     methods: {
         ini() {
@@ -164,8 +171,7 @@ export default {
         },
         EmployeeList(){
             this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
-            // this.loadingStatus =localStorage.getItem('loadingStatus');
-            this.loadingStatus = localStorage.getItem('loadingStatus');
+            this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
         },
         newEntry() {
             this.create = true;
@@ -281,7 +287,7 @@ export default {
                         if(`${key}` == 'fullname'){
                             if ($('#kt_select_'+`${key}`).next().next().length == 0) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                                console.log("Head");
+                                
                             }
                         } else {
                             if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {

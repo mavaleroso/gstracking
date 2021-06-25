@@ -84,16 +84,13 @@ export default {
 		},
 		vuexStore(){
 			if (localStorage.getItem("ListEmployee") === null) {
-				// this.$store.dispatch('currentUser/loadEmployee');
-				this.test();
-			}	
-		},
-		async test(){
-			localStorage.setItem('loadingStatus', 'true');
-            await this.$store.dispatch('currentUser/loadEmployee');
-            this.$store.getters['currentUser/employee'];  //console
-			localStorage.setItem('loadingStatus', 'false');
-        },
+				this.$store.dispatch('currentUser/loadEmployee');
+			} 
+			else {
+				this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+				
+			}
+		},      
 	},
 }
 </script>
