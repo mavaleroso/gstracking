@@ -31,13 +31,7 @@ class RitoRequestController extends Controller
      */
     public function index(GetListingRito $getListingRito, Request $request)
     {
-        $records = $getListingRito->execute($request);
-        $data = [
-            'draw' => $request->draw,
-            'data' => $records->results,
-            'recordsFiltered' => $records->count,
-            'recordsTotal' => $records->count,
-        ];
+        $data = $getListingRito->execute($request);
         return response()->json($data);
     }
 

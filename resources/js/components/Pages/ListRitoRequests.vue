@@ -1,7 +1,7 @@
 <template>
-    <div id="rito-requests-page">
+    <div id="rito-requests-page" class="h-100 v-100">
         <!--begin::Card-->
-        <div class="card card-custom gutter-b animate__animated animate__fadeIn">
+        <div class="card card-custom card-stretch animate__animated animate__fadeIn" id="kt_page_stretched_card">
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title">
                     <h3 class="card-label">
@@ -24,24 +24,65 @@
                     <!--end::Button-->
                 </div>
             </div>
-            <div class="card-body">
-                <table class="table table-separate table-head-custom table-checkable" id="rito-tbl">
+            <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+                <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                    <div class="spinner spinner-primary"></div>
+                </div>
+                <table class="table" id="rito-tbl card-scroll">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Tracking No.</th>
-                            <th>Destination</th>
-                            <th>Travel Date</th>
-                            <th>Return Date</th>
-                            <th>Purpose</th>
-                            <th>Means of Transportation</th>
-                            <th>Status</th>
-                            <th>Passengers</th>
-                            <th>Requested By</th>
-                            <th>Action</th>
+                            <th></th>
+                            <th class="text-center">Tracking No.</th>
+                            <th class="text-center">Destination</th>
+                            <th class="text-center">Travel Date</th>
+                            <th class="text-center">Return Date</th>
+                            <th class="text-center">Purpose</th>
+                            <th class="text-center">Means of Transportation</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Passengers</th>
+                            <th class="text-center">Requested By</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr v-for="(r,index) in rito" :key="index">
+                            <td>
+                                <label class="checkbox checkbox-single ml-4">
+                                    <input type="checkbox" :value="r.id" class="checkable"/>
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td><span class="label label-lg label-inline label-light-primary text-nowrap">{{ r.tracking_no }}</span></td>
+                            <td>{{ r.place }}</td>
+                            <td>{{ $dateEng(r.inclusive_from) }}</td>
+                            <td>{{ $dateEng(r.inclusive_to) }}</td>
+                            <td>{{ r.purpose }}</td>
+                            <td>{{ r.means_of_transportation }}</td>
+                            <td>{{ r.status }}</td>
+                            <td><button @click="getPassengers(r.id, r.tracking_no)" class="btn btn-sm btn-light-primary px-2 py-1">{{ r.passenger_count }}</button></td>
+                            <td>{{ r.requested_by }}</td>
+                        </tr>
+                    </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex flex-wrap py-2 mr-3">
+                        <a href="#" :class="(loading || this.pages.currentPage < 2) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('prev')"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
+
+                        <a v-if="pages.currentPage > 3" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+                        <a v-for="p in pagination" :key="p" href="#" :class="(loading) ? 'btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled':(p == pages.currentPage) ? 'btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1':'btn btn-icon btn-sm border-0 btn-light mr-2 my-1'" @click="pageSet('jump', p)" :disabled="loading">{{ p }}</a>
+                        <a v-if="pages.currentPage != pages.totalPages && pages.currentPage != (pages.totalPages-1) && pages.currentPage != (pages.totalPages-2)" href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">...</a>
+
+                        <a href="#" :class="(loading || this.pages.currentPage == this.pages.totalPages) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('next')"><i class="ki ki-bold-arrow-next icon-xs"></i></a>
+                    </div>
+                    <div class="d-flex align-items-center py-3">
+                        <div v-if="loading" class="d-flex align-items-center">
+                            <div class="mr-2 text-muted">Loading...</div>
+                            <div class="spinner mr-10"></div>
+                        </div>
+                        <span class="text-muted">Displaying {{ rito.length }} of {{ total }} records</span>
+                    </div>
+                </div>
             </div>
         </div>
         <!--end::Card-->
@@ -115,7 +156,7 @@
                                 <label>Travel Po Number</label>
                                 <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                     <option label="Label"></option>
-                                    <option v-for="po in pos.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                    <option v-for="po in pos.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? $toParseNum(po.totalBalance) : $toParseNum(po.po_amount) }}</option>
                                 </select>
                             </div>
                         </div>
@@ -213,6 +254,17 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            rito: [],
+            total: null,
+            pages: {
+                totalPages: null,
+                prevPage: null,
+                currentPage: 1,
+                nextPage: 2,
+                display: 5,
+            },
+            loading: true,
+            searchData: null,
             modal: {
                 passengers_id: 'modal-passengers',
                 approved_id: 'modal-approved',
@@ -241,125 +293,69 @@ export default {
     components: {
         Modal
     },
-    created() {
+    computed: {
+        pagination() {
+            let result = null;
+            let current = this.pages.currentPage;
+            if (this.pages.totalPages < 5) {
+                result = [...Array(this.pages.totalPages).keys()].map(x => ++x);
+            } else {
+                if (current <= 3) {
+                    result = [...Array(this.pages.display).keys()].map(x => ++x);
+                } else if (current == (this.pages.totalPages - 1) || current == this.pages.totalPages) {
+                    result = [(this.pages.totalPages - 4), (this.pages.totalPages - 3), (this.pages.totalPages - 2), (this.pages.totalPages - 1), this.pages.totalPages];
+                }
+                else {
+                    result = [current - 2, current -1, current, current + 1, current + 2];
+                }
+            }
+            
+            return result;
+        },
     },
-    mounted() {
-        this.ini().datatable_ini('1');
+    created() {
+        this.getRITO();
         this.getPos();
         this.getVehicles();
         this.getDrivers();
     },
     methods: {
-        ini() {
-            let ini = () => {
-
-            }
-
-            let table = (type) => {
-                $(()=>{
-                    this.tdatatable().init(1);
-                }); 
-            }
-            
-            return {
-                init: () => {
-                    ini();
-                },
-                datatable_ini: (type = null) => {
-                    table(type)
-                }
-            }
+        getRITO() {
+            this.loading = true;
+            axios.get(BASE_URL + '/travel/ritorequest?pages='+this.pages.currentPage).then(res => {
+                this.rito = res.data.data;
+                this.total = res.data.count;
+                this.pages.totalPages = Math.ceil(res.data.count / 10);
+                this.loading = false;
+            });
         },
-        tdatatable() {
-            let vm = this;
-            var initTable = (currentPage) => {
-            var table = $('#rito-tbl');
-                table.DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    processing: true,
-                    serverSide: true,
-                    lengthChange: false,
-                    pageLength: 100,
-                    ajax: {
-                        url: BASE_URL + '/travel/ritorequest',
-                        type: 'GET',
-                    },
-                    columns: [
-                        { "data": "id" },
-                        { "data": "tracking_no" },
-                        { "data": "place" },
-                        { "data": "inclusive_from" },
-                        { "data": "inclusive_to" },
-                        { "data": "purpose" },
-                        { "data": "means_of_transportation" },
-                        { "data": "id" },
-                        { "data": "passenger_count" },
-                        { "data": "requested_by" },
-                        { "data": "id" },
-                    ],
-                    order: [[3, 'asc']],
-                    headerCallback: function(thead, data, start, end, display) {
-                        thead.getElementsByTagName('th')[0].innerHTML = ``;
-                    },
-                    columnDefs: [
-                        {
-                            targets: 0,
-                            width: '30px',
-                            className: 'dt-left',
-                            orderable: false,
-                            render: function(data, type, full, meta) {
-                                return `
-                                <label class="checkbox checkbox-single ml-4">
-                                    <input type="checkbox" value="`+data+`" class="checkable"/>
-                                    <span></span>
-                                </label>`;
-                            },
-                        },
-                        {
-                            targets: [3,4],
-                            render: data => {
-                                return dateEng(data);
-                            }
-                        },
-                        {
-                            targets: -1,
-                            sortable: false,
-                            render: function(data, type, full, meta) {
-                                return '<button data-record-id="' + data + '" data-row-idx="'+ meta.row +'" class="btn btn-sm btn-clean btn-passengers" title="View passengers">\
-                                            <i class="flaticon2-document"></i>\
-                                        </button>';
-                            }
-                        }
-                    ],
-                    drawCallback: () => {
-                        $('.btn-passengers').off().on('click', function() {
-                            let id = $(this).data('record-id');
-                            let idx = $(this).data('row-idx');
-                            axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res=>{
-                                vm.passengers = res.data;
-                                let current_row = $('#rito-tbl tr')[idx+1];
-                                vm.current_to =  current_row.children[1].textContent;
-                                $('#modal-passengers').modal('show');
-                            });
-                        });
-                    }
-                });
-
-                table.on('change', 'tbody tr .checkbox', function() {
-                    $(this).parents('tr').toggleClass('active');
-                });
-            };
-            
-            return {
-                init: function(currentPage = 1) {
-                    initTable(currentPage);
-                },
-            };
+        indexers(idx) {
+            return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
+        },
+        pageSet(type, page = null) {
+            $('input.checkable:checkbox:checked').click();
+            if (type == 'jump') {
+                this.pages.prevPage = page - 1;
+                this.pages.currentPage = page;
+                this.pages.nextPage = page + 1;
+            } else if (type == 'next' || type == 'prev') {
+                (type == 'next')?this.pages.currentPage++:this.pages.currentPage--;
+                this.pages.prevPage = this.pages.currentPage - 1;
+                this.pages.nextPage = this.pages.currentPage + 1;
+            } 
+            this.getRITO();
+        },
+        getPassengers(id, TO) {
+            axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res=>{
+                this.passengers = res.data;
+                this.current_to = TO;
+                $('#modal-passengers').modal('show');
+            });
         },
         assignVehicle() {
             let vm = this;
             let arr = [];
+            vm.selected = [];
             vm.passengers_count = 0;
             let count = 0;
             $('input.checkable:checkbox:checked').each(function () {
@@ -476,16 +472,13 @@ export default {
                 this.drivers = response.data;
             });
         },
-        parseNum(data) {
-            return toParseNum(data);
-        },
         approved() {
             let ritoData = $('#rito-form').serialize();
             axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(response => {
                 $('.invalid-feedback-admin').remove();
                 $('.invalid-admin').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 this.ini().datatable_ini();
                 $('#modal-approved').modal('toggle');
                 $('input.checkable:checkbox:checked').click();
@@ -551,7 +544,7 @@ export default {
 
                         
                     
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         }
     },

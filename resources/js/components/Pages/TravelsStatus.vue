@@ -109,8 +109,8 @@ export default {
             searchData: null
         }
     },
-    mounted() {
-        this.ini();
+    created() {
+        this.getTravels();
     },
     computed: {
         pagination() {
@@ -133,11 +133,6 @@ export default {
         },
     },
     methods: {
-        ini() {
-            $(() => {
-                this.getTravels();
-            }); 
-        },
         indexers(idx) {
             return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
         },

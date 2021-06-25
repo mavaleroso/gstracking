@@ -9,6 +9,9 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import Vue from "vue";
 import Vuex from "vuex";
+import ConfigMixin from "./mixins/config.vue";
+
+Vue.mixin(ConfigMixin);
 Vue.use (Vuex);
 window.Vue = require('vue').default;
 

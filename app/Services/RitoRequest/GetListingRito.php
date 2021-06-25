@@ -1,8 +1,6 @@
 <?php
 namespace App\Services\RitoRequest;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Models\System;
 
 class GetListingRito 
@@ -12,20 +10,26 @@ class GetListingRito
      *1
      * @param string $email
      */
-    public function execute($page)
+    public function execute($fields)
     {
-        $pager = ($page['start']) ? preg_replace("/\.?0+$/", "",$page['start']) : $page['start'];
+        $reqt = $this->api($fields);
 
-        if (strlen($page['start']) == 4 && strlen($pager) == 1) {
-            $pager = $pager . '0';
-        }
+        $results = [
+            'data' => $reqt->results,
+            'count' => $reqt->count
+        ];
 
+        return $results;
+    }
+
+    public function api($fields)
+    {
         $portal_token = System::where('handler', 'PORTAL_TOKEN')->pluck('value')->first();
         
         $curl = curl_init();
         
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details?page='.(intval($pager) + 1).'&status=Pending',
+            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details?page='.$fields['pages'].'&status=Pending',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -44,7 +48,6 @@ class GetListingRito
 
         curl_close($curl);
         return json_decode($response);
-
     }
 
 
