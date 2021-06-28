@@ -378,8 +378,7 @@ export default {
 
     mounted() {
         this.ini().init();
-        this.ini().events();
-        this.$store.dispatch('currentUser/loadEmployee');
+        this.ini().events();    
     },
     methods: {
 

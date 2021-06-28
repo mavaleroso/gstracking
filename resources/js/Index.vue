@@ -63,6 +63,7 @@ export default {
     },
 	mounted() {
 		this.ini();
+		this.vuexStore();
 	},
 	methods: {
 		ini() {
@@ -80,7 +81,16 @@ export default {
                 tag.setAttribute("src", script);
                 document.getElementById("kt_body").appendChild(tag);
             });
-		}
+		},
+		vuexStore(){
+			if (localStorage.getItem("ListEmployee") === null) {
+				this.$store.dispatch('currentUser/loadEmployee');
+			} 
+			else {
+				this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+				
+			}
+		},      
 	},
 }
 </script>

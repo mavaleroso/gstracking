@@ -1914,6 +1914,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.ini();
+    this.vuexStore();
   },
   methods: {
     ini: function ini() {
@@ -1930,6 +1931,13 @@ __webpack_require__.r(__webpack_exports__);
         tag.setAttribute("src", script);
         document.getElementById("kt_body").appendChild(tag);
       });
+    },
+    vuexStore: function vuexStore() {
+      if (localStorage.getItem("ListEmployee") === null) {
+        this.$store.dispatch('currentUser/loadEmployee');
+      } else {
+        this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+      }
     }
   }
 });
@@ -3124,7 +3132,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.ini().init();
     this.ini().events();
-    this.$store.dispatch('currentUser/loadEmployee');
   },
   methods: {
     dashData: function dashData() {
@@ -7515,6 +7522,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7534,6 +7548,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         results: [],
         image: ''
       },
+      loadingStatus: 'true',
       listdata: [],
       states: [],
       names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
@@ -7542,9 +7557,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   created: function created() {},
   mounted: function mounted() {
     this.ini();
-    console.log(this.$store.getters['currentUser/employee']); // this.formFields.results = this.$store.getters['currentUser/employee'];
-
     this.EmployeeList();
+  },
+  computed: {
+    loadingStats: function loadingStats() {
+      var res = this.$store.getters['currentUser/loadingStats'];
+
+      if (!res) {
+        this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+      }
+
+      return res;
+    }
   },
   methods: {
     ini: function ini() {
@@ -7556,6 +7580,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     EmployeeList: function EmployeeList() {
       this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+      this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
     },
     newEntry: function newEntry() {
       var _this2 = this;
@@ -7563,8 +7588,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
+        $('#images').hide();
         $('#kt_select_fullname').on('change', function () {
           _this2.getData();
+
+          $('#images').show();
         });
         $('.card-label span').text('Create Driver');
         $('#kt_select_fullname').select2({
@@ -7675,7 +7703,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           if ("".concat(key) == 'fullname') {
             if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
               $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              console.log("Head");
             }
           } else {
             if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
@@ -9703,6 +9730,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 vue__WEBPACK_IMPORTED_MODULE_7__.default.mixin(_mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__.default);
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
+vue__WEBPACK_IMPORTED_MODULE_6__.default.prototype.$appName = 'example app';
 
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {
@@ -9956,18 +9984,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var state = {
-  employee: []
+  employee: [],
+  loadingStats: false
 };
 var getters = {
   employee: function employee(state) {
     return state.employee;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
   }
 };
 var actions = {
   loadEmployee: function loadEmployee(_ref) {
     var commit = _ref.commit;
+    commit('setLoadingStats', true);
     return axios__WEBPACK_IMPORTED_MODULE_0___default().post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
       commit('setEmployee', response.data);
+      commit('setLoadingStats', false);
       localStorage.setItem('ListEmployee', JSON.stringify(response.data));
     });
   }
@@ -9975,6 +10009,9 @@ var actions = {
 var mutations = {
   setEmployee: function setEmployee(state, drivers) {
     state.employee = drivers;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -58173,237 +58210,222 @@ var render = function() {
           [
             _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c(
-                "form",
-                {
-                  staticClass: "form",
-                  attrs: { id: "driver-form" },
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.saveEntry($event)
+            _c(
+              "div",
+              {
+                class: _vm.loadingStats
+                  ? "card-body overlay overlay-block"
+                  : "card-body"
+              },
+              [
+                _vm.loadingStats
+                  ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                      _c("div", { staticClass: "spinner spinner-primary" })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    staticClass: "form",
+                    attrs: { id: "driver-form" },
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.saveEntry($event)
+                      }
                     }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _vm.formFields.image != ""
-                        ? _c("div", { staticClass: "col-lg-12" }, [
-                            _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Image: ")]),
-                              _vm._v(" "),
-                              _c("br"),
-                              _vm._v(" "),
-                              _c("img", {
-                                staticStyle: {
-                                  width: "100px",
-                                  height: "100px"
-                                },
-                                attrs: { src: _vm.formFields.image }
-                              })
-                            ])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Fullname:")]),
-                          _vm._v(" "),
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.formFields.fullname,
-                                  expression: "formFields.fullname"
-                                }
-                              ],
-                              staticClass: "details-input form-control select2",
-                              attrs: {
-                                id: "kt_select_fullname",
-                                name: "fullname"
+                  },
+                  [
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _vm.formFields.image != ""
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "col-lg-12",
+                                attrs: { id: "images" }
                               },
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    _vm.formFields,
-                                    "fullname",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _c("option", { attrs: { label: "Label" } }),
-                              _vm._v(" "),
-                              _vm._l(_vm.formFields.results, function(
-                                result,
-                                index
-                              ) {
-                                return _c(
-                                  "option",
-                                  { key: index, domProps: { value: index } },
+                              [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Image: ")]),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("img", {
+                                    staticStyle: {
+                                      width: "100px",
+                                      height: "100px"
+                                    },
+                                    attrs: { src: _vm.formFields.image }
+                                  })
+                                ])
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Fullname:")]),
+                            _vm._v(" "),
+                            _vm.$store.getters["currentUser/loadingStats"]
+                              ? _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.formFields.fullname,
+                                        expression: "formFields.fullname"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "details-input form-control select2",
+                                    attrs: {
+                                      id: "kt_select_fullname",
+                                      name: "fullname",
+                                      disabled: ""
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.formFields,
+                                          "fullname",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
                                   [
-                                    _vm._v(
-                                      _vm._s(result.first_name) +
-                                        " " +
-                                        _vm._s(result.middle_name) +
-                                        " " +
-                                        _vm._s(result.last_name)
-                                    )
-                                  ]
+                                    _c("option", { attrs: { label: "Label" } }),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.formFields.results, function(
+                                      result,
+                                      index
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: index,
+                                          domProps: { value: index }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(result.first_name) +
+                                              " " +
+                                              _vm._s(result.middle_name) +
+                                              " " +
+                                              _vm._s(result.last_name)
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
                                 )
-                              })
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Gender:")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.gender,
-                                expression: "formFields.gender"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "driver_gender",
-                              placeholder: "Gender",
-                              disabled: ""
-                            },
-                            domProps: { value: _vm.formFields.gender },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "gender",
-                                  $event.target.value
+                              : _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.formFields.fullname,
+                                        expression: "formFields.fullname"
+                                      }
+                                    ],
+                                    staticClass:
+                                      "details-input form-control select2",
+                                    attrs: {
+                                      id: "kt_select_fullname",
+                                      name: "fullname"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          _vm.formFields,
+                                          "fullname",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("option", { attrs: { label: "Label" } }),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.formFields.results, function(
+                                      result,
+                                      index
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: index,
+                                          domProps: { value: index }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(result.first_name) +
+                                              " " +
+                                              _vm._s(result.middle_name) +
+                                              " " +
+                                              _vm._s(result.last_name)
+                                          )
+                                        ]
+                                      )
+                                    })
+                                  ],
+                                  2
                                 )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Status:")]),
+                          ]),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.status,
-                                expression: "formFields.status"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "driver_status",
-                              placeholder: "Status",
-                              disabled: ""
-                            },
-                            domProps: { value: _vm.formFields.status },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "status",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-lg-6" }, [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Birthdate:")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.formFields.birthdate,
-                                expression: "formFields.birthdate"
-                              }
-                            ],
-                            staticClass: "form-control required-field",
-                            attrs: {
-                              type: "text",
-                              name: "driver_birthdate",
-                              placeholder: "Birthdate",
-                              disabled: ""
-                            },
-                            domProps: { value: _vm.formFields.birthdate },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.formFields,
-                                  "birthdate",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", [_vm._v("Contact Number:")]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "input-group" }, [
-                            _vm._m(1),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Gender:")]),
                             _vm._v(" "),
                             _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.formFields.contactNumber,
-                                  expression: "formFields.contactNumber"
+                                  value: _vm.formFields.gender,
+                                  expression: "formFields.gender"
                                 }
                               ],
                               staticClass: "form-control required-field",
                               attrs: {
-                                type: "number",
-                                name: "driver_contactNumber",
-                                placeholder: "Enter contact number",
+                                type: "text",
+                                name: "driver_gender",
+                                placeholder: "Gender",
                                 disabled: ""
                               },
-                              domProps: { value: _vm.formFields.contactNumber },
+                              domProps: { value: _vm.formFields.gender },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
@@ -58411,45 +58433,158 @@ var render = function() {
                                   }
                                   _vm.$set(
                                     _vm.formFields,
-                                    "contactNumber",
+                                    "gender",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Status:")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.status,
+                                  expression: "formFields.status"
+                                }
+                              ],
+                              staticClass: "form-control required-field",
+                              attrs: {
+                                type: "text",
+                                name: "driver_status",
+                                placeholder: "Status",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.formFields.status },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "status",
                                     $event.target.value
                                   )
                                 }
                               }
                             })
                           ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Birthdate:")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.formFields.birthdate,
+                                  expression: "formFields.birthdate"
+                                }
+                              ],
+                              staticClass: "form-control required-field",
+                              attrs: {
+                                type: "text",
+                                name: "driver_birthdate",
+                                placeholder: "Birthdate",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.formFields.birthdate },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.formFields,
+                                    "birthdate",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("label", [_vm._v("Contact Number:")]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "input-group" }, [
+                              _vm._m(1),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.formFields.contactNumber,
+                                    expression: "formFields.contactNumber"
+                                  }
+                                ],
+                                staticClass: "form-control required-field",
+                                attrs: {
+                                  type: "number",
+                                  name: "driver_contactNumber",
+                                  placeholder: "Enter contact number",
+                                  disabled: ""
+                                },
+                                domProps: {
+                                  value: _vm.formFields.contactNumber
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.formFields,
+                                      "contactNumber",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-footer" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary mr-2",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Save")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-secondary",
+                              attrs: { type: "reset" },
+                              on: { click: _vm.cancelEntry }
+                            },
+                            [_vm._v("Cancel")]
+                          )
                         ])
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-footer" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-lg-6" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary mr-2",
-                            attrs: { type: "submit" }
-                          },
-                          [_vm._v("Save")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-secondary",
-                            attrs: { type: "reset" },
-                            on: { click: _vm.cancelEntry }
-                          },
-                          [_vm._v("Cancel")]
-                        )
-                      ])
-                    ])
-                  ])
-                ]
-              )
-            ])
+                  ]
+                )
+              ]
+            )
           ]
         )
       : _c(
