@@ -38,19 +38,12 @@
                                 <div class="form-group">
                                     <label>Gender:</label>
                                     <input type="text" class="form-control required-field" name="driver_gender" placeholder="Gender" v-model="formFields.gender" disabled/>
-                                    <!-- <select class="form-control select2" id="kt_select_gender" name="driver_gender" v-model="formFields.gender">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="others">Others</option>
-                                    </select> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Status:</label>
                                     <input type="text" class="form-control required-field" name="driver_status" placeholder="Status" v-model="formFields.status" disabled/>
-                                    <!-- <select class="form-control select2" id="kt_select_status" name="driver_status" v-model="formFields.status">
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
-                                    </select> -->
+                                    <!-- <input v-else type="text" class="form-control required-field" name="driver_status" placeholder="Status" value="Inactive" disabled/> -->
+
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -173,13 +166,13 @@ export default {
             this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
             this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
         },
-        newEntry() {
+        newEntry() { 
             this.create = true;
             let vm = this;
             $(() => {
                 $('#images').hide();
                 $('#kt_select_fullname').on('change', () => {
-                    this.getData();
+                    vm.getData();
                     $('#images').show();
                 });
                 $('.card-label span').text('Create Driver');
@@ -202,10 +195,17 @@ export default {
             vm.formFields.image = vm.formFields.results[id].image_path;
         },
         editEntry(id) {
+            
             this.edit = true;
             let vm = this;
             $(() => {
+                $('#images').hide();
+                $('#kt_select_fullname').on('change', () => {
+                    this.getData();
+                    $('#images').show();
+                });
                 $('.card-label span').text('Edit Driver');
+
 
                 axios.get(BASE_URL + "/transportation/driver/"+id).then(response => {
                     vm.formFields.id = response.data[0].id;
@@ -213,8 +213,20 @@ export default {
                     vm.formFields.birthdate = response.data[0].birthdate;
                     vm.formFields.gender = response.data[0].sex;
                     vm.formFields.contactNumber = response.data[0].contact;
-                    vm.formFields.status = response.data[0].status;
+                    if (vm.formFields.status ==0) {
+                        vm.formFields.status = "Active" 
+                    }
+                    else{
+                        vm.formFields.status = response.data[0].status;
+                    }
                 });
+
+                $('#kt_select_fullname').select2({
+                    placeholder: "Select fullname",
+                    allowClear: true
+                });
+
+
 
                 $('#kt_select_gender').select2({
                     placeholder: "Select gender",

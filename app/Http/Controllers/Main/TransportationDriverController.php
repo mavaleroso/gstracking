@@ -93,6 +93,7 @@ class TransportationDriverController extends Controller
      */
     public function update($id, DriverRequest $driverRequest, UpdateDriver $updateDriver)
     {
+        
         $url = $driverRequest->url();
         $result = $updateDriver->execute($id, $driverRequest->validated(), $url);
         return json_encode(['type' => 'success','message' => __('main/notifications.driver_updated_successfully'), 'result' => $result]);

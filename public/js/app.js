@@ -7522,13 +7522,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7583,15 +7576,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
     },
     newEntry: function newEntry() {
-      var _this2 = this;
-
       this.create = true;
       var vm = this;
       $(function () {
         $('#images').hide();
         $('#kt_select_fullname').on('change', function () {
-          _this2.getData();
-
+          vm.getData();
           $('#images').show();
         });
         $('.card-label span').text('Create Driver');
@@ -7613,9 +7603,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       vm.formFields.image = vm.formFields.results[id].image_path;
     },
     editEntry: function editEntry(id) {
+      var _this2 = this;
+
       this.edit = true;
       var vm = this;
       $(function () {
+        $('#images').hide();
+        $('#kt_select_fullname').on('change', function () {
+          _this2.getData();
+
+          $('#images').show();
+        });
         $('.card-label span').text('Edit Driver');
         axios.get(BASE_URL + "/transportation/driver/" + id).then(function (response) {
           vm.formFields.id = response.data[0].id;
@@ -7623,7 +7621,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.birthdate = response.data[0].birthdate;
           vm.formFields.gender = response.data[0].sex;
           vm.formFields.contactNumber = response.data[0].contact;
-          vm.formFields.status = response.data[0].status;
+
+          if (vm.formFields.status == 0) {
+            vm.formFields.status = "Active";
+          } else {
+            vm.formFields.status = response.data[0].status;
+          }
+        });
+        $('#kt_select_fullname').select2({
+          placeholder: "Select fullname",
+          allowClear: true
         });
         $('#kt_select_gender').select2({
           placeholder: "Select gender",
@@ -9730,7 +9737,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 vue__WEBPACK_IMPORTED_MODULE_7__.default.mixin(_mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__.default);
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
-vue__WEBPACK_IMPORTED_MODULE_6__.default.prototype.$appName = 'example app';
+vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$appName = 'example app';
 
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {

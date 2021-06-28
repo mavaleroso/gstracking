@@ -20,7 +20,7 @@ class UpdateDriver
 
         $driver = Driver::where('id', $id)->update([
             'fullname' => $fields['fullname'],
-            'age' => $fields['age'],
+            'birthdate' => $fields['birthdate'],
             'sex' => $fields['gender'],
             'contact' => $fields['contactNumber'],
             'status' => $fields['status'],
