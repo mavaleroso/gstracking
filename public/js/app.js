@@ -7522,13 +7522,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7537,7 +7530,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   data: function data() {
     return {
       create: false,
-      edit: false,
       formFields: {
         id: '',
         fullname: '',
@@ -7583,15 +7575,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
     },
     newEntry: function newEntry() {
-      var _this2 = this;
-
       this.create = true;
       var vm = this;
       $(function () {
         $('#images').hide();
         $('#kt_select_fullname').on('change', function () {
-          _this2.getData();
-
+          vm.getData();
           $('#images').show();
         });
         $('.card-label span').text('Create Driver');
@@ -7612,41 +7601,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       vm.formFields.fullname = fullname;
       vm.formFields.image = vm.formFields.results[id].image_path;
     },
-    editEntry: function editEntry(id) {
-      this.edit = true;
-      var vm = this;
-      $(function () {
-        $('.card-label span').text('Edit Driver');
-        axios.get(BASE_URL + "/transportation/driver/" + id).then(function (response) {
-          vm.formFields.id = response.data[0].id;
-          vm.formFields.fullname = response.data[0].fullname;
-          vm.formFields.birthdate = response.data[0].birthdate;
-          vm.formFields.gender = response.data[0].sex;
-          vm.formFields.contactNumber = response.data[0].contact;
-          vm.formFields.status = response.data[0].status;
-        });
-        $('#kt_select_gender').select2({
-          placeholder: "Select gender",
-          minimumResultsForSearch: Infinity
-        });
-        $('#kt_select_status').select2({
-          placeholder: "Select status",
-          minimumResultsForSearch: Infinity
-        });
-        $('#kt_select_gender').change(function () {
-          vm.formFields.gender = $(this).val();
-        });
-        $('#kt_select_status').change(function () {
-          vm.formFields.status = $(this).val();
-        });
-        setTimeout(function () {
-          $('#kt_select_gender').val(vm.formFields.gender);
-          $('#kt_select_gender').trigger('change');
-          $('#kt_select_status').val(vm.formFields.status);
-          $('#kt_select_status').trigger('change');
-        }, 500);
-      });
-    },
     cancelEntry: function cancelEntry() {
       this.formFields.id = '';
       this.formFields.fullname = '';
@@ -7655,11 +7609,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.contactNumber = '';
       this.formFields.status = '';
       this.create = false;
-      this.edit = false;
       this.ini();
     },
     saveEntry: function saveEntry() {
-      var _this3 = this;
+      var _this2 = this;
 
       var formD = new FormData();
       var method = null;
@@ -7685,7 +7638,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         Swal.fire("Good job!", response.data.message, "success");
         showToast(response.data.message, 'success');
         setTimeout(function () {
-          _this3.cancelEntry();
+          _this2.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -7712,17 +7665,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this3.names.length; i++) {
-          if (_this3.names[i] == 'fullname') {
-            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this3.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this3.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'fullname') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this3.names[i] + '') == -1) {
-              $('[name="driver_' + _this3.names[i] + '"]').removeClass('is-invalid');
-              $('[name="driver_' + _this3.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
@@ -7795,22 +7748,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }, {
             targets: -1,
-            title: 'Actions',
+            title: 'Action',
             orderable: false,
             width: '125px',
             render: function render(data) {
               return '\
-                                    <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
@@ -7831,10 +7773,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }],
           drawCallback: function drawCallback() {
-            $('.btn-edit').click(function () {
-              var id = $(this).data('id');
-              vm.editEntry(id);
-            });
             $('.btn-delete').click(function () {
               var id = $(this).data('id');
               vm.deleteEntry(id);
@@ -9730,7 +9668,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 vue__WEBPACK_IMPORTED_MODULE_7__.default.mixin(_mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__.default);
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
-vue__WEBPACK_IMPORTED_MODULE_6__.default.prototype.$appName = 'example app';
+vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$appName = 'example app';
 
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {
@@ -58200,7 +58138,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "driver-page" } }, [
-    _vm.create == true || _vm.edit == true
+    _vm.create == true
       ? _c(
           "div",
           {
