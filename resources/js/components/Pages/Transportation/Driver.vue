@@ -1,6 +1,6 @@
 <template>
     <div id="driver-page">
-        <div v-if="create == true || edit == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+        <div v-if="create == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
             <div class="card-header flex-wrap">
                 <div class="card-title">
                     <h3 class="card-label"><span></span>
@@ -121,7 +121,6 @@ export default {
     data() {
         return {
             create: false,
-            edit: false,
             formFields: {
                 id: '',
                 fullname: '',
@@ -194,67 +193,6 @@ export default {
             vm.formFields.fullname = fullname;
             vm.formFields.image = vm.formFields.results[id].image_path;
         },
-        editEntry(id) {
-            
-            this.edit = true;
-            let vm = this;
-            $(() => {
-                $('#images').hide();
-                $('#kt_select_fullname').on('change', () => {
-                    this.getData();
-                    $('#images').show();
-                });
-                $('.card-label span').text('Edit Driver');
-
-
-                axios.get(BASE_URL + "/transportation/driver/"+id).then(response => {
-                    vm.formFields.id = response.data[0].id;
-                    vm.formFields.fullname = response.data[0].fullname;
-                    vm.formFields.birthdate = response.data[0].birthdate;
-                    vm.formFields.gender = response.data[0].sex;
-                    vm.formFields.contactNumber = response.data[0].contact;
-                    if (vm.formFields.status ==0) {
-                        vm.formFields.status = "Active" 
-                    }
-                    else{
-                        vm.formFields.status = response.data[0].status;
-                    }
-                });
-
-                $('#kt_select_fullname').select2({
-                    placeholder: "Select fullname",
-                    allowClear: true
-                });
-
-
-
-                $('#kt_select_gender').select2({
-                    placeholder: "Select gender",
-                    minimumResultsForSearch: Infinity
-                });
-
-                 $('#kt_select_status').select2({
-                    placeholder: "Select status",
-                    minimumResultsForSearch: Infinity
-                });
-          
-                $('#kt_select_gender').change(function() {
-                    vm.formFields.gender = $(this).val();
-                });
-
-                $('#kt_select_status').change(function() {
-                    vm.formFields.status = $(this).val();
-                });
-
-                setTimeout(() => {
-                    $('#kt_select_gender').val(vm.formFields.gender);
-                    $('#kt_select_gender').trigger('change');
-
-                    $('#kt_select_status').val(vm.formFields.status);
-                    $('#kt_select_status').trigger('change');
-                }, 500);
-            });
-        },
         cancelEntry() {
             this.formFields.id = '';
             this.formFields.fullname = '';
@@ -263,7 +201,6 @@ export default {
             this.formFields.contactNumber = '';
             this.formFields.status = '';
             this.create = false;
-            this.edit = false;
             this.ini();
         },
         saveEntry() {
@@ -391,22 +328,11 @@ export default {
                         },
                         {
                             targets: -1,
-                            title: 'Actions',
+                            title: 'Action',
                             orderable: false,
                             width: '125px',
                             render: data => {
                                 return '\
-                                    <a href="javascript:;" data-id="'+ data +'" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
-                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
                                     <a href="javascript:;" data-id="'+ data +'" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
@@ -429,11 +355,6 @@ export default {
                         }
                     ],
                     drawCallback: () => {
-                        $('.btn-edit').click(function() {
-                            let id = $(this).data('id');
-                            vm.editEntry(id);
-                        });
-
                         $('.btn-delete').click(function() {
                             let id = $(this).data('id');
                             vm.deleteEntry(id);

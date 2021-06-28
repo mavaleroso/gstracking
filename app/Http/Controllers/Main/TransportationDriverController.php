@@ -91,12 +91,9 @@ class TransportationDriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id, DriverRequest $driverRequest, UpdateDriver $updateDriver)
+    public function update($id)
     {
         
-        $url = $driverRequest->url();
-        $result = $updateDriver->execute($id, $driverRequest->validated(), $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_updated_successfully'), 'result' => $result]);
     }
 
     public function typehead(GetListingDriverApi $getlist){
