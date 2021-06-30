@@ -508,13 +508,13 @@ export default {
                         {
                             targets: 4,
                             render: data => {
-                                return dateEng(data);
+                                return this.$dateEng(data);
                             }
                         },
                         {
                             targets: 5,
                             render: data => {
-                                return timeEng(data); 
+                                return this.$timeEng(data); 
                             }
                         },
                         {
@@ -544,7 +544,7 @@ export default {
                         {
                             targets: 7,
                             render: data => {
-                                return dateTimeEng(data);
+                                return this.$dateTimeEng(data);
                             }
                         },
                         {
@@ -607,7 +607,7 @@ export default {
                 vm.division = response.data[0].division_code;
                 vm.section = response.data[0].section_code;
 
-                vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
+                vm.dateTimeEng = this.$dateTimeEng(response.data[0].created_at);
                 vm.getDetails(vm.current_id);
                 vm.getPassengers(vm.current_id);
 
@@ -753,12 +753,12 @@ export default {
                 btn_edit.text('Cancel');
                 $('.details-input').attr('disabled',false);
                 this.request_edit = 1;
-                showToast('Can edit request now!', 'info');
+                this.$showToast('Can edit request now!', 'info');
             } else {
                 btn_edit.text('Edit');
                 $('.details-input').attr('disabled',true);
                 this.request_edit = 0;
-                showToast('Canceled edit request now!', 'info');
+                this.$showToast('Canceled edit request now!', 'info');
             }
             
         },
@@ -772,7 +772,7 @@ export default {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 $('#request-tbl').DataTable().ajax.reload();
                 this.getPassengers(this.current_id);
             }).catch((error) => {
@@ -819,7 +819,7 @@ export default {
                         }
                     }
                 }
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         approved() {
@@ -828,7 +828,7 @@ export default {
                 $('.invalid-feedback-admin').remove();
                 $('.invalid-admin').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 $('#request-tbl').DataTable().ajax.reload();
                 setTimeout(() => {
                     this.show(this.current_id, 1);
@@ -895,7 +895,7 @@ export default {
 
                         
                     
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         addPassengerRow(event){
@@ -1008,7 +1008,7 @@ export default {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 $('#rejectRemarks').modal('toggle');
                 $('#request-tbl').DataTable().ajax.reload();
             }).catch(error => {

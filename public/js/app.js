@@ -3596,9 +3596,6 @@ __webpack_require__.r(__webpack_exports__);
           PoPieChart();
         }
       };
-    },
-    dateEngShort: function dateEngShort(date) {
-      return dateEng2(date);
     }
   }
 });
@@ -4112,6 +4109,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
+      var _this2 = this;
+
       var vm = this;
 
       var initTable = function initTable() {
@@ -4152,12 +4151,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columnDefs: [{
             targets: 4,
             render: function render(data) {
-              return dateEng(data);
+              return _this2.$dateEng(data);
             }
           }, {
             targets: 5,
             render: function render(data) {
-              return timeEng(data);
+              return _this2.$timeEng(data);
             }
           }, {
             targets: 6,
@@ -4185,7 +4184,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 7,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this2.$dateTimeEng(data);
             }
           }, {
             targets: -1,
@@ -4214,6 +4213,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     show: function show(id) {
+      var _this3 = this;
+
       var app = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var vm = this;
       axios.get(BASE_URL + '/travel/localrequest/' + id).then(function (response) {
@@ -4250,7 +4251,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.status = response.data[0].is_status;
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
-        vm.dateTimeEng = dateTimeEng(response.data[0].created_at);
+        vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
         vm.getDetails(vm.current_id);
         vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
@@ -4305,39 +4306,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     getRegion: function getRegion() {
-      var _this2 = this;
+      var _this4 = this;
 
       axios.get(BASE_URL + "/api/v1/region").then(function (response) {
-        _this2.regions = response.data;
+        _this4.regions = response.data;
       });
     },
     getProvince: function getProvince(id) {
-      var _this3 = this;
+      var _this5 = this;
 
       axios.get(BASE_URL + "/api/v1/province/" + id).then(function (response) {
-        _this3.provinces = response.data;
+        _this5.provinces = response.data;
 
-        _this3.provinces.map(function (i) {
+        _this5.provinces.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getCity: function getCity(id) {
-      var _this4 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
-        _this4.cities = response.data;
+        _this6.cities = response.data;
 
-        _this4.cities.map(function (i) {
+        _this6.cities.map(function (i) {
           return i.active = "false";
         });
       });
     },
     getBrgy: function getBrgy(id) {
-      var _this5 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
-        _this5.brgys = response.data;
+        _this7.brgys = response.data;
       });
     },
     currentProv: function currentProv() {
@@ -4351,14 +4352,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     getDetails: function getDetails(id) {
-      var _this6 = this;
+      var _this8 = this;
 
       $('.details-input').attr('disabled', true);
       this.request_edit = 0;
       $('#kt_select_region').val();
       axios.get(BASE_URL + "/api/v1/destination/" + id).then(function (response) {
         var destination = response.data;
-        _this6.place = response.data[0].others;
+        _this8.place = response.data[0].others;
         var data = [];
 
         var distinct = function distinct(value, index, self) {
@@ -4398,10 +4399,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.dateConf();
     },
     getPassengers: function getPassengers(id) {
-      var _this7 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + "/api/v1/passenger/" + id).then(function (response) {
-        _this7.passengers = response.data;
+        _this9.passengers = response.data;
       });
     },
     paxIndex: function paxIndex(index) {
@@ -4414,30 +4415,32 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         btn_edit.text('Cancel');
         $('.details-input').attr('disabled', false);
         this.request_edit = 1;
-        showToast('Can edit request now!', 'info');
+        this.$showToast('Can edit request now!', 'info');
       } else {
         btn_edit.text('Edit');
         $('.details-input').attr('disabled', true);
         this.request_edit = 0;
-        showToast('Canceled edit request now!', 'info');
+        this.$showToast('Canceled edit request now!', 'info');
       }
     },
     save: function save(id) {
-      var _this8 = this;
+      var _this10 = this;
 
       var requestform = $('#request-form').serialize();
       axios.put(BASE_URL + "/travel/localrequest/" + id, requestform).then(function (response) {
         $('.new-row').remove();
         $('.details-input').attr('disabled', true);
-        _this8.request_edit = 0;
+        _this10.request_edit = 0;
         $('.btn-edit span').text('Edit');
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this10.$showToast(response.data.message, 'success');
+
         $('#request-tbl').DataTable().ajax.reload();
 
-        _this8.getPassengers(_this8.current_id);
+        _this10.getPassengers(_this10.current_id);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -4469,42 +4472,44 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this8.names.length; i++) {
-          if (_this8.names[i] == 'region' || _this8.names[i] == 'province' || _this8.names[i] == 'city' || _this8.names[i] == 'brgy') {
-            if (keys.indexOf('' + _this8.names[i] + '') == -1) {
-              if (_this8.names[i] == 'brgy') {
-                if ($('#kt_select_' + _this8.names[i]).next().next().length != 0) {
-                  $('#kt_select_' + _this8.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this10.names.length; i++) {
+          if (_this10.names[i] == 'region' || _this10.names[i] == 'province' || _this10.names[i] == 'city' || _this10.names[i] == 'brgy') {
+            if (keys.indexOf('' + _this10.names[i] + '') == -1) {
+              if (_this10.names[i] == 'brgy') {
+                if ($('#kt_select_' + _this10.names[i]).next().next().length != 0) {
+                  $('#kt_select_' + _this10.names[i]).next().next('.invalid-feedback').remove();
                 }
               } else {
-                if ($('#kt_select_' + _this8.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                  $('#kt_select_' + _this8.names[i]).next().next('.invalid-feedback').remove();
+                if ($('#kt_select_' + _this10.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
+                  $('#kt_select_' + _this10.names[i]).next().next('.invalid-feedback').remove();
                 }
               }
             }
           } else {
-            if (keys.indexOf('' + _this8.names[i] + '') == -1) {
-              $('input[name="' + _this8.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this8.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this10.names[i] + '') == -1) {
+              $('input[name="' + _this10.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this10.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this10.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     approved: function approved() {
-      var _this9 = this;
+      var _this11 = this;
 
       var adminForm = $('#administrative-form').serialize();
       axios.post(BASE_URL + '/travel/listrequeststaff', adminForm).then(function (response) {
         $('.invalid-feedback-admin').remove();
         $('.invalid-admin').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this11.$showToast(response.data.message, 'success');
+
         $('#request-tbl').DataTable().ajax.reload();
         setTimeout(function () {
-          _this9.show(_this9.current_id, 1);
+          _this11.show(_this11.current_id, 1);
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4543,9 +4548,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         ;
 
-        for (var i = 0; i < _this9.defaultNames.length; i++) {
-          if (_this9.defaultNames[i] == 'vehicle_office' || _this9.defaultNames[i] == 'vehicle_rental') {
-            if (keys.indexOf('' + _this9.defaultNames[i] + '') == -1) {
+        for (var i = 0; i < _this11.defaultNames.length; i++) {
+          if (_this11.defaultNames[i] == 'vehicle_office' || _this11.defaultNames[i] == 'vehicle_rental') {
+            if (keys.indexOf('' + _this11.defaultNames[i] + '') == -1) {
               if ($('.radio-inline').next().length != 0) {
                 $('.radio-inline').next('.invalid-feedback').remove();
               }
@@ -4553,30 +4558,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this9.rentalNames.length; _i3++) {
-          if (_this9.rentalNames[_i3] == 'travel_po') {
-            if (keys.indexOf('' + _this9.rentalNames[_i3] + '') == -1) {
-              if ($('#' + _this9.rentalNames[_i3] + '-select').next().next().length != 0) {
-                $('#' + _this9.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
+        for (var _i3 = 0; _i3 < _this11.rentalNames.length; _i3++) {
+          if (_this11.rentalNames[_i3] == 'travel_po') {
+            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
+              if ($('#' + _this11.rentalNames[_i3] + '-select').next().next().length != 0) {
+                $('#' + _this11.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this9.rentalNames[_i3] + '') == -1) {
-              $('[name="' + _this9.rentalNames[_i3] + '"]').removeClass('is-invalid');
-              $('[name="' + _this9.rentalNames[_i3] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
+              $('[name="' + _this11.rentalNames[_i3] + '"]').removeClass('is-invalid');
+              $('[name="' + _this11.rentalNames[_i3] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        for (var _i4 = 0; _i4 < _this9.officeNames.length; _i4++) {
-          if (keys.indexOf('' + _this9.officeNames[_i4] + '') == -1) {
-            if ($('[name="' + _this9.officeNames[_i4] + '"]').next().next().length != 0) {
-              $('[name="' + _this9.officeNames[_i4] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i4 = 0; _i4 < _this11.officeNames.length; _i4++) {
+          if (keys.indexOf('' + _this11.officeNames[_i4] + '') == -1) {
+            if ($('[name="' + _this11.officeNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this11.officeNames[_i4] + '"]').next().next('.invalid-feedback').remove();
             }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this11.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     addPassengerRow: function addPassengerRow(event) {
@@ -4661,24 +4666,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getVehicle: function getVehicle() {
-      var _this10 = this;
+      var _this12 = this;
 
       axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
-        _this10.vehicles = response.data;
+        _this12.vehicles = response.data;
       });
     },
     getPo: function getPo() {
-      var _this11 = this;
+      var _this13 = this;
 
       axios.get(BASE_URL + '/api/v1/po').then(function (response) {
-        _this11.procurements = response.data;
+        _this13.procurements = response.data;
       });
     },
     getDriver: function getDriver() {
-      var _this12 = this;
+      var _this14 = this;
 
       axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
-        _this12.drivers = response.data;
+        _this14.drivers = response.data;
       });
     },
     parseNum: function parseNum(data) {
@@ -4692,6 +4697,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('#rejectRemarks').modal('show');
     },
     declinedRequest: function declinedRequest() {
+      var _this15 = this;
+
       axios.post(BASE_URL + '/travel/listrequeststaff/declined', {
         id: this.current_id,
         remarks: this.remarks
@@ -4699,7 +4706,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this15.$showToast(response.data.message, 'success');
+
         $('#rejectRemarks').modal('toggle');
         $('#request-tbl').DataTable().ajax.reload();
       })["catch"](function (error) {
@@ -4965,7 +4974,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this2.$showToast(response.data.message, 'success');
+
         setTimeout(function () {
           _this2.cancelEntry();
         }, 1000);
@@ -5011,7 +5022,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     show: function show(id) {
@@ -5049,6 +5060,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
+      var _this3 = this;
+
       var vm = this;
 
       var initTable = function initTable() {
@@ -5099,12 +5112,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 3,
             render: function render(data) {
-              return toParseNum(data);
+              return _this3.$toParseNum(data);
             }
           }, {
             targets: 4,
             render: function render(data) {
-              return toParseNum(data);
+              return _this3.$toParseNum(data);
             }
           }, {
             targets: 5,
@@ -5132,7 +5145,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 6,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this3.$dateTimeEng(data);
             }
           }, {
             targets: -1,
@@ -6022,7 +6035,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.put(BASE_URL + "/users/listUsers/" + id, this.formFields).then(function (response) {
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this3.$showToast(response.data.message, 'success');
 
         _this3.getUsers();
       });
@@ -6081,6 +6095,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     tdatatable: function tdatatable() {
+      var _this2 = this;
+
       var initTable = function initTable() {
         var table = $('#logs-tbl'); // begin first table
 
@@ -6110,7 +6126,7 @@ __webpack_require__.r(__webpack_exports__);
           columnDefs: [{
             targets: 5,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this2.$dateTimeEng(data);
             }
           }]
         });
@@ -6427,9 +6443,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.transaction.serial_code = res.data.requests[0].serial_code;
         _this.transaction.department = res.data.requests[0].department;
         _this.transaction.purpose = res.data.requests[0].purpose;
-        _this.transaction.travel_date = dateEng(res.data.requests[0].travel_date);
-        _this.transaction.return_date = dateEng(res.data.requests[0].return_date);
-        _this.transaction.depart_time = timeEng(res.data.requests[0].depart_time);
+        _this.transaction.travel_date = _this.$dateEng(res.data.requests[0].travel_date);
+        _this.transaction.return_date = _this.$dateEng(res.data.requests[0].return_date);
+        _this.transaction.depart_time = _this.$timeEng(res.data.requests[0].depart_time);
         _this.transaction.is_status = res.data.requests[0].is_status;
 
         for (var i = 0; i < res.data.destinations.length; i++) {
@@ -6889,7 +6905,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.travel.vehicle_name = res.data.travel[0].vehicle_name;
         _this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
         _this.travel.vehicle_type = res.data.travel[0].vehicle_type;
-        _this.travel.travel_date = dateEng(res.data.travel[0].travel_date);
+        _this.travel.travel_date = _this.$dateEng(res.data.travel[0].travel_date);
         _this.destinations = res.data.destinations;
 
         for (var i = 0; i < res.data.destinations.length; i++) {
@@ -7252,11 +7268,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this2.$showToast(response.data.message, 'success');
+
         $('.details-input').attr('disabled', true);
         _this2.complete = true;
         _this2.requestCode = response.data.result.serial_code;
-        _this2.createdAt = dateTimeEng(response.data.result.created_at);
+        _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -7297,7 +7315,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     getDivision: function getDivision() {
@@ -7660,7 +7678,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this2.$showToast(response.data.message, 'success');
+
         setTimeout(function () {
           _this2.cancelEntry();
         }, 1000);
@@ -7694,19 +7714,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
                 $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-                console.log("Tests3");
               }
             }
           } else {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
               $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
-              console.log("Tests4");
             }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     deleteEntry: function deleteEntry(id) {
@@ -7726,6 +7744,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
+      var _this3 = this;
+
       var vm = this;
 
       var initTable = function initTable() {
@@ -7758,6 +7778,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
+            targets: 2,
+            render: function render(data) {
+              return _this3.$dateEng(data);
+            }
+          }, {
             targets: 5,
             render: function render(data) {
               var status = {
@@ -7795,7 +7820,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 6,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this3.$dateTimeEng(data);
             }
           }],
           drawCallback: function drawCallback() {
@@ -8086,7 +8111,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this4.$showToast(response.data.message, 'success');
+
         setTimeout(function () {
           _this4.cancelEntry();
         }, 1000);
@@ -8129,7 +8156,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this4.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     deleteEntry: function deleteEntry(id) {
@@ -8149,6 +8176,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
+      var _this5 = this;
+
       var vm = this;
 
       var initTable = function initTable() {
@@ -8248,7 +8277,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 8,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this5.$dateTimeEng(data);
             }
           }],
           drawCallback: function drawCallback() {
@@ -8528,9 +8557,6 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.ktcalendar().init();
       });
-    },
-    dateFormat: function dateFormat(date) {
-      return dateEng2(date);
     }
   }
 });
@@ -9268,7 +9294,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         if (_this.dialogshow == true) {
           $("#list-travel-tbl").DataTable().destroy();
-          showToast('Filtered successfully!', 'success');
+
+          _this.$showToast('Filtered successfully!', 'success');
         }
       });
     },
@@ -9305,12 +9332,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var vm = this;
       axios.get(BASE_URL + "/tracking/vehicletravels/" + id).then(function (response) {
         _this3.id = id;
-        _this3.created_at = dateTimeEng(response.data[0].created_at);
+        _this3.created_at = _this3.$dateTimeEng(response.data[0].created_at);
         _this3.trip_ticket = response.data[0].trip_ticket;
         _this3.vehicle_image = response.data[0].image;
         _this3.finalStatus = response.data[0].status;
         _this3.status = response.data[0].status == 2 ? 'Approved' : 'Completed';
-        _this3.status_class = response.data[0].status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5'; // formFields
+        _this3.status_class = response.data[0].status == 2 ? 'modal-status label label-primary label-inline mr-5' : 'modal-status label label-success label-inline mr-5';
+        cddm; // formFields
 
         _this3.formFields.starting_odo = response.data[0].starting_odo;
         _this3.formFields.ending_odo = response.data[0].ending_odo;
@@ -9354,7 +9382,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this4.$showToast(response.data.message, 'success');
 
         _this4.show(id);
 
@@ -9385,7 +9414,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this4.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     reset: function reset() {
@@ -9418,10 +9447,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         showCancelButton: true,
         confirmButtonText: "Yes, Undo it!"
       }).then(function (result) {
+        var _this5 = this;
+
         if (result.value) {
           axios.put(BASE_URL + '/tracking/vehicletravels/undo/' + id).then(function (response) {
             Swal.fire("Good job!", response.data.message, "success");
-            showToast(response.data.message, 'success');
+
+            _this5.$showToast(response.data.message, 'success');
+
             $('#kt_datatable_modal').modal('toggle');
             $('#list-travel-tbl').DataTable().ajax.reload();
           });
@@ -9485,70 +9518,47 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }, 500);
     },
     getTripTicket: function getTripTicket() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/v1/tripticket").then(function (response) {
-        _this5.filterDropdown.tripTicket = response.data;
+        _this6.filterDropdown.tripTicket = response.data;
       });
     },
     getServiceProviders: function getServiceProviders() {
-      var _this6 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/serviceprovider").then(function (response) {
-        _this6.filterDropdown.serviceProvider = response.data;
+        _this7.filterDropdown.serviceProvider = response.data;
       });
     },
     getPoNumber: function getPoNumber() {
-      var _this7 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/ponumber").then(function (response) {
-        _this7.filterDropdown.poNumber = response.data;
+        _this8.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + "/api/v1/division").then(function (response) {
-        _this8.filterDropdown.division = response.data;
+        _this9.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
-        _this9.filterDropdown.section = response.data;
+        _this10.filterDropdown.section = response.data;
       });
     },
     indexers: function indexers(idx) {
       return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
     },
-    dateEng: function (_dateEng) {
-      function dateEng(_x) {
-        return _dateEng.apply(this, arguments);
-      }
-
-      dateEng.toString = function () {
-        return _dateEng.toString();
-      };
-
-      return dateEng;
-    }(function (dt) {
+    dateEng: function dateEng(dt) {
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      return type ? dateTimeEng(dt) : dateEng(dt);
-    }),
-    toParseNum: function (_toParseNum) {
-      function toParseNum(_x2) {
-        return _toParseNum.apply(this, arguments);
-      }
-
-      toParseNum.toString = function () {
-        return _toParseNum.toString();
-      };
-
-      return toParseNum;
-    }(function (num) {
-      return toParseNum(num);
-    }),
+      return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
+    },
     travelStatus: function travelStatus(stats) {
       var status = {
         1: {
@@ -52169,7 +52179,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  _vm._s(_vm.dateEngShort(activity.travel_date))
+                                  _vm._s(_vm.$dateEng2(activity.travel_date))
                                 )
                               ]
                             ),
@@ -52327,7 +52337,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  _vm._s(_vm.dateEngShort(activity.travel_date))
+                                  _vm._s(_vm.$dateEng2(activity.travel_date))
                                 )
                               ]
                             ),
@@ -60046,9 +60056,7 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            _vm._s(
-                                              _vm.dateFormat(r.travel_date)
-                                            )
+                                            _vm._s(_vm.$dateEng(r.travel_date))
                                           )
                                         ]
                                       ),
@@ -60261,9 +60269,7 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            _vm._s(
-                                              _vm.dateFormat(r.travel_date)
-                                            )
+                                            _vm._s(_vm.$dateEng(r.travel_date))
                                           )
                                         ]
                                       ),
@@ -61253,7 +61259,7 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 t.results.po_amount
-                                  ? _vm.toParseNum(t.results.po_amount)
+                                  ? _vm.$toParseNum(t.results.po_amount)
                                   : ""
                               )
                             )

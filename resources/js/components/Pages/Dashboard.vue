@@ -191,7 +191,7 @@
                         <div class="tab-pane fade show active p-10" id="kt_tab_pane_4_1" role="tabpanel" aria-labelledby="kt_tab_pane_4_1">
                             <div v-if="activities.upcoming.length" class="timeline timeline-5 mt-3">
                                 <div v-for="activity in activities.upcoming" :key="activity.id" class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
+                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng2(activity.travel_date) }}</div>
                                     <div class="timeline-badge">
                                         <i class="fa fa-genderless text-primary icon-xxl"></i>
                                     </div>
@@ -219,7 +219,7 @@
                         <div class="tab-pane fade p-10" id="kt_tab_pane_4_2" role="tabpanel" aria-labelledby="kt_tab_pane_4_2">
                             <div v-if="activities.recent.length" class="timeline timeline-5 mt-3">
                                 <div v-for="activity in activities.recent" :key="activity.id" class="timeline-item align-items-start">
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateEngShort(activity.travel_date) }}</div>
+                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng2(activity.travel_date) }}</div>
                                     <div class="timeline-badge">
                                         <i class="fa fa-genderless text-success icon-xxl"></i>
                                     </div>
@@ -838,9 +838,6 @@ export default {
                 }
             };
         },
-        dateEngShort(date) {
-            return dateEng2(date);
-        }
     },
 }
 </script>

@@ -200,7 +200,7 @@ export default {
         update(id){
              axios.put(BASE_URL + "/users/listUsers/"+id,this.formFields).then(response => {
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 this.getUsers();
             });
         }

@@ -74,7 +74,7 @@
                             <td>{{ (t.results.date_submit_proc) ? dateEng(t.results.date_submit_proc) : '' }}</td>
                             <td>{{ (t.results.travelled) ? t.results.travelled : '' }}</td>
                             <td><span v-if="t.results.po_no" class="label label-inline label-light-primary m-1 text-nowrap">{{ t.results.po_no }}</span></td>
-                            <td>{{ (t.results.po_amount) ? toParseNum(t.results.po_amount) : '' }}</td>
+                            <td>{{ (t.results.po_amount) ? $toParseNum(t.results.po_amount) : '' }}</td>
                             <td>{{ (t.results.rate_per_km) ? t.results.rate_per_km : '' }}</td>
                             <td>{{ (t.results.rate_per_km) ? t.results.rate_per_km : '' }}</td>
                             <td>{{ (t.results.flat_rate) ? t.results.flat_rate : '' }}</td>
@@ -492,7 +492,7 @@ export default {
                 let vm = this;
                 if (this.dialogshow ==true){
                     $("#list-travel-tbl").DataTable().destroy();
-                    showToast('Filtered successfully!', 'success');
+                    this.$showToast('Filtered successfully!', 'success');
                 }
             });
         },
@@ -523,13 +523,13 @@ export default {
             axios.get(BASE_URL + "/tracking/vehicletravels/" + id).then(response => {
 
                 this.id = id;
-                this.created_at = dateTimeEng(response.data[0].created_at);
+                this.created_at = this.$dateTimeEng(response.data[0].created_at);
                 this.trip_ticket = response.data[0].trip_ticket;
                 this.vehicle_image = response.data[0].image;
                 this.finalStatus = response.data[0].status;
                 this.status = (response.data[0].status == 2)? 'Approved':'Completed';
                 this.status_class = (response.data[0].status == 2)? 'modal-status label label-primary label-inline mr-5':'modal-status label label-success label-inline mr-5';
-
+cddm
                 // formFields
                 this.formFields.starting_odo = response.data[0].starting_odo;
                 this.formFields.ending_odo = response.data[0].ending_odo;
@@ -573,7 +573,7 @@ export default {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 this.show(id);
                 $('#list-travel-tbl').DataTable().ajax.reload();
             }).catch(error => {
@@ -594,7 +594,7 @@ export default {
                         $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
                     }
                 }
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         reset() {
@@ -634,7 +634,7 @@ export default {
                             response.data.message,
                             "success" 
                         )
-                            showToast(response.data.message, 'success');
+                            this.$showToast(response.data.message, 'success');
                             $('#kt_datatable_modal').modal('toggle');
                             $('#list-travel-tbl').DataTable().ajax.reload();
                         });
@@ -724,10 +724,7 @@ export default {
             return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
         },
         dateEng(dt, type=null) {
-            return (type) ? dateTimeEng(dt) : dateEng(dt);
-        },
-        toParseNum(num) {
-            return toParseNum(num);
+            return (type) ? this.$dateTimeEng(dt) : this.$dateEng(dt);
         },
         travelStatus(stats) {
             var status = {

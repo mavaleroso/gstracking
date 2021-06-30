@@ -286,9 +286,9 @@ export default {
                 this.transaction.serial_code = res.data.requests[0].serial_code;
                 this.transaction.department = res.data.requests[0].department;
                 this.transaction.purpose = res.data.requests[0].purpose;
-                this.transaction.travel_date = dateEng(res.data.requests[0].travel_date);
-                this.transaction.return_date = dateEng(res.data.requests[0].return_date);
-                this.transaction.depart_time = timeEng(res.data.requests[0].depart_time);
+                this.transaction.travel_date = this.$dateEng(res.data.requests[0].travel_date);
+                this.transaction.return_date = this.$dateEng(res.data.requests[0].return_date);
+                this.transaction.depart_time = this.$timeEng(res.data.requests[0].depart_time);
                 this.transaction.is_status = res.data.requests[0].is_status;
                 for (let i = 0; i <  res.data.destinations.length; i++) {
                     let brgy = (res.data.destinations[i].brgy_name) ? res.data.destinations[i].brgy_name : '';

@@ -426,7 +426,7 @@ export default {
                 this.travel.vehicle_name = res.data.travel[0].vehicle_name;
                 this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
                 this.travel.vehicle_type = res.data.travel[0].vehicle_type;
-                this.travel.travel_date = dateEng(res.data.travel[0].travel_date);
+                this.travel.travel_date = this.$dateEng(res.data.travel[0].travel_date);
                 this.destinations = res.data.destinations;
 
                 for (let i = 0; i < res.data.destinations.length; i++) {
