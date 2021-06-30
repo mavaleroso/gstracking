@@ -170,7 +170,21 @@ export default {
             let vm = this;
             $(() => {
                 $('#images').hide();
-                $('#kt_select_fullname').on('change', () => {
+                $('#kt_select_fullname').on('select2:clear', () => {
+                    // alert("fasfasffsasa");
+                    
+                    // vm.formFields.fullname = '';
+                    vm.formFields.status = '';
+                    vm.formFields.gender = '';
+                    vm.formFields.birthdate = '';
+                    vm.formFields.contactNumber = '';
+                    setTimeout(() => {
+                         $('#images').hide();
+                    }, 500);
+                   
+
+                });
+                $('#kt_select_fullname').on('select2:select', () => {
                     vm.getData();
                     $('#images').show();
                 });
@@ -237,12 +251,14 @@ export default {
                         if(`${key}` == 'fullname'){
                             if ($('#kt_select_'+`${key}`).next().next().length == 0) {
                                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                                console.log("Tests")
                                 
                             }
                         } else {
                             if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                                 $('[name="driver_'+`${key}`+'"]').addClass('is-invalid');
                                 $('[name="driver_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                                console.log("Tests2")
                             }
                         }
                     }
@@ -251,12 +267,14 @@ export default {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
                                 if ($('#kt_select_'+ this.names[i]).next().next().length != 0) {
                                     $('#kt_select_'+ this.names[i]).next().next('.invalid-feedback').remove();
+                                    console.log("Tests3")
                                 }
                             }
                         } else {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
                                 $('[name="driver_'+this.names[i]+'"]').removeClass('is-invalid');
                                 $('[name="driver_'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                                console.log("Tests4")
                             }
                         }
                     }

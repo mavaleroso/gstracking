@@ -7579,7 +7579,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#images').hide();
-        $('#kt_select_fullname').on('change', function () {
+        $('#kt_select_fullname').on('select2:clear', function () {
+          // alert("fasfasffsasa");
+          // vm.formFields.fullname = '';
+          vm.formFields.status = '';
+          vm.formFields.gender = '';
+          vm.formFields.birthdate = '';
+          vm.formFields.contactNumber = '';
+          setTimeout(function () {
+            $('#images').hide();
+          }, 500);
+        });
+        $('#kt_select_fullname').on('select2:select', function () {
           vm.getData();
           $('#images').show();
         });
@@ -7656,11 +7667,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           if ("".concat(key) == 'fullname') {
             if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
               $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+              console.log("Tests");
             }
           } else {
             if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('[name="driver_' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="driver_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+              console.log("Tests2");
             }
           }
         }
@@ -7670,12 +7683,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
                 $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+                console.log("Tests3");
               }
             }
           } else {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
               $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+              console.log("Tests4");
             }
           }
         }
