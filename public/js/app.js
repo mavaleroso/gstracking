@@ -7580,8 +7580,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(function () {
         $('#images').hide();
         $('#kt_select_fullname').on('select2:clear', function () {
-          // alert("fasfasffsasa");
-          // vm.formFields.fullname = '';
           vm.formFields.status = '';
           vm.formFields.gender = '';
           vm.formFields.birthdate = '';
@@ -7667,13 +7665,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           if ("".concat(key) == 'fullname') {
             if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
               $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              console.log("Tests");
             }
           } else {
             if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('[name="driver_' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="driver_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
-              console.log("Tests2");
             }
           }
         }
