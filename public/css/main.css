@@ -119,3 +119,7 @@
 .spinner {
     z-index: 20 !important;
 }
+
+.bg-gray {
+    background-color: #eee !important;
+}

@@ -141,6 +141,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.a
             'show' => 'ajax.serviceprovider.show',
         ]
     ]);
+    Route::resource('vehiclemode', 'VehicleModesController', [
+        'names' => [
+            'index' => 'ajax.vehiclemode.index',
+        ]
+    ]);
 });
 
 Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {    
