@@ -5463,22 +5463,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      vehicle_type: null,
       rito: [],
       total: null,
       vehiclemodes: [],
@@ -5631,10 +5620,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (arr.length > 0) {
         $('#modal-approved').modal('show');
-        $('.checkbox-vehicle').change(function () {
+        $('.radio-vehicle').change(function () {
           vm.rp.total = vm.hired.total = 1;
 
-          if (vm.rp.status) {
+          if (vm.vehicle_type == 'RP one way - PUV one way' || vm.vehicle_type == 'RP Vice-Versa') {
             $('#vehicle-select-1').select2({
               placeholder: "Select a vehicle"
             });
@@ -5645,7 +5634,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             vm.rpNames = ['vehicle_1', 'driver_1'];
           }
 
-          if (vm.hired.status) {
+          if (vm.vehicle_type == 'Hired Van') {
             $('#travel_po-select').select2({
               placeholder: "Select a Travel PO"
             });
@@ -5667,7 +5656,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
           }
         });
-        $('.checkbox-vehicle').on('change', function () {
+        $('.radio-vehicle').on('change', function () {
           $('.invalid-feedback-admin').remove();
           $('.invalid-admin').removeClass('is-invalid');
         });
@@ -55806,119 +55795,69 @@ var render = function() {
                                 [_vm._v(_vm._s(_vm.passengers_count))]
                               )
                             ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass:
-                                "btn btn-light-danger pulse pulse-danger float-right",
-                              attrs: { href: "#" }
-                            },
-                            [
-                              _c("i", { staticClass: "flaticon2-information" }),
-                              _vm._v(" "),
-                              _c("span", {
-                                staticClass: "pulse-ring mt-n9 ml-n3"
-                              }),
-                              _vm._v(
-                                "\n                            PUV\n                        "
-                              )
-                            ]
                           )
                         ]),
                         _vm._v(" "),
                         _c("hr", { staticClass: "col-lg-12" }),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "col-lg-8" }, [
                           _c("div", { staticClass: "form-group" }, [
                             _c("label", [_vm._v("Type of Motor Vehicle")]),
                             _vm._v(" "),
                             _c(
                               "div",
                               { staticClass: "checkbox-inline" },
-                              [
-                                _vm._l(_vm.vehiclemodes, function(v, index) {
-                                  return _c(
-                                    "label",
-                                    {
-                                      key: index,
-                                      staticClass: "checkbox checkbox-solid"
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.rp.status,
-                                            expression: "rp.status"
-                                          }
-                                        ],
-                                        staticClass: "checkbox-vehicle",
-                                        attrs: {
-                                          type: "checkbox",
-                                          name: "rp_vehicle",
-                                          id: "checkbox-office",
-                                          value: "office"
-                                        },
-                                        domProps: {
-                                          checked: Array.isArray(_vm.rp.status)
-                                            ? _vm._i(_vm.rp.status, "office") >
-                                              -1
-                                            : _vm.rp.status
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a = _vm.rp.status,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = "office",
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    _vm.rp,
-                                                    "status",
-                                                    $$a.concat([$$v])
-                                                  )
-                                              } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    _vm.rp,
-                                                    "status",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
-                                              }
-                                            } else {
-                                              _vm.$set(_vm.rp, "status", $$c)
-                                            }
-                                          }
+                              _vm._l(_vm.vehiclemodes, function(v, index) {
+                                return _c(
+                                  "label",
+                                  {
+                                    key: index,
+                                    staticClass: "radio radio-solid mx-2"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.vehicle_type,
+                                          expression: "vehicle_type"
                                         }
-                                      }),
-                                      _vm._v(
-                                        " " +
-                                          _vm._s(v.name) +
-                                          "\n                                "
-                                      )
-                                    ]
-                                  )
-                                }),
-                                _vm._v(" "),
-                                _c("span")
-                              ],
-                              2
+                                      ],
+                                      staticClass: "radio-vehicle",
+                                      attrs: {
+                                        type: "radio",
+                                        name: "radio-vehicle"
+                                      },
+                                      domProps: {
+                                        value: v.name,
+                                        checked: _vm._q(
+                                          _vm.vehicle_type,
+                                          v.name
+                                        )
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          _vm.vehicle_type = v.name
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(v.name) +
+                                        "\n                                    "
+                                    ),
+                                    _c("span")
+                                  ]
+                                )
+                              }),
+                              0
                             )
                           ])
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-lg-6" }, [
-                          _vm.hired.status
+                        _c("div", { staticClass: "col-lg-4" }, [
+                          _vm.vehicle_type == "Hired Van"
                             ? _c("div", { staticClass: "form-group" }, [
                                 _c("label", [_vm._v("Travel Po Number")]),
                                 _vm._v(" "),
@@ -55972,15 +55911,12 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm.rp.status
-                        ? _c("hr", { staticClass: "col-lg-12" })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.rp.status
+                      _vm.vehicle_type == "RP one way - PUV one way" ||
+                      _vm.vehicle_type == "RP Vice-Versa"
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
                             _c("div", { staticClass: "col-lg-12 d-flex" }, [
                               _c("label", { staticClass: "h5" }, [
-                                _vm._v("RP Vehicle")
+                                _vm._v(_vm._s(_vm.vehicle_type))
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "ml-auto" }, [
@@ -56155,15 +56091,11 @@ var render = function() {
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.hired.status
-                        ? _c("hr", { staticClass: "col-lg-12" })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.hired.status
+                      _vm.vehicle_type == "Hired Van"
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
                             _c("div", { staticClass: "col-lg-12 d-flex" }, [
                               _c("label", { staticClass: "h5" }, [
-                                _vm._v("Hired Vehicle")
+                                _vm._v(_vm._s(_vm.vehicle_type))
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "ml-auto" }, [
@@ -56282,7 +56214,8 @@ var render = function() {
                                         _vm._v(" "),
                                         _c("td", [
                                           _c("input", {
-                                            staticClass: "form-control",
+                                            staticClass:
+                                              "select-remove form-control",
                                             attrs: {
                                               type: "text",
                                               placeholder: "Enter vehicle name",
@@ -56293,7 +56226,8 @@ var render = function() {
                                         _vm._v(" "),
                                         _c("td", [
                                           _c("input", {
-                                            staticClass: "form-control",
+                                            staticClass:
+                                              "select-remove form-control",
                                             attrs: {
                                               type: "text",
                                               placeholder: "Enter driver name",
@@ -56329,7 +56263,9 @@ var render = function() {
               },
               proxy: true
             },
-            _vm.rp.status || _vm.hired.status
+            _vm.vehicle_type == "RP one way - PUV one way" ||
+            _vm.vehicle_type == "RP Vice-Versa" ||
+            _vm.vehicle_type == "Hired Van"
               ? {
                   key: "footer",
                   fn: function() {

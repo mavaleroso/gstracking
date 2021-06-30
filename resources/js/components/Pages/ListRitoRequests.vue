@@ -129,31 +129,21 @@
                         <div class="col-lg-12">
                             <div class="btn font-weight-bold btn-primary mr-2">Request <span class="label label-sm label-white ml-2">{{ selected.length }}</span></div>
                             <div class="btn font-weight-bold btn-primary mr-2">Passengers <span class="label label-sm label-white ml-2">{{ passengers_count }}</span></div>
-                            <a href="#" class="btn btn-light-danger pulse pulse-danger float-right">
-                                <i class="flaticon2-information"></i>
-                                <span class="pulse-ring mt-n9 ml-n3"></span>
-                                PUV
-                            </a>
                         </div>
                         <hr class="col-lg-12">
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <div class="form-group">
                                 <label>Type of Motor Vehicle</label>
                                 <div class="checkbox-inline">
-                                    <label class="checkbox checkbox-solid" v-for="(v, index) in vehiclemodes" :key='index'>
-                                        <input type="checkbox" name="rp_vehicle" id="checkbox-office" class="checkbox-vehicle" value="office" v-model="rp.status"/> {{ v.name }}
-                                    </label>
-                                    <span></span>
-
-                                    <!-- <label class="checkbox checkbox-solid">
-                                        <input type="checkbox" name="hired_vehicle" id="checkbox-rental" class="checkbox-vehicle" value="rental" v-model="hired.status"/> Hired
+                                    <label class="radio radio-solid mx-2" v-for="(v, index) in vehiclemodes" :key='index'>
+                                        <input type="radio" name="radio-vehicle" class="radio-vehicle" :value="v.name" v-model="vehicle_type"/> {{ v.name }}
                                         <span></span>
-                                    </label> -->
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div v-if="hired.status" class="form-group">
+                        <div class="col-lg-4">
+                            <div v-if="vehicle_type == 'Hired Van'" class="form-group">
                                 <label>Travel Po Number</label>
                                 <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                     <option label="Label"></option>
@@ -162,10 +152,9 @@
                             </div>
                         </div>
                     </div>
-                    <hr v-if="rp.status" class="col-lg-12">
-                    <div v-if="rp.status" class="col-lg-12 row">
+                    <div v-if="vehicle_type == 'RP one way - PUV one way' || vehicle_type == 'RP Vice-Versa'" class="col-lg-12 row">
                         <div class="col-lg-12 d-flex">
-                            <label class="h5">RP Vehicle</label>
+                            <label class="h5">{{ vehicle_type }}</label>
                             <div class="ml-auto">
                                 <button class="btn btn-sm btn-outline-primary" @click="incrementRpVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                 <button class="btn btn-sm btn-outline-primary" @click="decrementRpVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -200,10 +189,9 @@
                             </table>
                         </div>
                     </div>
-                    <hr v-if="hired.status" class="col-lg-12">
-                    <div v-if="hired.status" class="col-lg-12 row">
+                    <div v-if="vehicle_type == 'Hired Van'" class="col-lg-12 row">
                         <div class="col-lg-12 d-flex">
-                            <label class="h5">Hired Vehicle</label>
+                            <label class="h5">{{ vehicle_type }}</label>
                             <div class="ml-auto">
                                 <button class="btn btn-sm btn-outline-primary" @click="incrementHiredlVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                 <button class="btn btn-sm btn-outline-primary" @click="decrementHiredVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -227,10 +215,10 @@
                                             <input type="text" class="select-remove form-control" placeholder="Enter vehicle plate no." :name="'vehicle_plate_'+index"/>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" placeholder="Enter vehicle name" :name="'vehicle_name_'+index"/>
+                                            <input type="text" class="select-remove form-control" placeholder="Enter vehicle name" :name="'vehicle_name_'+index"/>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" placeholder="Enter driver name" :name="'driver_name_'+index"/>
+                                            <input type="text" class="select-remove form-control" placeholder="Enter driver name" :name="'driver_name_'+index"/>
                                         </td>
                                         <td>
                                             <input type="text" class="select-remove form-control" placeholder="Enter driver contact no." :name="'driver_contact_'+index"/>
@@ -242,7 +230,7 @@
                     </div>
                 </form>
             </template>
-            <template v-if="rp.status || hired.status" v-slot:footer>
+            <template v-if="vehicle_type == 'RP one way - PUV one way' || vehicle_type == 'RP Vice-Versa' || vehicle_type == 'Hired Van'" v-slot:footer>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
@@ -255,6 +243,7 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            vehicle_type: null,
             rito: [],
             total: null,
             vehiclemodes: [],
@@ -381,9 +370,9 @@ export default {
             if (arr.length > 0) {
                 $('#modal-approved').modal('show');
 
-                $('.checkbox-vehicle').change(function() {
+                $('.radio-vehicle').change(function() {
                     vm.rp.total = vm.hired.total = 1;
-                    if(vm.rp.status) {
+                    if(vm.vehicle_type == 'RP one way - PUV one way' || vm.vehicle_type == 'RP Vice-Versa') {
                         $('#vehicle-select-1').select2({
                             placeholder: "Select a vehicle",
                         });
@@ -395,7 +384,7 @@ export default {
                         vm.rpNames = ['vehicle_1', 'driver_1'];
                     }
                     
-                    if (vm.hired.status) {
+                    if (vm.vehicle_type == 'Hired Van') {
                         $('#travel_po-select').select2({
                             placeholder: "Select a Travel PO",
                         });
@@ -419,7 +408,7 @@ export default {
                     }
                 });
 
-                $('.checkbox-vehicle').on('change', () => {
+                $('.radio-vehicle').on('change', () => {
                     $('.invalid-feedback-admin').remove();
                     $('.invalid-admin').removeClass('is-invalid');
                 });
