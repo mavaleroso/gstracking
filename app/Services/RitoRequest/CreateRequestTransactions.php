@@ -21,12 +21,12 @@ class CreateRequestTransactions
         $rg = System::select('value')->where('handler', 'REQUEST_GROUP')->first();
         $process = false;
 
-        if (isset($fields['rp_vehicle'])) {
+        if ($fields['radio_vehicle'] == 2 || $fields['radio_vehicle'] == 3) {
             for ($i=1; $i <= $fields['rp_total'] ; $i++) { 
                 $trip_ticket = $this->genTripTicket->trip_ticket();
 
                 $trans = TransactionVehicles::create([
-                    'type' => 1,
+                    'type' => $fields['radio_vehicle'],
                     'vehicle_id' => $fields['vehicle_'.$i],
                     'driver_id' => $fields['driver_'.$i],
                     'trip_ticket' => $trip_ticket,
@@ -50,7 +50,7 @@ class CreateRequestTransactions
             $process = true;
         }
 
-        if (isset($fields['hired_vehicle'])) {
+        if ($fields['radio_vehicle'] == 4) {
             for ($i=1; $i <= $fields['hired_total'] ; $i++) { 
                 $trip_ticket = $this->genTripTicket->trip_ticket();
 
@@ -67,7 +67,7 @@ class CreateRequestTransactions
                 ]);
 
                 $trans = TransactionVehicles::create([
-                    'type' => 2,
+                    'type' => $fields['radio_vehicle'],
                     'vehicle_id' => $vehicle->id,
                     'driver_id' => $driver->id,
                     'procurement_id' => (isset($fields['travel_po']))? $fields['travel_po']:NULL,
@@ -81,7 +81,7 @@ class CreateRequestTransactions
                 for ($x=0; $x < count($request_id); $x++) { 
 
                     $rt = RequestTransactions::create([
-                        'type' => 2,
+                        'type' => 'rito',
                         'group' => $rg->value,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,

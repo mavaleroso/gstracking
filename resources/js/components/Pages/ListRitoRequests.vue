@@ -136,14 +136,14 @@
                                 <label>Type of Motor Vehicle</label>
                                 <div class="checkbox-inline">
                                     <label class="radio radio-solid mx-2" v-for="(v, index) in vehiclemodes" :key='index'>
-                                        <input type="radio" name="radio-vehicle" class="radio-vehicle" :value="v.name" v-model="vehicle_type"/> {{ v.name }}
+                                        <input type="radio" name="radio_vehicle" class="radio-vehicle" :value="v.id" v-model="vehicle_type"/> {{ v.name }}
                                         <span></span>
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div v-if="vehicle_type == 'Hired Van'" class="form-group">
+                            <div v-if="vehicle_type == 4" class="form-group">
                                 <label>Travel Po Number</label>
                                 <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                     <option label="Label"></option>
@@ -152,9 +152,9 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="vehicle_type == 'RP one way - PUV one way' || vehicle_type == 'RP Vice-Versa'" class="col-lg-12 row">
+                    <div v-if="vehicle_type == 3 || vehicle_type == 2" class="col-lg-12 row">
                         <div class="col-lg-12 d-flex">
-                            <label class="h5">{{ vehicle_type }}</label>
+                            <label class="h5">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
                             <div class="ml-auto">
                                 <button class="btn btn-sm btn-outline-primary" @click="incrementRpVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                 <button class="btn btn-sm btn-outline-primary" @click="decrementRpVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -189,9 +189,9 @@
                             </table>
                         </div>
                     </div>
-                    <div v-if="vehicle_type == 'Hired Van'" class="col-lg-12 row">
+                    <div v-if="vehicle_type == 4" class="col-lg-12 row">
                         <div class="col-lg-12 d-flex">
-                            <label class="h5">{{ vehicle_type }}</label>
+                            <label class="h5">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
                             <div class="ml-auto">
                                 <button class="btn btn-sm btn-outline-primary" @click="incrementHiredlVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                 <button class="btn btn-sm btn-outline-primary" @click="decrementHiredVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -230,7 +230,7 @@
                     </div>
                 </form>
             </template>
-            <template v-if="vehicle_type == 'RP one way - PUV one way' || vehicle_type == 'RP Vice-Versa' || vehicle_type == 'Hired Van'" v-slot:footer>
+            <template v-if="vehicle_type == 3 || vehicle_type == 2 || vehicle_type == 4" v-slot:footer>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
@@ -276,7 +276,6 @@ export default {
                 status: false,
                 total: 1,
             },
-            defaultNames: [],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
         }
@@ -372,7 +371,7 @@ export default {
 
                 $('.radio-vehicle').change(function() {
                     vm.rp.total = vm.hired.total = 1;
-                    if(vm.vehicle_type == 'RP one way - PUV one way' || vm.vehicle_type == 'RP Vice-Versa') {
+                    if(vm.vehicle_type == 3 || vm.vehicle_type == 2) {
                         $('#vehicle-select-1').select2({
                             placeholder: "Select a vehicle",
                         });
@@ -384,7 +383,7 @@ export default {
                         vm.rpNames = ['vehicle_1', 'driver_1'];
                     }
                     
-                    if (vm.vehicle_type == 'Hired Van') {
+                    if (vm.vehicle_type == 4) {
                         $('#travel_po-select').select2({
                             placeholder: "Select a Travel PO",
                         });
@@ -395,22 +394,11 @@ export default {
                         vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'];
                     }
 
-                    if ($('#checkbox-office').is(":checked")) {
-                        vm.defaultNames.push('office_vehicle');
-                    } else {
-                        vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
-                    }
-
-                    if ($('#checkbox-rental').is(":checked")) {
-                        vm.defaultNames.push('rental_vehicle');
-                    } else {
-                        vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
-                    }
                 });
 
                 $('.radio-vehicle').on('change', () => {
-                    $('.invalid-feedback-admin').remove();
-                    $('.invalid-admin').removeClass('is-invalid');
+                    $('.invalid-feedback').remove();
+                    $('.invalid').removeClass('is-invalid');
                 });
             }
         },
@@ -476,13 +464,13 @@ export default {
         approved() {
             let ritoData = $('#rito-form').serialize();
             axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(response => {
-                $('.invalid-feedback-admin').remove();
-                $('.invalid-admin').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+                $('.invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
                 this.$showToast(response.data.message, 'success');
-                this.ini().datatable_ini();
                 $('#modal-approved').modal('toggle');
                 $('input.checkable:checkbox:checked').click();
+                this.getRITO();
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -491,36 +479,23 @@ export default {
                     keys.push(`${key}`);
                     values.push(`${value}`);
                     let _keys = `${key}`.replace(/[0-9]/g, '');
-                    if (`${key}` == 'rp_vehicle' || `${key}` == 'hired_vehicle') {
-                        if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-                            $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
-                        }
-                    } else if (`${key}` == 'travel_po') {
-                        if($('#'+`${key}`+'-select').next().next().length == 0) {
+                    if (`${key}` == 'travel_po') {
+                        if ($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
                     } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                         }
                     } else {
-                        if($('[name="'+`${key}`+'"]').next().next().length == 0) {
+                        if ($('[name="'+`${key}`+'"]').next().next().length == 0) {
                             $('[name="'+`${key}`+'"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
                     }
                    
                 };
 
-                for (let i = 0; i < this.defaultNames.length; i++) {
-                    if (this.defaultNames[i] == 'rp_vehicle' || this.defaultNames[i] == 'hired_vehicle') {
-                        if (keys.indexOf(''+this.defaultNames[i]+'') == -1) {
-                            if ($('.radio-inline').next().length != 0) {
-                                $('.radio-inline').next('.invalid-feedback').remove();
-                            }
-                        } 
-                    }
-                }
                 for (let i = 0; i < this.hiredNames.length; i++) {
                     if (this.hiredNames[i] == 'travel_po') {
                         if (keys.indexOf(''+this.hiredNames[i]+'') == -1) {

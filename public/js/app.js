@@ -5500,7 +5500,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         status: false,
         total: 1
       },
-      defaultNames: [],
       rpNames: ['vehicle_1', 'driver_1'],
       hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1']
     };
@@ -5623,7 +5622,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         $('.radio-vehicle').change(function () {
           vm.rp.total = vm.hired.total = 1;
 
-          if (vm.vehicle_type == 'RP one way - PUV one way' || vm.vehicle_type == 'RP Vice-Versa') {
+          if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
             $('#vehicle-select-1').select2({
               placeholder: "Select a vehicle"
             });
@@ -5634,7 +5633,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             vm.rpNames = ['vehicle_1', 'driver_1'];
           }
 
-          if (vm.vehicle_type == 'Hired Van') {
+          if (vm.vehicle_type == 4) {
             $('#travel_po-select').select2({
               placeholder: "Select a Travel PO"
             });
@@ -5643,22 +5642,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           } else {
             vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
           }
-
-          if ($('#checkbox-office').is(":checked")) {
-            vm.defaultNames.push('office_vehicle');
-          } else {
-            vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
-          }
-
-          if ($('#checkbox-rental').is(":checked")) {
-            vm.defaultNames.push('rental_vehicle');
-          } else {
-            vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
-          }
         });
         $('.radio-vehicle').on('change', function () {
-          $('.invalid-feedback-admin').remove();
-          $('.invalid-admin').removeClass('is-invalid');
+          $('.invalid-feedback').remove();
+          $('.invalid').removeClass('is-invalid');
         });
       }
     },
@@ -5730,16 +5717,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var ritoData = $('#rito-form').serialize();
       axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(function (response) {
-        $('.invalid-feedback-admin').remove();
-        $('.invalid-admin').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
+        $('.invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
 
         _this6.$showToast(response.data.message, 'success');
 
-        _this6.ini().datatable_ini();
-
         $('#modal-approved').modal('toggle');
         $('input.checkable:checkbox:checked').click();
+
+        _this6.getRITO();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -5755,17 +5742,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
           var _keys = "".concat(key).replace(/[0-9]/g, '');
 
-          if ("".concat(key) == 'rp_vehicle' || "".concat(key) == 'hired_vehicle') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
-            }
-          } else if ("".concat(key) == 'travel_po') {
+          if ("".concat(key) == 'travel_po') {
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
           } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
             }
           } else {
@@ -5777,35 +5760,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         ;
 
-        for (var i = 0; i < _this6.defaultNames.length; i++) {
-          if (_this6.defaultNames[i] == 'rp_vehicle' || _this6.defaultNames[i] == 'hired_vehicle') {
-            if (keys.indexOf('' + _this6.defaultNames[i] + '') == -1) {
-              if ($('.radio-inline').next().length != 0) {
-                $('.radio-inline').next('.invalid-feedback').remove();
-              }
-            }
-          }
-        }
-
-        for (var _i2 = 0; _i2 < _this6.hiredNames.length; _i2++) {
-          if (_this6.hiredNames[_i2] == 'travel_po') {
-            if (keys.indexOf('' + _this6.hiredNames[_i2] + '') == -1) {
-              if ($('#' + _this6.hiredNames[_i2] + '-select').next().next().length != 0) {
-                $('#' + _this6.hiredNames[_i2] + '-select').next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this6.hiredNames.length; i++) {
+          if (_this6.hiredNames[i] == 'travel_po') {
+            if (keys.indexOf('' + _this6.hiredNames[i] + '') == -1) {
+              if ($('#' + _this6.hiredNames[i] + '-select').next().next().length != 0) {
+                $('#' + _this6.hiredNames[i] + '-select').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this6.hiredNames[_i2] + '') == -1) {
-              $('[name="' + _this6.hiredNames[_i2] + '"]').removeClass('is-invalid');
-              $('[name="' + _this6.hiredNames[_i2] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this6.hiredNames[i] + '') == -1) {
+              $('[name="' + _this6.hiredNames[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this6.hiredNames[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this6.rpNames.length; _i3++) {
-          if (keys.indexOf('' + _this6.rpNames[_i3] + '') == -1) {
-            if ($('[name="' + _this6.rpNames[_i3] + '"]').next().next().length != 0) {
-              $('[name="' + _this6.rpNames[_i3] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i2 = 0; _i2 < _this6.rpNames.length; _i2++) {
+          if (keys.indexOf('' + _this6.rpNames[_i2] + '') == -1) {
+            if ($('[name="' + _this6.rpNames[_i2] + '"]').next().next().length != 0) {
+              $('[name="' + _this6.rpNames[_i2] + '"]').next().next('.invalid-feedback').remove();
             }
           }
         }
@@ -55827,18 +55800,15 @@ var render = function() {
                                       staticClass: "radio-vehicle",
                                       attrs: {
                                         type: "radio",
-                                        name: "radio-vehicle"
+                                        name: "radio_vehicle"
                                       },
                                       domProps: {
-                                        value: v.name,
-                                        checked: _vm._q(
-                                          _vm.vehicle_type,
-                                          v.name
-                                        )
+                                        value: v.id,
+                                        checked: _vm._q(_vm.vehicle_type, v.id)
                                       },
                                       on: {
                                         change: function($event) {
-                                          _vm.vehicle_type = v.name
+                                          _vm.vehicle_type = v.id
                                         }
                                       }
                                     }),
@@ -55857,7 +55827,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-4" }, [
-                          _vm.vehicle_type == "Hired Van"
+                          _vm.vehicle_type == 4
                             ? _c("div", { staticClass: "form-group" }, [
                                 _c("label", [_vm._v("Travel Po Number")]),
                                 _vm._v(" "),
@@ -55911,12 +55881,17 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm.vehicle_type == "RP one way - PUV one way" ||
-                      _vm.vehicle_type == "RP Vice-Versa"
+                      _vm.vehicle_type == 3 || _vm.vehicle_type == 2
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
                             _c("div", { staticClass: "col-lg-12 d-flex" }, [
                               _c("label", { staticClass: "h5" }, [
-                                _vm._v(_vm._s(_vm.vehicle_type))
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == _vm.vehicle_type
+                                    })[0].name
+                                  )
+                                )
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "ml-auto" }, [
@@ -56091,11 +56066,17 @@ var render = function() {
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.vehicle_type == "Hired Van"
+                      _vm.vehicle_type == 4
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
                             _c("div", { staticClass: "col-lg-12 d-flex" }, [
                               _c("label", { staticClass: "h5" }, [
-                                _vm._v(_vm._s(_vm.vehicle_type))
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == _vm.vehicle_type
+                                    })[0].name
+                                  )
+                                )
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "ml-auto" }, [
@@ -56263,9 +56244,9 @@ var render = function() {
               },
               proxy: true
             },
-            _vm.vehicle_type == "RP one way - PUV one way" ||
-            _vm.vehicle_type == "RP Vice-Versa" ||
-            _vm.vehicle_type == "Hired Van"
+            _vm.vehicle_type == 3 ||
+            _vm.vehicle_type == 2 ||
+            _vm.vehicle_type == 4
               ? {
                   key: "footer",
                   fn: function() {

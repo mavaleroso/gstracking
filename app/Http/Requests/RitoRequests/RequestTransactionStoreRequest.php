@@ -21,11 +21,10 @@ class RequestTransactionStoreRequest extends FormRequest
     {
         $rules = [
             'selected' => 'nullable',
-            'rp_vehicle' => 'required_without:hired_vehicle',
-            'hired_vehicle' => 'required_without:rp_vehicle',
+            'radio_vehicle' => 'nullable',
         ];
-
-        if ($this->request->has('rp_vehicle')) {
+        
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             $rules['rp_total'] = 'nullable';
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
                 $rules['vehicle_'.$i] = 'required';
@@ -33,7 +32,7 @@ class RequestTransactionStoreRequest extends FormRequest
             }
         } 
         
-        if ($this->request->has('hired_vehicle')) {
+        if ($this->request->get('radio_vehicle') == 4) {
             $rules['travel_po'] = 'required';
             $rules['hired_total'] = 'nullable';
             for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
@@ -50,19 +49,16 @@ class RequestTransactionStoreRequest extends FormRequest
 
     public function attributes()
     {
-        $attr = [
-            'rp_vehicle' => 'RP Vehicle',
-            'hired_vehicle' => 'Hired Vehicle',
-        ];
+        $attr = [];
 
-        if ($this->request->has('rp_vehicle')) {
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
                 $attr['vehicle_'.$i] = 'Vehicle';
                 $attr['driver_'.$i] = 'Driver';
             }
         } 
         
-        if ($this->request->has('hired_vehicle')) {
+        if ($this->request->get('radio_vehicle') == 4) {
             $attr['travel_po'] = 'Travel PO';
             $attr['hired_total'] = 'Hired Total';
             for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
@@ -78,19 +74,16 @@ class RequestTransactionStoreRequest extends FormRequest
 
     public function messages()
     {
-        $msgs = [
-            'rp_vehicle.required' => __('main/validations.required'),
-            'hired_vehicle.required' => __('main/validations.required'),
-        ];
+        $msgs = [];
 
-        if ($this->request->has('rp_vehicle')) {
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
                 $msgs['vehicle_'.$i] = __('main/validations.required');
                 $msgs['driver_'.$i] = __('main/validations.required');
             }
         }
 
-        if ($this->request->has('hired_vehicle')) {
+        if ($this->request->get('radio_vehicle') == 4) {
             $msgs['travel_po'] =  __('main/validations.required');
             for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
                 $msgs['vehicle_name_'.$i] = __('main/validations.required');
