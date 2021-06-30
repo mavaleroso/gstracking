@@ -43,7 +43,6 @@
                                     <label>Status:</label>
                                     <input type="text" class="form-control required-field" name="driver_status" placeholder="Status" v-model="formFields.status" disabled/>
                                     <!-- <input v-else type="text" class="form-control required-field" name="driver_status" placeholder="Status" value="Inactive" disabled/> -->
-
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -113,7 +112,6 @@
         </div>
     </div>      
 </template>
-
 <script>
 import Dialog from '../../Layouts/Dialog.vue';
 export default {
@@ -143,7 +141,6 @@ export default {
     mounted() {
         this.ini();
         this.EmployeeList();
-
     },
     computed: {
         loadingStats() {
@@ -158,7 +155,6 @@ export default {
         ini() {
             $(()=>{
                 this.tdatatable().init();   
-
             });
         },
         EmployeeList(){
@@ -170,23 +166,11 @@ export default {
             let vm = this;
             $(() => {
                 $('#images').hide();
-                $('#kt_select_fullname').on('select2:clear', () => {
-                    vm.formFields.status = '';
-                    vm.formFields.gender = '';
-                    vm.formFields.birthdate = '';
-                    vm.formFields.contactNumber = '';
-                    setTimeout(() => {
-                         $('#images').hide();
-                    }, 500);
-                   
-
-                });
-                $('#kt_select_fullname').on('select2:select', () => {
+                $('#kt_select_fullname').on('change', () => {
                     vm.getData();
                     $('#images').show();
                 });
                 $('.card-label span').text('Create Driver');
-
                 $('#kt_select_fullname').select2({
                     placeholder: "Select fullname",
                     allowClear: true
@@ -218,22 +202,19 @@ export default {
             let formD = new FormData();
             let method = null;
             let putParams = null;
-
             formD.append('id', this.formFields.id);
             formD.append('fullname', this.formFields.fullname);
             formD.append('birthdate', this.formFields.birthdate);
             formD.append('gender', this.formFields.gender);
             formD.append('contactNumber', this.formFields.contactNumber);
             formD.append('status', this.formFields.status);
-
             method = (this.create)? 'POST':'PUT';
             putParams = (this.create)? '':'/' + this.formFields.id;
-
             axios({method: method,url: BASE_URL + '/transportation/driver' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
-                    this.$showToast(response.data.message, 'success');
+                    showToast(response.data.message, 'success');
                     setTimeout(() => {
                         this.cancelEntry();
                     }, 1000);
@@ -247,13 +228,13 @@ export default {
                         values.push(`${value}`);
                         if(`${key}` == 'fullname'){
                             if ($('#kt_select_'+`${key}`).next().next().length == 0) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');      
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                                
                             }
                         } else {
                             if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                                 $('[name="driver_'+`${key}`+'"]').addClass('is-invalid');
                                 $('[name="driver_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                               
                             }
                         }
                     }
@@ -272,7 +253,7 @@ export default {
                         }
                     }
                     
-                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         deleteEntry(id) {
@@ -322,20 +303,14 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 2,
-                            render: data => {
-                                return this.$dateEng(data);
-                            }
-                        },
-                        {
                             targets: 5,
                             render: data => {
                                 var status = {
-                                    0: {
+                                    'Inactive': {
                                         'title': 'Inactive',
                                         'class': ' label-light-warning'
                                     },
-                                    1: {
+                                    'Active': {
                                         'title': 'Active',
                                         'class': ' label-light-primary'
                                     }
@@ -367,7 +342,7 @@ export default {
                         {
                             targets: 6,
                             render: data => {
-                                return this.$dateTimeEng(data);
+                                return dateTimeEng(data);
                             }
                         }
                     ],
