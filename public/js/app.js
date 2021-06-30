@@ -7579,7 +7579,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#images').hide();
-        $('#kt_select_fullname').on('change', function () {
+        $('#kt_select_fullname').on('select2:clear', function () {
+          vm.formFields.status = '';
+          vm.formFields.gender = '';
+          vm.formFields.birthdate = '';
+          vm.formFields.contactNumber = '';
+          setTimeout(function () {
+            $('#images').hide();
+          }, 500);
+        });
+        $('#kt_select_fullname').on('select2:select', function () {
           vm.getData();
           $('#images').show();
         });
@@ -7670,12 +7679,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
                 $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+                console.log("Tests3");
               }
             }
           } else {
             if (keys.indexOf('' + _this2.names[i] + '') == -1) {
               $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
               $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+              console.log("Tests4");
             }
           }
         }

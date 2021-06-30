@@ -21,7 +21,7 @@ class DriverRequest extends FormRequest
     {
         return [
             'id' => 'nullable',
-            'fullname' => 'required|unique:drivers',
+            'fullname' => 'required',
             'birthdate' => 'required',
             'gender' => 'required',
             'contactNumber' => 'required',
