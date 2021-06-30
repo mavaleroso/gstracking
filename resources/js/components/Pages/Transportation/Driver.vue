@@ -233,7 +233,7 @@ export default {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
-                    showToast(response.data.message, 'success');
+                    this.$showToast(response.data.message, 'success');
                     setTimeout(() => {
                         this.cancelEntry();
                     }, 1000);
@@ -262,19 +262,17 @@ export default {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
                                 if ($('#kt_select_'+ this.names[i]).next().next().length != 0) {
                                     $('#kt_select_'+ this.names[i]).next().next('.invalid-feedback').remove();
-                                    console.log("Tests3")
                                 }
                             }
                         } else {
                             if (keys.indexOf(''+this.names[i]+'') == -1) {
                                 $('[name="driver_'+this.names[i]+'"]').removeClass('is-invalid');
                                 $('[name="driver_'+this.names[i]+'"]').next('.invalid-feedback').remove();
-                                console.log("Tests4")
                             }
                         }
                     }
                     
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         deleteEntry(id) {
@@ -324,6 +322,12 @@ export default {
                     ],
                     columnDefs: [
                         {
+                            targets: 2,
+                            render: data => {
+                                return this.$dateEng(data);
+                            }
+                        },
+                        {
                             targets: 5,
                             render: data => {
                                 var status = {
@@ -363,7 +367,7 @@ export default {
                         {
                             targets: 6,
                             render: data => {
-                                return dateTimeEng(data);
+                                return this.$dateTimeEng(data);
                             }
                         }
                     ],

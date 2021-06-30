@@ -29,7 +29,7 @@
                                         <!--begin::Item-->
                                         <div class="timeline-item align-items-start">
                                             <!--begin::Label-->
-                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateFormat(r.travel_date) }}</div>
+                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng(r.travel_date) }}</div>
                                             <!--end::Label-->
                                             <!--begin::Badge-->
                                             <div class="timeline-badge">
@@ -83,7 +83,7 @@
                                 <div class="card-body">
                                     <div v-for="r in vehicle.rental.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
                                         <div class="timeline-item align-items-start">
-                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ dateFormat(r.travel_date) }}</div>
+                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng(r.travel_date) }}</div>
                                             <div class="timeline-badge">
                                                 <i class="fa fa-genderless text-success icon-xxl"></i>
                                             </div>
@@ -214,9 +214,6 @@ export default {
                 this.ktcalendar().init();
             });
         },
-        dateFormat(date) {
-            return dateEng2(date);
-        }
     },
 }
 </script>

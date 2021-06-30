@@ -319,11 +319,11 @@ export default {
                 $('.is-invalid').removeClass('is-invalid');
 
                 Swal.fire("Good job!", response.data.message, "success");
-                showToast(response.data.message, 'success');
+                this.$showToast(response.data.message, 'success');
                 $('.details-input').attr('disabled', true);
                 this.complete = true;
                 this.requestCode = response.data.result.serial_code;
-                this.createdAt = dateTimeEng(response.data.result.created_at);
+                this.createdAt = this.$dateTimeEng(response.data.result.created_at);
             }).catch((error) => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -356,7 +356,7 @@ export default {
                         }
                     }
                 }
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
 
         },

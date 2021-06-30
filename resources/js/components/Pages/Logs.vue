@@ -60,7 +60,7 @@ export default {
                         {
                             targets: 5,
                             render: data => {
-                                return dateTimeEng(data);
+                                return this.$dateTimeEng(data);
                             }
                         },
                     ],
