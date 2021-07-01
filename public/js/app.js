@@ -7553,8 +7553,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7612,16 +7610,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#images').hide();
-        $('#kt_select_fullname').on('select2:clear', function () {
-          vm.formFields.status = '';
-          vm.formFields.gender = '';
-          vm.formFields.birthdate = '';
-          vm.formFields.contactNumber = '';
-          setTimeout(function () {
-            $('#images').hide();
-          }, 500);
-        });
-        $('#kt_select_fullname').on('select2:select', function () {
+        $('#kt_select_fullname').on('change', function () {
           vm.getData();
           $('#images').show();
         });
@@ -7678,9 +7667,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-
-        _this2.$showToast(response.data.message, 'success');
-
+        showToast(response.data.message, 'success');
         setTimeout(function () {
           _this2.cancelEntry();
         }, 1000);
@@ -7724,7 +7711,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     deleteEntry: function deleteEntry(id) {
@@ -7744,8 +7731,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
-      var _this3 = this;
-
       var vm = this;
 
       var initTable = function initTable() {
@@ -7778,19 +7763,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 2,
-            render: function render(data) {
-              return _this3.$dateEng(data);
-            }
-          }, {
             targets: 5,
             render: function render(data) {
               var status = {
-                0: {
+                'Inactive': {
                   'title': 'Inactive',
                   'class': ' label-light-warning'
                 },
-                1: {
+                'Active': {
                   'title': 'Active',
                   'class': ' label-light-primary'
                 }
@@ -7820,7 +7800,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 6,
             render: function render(data) {
-              return _this3.$dateTimeEng(data);
+              return dateTimeEng(data);
             }
           }],
           drawCallback: function drawCallback() {
