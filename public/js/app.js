@@ -5485,6 +5485,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5522,6 +5528,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         status: false,
         total: 1
       },
+      puvNames: ['remarks'],
       rpNames: ['vehicle_1', 'driver_1'],
       hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       requesttrans: []
@@ -5635,7 +5642,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       $('input.checkable:checkbox:checked').each(function () {
         arr.push($(this).val());
         vm.selected.push($(this).val());
-        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];
+        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[9];
         ;
         vm.passengers_count += parseInt(pasColumn.textContent);
         count++;
@@ -5772,7 +5779,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
@@ -7675,7 +7682,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
-        showToast(response.data.message, 'success');
+
+        _this2.$showToast(response.data.message, 'success');
+
         setTimeout(function () {
           _this2.cancelEntry();
         }, 1000);
@@ -7719,7 +7728,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     deleteEntry: function deleteEntry(id) {
@@ -7739,6 +7748,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     tdatatable: function tdatatable() {
+      var _this3 = this;
+
       var vm = this;
 
       var initTable = function initTable() {
@@ -7808,7 +7819,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 6,
             render: function render(data) {
-              return dateTimeEng(data);
+              return _this3.$dateTimeEng(data);
             }
           }],
           drawCallback: function drawCallback() {
@@ -8668,6 +8679,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8720,7 +8740,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.loading = true;
       axios.get(BASE_URL + '/tracking/travelsstatus?pages=' + this.pages.currentPage).then(function (res) {
-        _this.travels = res.data.data;
+        _this.travels = res.data.data ? res.data.data : null;
         _this.total = res.data.count;
         _this.pages.totalPages = Math.ceil(res.data.count / 10);
         _this.loading = false;
@@ -9653,13 +9673,27 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     $chkStatus: function $chkStatus(stats) {
-      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var label;
 
       if (stats == 'Pending') {
         label = '<span class="label label-inline label-light-warning">Pending</span>';
       } else {
         label = '<span class="label label-inline label-light-primary">Approved</span>';
+      }
+
+      return label;
+    },
+    $chkAssigned: function $chkAssigned(mot) {
+      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var label;
+
+      if (mot) {
+        if (mot == 1) {
+          label = '<span class="label label-inline label-light-danger">Unassigned</span>';
+        } else if (mot == 2 || mot == 3 || mot == 4) {
+          label = '<span class="label label-inline label-light-primary">Assigned</span>';
+        }
+
         $(function () {
           if (id) {
             $("#checkable_".concat(id)).prop('disabled', true);
@@ -9668,6 +9702,8 @@ __webpack_require__.r(__webpack_exports__);
 
           ;
         });
+      } else {
+        label = '<span class="label label-inline label-light-warning">Pending</span>';
       }
 
       return label;
@@ -55325,8 +55361,8 @@ var render = function() {
             "div",
             {
               class: _vm.loading
-                ? "card-body overlay overlay-block"
-                : "card-body"
+                ? "card-body overlay overlay-block table-responsive"
+                : "card-body table-responsive"
             },
             [
               _vm.loading
@@ -55337,7 +55373,10 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "table",
-                { staticClass: "table", attrs: { id: "rito-tbl card-scroll" } },
+                {
+                  staticClass: "table ",
+                  attrs: { id: "rito-tbl card-scroll" }
+                },
                 [
                   _vm._m(1),
                   _vm._v(" "),
@@ -55398,12 +55437,14 @@ var render = function() {
                         _c("td", {
                           domProps: {
                             innerHTML: _vm._s(
-                              _vm.$chkStatus(
+                              _vm.$chkAssigned(
                                 _vm.requesttrans.filter(function(i) {
                                   return i.request_id == r.id
                                 })[0]
-                                  ? "Approved"
-                                  : "Pending",
+                                  ? _vm.requesttrans.filter(function(x) {
+                                      return x.request_id == r.id
+                                    })[0].mot
+                                  : null,
                                 r.id
                               )
                             )
@@ -55758,7 +55799,7 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _c("div", { staticClass: "w-100 row" }, [
+                      _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-lg-12" }, [
                           _c(
                             "div",
@@ -55796,8 +55837,6 @@ var render = function() {
                             ]
                           )
                         ]),
-                        _vm._v(" "),
-                        _c("hr", { staticClass: "col-lg-12" }),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-8" }, [
                           _c("div", { staticClass: "form-group" }, [
@@ -55906,6 +55945,39 @@ var render = function() {
                             : _vm._e()
                         ])
                       ]),
+                      _vm._v(" "),
+                      _vm.vehicle_type == 1
+                        ? _c("div", { staticClass: "row" }, [
+                            _c("label", { staticClass: "h5 col-lg-12" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.vehiclemodes.filter(function(i) {
+                                    return i.id == _vm.vehicle_type
+                                  })[0].name
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "form-group mb-1 col-lg-12" },
+                              [
+                                _c("label", { attrs: { for: "remarks" } }, [
+                                  _vm._v("Remarks")
+                                ]),
+                                _vm._v(" "),
+                                _c("textarea", {
+                                  staticClass: "form-control w-100",
+                                  attrs: {
+                                    name: "remarks",
+                                    id: "remarks",
+                                    rows: "3"
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _vm.vehicle_type == 3 || _vm.vehicle_type == 2
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
@@ -56270,9 +56342,7 @@ var render = function() {
               },
               proxy: true
             },
-            _vm.vehicle_type == 3 ||
-            _vm.vehicle_type == 2 ||
-            _vm.vehicle_type == 4
+            _vm.vehicle_type
               ? {
                   key: "footer",
                   fn: function() {
@@ -60664,6 +60734,26 @@ var render = function() {
           class: _vm.loading ? "card-body overlay overlay-block" : "card-body"
         },
         [
+          _vm.travels == null
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "alert-text" }, [
+                    _vm._v("No data available!")
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _vm.loading
             ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
                 _c("div", { staticClass: "spinner spinner-primary" })
@@ -60678,138 +60768,142 @@ var render = function() {
                 attrs: { id: "pending-travels-tbl" }
               },
               [
-                _vm._m(0),
+                _vm._m(2),
                 _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.travels, function(t, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-light-primary m-1"
-                          },
-                          [_vm._v(_vm._s(t.type))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.tracking_no))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.place))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-primary m-1"
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                t.tracking_no.reduce(function(acc, item) {
-                                  return acc + parseInt(item.passenger_count)
-                                }, 0)
-                              )
+                _vm.travels
+                  ? _c(
+                      "tbody",
+                      _vm._l(_vm.travels, function(t, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [_vm._v(_vm._s(t.type))]
                             )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-light-primary m-1"
-                          },
-                          [_vm._v(_vm._s(t.transactions.length))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.inclusive_from))]
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.tracking_no))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.place))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-primary m-1"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    t.tracking_no.reduce(function(acc, item) {
+                                      return (
+                                        acc + parseInt(item.passenger_count)
+                                      )
+                                    }, 0)
+                                  )
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [_vm._v(_vm._s(t.transactions.length))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.inclusive_from))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.inclusive_to))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.status))]
+                              )
+                            }),
+                            0
                           )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.inclusive_to))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.status))]
-                          )
-                        }),
-                        0
-                      )
-                    ])
-                  }),
-                  0
-                )
+                        ])
+                      }),
+                      0
+                    )
+                  : _vm._e()
               ]
             )
           ])
@@ -60817,130 +60911,171 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex justify-content-between align-items-center flex-wrap"
-          },
-          [
-            _c(
+        _vm.travels
+          ? _c(
               "div",
-              { staticClass: "d-flex flex-wrap py-2 mr-3" },
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center flex-wrap"
+              },
               [
                 _c(
-                  "a",
-                  {
-                    class:
-                      _vm.loading || this.pages.currentPage < 2
-                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.pageSet("prev")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
+                  "div",
+                  { staticClass: "d-flex flex-wrap py-2 mr-3" },
+                  [
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading || this.pages.currentPage < 2
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("prev")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-back icon-xs"
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.pages.currentPage > 3
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.pagination, function(p) {
+                      return _c(
+                        "a",
+                        {
+                          key: p,
+                          class: _vm.loading
+                            ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                            : p == _vm.pages.currentPage
+                            ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                            : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                          attrs: { href: "#", disabled: _vm.loading },
+                          on: {
+                            click: function($event) {
+                              return _vm.pageSet("jump", p)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(p))]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm.pages.currentPage != _vm.pages.totalPages &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 2
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading ||
+                          this.pages.currentPage == this.pages.totalPages
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("next")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-next icon-xs"
+                        })
+                      ]
+                    )
+                  ],
+                  2
                 ),
                 _vm._v(" "),
-                _vm.pages.currentPage > 3
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                        attrs: { href: "#" }
-                      },
-                      [_vm._v("...")]
+                _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+                  _vm.loading
+                    ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                        _c("div", { staticClass: "mr-2 text-muted" }, [
+                          _vm._v("Loading...")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spinner mr-10" })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(
+                      "Displaying " +
+                        _vm._s(_vm.travels.length) +
+                        " of " +
+                        _vm._s(_vm.total) +
+                        " records"
                     )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.pagination, function(p) {
-                  return _c(
-                    "a",
-                    {
-                      key: p,
-                      class: _vm.loading
-                        ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
-                        : p == _vm.pages.currentPage
-                        ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
-                        : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                      attrs: { href: "#", disabled: _vm.loading },
-                      on: {
-                        click: function($event) {
-                          return _vm.pageSet("jump", p)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(p))]
-                  )
-                }),
-                _vm._v(" "),
-                _vm.pages.currentPage != _vm.pages.totalPages &&
-                _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
-                _vm.pages.currentPage != _vm.pages.totalPages - 2
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                        attrs: { href: "#" }
-                      },
-                      [_vm._v("...")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    class:
-                      _vm.loading ||
-                      this.pages.currentPage == this.pages.totalPages
-                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.pageSet("next")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
-                )
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "d-flex align-items-center py-3" }, [
-              _vm.loading
-                ? _c("div", { staticClass: "d-flex align-items-center" }, [
-                    _c("div", { staticClass: "mr-2 text-muted" }, [
-                      _vm._v("Loading...")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "spinner mr-10" })
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-muted" }, [
-                _vm._v(
-                  "Displaying " +
-                    _vm._s(_vm.travels.length) +
-                    " of " +
-                    _vm._s(_vm.total) +
-                    " records"
-                )
-              ])
-            ])
-          ]
-        )
+                ])
+              ]
+            )
+          : _vm._e()
       ])
     ]
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-icon" }, [
+      _c("i", { staticClass: "flaticon-warning" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-close" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "alert",
+            "aria-label": "Close"
+          }
+        },
+        [
+          _c("span", { attrs: { "aria-hidden": "true" } }, [
+            _c("i", { staticClass: "ki ki-close" })
+          ])
+        ]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

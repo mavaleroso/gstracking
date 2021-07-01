@@ -15,7 +15,7 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return response()->json(Driver::where('status', 1)->get());
+        return response()->json(Driver::where('status', 'Active')->get());
     }
 
     /**

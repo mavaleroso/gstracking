@@ -23,6 +23,10 @@ class RequestTransactionStoreRequest extends FormRequest
             'selected' => 'unique:request_transactions,request_id',
             'radio_vehicle' => 'nullable',
         ];
+
+        if ($this->request->get('radio_vehicle') == 1) {
+            $rules['remarks'] = 'required';
+        }
         
         if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             $rules['rp_total'] = 'nullable';
@@ -53,6 +57,10 @@ class RequestTransactionStoreRequest extends FormRequest
             'selected' => 'Request',
         ];
 
+        if ($this->request->get('radio_vehicle') == 1) {
+            $attr['remarks'] = 'Remarks';
+        }
+
         if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
                 $attr['vehicle_'.$i] = 'Vehicle';
@@ -79,6 +87,10 @@ class RequestTransactionStoreRequest extends FormRequest
         $msgs = [
             'selected' =>  __('main/validations.unique'),
         ];
+
+        if ($this->request->get('radio_vehicle') == 1) {
+            $msgs['remarks'] = __('main/validations.required');
+        }
 
         if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 

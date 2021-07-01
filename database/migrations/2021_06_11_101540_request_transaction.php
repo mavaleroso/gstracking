@@ -16,8 +16,10 @@ class RequestTransaction extends Migration
         Schema::create('request_transactions', function (Blueprint $table) {
             $table->id();
             $table->string('type')->nullable();
+            $table->integer('mot')->nullable();
             $table->bigInteger('group')->nullable();
             $table->bigInteger('request_id')->nullable();
+            $table->mediumText('remarks')->nullable();
             $table->bigInteger('transaction_vehicles_id')->nullable();
             $table->timestamps();
         });

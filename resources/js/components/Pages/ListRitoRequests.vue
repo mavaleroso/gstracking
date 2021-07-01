@@ -24,11 +24,11 @@
                     <!--end::Button-->
                 </div>
             </div>
-            <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div :class="(loading) ? 'card-body overlay overlay-block table-responsive' : 'card-body table-responsive'">
                 <div v-if="loading" class="overlay-layer bg-dark-o-10">
                     <div class="spinner spinner-primary"></div>
                 </div>
-                <table class="table" id="rito-tbl card-scroll">
+                <table class="table " id="rito-tbl card-scroll">
                     <thead>
                         <tr>
                             <th></th>
@@ -59,7 +59,7 @@
                             <td>{{ r.purpose }}</td>
                             <td>{{ r.means_of_transportation }}</td>
                             <td v-html="$chkStatus(r.status)"></td>
-                            <td v-html="$chkStatus((requesttrans.filter(i => i.request_id == r.id)[0]) ? 'Approved' : 'Pending', r.id)"></td>
+                            <td v-html="$chkAssigned((requesttrans.filter(i => i.request_id == r.id)[0]) ? requesttrans.filter(x => x.request_id == r.id)[0].mot : null, r.id)"></td>
                             <td><button @click="getPassengers(r.id, r.tracking_no)" class="btn btn-sm btn-light-primary px-2 py-1">{{ r.passenger_count }}</button></td>
                             <td>{{ r.requested_by }}</td>
                         </tr>
@@ -127,12 +127,11 @@
                     <input type="hidden" name="selected" v-model="selected">
                     <input type="hidden" name="rp_total" v-model="rp.total">
                     <input type="hidden" name="hired_total" v-model="hired.total">
-                    <div class="w-100 row">
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="btn font-weight-bold btn-primary mr-2">Request <span class="label label-sm label-white ml-2">{{ selected.length }}</span></div>
                             <div class="btn font-weight-bold btn-primary mr-2">Passengers <span class="label label-sm label-white ml-2">{{ passengers_count }}</span></div>
                         </div>
-                        <hr class="col-lg-12">
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label>Type of Motor Vehicle</label>
@@ -152,6 +151,13 @@
                                     <option v-for="po in pos.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? $toParseNum(po.totalBalance) : $toParseNum(po.po_amount) }}</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div v-if="vehicle_type == 1" class="row">
+                        <label class="h5 col-lg-12">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
+                        <div class="form-group mb-1 col-lg-12">
+                            <label for="remarks">Remarks</label>
+                            <textarea name="remarks" class="form-control w-100" id="remarks" rows="3"></textarea>
                         </div>
                     </div>
                     <div v-if="vehicle_type == 3 || vehicle_type == 2" class="col-lg-12 row">
@@ -232,7 +238,7 @@
                     </div>
                 </form>
             </template>
-            <template v-if="vehicle_type == 3 || vehicle_type == 2 || vehicle_type == 4" v-slot:footer>
+            <template v-if="vehicle_type" v-slot:footer>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
@@ -278,6 +284,7 @@ export default {
                 status: false,
                 total: 1,
             },
+            puvNames: ['remarks'],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
             requesttrans: []
@@ -368,7 +375,7 @@ export default {
             $('input.checkable:checkbox:checked').each(function () {
                 arr.push($(this).val());
                 vm.selected.push($(this).val())
-                let pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];;
+                let pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[9];;
                 vm.passengers_count += parseInt(pasColumn.textContent);
                 count++;
             });
@@ -491,7 +498,7 @@ export default {
                         if ($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || `${key}` == 'remarks') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                             $('[name="'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
