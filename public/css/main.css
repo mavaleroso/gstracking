@@ -123,3 +123,7 @@
 .bg-gray {
     background-color: #eee !important;
 }
+
+.bg-disabled {
+    background-color: #e1e1e1 !important;
+}

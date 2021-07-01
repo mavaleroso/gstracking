@@ -50,6 +50,21 @@ export default {
         $toParseNum(num) {
             let number = parseFloat(num);
             return number.toLocaleString(undefined, {minimumFractionDigits: 2});
+        },
+        $chkStatus(stats, id = null) {
+            let label;
+            if (stats == 'Pending') {
+                label = '<span class="label label-inline label-light-warning">Pending</span>';
+            } else {
+                label = '<span class="label label-inline label-light-primary">Approved</span>';
+                $(() => {
+                    if (id) {
+                        $(`#checkable_${id}`).prop('disabled', true);
+                        $(`#checkable_${id}`).closest('tr').addClass('bg-disabled');
+                    };
+                });
+            }
+            return label;
         }
     },
 }

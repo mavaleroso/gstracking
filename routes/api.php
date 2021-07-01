@@ -146,6 +146,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.a
             'index' => 'ajax.vehiclemode.index',
         ]
     ]);
+    Route::resource('requesttrans', 'RequestTransactionsController', [
+        'names' => [
+            'index' => 'ajax.requesttrans.index',
+        ]
+    ]);
 });
 
 Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {    
