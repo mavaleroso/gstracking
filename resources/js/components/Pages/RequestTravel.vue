@@ -230,7 +230,6 @@ export default {
 
                 $('#kt_select_section').on('change', () => {
                     let id  = $('#kt_select_section').val();
-                    console.log(id);
                     this.section = id;
                 });
 
@@ -307,17 +306,11 @@ export default {
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },  
-        saveLogs(){
-            console.log(this.$appName);
-        },
         saveForm() {
-            this.saveLogs();
-
             let requestform = $('#kt_form').serialize();
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
-
                 Swal.fire("Good job!", response.data.message, "success");
                 this.$showToast(response.data.message, 'success');
                 $('.details-input').attr('disabled', true);

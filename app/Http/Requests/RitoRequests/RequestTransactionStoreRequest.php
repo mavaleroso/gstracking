@@ -20,7 +20,7 @@ class RequestTransactionStoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'selected' => 'nullable',
+            'selected' => 'unique:request_transactions,request_id',
             'radio_vehicle' => 'nullable',
         ];
         
@@ -49,7 +49,9 @@ class RequestTransactionStoreRequest extends FormRequest
 
     public function attributes()
     {
-        $attr = [];
+        $attr = [
+            'selected' => 'Request',
+        ];
 
         if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
@@ -74,7 +76,9 @@ class RequestTransactionStoreRequest extends FormRequest
 
     public function messages()
     {
-        $msgs = [];
+        $msgs = [
+            'selected' =>  __('main/validations.unique'),
+        ];
 
         if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
             for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 

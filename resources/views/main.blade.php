@@ -52,7 +52,5 @@
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
         <script src="{{ asset('plugins/fancybox/jquery.fancybox.js') }}"></script>
         <script src="{{ asset('js/jquery-ui.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
-   
     </body>
 </html>

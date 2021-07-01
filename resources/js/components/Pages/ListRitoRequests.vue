@@ -32,22 +32,23 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="text-center">Tracking No.</th>
-                            <th class="text-center">Destination</th>
-                            <th class="text-center">Travel Date</th>
-                            <th class="text-center">Return Date</th>
-                            <th class="text-center">Purpose</th>
-                            <th class="text-center">Means of Transportation</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Passengers</th>
-                            <th class="text-center">Requested By</th>
+                            <th>Tracking No.</th>
+                            <th>Destination</th>
+                            <th>Travel Date</th>
+                            <th>Return Date</th>
+                            <th>Purpose</th>
+                            <th>Means of Transportation</th>
+                            <th>Portal Status</th>
+                            <th>Tracking Status</th>
+                            <th>Passengers</th>
+                            <th>Requested By</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(r,index) in rito" :key="index">
                             <td>
                                 <label class="checkbox checkbox-single ml-4">
-                                    <input type="checkbox" :value="r.id" class="checkable"/>
+                                    <input type="checkbox" :id="'checkable_' + r.id" :value="r.id" class="checkable"/>
                                     <span></span>
                                 </label>
                             </td>
@@ -57,7 +58,8 @@
                             <td>{{ $dateEng(r.inclusive_to) }}</td>
                             <td>{{ r.purpose }}</td>
                             <td>{{ r.means_of_transportation }}</td>
-                            <td>{{ r.status }}</td>
+                            <td v-html="$chkStatus(r.status)"></td>
+                            <td v-html="$chkStatus((requesttrans.filter(i => i.request_id == r.id)[0]) ? 'Approved' : 'Pending', r.id)"></td>
                             <td><button @click="getPassengers(r.id, r.tracking_no)" class="btn btn-sm btn-light-primary px-2 py-1">{{ r.passenger_count }}</button></td>
                             <td>{{ r.requested_by }}</td>
                         </tr>
@@ -278,6 +280,7 @@ export default {
             },
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
+            requesttrans: []
         }
     },  
     components: {
@@ -309,6 +312,7 @@ export default {
         this.getVehicles();
         this.getDrivers();
         this.getVehicleModes();
+        this.getRequestTrans();
     },
     methods: {
         async getRITO() {
@@ -318,15 +322,18 @@ export default {
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;
+
+                $(() => {
+                    $('input.checkable:checkbox').change(function() {
+                        if ($(this).is(":checked")) {
+                            $(this).closest('tr').addClass('bg-gray');
+                        } else {
+                            $(this).closest('tr').removeClass('bg-gray');
+                        }
+                    });
+                });
             });
 
-            $('input.checkable:checkbox').change(function() {
-                if ($(this).is(":checked")) {
-                    $(this).closest('tr').addClass('bg-gray');
-                } else {
-                    $(this).closest('tr').removeClass('bg-gray');
-                }
-            });
         },
         indexers(idx) {
             return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
@@ -471,6 +478,7 @@ export default {
                 $('#modal-approved').modal('toggle');
                 $('input.checkable:checkbox:checked').click();
                 this.getRITO();
+                this.getRequestTrans();
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -526,6 +534,11 @@ export default {
         getVehicleModes() {
             axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
                 this.vehiclemodes = res.data.results;
+            });
+        },
+        getRequestTrans() {
+            axios.get(BASE_URL + '/api/v1/requesttrans').then(res => {
+                this.requesttrans = res.data;
             });
         }
     },

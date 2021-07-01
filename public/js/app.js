@@ -5483,6 +5483,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5521,7 +5523,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         total: 1
       },
       rpNames: ['vehicle_1', 'driver_1'],
-      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1']
+      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      requesttrans: []
     };
   },
   components: {
@@ -5557,6 +5560,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.getVehicles();
     this.getDrivers();
     this.getVehicleModes();
+    this.getRequestTrans();
   },
   methods: {
     getRITO: function getRITO() {
@@ -5574,18 +5578,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                   _this.total = res.data.count;
                   _this.pages.totalPages = Math.ceil(res.data.count / 10);
                   _this.loading = false;
+                  $(function () {
+                    $('input.checkable:checkbox').change(function () {
+                      if ($(this).is(":checked")) {
+                        $(this).closest('tr').addClass('bg-gray');
+                      } else {
+                        $(this).closest('tr').removeClass('bg-gray');
+                      }
+                    });
+                  });
                 });
 
               case 3:
-                $('input.checkable:checkbox').change(function () {
-                  if ($(this).is(":checked")) {
-                    $(this).closest('tr').addClass('bg-gray');
-                  } else {
-                    $(this).closest('tr').removeClass('bg-gray');
-                  }
-                });
-
-              case 4:
               case "end":
                 return _context.stop();
             }
@@ -5747,6 +5751,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         $('input.checkable:checkbox:checked').click();
 
         _this6.getRITO();
+
+        _this6.getRequestTrans();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -5811,6 +5817,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
         _this7.vehiclemodes = res.data.results;
+      });
+    },
+    getRequestTrans: function getRequestTrans() {
+      var _this8 = this;
+
+      axios.get(BASE_URL + '/api/v1/requesttrans').then(function (res) {
+        _this8.requesttrans = res.data;
       });
     }
   }
@@ -7168,7 +7181,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $('#kt_select_section').on('change', function () {
           var id = $('#kt_select_section').val();
-          console.log(id);
           _this.section = id;
         });
         $('#kt_select_region').on('change', function () {
@@ -7256,13 +7268,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
-    saveLogs: function saveLogs() {
-      console.log(this.$appName);
-    },
     saveForm: function saveForm() {
       var _this2 = this;
 
-      this.saveLogs();
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();
@@ -9643,6 +9651,26 @@ __webpack_require__.r(__webpack_exports__);
       return number.toLocaleString(undefined, {
         minimumFractionDigits: 2
       });
+    },
+    $chkStatus: function $chkStatus(stats) {
+      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var label;
+
+      if (stats == 'Pending') {
+        label = '<span class="label label-inline label-light-warning">Pending</span>';
+      } else {
+        label = '<span class="label label-inline label-light-primary">Approved</span>';
+        $(function () {
+          if (id) {
+            $("#checkable_".concat(id)).prop('disabled', true);
+            $("#checkable_".concat(id)).closest('tr').addClass('bg-disabled');
+          }
+
+          ;
+        });
+      }
+
+      return label;
     }
   }
 });
@@ -55324,7 +55352,10 @@ var render = function() {
                             [
                               _c("input", {
                                 staticClass: "checkable",
-                                attrs: { type: "checkbox" },
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "checkable_" + r.id
+                                },
                                 domProps: { value: r.id }
                               }),
                               _vm._v(" "),
@@ -55358,7 +55389,26 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(r.means_of_transportation))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.status))]),
+                        _c("td", {
+                          domProps: {
+                            innerHTML: _vm._s(_vm.$chkStatus(r.status))
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("td", {
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.$chkStatus(
+                                _vm.requesttrans.filter(function(i) {
+                                  return i.request_id == r.id
+                                })[0]
+                                  ? "Approved"
+                                  : "Pending",
+                                r.id
+                              )
+                            )
+                          }
+                        }),
                         _vm._v(" "),
                         _c("td", [
                           _c(
@@ -56280,25 +56330,25 @@ var staticRenderFns = [
       _c("tr", [
         _c("th"),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Tracking No.")]),
+        _c("th", [_vm._v("Tracking No.")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Destination")]),
+        _c("th", [_vm._v("Destination")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Travel Date")]),
+        _c("th", [_vm._v("Travel Date")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Return Date")]),
+        _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Purpose")]),
+        _c("th", [_vm._v("Purpose")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [
-          _vm._v("Means of Transportation")
-        ]),
+        _c("th", [_vm._v("Means of Transportation")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Status")]),
+        _c("th", [_vm._v("Portal Status")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Passengers")]),
+        _c("th", [_vm._v("Tracking Status")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Requested By")])
+        _c("th", [_vm._v("Passengers")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Requested By")])
       ])
     ])
   }
