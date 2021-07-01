@@ -31,7 +31,7 @@
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Division</label>
                                 <div class="col-9">
-                                    <select class="details-input form-control select2" id="kt_select_division" name="division"  @change="onChange($event)">
+                                    <select class="details-input form-control select2" id="kt_select_division" name="division">
                                         <option label="Label"></option>
                                         <option v-for="division in divisions" :key="division.id" :value="division.id">{{ division.division_name }}</option>
                                     </select>
@@ -40,9 +40,9 @@
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Section</label>
                                 <div class="col-9">
-                                    <select class="details-input form-control select2" id="kt_select_section" name="section" v-model="section">
+                                    <select class="details-input form-control select2" id="kt_select_section" name="section" >
                                         <option label="Label"></option>
-                                        <option v-for="section in sections" :key="section.id" :value="section.id">{{ section.section_name }}</option>
+                                        <option v-for="section in sections.filter(i=>i.division_id == activeDivision)" :key="section.id" :value="section.id">{{ section.section_name }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -60,11 +60,11 @@
                                         <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
                                     </select>
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_province" name="province[]" multiple="multiple">
-                                        <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
+                                        <option v-for="province in provinces.filter(i=>i.region_id == activeRegion)" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                     </select>
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
-                                        <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
-                                            <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
+                                        <optgroup v-for="activeProv in provinces.filter(i=>i.id == activeProvince)" :key="activeProv.id" :label="activeProv.province_name">
+                                            <option v-for="city in cities.filter(i=>i.province_id == activeProvince)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                         </optgroup>
                                     </select>
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
@@ -162,24 +162,31 @@ export default {
             complete: false,
             requestCode: null,
             createdAt: null,
-            section:'',
             maxDate: null,
             travelDate: null,
-            returnDate: null
+            returnDate: null,
+            activeDivision: null,
+            activeRegion: null,
+            activeProvince: null
         }
     },
     created() {
         this.getRegion();
         this.getDivision();
+        this.getSection();
+        this.getProvince();
+        this.getCity();
     },
     mounted() {
         this.ini();
         this.dateConf();
+        
     },
     methods: {
         ini() {
+            let vm = this;
             $(() => { 
-                $('#kt_select_section').attr('disabled', 'disabled');
+                // $('#kt_select_section').attr('disabled', 'disabled');
 
                 $('#kt_select_province').select2({
                     placeholder: "Select a Province",
@@ -212,53 +219,39 @@ export default {
 
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
-                $('#kt_select_division').on('change', () => {
-                    $('#kt_select_section').attr('disabled', 'disabled');
-                    setTimeout(() => {
-                        if($('#kt_select_division').val() != ""){
-                            $('#kt_select_section').select2('enable'); 
-                            let id  = $('#kt_select_division').val();
-                            this.getSection(id);
-                            this.sections= [];
-                            this.activeSections = [];
-                        }
-                        else{
-                            $("#kt_select_section").empty();
-                        }
-                    }, 500);
+
+                $('#kt_select_division').on('change', function() {
+                    vm.activeDivision = $(this).val();
                 });
 
-                $('#kt_select_section').on('change', () => {
-                    let id  = $('#kt_select_section').val();
-                    console.log(id);
-                    this.section = id;
+                // $('#kt_select_section').on('change', () => {
+                //     let id  = $('#kt_select_section').val();
+                //     this.section = id;
+                // });
+
+                $('#kt_select_region').on('change', function() {
+                    vm.activeRegion = $(this).val();
                 });
 
-                $('#kt_select_region').on('change', () => {
-                    let id  = $('#kt_select_region').val();
-                    this.getProvince(id);
-                    this.provinces= [];
-                    this.cities = [];
-                    this.brgys = [];
-                    this.activeProvinces = [];
-                    this.activeCities = [];
-                });
+                $('#kt_select_province').on('change', function() {
+                    vm.activeProvince = $(this).val();
+                    // let id  = $('#kt_select_province').val();
 
-                $('#kt_select_province').on('change', () => {
-                    let id  = $('#kt_select_province').val();
-                    id = id.map(i=>Number(i));
-                    this.provinces.map(i=> {
-                        if (id.indexOf(i.id) != -1) {
-                            i.active="true";
-                        } else {
-                            i.active="false";
-                        }
-                    });
-                    if(id.length != 0) {
+                    // console.log(id);
+
+                    // id = id.map(i=>Number(i));
+                    // this.provinces.map(i=> {
+                    //     if (id.indexOf(i.id) != -1) {
+                    //         i.active="true";
+                    //     } else {
+                    //         i.active="false";
+                    //     }
+                    // });
+                    // if(id.length != 0) {
                       
-                        this.getCity(id);
-                        this.currentProv();             
-                    }
+                    //     this.getCity(id);
+                    //     this.currentProv();             
+                    // }
                 });
 
                 $('#kt_select_city').on('change', () => {
@@ -362,34 +355,26 @@ export default {
         },
 
         getDivision() {
-            axios.get(BASE_URL + "/api/v1/division").then(response => {
-                this.divisions = response.data;
-            });
+            this.divisions = JSON.parse(localStorage.getItem('division'));
         },
-
-        getSection(id) {
-            axios.get(BASE_URL + "/api/v1/section/" + id).then(response => {
-                this.sections = response.data;
-                this.sections.map(i=>i.active="false")
-            });
+        getSection(){
+            this.sections = JSON.parse(localStorage.getItem('section'));
         },
         getRegion() {
-            axios.get(BASE_URL + "/api/v1/region").then(response => {
-                this.regions = response.data;
-            });
+            this.regions = JSON.parse(localStorage.getItem('region'));
         },
-        getProvince(id) {
-            axios.get(BASE_URL + "/api/v1/province/" + id).then(response => {
-                this.provinces = response.data;
-                this.provinces.map(i=>i.active="false")
-            });
+        getProvince() {
+            this.provinces = JSON.parse(localStorage.getItem('province'));
         },
-        getCity(id) {
-            axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
-                this.cities = response.data;
-                this.cities.map(i=>i.active="false")
-            });
+        getCity() { 
+            this.cities = JSON.parse(localStorage.getItem('city'));
         },
+        // getCity(id) {
+        //     axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
+        //         this.cities = response.data;
+        //         this.cities.map(i=>i.active="false")
+        //     });
+        // },
         getBrgy(id) {
             axios.get(BASE_URL + "/api/v1/brgy/" + id).then(response => {
                 this.brgys = response.data;
