@@ -34,6 +34,15 @@
             </div>
         </div>
         <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div v-if="travels == null" class="alert alert-custom alert-warning fade show mb-5 px-5 py-0" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">No data available!</div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="ki ki-close"></i></span>
+                    </button>
+                </div>
+            </div>
             <div v-if="loading" class="overlay-layer bg-dark-o-10">
                 <div class="spinner spinner-primary"></div>
             </div>
@@ -52,7 +61,7 @@
                             <th style="width: 200px">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="travels">
                         <tr v-for="(t, index) in travels" :key="index">
                             <td>{{ indexers(index + 1) }}</td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.type}}</span></td>
@@ -70,7 +79,7 @@
         </div>
         <div class="card-footer">
             <!--begin::Pagination-->
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex justify-content-between align-items-center flex-wrap" v-if="travels">
                 <div class="d-flex flex-wrap py-2 mr-3">
                     <a href="#" :class="(loading || this.pages.currentPage < 2) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('prev')"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
 
@@ -139,7 +148,7 @@ export default {
         getTravels() {
             this.loading = true;
             axios.get(BASE_URL + '/tracking/travelsstatus?pages='+this.pages.currentPage).then(res => {
-                this.travels = res.data.data;
+                this.travels = (res.data.data) ? res.data.data : null;
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;

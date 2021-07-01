@@ -214,7 +214,7 @@ export default {
                     $('.invalid-feedback').remove();
                     $('.is-invalid').removeClass('is-invalid');
                     Swal.fire("Good job!", response.data.message, "success");
-                    showToast(response.data.message, 'success');
+                    this.$showToast(response.data.message, 'success');
                     setTimeout(() => {
                         this.cancelEntry();
                     }, 1000);
@@ -253,7 +253,7 @@ export default {
                         }
                     }
                     
-                showToast(values.toString().replace(/,/g,'</br>'), 'error');
+                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
         },
         deleteEntry(id) {
@@ -342,7 +342,7 @@ export default {
                         {
                             targets: 6,
                             render: data => {
-                                return dateTimeEng(data);
+                                return this.$dateTimeEng(data);
                             }
                         }
                     ],

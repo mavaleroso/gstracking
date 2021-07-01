@@ -10,8 +10,10 @@ class RequestTransactions extends Model
 
     protected $fillable = [
         'type',
+        'mot',
         'group',
         'request_id',
+        'remarks',
         'transaction_vehicles_id'
     ];  
 }
