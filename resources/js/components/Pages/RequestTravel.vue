@@ -63,9 +63,21 @@
                                         <option v-for="province in provinces.filter(i=>i.region_id == activeRegion)" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                     </select>
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
-                                        <optgroup v-for="activeProv in provinces.filter(i=>i.id == activeProvince)" :key="activeProv.id" :label="activeProv.province_name">
-                                            <option v-for="city in cities.filter(i=>i.province_id == activeProvince)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
-                                        </optgroup>
+
+                                        <!-- <optgroup v-for="activeProv in activeprovince.filter(i=>i.id == provinces)" :key="activeProv.id" :label="activeProv.province_name"> -->
+
+                                            <option v-for="city in currentlySelectedCities" :key="city.id" :value="city.id">{{ city.city_name }}</option>
+
+                                        <!-- </optgroup> -->
+
+
+                                        
+                                        <!-- <optgroup v-for="activeProv in provinces.filter(i=>i.id == activeProvince)" :key="activeProv.id" :label="activeProv.province_name"> -->
+                                            <!-- <option v-for="city in currentlySelectedCities" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
+                                            <!-- <option v-for="city in cities.filter(i=>i.province_id == activeProvince)" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
+                                            <!-- <option v-for="city in cities.filter(item=>selectedProvinces.includes(item.province_id))" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
+                                            <!-- vm.cities.filter(item => vm.selectedProvinces.includes(item.province_id)) -->
+                                        <!-- </optgroup> -->
                                     </select>
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
                                         <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
@@ -155,7 +167,7 @@ export default {
             provinces: [],
             cities: [],
             brgys: [],
-            activeProvinces: [],
+            activeProvinces: '',
             activeSections: [],
             activeCities: [],
             names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
@@ -167,7 +179,9 @@ export default {
             returnDate: null,
             activeDivision: null,
             activeRegion: null,
-            activeProvince: null
+            activeProvince: null,
+            selectedProvinces: null,
+            currentlySelectedCities: [],
         }
     },
     created() {
@@ -234,29 +248,39 @@ export default {
                 });
 
                 $('#kt_select_province').on('change', function() {
+                    
+                    let data_arr, data_int, res;
+
                     vm.activeProvince = $(this).val();
-                    // let id  = $('#kt_select_province').val();
 
-                    // console.log(id);
+                    // object to array convertion
+                    data_arr = Object.values(vm.activeProvince);
+                    // array of string to array of integer
+                    data_int = data_arr.map(i=>Number(i));
 
-                    // id = id.map(i=>Number(i));
-                    // this.provinces.map(i=> {
-                    //     if (id.indexOf(i.id) != -1) {
-                    //         i.active="true";
-                    //     } else {
-                    //         i.active="false";
-                    //     }
-                    // });
-                    // if(id.length != 0) {
-                      
-                    //     this.getCity(id);
-                    //     this.currentProv();             
-                    // }
+                    // convert to array of int
+                    // selectedProvinces
+                    vm.selectedProvinces = data_int;
+
+                    res = vm.cities.filter(item => vm.selectedProvinces.includes(item.province_id));
+                    vm.currentlySelectedCities = res;
+                    
+                    console.log("cities: ");
+                    console.log(res);
+
+                    console.log("active province: ");
+                    console.log(vm.activeProvince);
+                    
+                    console.log("vm.selectedProvinces: ");
+                    console.log(vm.selectedProvinces);
+
                 });
 
                 $('#kt_select_city').on('change', () => {
                     let id  = $('#kt_select_city').val();
+                    console.log("1st id : " + id);
                     id = id.map(i=>Number(i));
+                    console.log("2nd id : " + id);
                     this.cities.map(i=> {
                         if (id.indexOf(i.id) != -1) {
                             i.active="true";
@@ -271,6 +295,11 @@ export default {
                 });
 
             });
+        },
+        convertToInt(data){
+            console.log("Called");
+            console.log(data);
+            return false;
         },
         addRow(event) {
             event.preventDefault();
