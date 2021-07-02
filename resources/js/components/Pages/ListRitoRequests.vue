@@ -37,7 +37,6 @@
                             <th>Travel Date</th>
                             <th>Return Date</th>
                             <th>Purpose</th>
-                            <th>Means of Transportation</th>
                             <th>Portal Status</th>
                             <th>Tracking Status</th>
                             <th>Passengers</th>
@@ -57,7 +56,6 @@
                             <td>{{ $dateEng(r.inclusive_from) }}</td>
                             <td>{{ $dateEng(r.inclusive_to) }}</td>
                             <td>{{ r.purpose }}</td>
-                            <td>{{ r.means_of_transportation }}</td>
                             <td v-html="$chkStatus(r.status)"></td>
                             <td v-html="$chkAssigned((requesttrans.filter(i => i.request_id == r.id)[0]) ? requesttrans.filter(x => x.request_id == r.id)[0].mot : null, r.id)"></td>
                             <td><button @click="getPassengers(r.id, r.tracking_no)" class="btn btn-sm btn-light-primary px-2 py-1">{{ r.passenger_count }}</button></td>

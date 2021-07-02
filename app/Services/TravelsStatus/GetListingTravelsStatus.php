@@ -19,7 +19,7 @@ class GetListingTravelsStatus
         
         $results = [];
 
-        $reqt = RequestTransactions::select('type','group',DB::raw('GROUP_CONCAT(DISTINCT request_id) AS requests'),DB::raw('GROUP_CONCAT(DISTINCT transaction_vehicles_id) AS transveid'))
+        $reqt = RequestTransactions::select('type','mot','group',DB::raw('GROUP_CONCAT(DISTINCT request_id) AS requests'),DB::raw('GROUP_CONCAT(DISTINCT transaction_vehicles_id) AS transveid'))
                                     ->groupBy('group')
                                     ->paginate(10, ['*'], 'page', $fields['pages']);
         
@@ -27,6 +27,7 @@ class GetListingTravelsStatus
         for ($i=0; $i < count($reqt); $i++) { 
              $results['data'][] = [
                 'type' => $reqt[$i]->type,
+                'mot' => $reqt[$i]->mot,
                 'tracking_no' => $this->api($reqt[$i]->requests),
                 'transactions' => $this->transaction($reqt[$i]->transveid)
             ];
