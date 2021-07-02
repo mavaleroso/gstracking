@@ -5489,8 +5489,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -8688,6 +8686,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8701,11 +8701,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         display: 5
       },
       loading: true,
-      searchData: null
+      searchData: null,
+      vehiclemodes: []
     };
   },
   created: function created() {
     this.getTravels();
+    this.getVehicleModes();
   },
   computed: {
     pagination: function pagination() {
@@ -8761,7 +8763,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.getTravels();
     },
-    search: function search() {}
+    getVehicleModes: function getVehicleModes() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this2.vehiclemodes = res.data.results;
+      });
+    }
   }
 });
 
@@ -55426,8 +55434,6 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(r.purpose))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.means_of_transportation))]),
-                        _vm._v(" "),
                         _c("td", {
                           domProps: {
                             innerHTML: _vm._s(_vm.$chkStatus(r.status))
@@ -56409,8 +56415,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
         _c("th", [_vm._v("Purpose")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Means of Transportation")]),
         _vm._v(" "),
         _c("th", [_vm._v("Portal Status")]),
         _vm._v(" "),
@@ -60852,6 +60856,25 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == t.mot
+                                    })[0].name
+                                  )
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "td",
                             _vm._l(t.tracking_no, function(t, index) {
@@ -61093,6 +61116,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Passengers")]),
         _vm._v(" "),
         _c("th", [_vm._v("Vehicles")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Assigned MOT")]),
         _vm._v(" "),
         _c("th", [_vm._v("Travel Date")]),
         _vm._v(" "),
