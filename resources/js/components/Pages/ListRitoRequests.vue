@@ -373,7 +373,7 @@ export default {
             $('input.checkable:checkbox:checked').each(function () {
                 arr.push($(this).val());
                 vm.selected.push($(this).val())
-                let pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[9];;
+                let pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];;
                 vm.passengers_count += parseInt(pasColumn.textContent);
                 count++;
             });

@@ -14,8 +14,6 @@
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
                         <div v-if="complete" class="jumbotron">
-                            <span>Your request code:</span>
-                            <h1 class="display-4">{{ requestCode }}</h1>
                             <p class="lead">Your request has successfully completed!</p>
                             <hr class="my-4">
                             <p>{{ createdAt }}</p>
@@ -160,7 +158,6 @@ export default {
             activeCities: [],
             names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
             complete: false,
-            requestCode: null,
             createdAt: null,
             section:'',
             maxDate: null,
@@ -315,7 +312,6 @@ export default {
                 this.$showToast(response.data.message, 'success');
                 $('.details-input').attr('disabled', true);
                 this.complete = true;
-                this.requestCode = response.data.result.serial_code;
                 this.createdAt = this.$dateTimeEng(response.data.result.created_at);
             }).catch((error) => {
                 let data = error.response.data.errors;
@@ -409,7 +405,6 @@ export default {
             }
             $('.details-input').attr('disabled', false);
             this.complete = false;
-            this.requestCode = null;
             this.createdAt = null;
         },
         dateConf() {
