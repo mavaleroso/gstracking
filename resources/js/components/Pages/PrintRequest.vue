@@ -75,7 +75,7 @@
                                 <p class="">Time of departure:</p>
                             </td>
                             <td colspan="2" class="pb-8">
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" disabled>
+                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.depart_time" disabled>
                             </td>
                         </tr>
                         <tr>
@@ -87,8 +87,8 @@
                                         <td class="text-center table-border w-10">Gender</td>
                                     </tr>
                                     <tr v-for="p in passengers" :key="p.id">
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.first_name + ' ' + p.middle_name + ' ' + p.last_name" disabled></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.position" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="(type == 'rito') ? p.first_name + ' ' + p.middle_name + ' ' + p.last_name : p.name" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="(type == 'rito') ? p.position : p.designation" disabled></td>
                                         <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.gender" disabled></td>
                                     </tr>
                                     <tr v-for="f in freePassengers" :key="f.id">
@@ -177,7 +177,7 @@
                         <tr>
                             <td class="p-4 pt-10">
                                 <p class="mb-6">Accepted by:</p>
-                                <input type="text" class="text-center text-uppercase input-text w-100" :value="transaction.gs_staff.first_name + ' ' + transaction.gs_staff.last_name" disabled>
+                                <input type="text" class="text-center text-uppercase input-text w-100" :value="transaction.gs_staff" disabled>
                                 <p class="text-center">Assigned GS staff</p>
                             </td>
                             <td class="p-4 pt-10">
@@ -197,11 +197,12 @@
 export default {
     data() {
         return {
+            type: null,
             date: null,
             passenger_count:7,
             transaction: {
                 depart_time: [],
-                department: null,
+                department: [],
                 gs_staff: null,
                 purpose: [],
                 travel_date: [],
@@ -293,8 +294,8 @@ export default {
         getData(id) {
             axios.get(BASE_URL + '/travel/printrequest/'+id).then(res => {
                 this.transaction.serial_code = res.data.trans[0].serial_code;
-                this.transaction.department = null;
                 this.transaction.mot = res.data.trans[0].mot;
+                this.type = res.data.trans[0].type;
                 this.date = this.$dateEng(res.data.date_now);
                 for (let i = 0; i < res.data.travels.length; i++) {
                     if(this.transaction.purpose.indexOf(res.data.travels[i].data[0].purpose) === -1) {
@@ -312,12 +313,18 @@ export default {
                     if(this.transaction.requestor.indexOf(res.data.travels[i].data[0].requested_by) === -1) {
                         this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
                     }
+                    if(this.transaction.department.indexOf(res.data.travels[i].data[0].department) === -1) {
+                        this.transaction.department.push(res.data.travels[i].data[0].department);
+                    }
+                    if((res.data.travels[i].data[0].depart_time) && this.transaction.depart_time.indexOf(this.$timeEng(res.data.travels[i].data[0].depart_time)) === -1) {
+                        this.transaction.depart_time.push(this.$timeEng(res.data.travels[i].data[0].depart_time));
+                    }
                     for (let j = 0; j < res.data.travels[i].passengers.length; j++) {
                         this.passengers.push(res.data.travels[i].passengers[j]);
                     }
                 }
                 this.vehicles = res.data.vehicles;
-                this.transaction.gs_staff = res.data.gs_staff;
+                this.transaction.gs_staff = res.data.gs_staff.first_name + ' ' + res.data.gs_staff.last_name;
                 autosize($('#kt_autosize_1'));
             });
         }
