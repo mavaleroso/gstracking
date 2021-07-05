@@ -7130,6 +7130,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7153,7 +7156,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeRegion: null,
       activeProvince: null,
       selectedProvinces: null,
-      currentlySelectedCities: []
+      currentlySelectedCities: [],
+      currentlySelectedProvince: []
     };
   },
   created: function created() {
@@ -7211,7 +7215,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.activeRegion = $(this).val();
         });
         $('#kt_select_province').on('change', function () {
-          var data_arr, data_int, res;
+          var data_arr, data_int, res, prov;
           vm.activeProvince = $(this).val(); // object to array convertion
 
           data_arr = Object.values(vm.activeProvince); // array of string to array of integer
@@ -7225,13 +7229,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           res = vm.cities.filter(function (item) {
             return vm.selectedProvinces.includes(item.province_id);
           });
+          prov = vm.provinces.filter(function (item) {
+            return vm.selectedProvinces.includes(item.id);
+          });
           vm.currentlySelectedCities = res;
-          console.log("cities: ");
-          console.log(res);
-          console.log("active province: ");
-          console.log(vm.activeProvince);
-          console.log("vm.selectedProvinces: ");
-          console.log(vm.selectedProvinces);
+          vm.currentlySelectedProvince = prov;
         });
         $('#kt_select_city').on('change', function () {
           var id = $('#kt_select_city').val();
@@ -58655,11 +58657,23 @@ var render = function() {
                           multiple: "multiple"
                         }
                       },
-                      _vm._l(_vm.currentlySelectedCities, function(city) {
+                      _vm._l(_vm.currentlySelectedProvince, function(
+                        activeProv
+                      ) {
                         return _c(
-                          "option",
-                          { key: city.id, domProps: { value: city.id } },
-                          [_vm._v(_vm._s(city.city_name))]
+                          "optgroup",
+                          {
+                            key: activeProv.id,
+                            attrs: { label: activeProv.province_name }
+                          },
+                          _vm._l(_vm.currentlySelectedCities, function(city) {
+                            return _c(
+                              "option",
+                              { key: city.id, domProps: { value: city.id } },
+                              [_vm._v(_vm._s(city.city_name))]
+                            )
+                          }),
+                          0
                         )
                       }),
                       0
