@@ -6361,19 +6361,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      date: null,
       passenger_count: 7,
       transaction: {
-        depart_time: null,
+        depart_time: [],
         department: null,
         gs_staff: null,
-        purpose: null,
-        travel_date: null,
-        return_date: null,
+        purpose: [],
+        travel_date: [],
+        return_date: [],
         serial_code: null,
-        is_status: null
+        is_status: null,
+        mot: null,
+        requestor: []
       },
       destinations: [],
       passengers: [],
@@ -6458,23 +6467,39 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
-        _this.transaction.serial_code = res.data.requests[0].serial_code;
-        _this.transaction.department = res.data.requests[0].department;
-        _this.transaction.purpose = res.data.requests[0].purpose;
-        _this.transaction.travel_date = _this.$dateEng(res.data.requests[0].travel_date);
-        _this.transaction.return_date = _this.$dateEng(res.data.requests[0].return_date);
-        _this.transaction.depart_time = _this.$timeEng(res.data.requests[0].depart_time);
-        _this.transaction.is_status = res.data.requests[0].is_status;
+        _this.transaction.serial_code = res.data.trans[0].serial_code;
+        _this.transaction.department = null;
+        _this.transaction.mot = res.data.trans[0].mot;
+        _this.date = _this.$dateEng(res.data.date_now);
 
-        for (var i = 0; i < res.data.destinations.length; i++) {
-          var brgy = res.data.destinations[i].brgy_name ? res.data.destinations[i].brgy_name : '';
-          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n';
+        for (var i = 0; i < res.data.travels.length; i++) {
+          if (_this.transaction.purpose.indexOf(res.data.travels[i].data[0].purpose) === -1) {
+            _this.transaction.purpose.push(res.data.travels[i].data[0].purpose);
+          }
 
-          _this.destinations.push(data);
+          if (_this.destinations.indexOf(res.data.travels[i].data[0].place) === -1) {
+            _this.destinations.push(res.data.travels[i].data[0].place);
+          }
+
+          if (_this.transaction.travel_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_from)) === -1) {
+            _this.transaction.travel_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_from));
+          }
+
+          if (_this.transaction.return_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_to)) === -1) {
+            _this.transaction.return_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_to));
+          }
+
+          if (_this.transaction.requestor.indexOf(res.data.travels[i].data[0].requested_by) === -1) {
+            _this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
+          }
+
+          for (var j = 0; j < res.data.travels[i].passengers.length; j++) {
+            _this.passengers.push(res.data.travels[i].passengers[j]);
+          }
         }
 
-        _this.passengers = res.data.passengers;
         _this.vehicles = res.data.vehicles;
+        _this.transaction.gs_staff = res.data.gs_staff;
         autosize($('#kt_autosize_1'));
       });
     }
@@ -57069,16 +57094,8 @@ var render = function() {
             _c("tbody", [
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _vm.transaction.is_status == 2
+                  _vm.transaction.mot == 1
                     ? _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "text-center d-block mr-auto ml-auto mt-5"
-                        },
-                        [_vm._v("Motor Vehicle Request")]
-                      )
-                    : _c(
                         "h5",
                         {
                           staticClass:
@@ -57086,11 +57103,28 @@ var render = function() {
                         },
                         [_vm._v("Motor Vehicle Declined Request")]
                       )
+                    : _c(
+                        "h5",
+                        {
+                          staticClass:
+                            "text-center d-block mr-auto ml-auto mt-5"
+                        },
+                        [_vm._v("Motor Vehicle Request")]
+                      )
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("p", { staticClass: "text-left my-10" }, [
+                    _vm._v("Date: "),
+                    _c("span", { staticClass: " text-underline" }, [
+                      _vm._v(_vm._s(_vm.date))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
                   _c("p", { staticClass: "text-right my-10" }, [
                     _vm._v("Series: "),
                     _c("span", { staticClass: " text-underline" }, [
@@ -57270,29 +57304,8 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
                   _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.depart_time,
-                        expression: "transaction.depart_time"
-                      }
-                    ],
                     staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.depart_time },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "depart_time",
-                          $event.target.value
-                        )
-                      }
-                    }
+                    attrs: { type: "text", disabled: "" }
                   })
                 ])
               ]),
@@ -57324,7 +57337,14 @@ var render = function() {
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                               attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.name }
+                              domProps: {
+                                value:
+                                  p.first_name +
+                                  " " +
+                                  p.middle_name +
+                                  " " +
+                                  p.last_name
+                              }
                             })
                           ]),
                           _vm._v(" "),
@@ -57332,7 +57352,7 @@ var render = function() {
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                               attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.designation }
+                              domProps: { value: p.position }
                             })
                           ]),
                           _vm._v(" "),
@@ -57390,14 +57410,14 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.transaction.gs_staff,
-                              expression: "transaction.gs_staff"
+                              value: _vm.transaction.requestor,
+                              expression: "transaction.requestor"
                             }
                           ],
                           staticClass:
                             "text-center input-text w-100 text-uppercase",
                           attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.gs_staff },
+                          domProps: { value: _vm.transaction.requestor },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -57405,7 +57425,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.transaction,
-                                "gs_staff",
+                                "requestor",
                                 $event.target.value
                               )
                             }
@@ -57413,7 +57433,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Staff")
+                          _vm._v("Requestor")
                         ])
                       ]),
                       _vm._v(" "),
@@ -57436,250 +57456,235 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm.transaction.is_status == 2
-            ? _c("hr", {
-                class:
-                  _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                    ? "d-none"
-                    : "dashed-border my-2"
-              })
-            : _vm._e(),
+          _c("hr", {
+            class:
+              _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                ? "d-none"
+                : "dashed-border my-2"
+          }),
           _vm._v(" "),
-          _vm.transaction.is_status == 2
-            ? _c(
-                "table",
-                {
-                  class:
-                    _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                      ? "break-page"
-                      : ""
-                },
-                [
-                  _vm.passengers.length > 5
-                    ? _c("thead", [
-                        _c("tr", [
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _c("div", { staticClass: "page-header mt-2" }, [
-                              _c("img", {
-                                staticClass: "print-logo d-block m-auto",
-                                attrs: {
-                                  alt: "Print Logo",
-                                  src: "assets/media/logos/dswd_print_logo.png"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "span",
-                                {
-                                  staticClass:
-                                    "header-text d-block m-auto text-center"
-                                },
-                                [
-                                  _vm._v("Field Office"),
-                                  _c("br"),
-                                  _vm._v("Butuan City")
-                                ]
-                              )
-                            ])
-                          ])
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("tbody", [
+          _c(
+            "table",
+            {
+              class:
+                _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                  ? "break-page"
+                  : ""
+            },
+            [
+              _vm.passengers.length > 5
+                ? _c("thead", [
                     _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c(
-                          "h5",
-                          {
-                            staticClass:
-                              "text-center d-block mr-auto ml-auto my-8"
-                          },
-                          [_vm._v("Motor Vehicle Confirmation Slip")]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c("p", { staticClass: "text-right my-8" }, [
-                          _vm._v("Series: "),
-                          _c("span", { staticClass: "text-underline" }, [
-                            _vm._v(_vm._s(_vm.transaction.serial_code))
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c(
-                          "table",
-                          [
-                            _c("tr", [
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Vehicle Name")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Plate No.")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Driver Name")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Contact No.")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(v) {
-                              return _c("tr", { key: v.id }, [
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.name }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.plate_no }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.fullname }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.contact }
-                                  })
-                                ])
-                              ])
-                            })
-                          ],
-                          2
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", [
-                        _c("p", { staticClass: "mt-5" }, [
-                          _vm._v("Confirmed No. of Passenger/s:")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
+                      _c("td", { attrs: { colspan: "3" } }, [
+                        _c("div", { staticClass: "page-header mt-2" }, [
+                          _c("img", {
+                            staticClass: "print-logo d-block m-auto",
+                            attrs: {
+                              alt: "Print Logo",
+                              src: "assets/media/logos/dswd_print_logo.png"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.passengers.length,
-                              expression: "passengers.length"
-                            }
-                          ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.passengers.length },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.passengers,
-                                "length",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "p-4 pt-10" }, [
-                        _c("p", { staticClass: "mb-6" }, [
-                          _vm._v("Accepted by:")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.gs_staff,
-                              expression: "transaction.gs_staff"
-                            }
-                          ],
-                          staticClass:
-                            "text-center text-uppercase input-text w-100",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.gs_staff },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "gs_staff",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Assigned GS staff")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "p-4 pt-10" }, [
-                        _c("p", { staticClass: "mb-6" }, [
-                          _vm._v("Approved by:")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "input-text w-100",
-                          attrs: { type: "text", disabled: "" }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v("GSS Head")
+                              staticClass:
+                                "header-text d-block m-auto text-center"
+                            },
+                            [
+                              _vm._v("Field Office"),
+                              _c("br"),
+                              _vm._v("Butuan City")
+                            ]
+                          )
                         ])
                       ])
                     ])
                   ])
-                ]
-              )
-            : _vm._e()
+                : _vm._e(),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto my-8"
+                      },
+                      [_vm._v("Motor Vehicle Confirmation Slip")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "1" } }, [
+                    _c("p", { staticClass: "text-left my-10" }, [
+                      _vm._v("Date: "),
+                      _c("span", { staticClass: " text-underline" }, [
+                        _vm._v(_vm._s(_vm.date))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "1" } }, [
+                    _c("p", { staticClass: "text-right my-8" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: "text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.serial_code))
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "table",
+                      [
+                        _c("tr", [
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Vehicle Name")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Plate No.")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Driver Name")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Contact No.")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.vehicles, function(v) {
+                          return _c("tr", { key: v.id }, [
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.name }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.plate_no }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.fullname }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.contact }
+                              })
+                            ])
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "mt-5" }, [
+                      _vm._v("Confirmed No. of Passenger/s:")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.passengers.length,
+                          expression: "passengers.length"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.passengers.length },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.passengers,
+                            "length",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Accepted by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass:
+                        "text-center text-uppercase input-text w-100",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: {
+                        value:
+                          _vm.transaction.gs_staff.first_name +
+                          " " +
+                          _vm.transaction.gs_staff.last_name
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Assigned GS staff")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("GSS Head")
+                    ])
+                  ])
+                ])
+              ])
+            ]
+          )
         ])
       ])
     ],
@@ -60807,7 +60812,7 @@ var render = function() {
                               "span",
                               {
                                 staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                                  "label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap"
                               },
                               [_vm._v(_vm._s(t.serial_code))]
                             )
@@ -60837,7 +60842,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                 },
                                 [_vm._v(_vm._s(t.place))]
                               )

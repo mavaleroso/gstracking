@@ -15,6 +15,7 @@ class RequestTransactions extends Model
         'group',
         'request_id',
         'remarks',
-        'transaction_vehicles_id'
+        'transaction_vehicles_id',
+        'user_id'
     ];  
 }

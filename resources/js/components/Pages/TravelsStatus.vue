@@ -68,9 +68,9 @@
                         <tr v-for="(t, index) in travels" :key="index">
                             <td>{{ indexers(index + 1) }}</td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.type}}</span></td>
-                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.serial_code}}</span></td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap">{{t.serial_code}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no}}</span></td>
-                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.place}}</span></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2">{{t.place}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.transactions.length}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{ vehiclemodes.filter(i=>i.id == t.mot)[0].name }}</span></td>
