@@ -15,8 +15,6 @@ Vue.mixin(ConfigMixin);
 Vue.use (Vuex);
 window.Vue = require('vue').default;
 
-Vue.prototype.$appName = 'example app'
-
 import store from "./store"
 
 Vue.use(VueRouter);
