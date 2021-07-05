@@ -16,12 +16,15 @@
                     <tbody>
                         <tr>
                             <td colspan="3">
-                                <h5 v-if="transaction.is_status == 2" class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Request</h5>
-                                <h5 v-else class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Declined Request</h5>
+                                <h5 v-if="transaction.mot == 1" class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Declined Request</h5>
+                                <h5 v-else class="text-center d-block mr-auto ml-auto mt-5">Motor Vehicle Request</h5>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3">
+                            <td colspan="2">
+                                <p class="text-left my-10">Date: <span class=" text-underline">{{ date }}</span></p>
+                            </td>
+                            <td colspan="1">
                                 <p class="text-right my-10">Series: <span class=" text-underline">{{ transaction.serial_code }}</span></p>
                             </td>
                         </tr>
@@ -72,7 +75,7 @@
                                 <p class="">Time of departure:</p>
                             </td>
                             <td colspan="2" class="pb-8">
-                                <input class="input-text w-100 mb-3 mt-n2" type="text" v-model="transaction.depart_time" disabled>
+                                <input class="input-text w-100 mb-3 mt-n2" type="text" disabled>
                             </td>
                         </tr>
                         <tr>
@@ -84,8 +87,8 @@
                                         <td class="text-center table-border w-10">Gender</td>
                                     </tr>
                                     <tr v-for="p in passengers" :key="p.id">
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.name" disabled></td>
-                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.designation" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.first_name + ' ' + p.middle_name + ' ' + p.last_name" disabled></td>
+                                        <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.position" disabled></td>
                                         <td class="table-border"><input type="text" class="w-100 border-0 outline-0 pr-2 pl-2" :value="p.gender" disabled></td>
                                     </tr>
                                     <tr v-for="f in freePassengers" :key="f.id">
@@ -102,8 +105,8 @@
                                     <tr>
                                         <td class="p-4 py-10 w-50">
                                             <p class="mb-6">Requested by:</p>
-                                            <input type="text" class="text-center input-text w-100 text-uppercase" v-model="transaction.gs_staff" disabled>
-                                            <p class="text-center">Staff</p>
+                                            <input type="text" class="text-center input-text w-100 text-uppercase" v-model="transaction.requestor" disabled>
+                                            <p class="text-center">Requestor</p>
                                         </td>
                                         <td class="p-4 py-10">
                                             <p class="mb-6">Noted by:</p>
@@ -118,8 +121,8 @@
                     </tbody>
                 </table>
                 
-                <hr  v-if="transaction.is_status == 2" :class="(passengers.length > 5 || vehicles.length > 2) ? 'd-none':'dashed-border my-2'">
-                <table v-if="transaction.is_status == 2" :class="(passengers.length > 5 || vehicles.length > 2) ? 'break-page':''">
+                <hr  :class="(passengers.length > 5 || vehicles.length > 2) ? 'd-none':'dashed-border my-2'">
+                <table :class="(passengers.length > 5 || vehicles.length > 2) ? 'break-page':''">
                     <thead v-if="passengers.length > 5">
                             <tr>
                                 <td colspan="3">
@@ -138,7 +141,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="1">
+                                <p class="text-left my-10">Date: <span class=" text-underline">{{ date }}</span></p>
+                            </td>
+                            <td colspan="1">
                                 <p class="text-right my-8">Series: <span class="text-underline">{{ transaction.serial_code }}</span></p>
                             </td>
                         </tr>
@@ -171,7 +177,7 @@
                         <tr>
                             <td class="p-4 pt-10">
                                 <p class="mb-6">Accepted by:</p>
-                                <input type="text" class="text-center text-uppercase input-text w-100" v-model="transaction.gs_staff" disabled>
+                                <input type="text" class="text-center text-uppercase input-text w-100" :value="transaction.gs_staff.first_name + ' ' + transaction.gs_staff.last_name" disabled>
                                 <p class="text-center">Assigned GS staff</p>
                             </td>
                             <td class="p-4 pt-10">
@@ -191,16 +197,19 @@
 export default {
     data() {
         return {
+            date: null,
             passenger_count:7,
             transaction: {
-                depart_time: null,
+                depart_time: [],
                 department: null,
                 gs_staff: null,
-                purpose: null,
-                travel_date: null,
-                return_date: null,
+                purpose: [],
+                travel_date: [],
+                return_date: [],
                 serial_code: null,
                 is_status: null,
+                mot: null,
+                requestor: []
             },
             destinations: [],
             passengers: [],
@@ -283,20 +292,32 @@ export default {
         },
         getData(id) {
             axios.get(BASE_URL + '/travel/printrequest/'+id).then(res => {
-                this.transaction.serial_code = res.data.requests[0].serial_code;
-                this.transaction.department = res.data.requests[0].department;
-                this.transaction.purpose = res.data.requests[0].purpose;
-                this.transaction.travel_date = this.$dateEng(res.data.requests[0].travel_date);
-                this.transaction.return_date = this.$dateEng(res.data.requests[0].return_date);
-                this.transaction.depart_time = this.$timeEng(res.data.requests[0].depart_time);
-                this.transaction.is_status = res.data.requests[0].is_status;
-                for (let i = 0; i <  res.data.destinations.length; i++) {
-                    let brgy = (res.data.destinations[i].brgy_name) ? res.data.destinations[i].brgy_name : '';
-                    let data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n'; 
-                    this.destinations.push(data);
+                this.transaction.serial_code = res.data.trans[0].serial_code;
+                this.transaction.department = null;
+                this.transaction.mot = res.data.trans[0].mot;
+                this.date = this.$dateEng(res.data.date_now);
+                for (let i = 0; i < res.data.travels.length; i++) {
+                    if(this.transaction.purpose.indexOf(res.data.travels[i].data[0].purpose) === -1) {
+                        this.transaction.purpose.push(res.data.travels[i].data[0].purpose);
+                    }
+                    if(this.destinations.indexOf(res.data.travels[i].data[0].place) === -1) {
+                        this.destinations.push(res.data.travels[i].data[0].place);
+                    }
+                    if(this.transaction.travel_date.indexOf(this.$dateEng(res.data.travels[i].data[0].inclusive_from)) === -1) {
+                        this.transaction.travel_date.push(this.$dateEng(res.data.travels[i].data[0].inclusive_from));
+                    }
+                    if(this.transaction.return_date.indexOf(this.$dateEng(res.data.travels[i].data[0].inclusive_to)) === -1) {
+                        this.transaction.return_date.push(this.$dateEng(res.data.travels[i].data[0].inclusive_to));
+                    }
+                    if(this.transaction.requestor.indexOf(res.data.travels[i].data[0].requested_by) === -1) {
+                        this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
+                    }
+                    for (let j = 0; j < res.data.travels[i].passengers.length; j++) {
+                        this.passengers.push(res.data.travels[i].passengers[j]);
+                    }
                 }
-                this.passengers = res.data.passengers;
                 this.vehicles = res.data.vehicles;
+                this.transaction.gs_staff = res.data.gs_staff;
                 autosize($('#kt_autosize_1'));
             });
         }

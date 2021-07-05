@@ -112,10 +112,6 @@
     width: 15% !important;
 }
 
-#pending-travels-tbl th {
-    text-align: center;
-}
-
 .spinner {
     z-index: 20 !important;
 }
