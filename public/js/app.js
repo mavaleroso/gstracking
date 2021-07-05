@@ -7132,7 +7132,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-<<<<<<< HEAD
 //
 //
 //
@@ -7142,10 +7141,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-=======
->>>>>>> develop
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7191,6 +7186,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   methods: {
     ini: function ini() {
+      var _this = this;
+
       var vm = this;
       $(function () {
         $('#kt_select_province').select2({
@@ -7220,28 +7217,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_division').on('change', function () {
-<<<<<<< HEAD
           vm.activeDivision = $(this).val();
-=======
-          $('#kt_select_section').attr('disabled', 'disabled');
-          setTimeout(function () {
-            if ($('#kt_select_division').val() != "") {
-              $('#kt_select_section').select2('enable');
-              var id = $('#kt_select_division').val();
-
-              _this.getSection(id);
-
-              _this.sections = [];
-              _this.activeSections = [];
-            } else {
-              $("#kt_select_section").empty();
-            }
-          }, 500);
         });
         $('#kt_select_section').on('change', function () {
           var id = $('#kt_select_section').val();
           _this.section = id;
->>>>>>> develop
         });
         $('#kt_select_region').on('change', function () {
           vm.activeRegion = $(this).val();
@@ -7322,7 +7302,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
     saveForm: function saveForm() {
-      var _this = this;
+      var _this2 = this;
 
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
@@ -7330,17 +7310,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this.$showToast(response.data.message, 'success');
+        _this2.$showToast(response.data.message, 'success');
 
         $('.details-input').attr('disabled', true);
-<<<<<<< HEAD
-        _this.complete = true;
-        _this.requestCode = response.data.result.serial_code;
-        _this.createdAt = _this.$dateTimeEng(response.data.result.created_at);
-=======
         _this2.complete = true;
         _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
->>>>>>> develop
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -7366,22 +7340,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this.names.length; i++) {
-          if (_this.names[i] == 'region' || _this.names[i] == 'province' || _this.names[i] == 'city' || _this.names[i] == 'division' || _this.names[i] == 'section') {
-            if (keys.indexOf('' + _this.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this2.names.length; i++) {
+          if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this.names[i] + '') == -1) {
-              $('[name="' + _this.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
+              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        _this.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     getDivision: function getDivision() {
