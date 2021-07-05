@@ -162,7 +162,7 @@ export default {
             section:'',
             maxDate: null,
             travelDate: null,
-            returnDate: null
+            returnDate: null,
         }
     },
     created() {
