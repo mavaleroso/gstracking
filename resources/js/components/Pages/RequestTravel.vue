@@ -63,29 +63,23 @@
                                         <option v-for="province in provinces.filter(i=>i.region_id == activeRegion)" :key="province.id" :value="province.id">{{ province.province_name }}</option>
                                     </select>
 
-
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
                                         <optgroup v-for="activeProv in currentlySelectedProvince" :key="activeProv.id" :label="activeProv.province_name">
 
-                                            <option v-for="city in currentlySelectedCities" :key="city.id" :value="city.id">{{ city.city_name }}</option>
+                                            <option v-for="city in currentlySelectedCities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
                                             
                                         </optgroup>
-                                    </select>
-
-                                        <!-- <optgroup v-for="activeProv in currentlySelectedProvince.filter(i=>i.id == currentlySelectedProvince)" :key="activeProv.id" :label="activeProv.province_name"> -->
-                                        
-                                        <!-- <optgroup v-for="activeProv in provinces.filter(i=>i.id == activeProvince)" :key="activeProv.id" :label="activeProv.province_name"> -->
-                                            <!-- <option v-for="city in currentlySelectedCities" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
-                                            <!-- <option v-for="city in cities.filter(i=>i.province_id == activeProvince)" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
-                                            <!-- <option v-for="city in cities.filter(item=>selectedProvinces.includes(item.province_id))" :key="city.id" :value="city.id">{{ city.city_name }}</option> -->
-                                            <!-- vm.cities.filter(item => vm.selectedProvinces.includes(item.province_id)) -->
-                                        <!-- </optgroup> -->
-                                        
-                                    
+                                    </select>                                  
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
-                                        <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
-                                            <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
+                                          <optgroup v-for="activeBrgy in currentCities" :key="activeBrgy.id" :label="activeBrgy.city_name">
+
+                                            <option v-for="barangays in currentlySelectedBarangays.filter(i=>i.city_id == activeBrgy.id)" :key="barangays.id" :value="barangays.id">{{ barangays.brgy_name }}</option>
+                                            
                                         </optgroup>
+                                        
+                                        <!-- <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
+                                            <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
+                                        </optgroup> -->
                                     </select>
                                     <input name="destination_place" id="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
                                 </div>
@@ -183,9 +177,14 @@ export default {
             activeDivision: null,
             activeRegion: null,
             activeProvince: null,
+            activeBarangay: null,
             selectedProvinces: null,
+            selectedBarangays: null,
+            selectedCities: null,
             currentlySelectedCities: [],
             currentlySelectedProvince: [],
+            currentlySelectedBarangays: [],
+            currentCities: []
         }
     },
     created() {
@@ -194,6 +193,7 @@ export default {
         this.getSection();
         this.getProvince();
         this.getCity();
+        this.getBrgy();
     },
     mounted() {
         this.ini();
@@ -204,8 +204,6 @@ export default {
         ini() {
             let vm = this;
             $(() => { 
-                // $('#kt_select_section').attr('disabled', 'disabled');
-
                 $('#kt_select_province').select2({
                     placeholder: "Select a Province",
                 });
@@ -242,53 +240,35 @@ export default {
                     vm.activeDivision = $(this).val();
                 });
 
-                // $('#kt_select_section').on('change', () => {
-                //     let id  = $('#kt_select_section').val();
-                //     this.section = id;
-                // });
-
                 $('#kt_select_region').on('change', function() {
                     vm.activeRegion = $(this).val();
                 });
 
                 $('#kt_select_province').on('change', function() {
-                    
                     let data_arr, data_int, res, prov;
-
                     vm.activeProvince = $(this).val();
-                    // object to array convertion
+                    console.log("active province");
+                    console.log($(this).val());
                     data_arr = Object.values(vm.activeProvince);
-                    // array of string to array of integer
                     data_int = data_arr.map(i=>Number(i));
-
-                    // convert to array of int
-                    // selectedProvinces
                     vm.selectedProvinces = data_int;
-
                     res = vm.cities.filter(item => vm.selectedProvinces.includes(item.province_id));
-                    prov = vm.provinces.filter(item => vm.selectedProvinces.includes(item.id));
+                    prov = vm.provinces.filter(item => vm.selectedProvinces.includes(item.id));    
                     vm.currentlySelectedCities = res;
                     vm.currentlySelectedProvince = prov;
                 });
 
-                $('#kt_select_city').on('change', () => {
-                    let id  = $('#kt_select_city').val();
-                    console.log("1st id : " + id);
-                    id = id.map(i=>Number(i));
-                    console.log("2nd id : " + id);
-                    this.cities.map(i=> {
-                        if (id.indexOf(i.id) != -1) {
-                            i.active="true";
-                        } else {
-                            i.active="false";
-                        }
-                    });
-                    if(id.length != 0) {
-                        this.getBrgy(id);
-                        this.currentCity();
-                    }
+                $('#kt_select_city').on('change', function() {
+                    let data_arr, data_int, res, city;
+                    vm.activeBarangay = $(this).val();
+                    data_arr = Object.values(vm.activeBarangay);
+                    data_int = data_arr.map(i=>Number(i));
+                    vm.selectedCities = data_int;
+                    res = vm.brgys.filter(item => vm.selectedCities.includes(item.city_id));
+                    city = vm.cities.filter(item => vm.selectedCities.includes(item.id));
+                    vm.currentlySelectedBarangays = res;
+                    vm.currentCities = city;
                 });
-
             });
         },
         convertToInt(data){
@@ -393,16 +373,8 @@ export default {
         getCity() { 
             this.cities = JSON.parse(localStorage.getItem('city'));
         },
-        // getCity(id) {
-        //     axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
-        //         this.cities = response.data;
-        //         this.cities.map(i=>i.active="false")
-        //     });
-        // },
-        getBrgy(id) {
-            axios.get(BASE_URL + "/api/v1/brgy/" + id).then(response => {
-                this.brgys = response.data;
-            });
+        getBrgy() {
+            this.brgys = JSON.parse(localStorage.getItem('barangay'));
         },
         currentProv() {
             this.activeProvinces = this.provinces.filter(i => i.active === 'true');

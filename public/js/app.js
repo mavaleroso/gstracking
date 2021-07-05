@@ -7127,12 +7127,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7155,9 +7149,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeDivision: null,
       activeRegion: null,
       activeProvince: null,
+      activeBarangay: null,
       selectedProvinces: null,
+      selectedBarangays: null,
+      selectedCities: null,
       currentlySelectedCities: [],
-      currentlySelectedProvince: []
+      currentlySelectedProvince: [],
+      currentlySelectedBarangays: [],
+      currentCities: []
     };
   },
   created: function created() {
@@ -7166,6 +7165,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getSection();
     this.getProvince();
     this.getCity();
+    this.getBrgy();
   },
   mounted: function mounted() {
     this.ini();
@@ -7173,11 +7173,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   methods: {
     ini: function ini() {
-      var _this = this;
-
       var vm = this;
       $(function () {
-        // $('#kt_select_section').attr('disabled', 'disabled');
         $('#kt_select_province').select2({
           placeholder: "Select a Province"
         }); // multi select
@@ -7206,25 +7203,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_division').on('change', function () {
           vm.activeDivision = $(this).val();
-        }); // $('#kt_select_section').on('change', () => {
-        //     let id  = $('#kt_select_section').val();
-        //     this.section = id;
-        // });
-
+        });
         $('#kt_select_region').on('change', function () {
           vm.activeRegion = $(this).val();
         });
         $('#kt_select_province').on('change', function () {
           var data_arr, data_int, res, prov;
-          vm.activeProvince = $(this).val(); // object to array convertion
-
-          data_arr = Object.values(vm.activeProvince); // array of string to array of integer
-
+          vm.activeProvince = $(this).val();
+          console.log("active province");
+          console.log($(this).val());
+          data_arr = Object.values(vm.activeProvince);
           data_int = data_arr.map(function (i) {
             return Number(i);
-          }); // convert to array of int
-          // selectedProvinces
-
+          });
           vm.selectedProvinces = data_int;
           res = vm.cities.filter(function (item) {
             return vm.selectedProvinces.includes(item.province_id);
@@ -7236,26 +7227,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.currentlySelectedProvince = prov;
         });
         $('#kt_select_city').on('change', function () {
-          var id = $('#kt_select_city').val();
-          console.log("1st id : " + id);
-          id = id.map(function (i) {
+          var data_arr, data_int, res, city;
+          vm.activeBarangay = $(this).val();
+          data_arr = Object.values(vm.activeBarangay);
+          data_int = data_arr.map(function (i) {
             return Number(i);
           });
-          console.log("2nd id : " + id);
-
-          _this.cities.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
+          vm.selectedCities = data_int;
+          res = vm.brgys.filter(function (item) {
+            return vm.selectedCities.includes(item.city_id);
           });
-
-          if (id.length != 0) {
-            _this.getBrgy(id);
-
-            _this.currentCity();
-          }
+          city = vm.cities.filter(function (item) {
+            return vm.selectedCities.includes(item.id);
+          });
+          vm.currentlySelectedBarangays = res;
+          vm.currentCities = city;
         });
       });
     },
@@ -7300,7 +7286,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       console.log(this.$appName);
     },
     saveForm: function saveForm() {
-      var _this2 = this;
+      var _this = this;
 
       this.saveLogs();
       var requestform = $('#kt_form').serialize();
@@ -7309,12 +7295,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, 'success');
+        _this.$showToast(response.data.message, 'success');
 
         $('.details-input').attr('disabled', true);
-        _this2.complete = true;
-        _this2.requestCode = response.data.result.serial_code;
-        _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
+        _this.complete = true;
+        _this.requestCode = response.data.result.serial_code;
+        _this.createdAt = _this.$dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -7340,22 +7326,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+        for (var i = 0; i < _this.names.length; i++) {
+          if (_this.names[i] == 'region' || _this.names[i] == 'province' || _this.names[i] == 'city' || _this.names[i] == 'division' || _this.names[i] == 'section') {
+            if (keys.indexOf('' + _this.names[i] + '') == -1) {
+              if ($('#kt_select_' + _this.names[i]).next().next().length != 0) {
+                $('#kt_select_' + _this.names[i]).next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this.names[i] + '') == -1) {
+              $('[name="' + _this.names[i] + '"]').removeClass('is-invalid');
+              $('[name="' + _this.names[i] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
     },
     getDivision: function getDivision() {
@@ -7373,18 +7359,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getCity: function getCity() {
       this.cities = JSON.parse(localStorage.getItem('city'));
     },
-    // getCity(id) {
-    //     axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
-    //         this.cities = response.data;
-    //         this.cities.map(i=>i.active="false")
-    //     });
-    // },
-    getBrgy: function getBrgy(id) {
-      var _this3 = this;
-
-      axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
-        _this3.brgys = response.data;
-      });
+    getBrgy: function getBrgy() {
+      this.brgys = JSON.parse(localStorage.getItem('barangay'));
     },
     currentProv: function currentProv() {
       this.activeProvinces = this.provinces.filter(function (i) {
@@ -58666,13 +58642,18 @@ var render = function() {
                             key: activeProv.id,
                             attrs: { label: activeProv.province_name }
                           },
-                          _vm._l(_vm.currentlySelectedCities, function(city) {
-                            return _c(
-                              "option",
-                              { key: city.id, domProps: { value: city.id } },
-                              [_vm._v(_vm._s(city.city_name))]
-                            )
-                          }),
+                          _vm._l(
+                            _vm.currentlySelectedCities.filter(function(i) {
+                              return i.province_id == activeProv.id
+                            }),
+                            function(city) {
+                              return _c(
+                                "option",
+                                { key: city.id, domProps: { value: city.id } },
+                                [_vm._v(_vm._s(city.city_name))]
+                              )
+                            }
+                          ),
                           0
                         )
                       }),
@@ -58690,22 +58671,25 @@ var render = function() {
                           multiple: "multiple"
                         }
                       },
-                      _vm._l(_vm.activeCities, function(activeCity) {
+                      _vm._l(_vm.currentCities, function(activeBrgy) {
                         return _c(
                           "optgroup",
                           {
-                            key: activeCity.id,
-                            attrs: { label: activeCity.city_name }
+                            key: activeBrgy.id,
+                            attrs: { label: activeBrgy.city_name }
                           },
                           _vm._l(
-                            _vm.brgys.filter(function(i) {
-                              return i.city_id == activeCity.id
+                            _vm.currentlySelectedBarangays.filter(function(i) {
+                              return i.city_id == activeBrgy.id
                             }),
-                            function(brgy) {
+                            function(barangays) {
                               return _c(
                                 "option",
-                                { key: brgy.id, domProps: { value: brgy.id } },
-                                [_vm._v(_vm._s(brgy.brgy_name))]
+                                {
+                                  key: barangays.id,
+                                  domProps: { value: barangays.id }
+                                },
+                                [_vm._v(_vm._s(barangays.brgy_name))]
                               )
                             }
                           ),
