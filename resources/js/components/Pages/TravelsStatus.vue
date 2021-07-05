@@ -34,6 +34,15 @@
             </div>
         </div>
         <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div v-if="travels == null" class="alert alert-custom alert-warning fade show mb-5 px-5 py-0" role="alert">
+                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                <div class="alert-text">No data available!</div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="ki ki-close"></i></span>
+                    </button>
+                </div>
+            </div>
             <div v-if="loading" class="overlay-layer bg-dark-o-10">
                 <div class="spinner spinner-primary"></div>
             </div>
@@ -43,26 +52,38 @@
                         <tr>
                             <th>ID</th>
                             <th>Type</th>
+                            <th>Serial Code</th>
                             <th>Tracking Number</th>
                             <th>Destination</th>
                             <th>Passengers</th>
                             <th>Vehicles</th>
+                            <th>Assigned MOT</th>
                             <th>Travel Date</th>
                             <th>Return Date</th>
-                            <th style="width: 200px">Status</th>
+                            <th>Portal Status</th>
+                            <th>Slip</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="travels">
                         <tr v-for="(t, index) in travels" :key="index">
                             <td>{{ indexers(index + 1) }}</td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.type}}</span></td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap">{{t.serial_code}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no}}</span></td>
-                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.place}}</span></td>
+                            <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2">{{t.place}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.transactions.length}}</span></td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{ vehiclemodes.filter(i=>i.id == t.mot)[0].name }}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_from}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_to}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.status}}</span></td>
+                            <td>
+                                <a :href="'print_request?id=' + t.group" target="_blank">
+                                    <button class="btn btn-sm btn-clean btn-details" title="View records">
+                                        <i class="flaticon2-printer"></i> Form
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,7 +91,7 @@
         </div>
         <div class="card-footer">
             <!--begin::Pagination-->
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex justify-content-between align-items-center flex-wrap" v-if="travels">
                 <div class="d-flex flex-wrap py-2 mr-3">
                     <a href="#" :class="(loading || this.pages.currentPage < 2) ? 'btn btn-icon btn-sm btn-light mr-2 my-1 disabled' : 'btn btn-icon btn-sm btn-light mr-2 my-1'" @click="pageSet('prev')"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
 
@@ -106,11 +127,13 @@ export default {
                 display: 5,
             },
             loading: true,
-            searchData: null
+            searchData: null,
+            vehiclemodes: [],
         }
     },
     created() {
         this.getTravels();
+        this.getVehicleModes();
     },
     computed: {
         pagination() {
@@ -139,7 +162,7 @@ export default {
         getTravels() {
             this.loading = true;
             axios.get(BASE_URL + '/tracking/travelsstatus?pages='+this.pages.currentPage).then(res => {
-                this.travels = res.data.data;
+                this.travels = (res.data.data) ? res.data.data : null;
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;
@@ -157,9 +180,11 @@ export default {
             } 
             this.getTravels();
         },
-        search() {
-
-        }
+        getVehicleModes() {
+            axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
+                this.vehiclemodes = res.data.results;
+            });
+        },
     },
 }
 </script>

@@ -3985,17 +3985,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      vehicle_type: null,
       current_id: null,
       status: null,
       request_status: null,
@@ -4025,25 +4019,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       procurements: [],
       drivers: [],
       maxDate: null,
+      vehiclemodes: [],
       staff: {
         id: null,
-        vehicle_office: false,
-        vehicle_rental: false,
         office: {
           total: 1,
-          data: [],
-          po: null
+          data: []
         },
         rental: {
           total: 1,
-          po: null,
           data: []
         }
       },
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       defaultNames: [],
-      officeNames: ['vehicle_1', 'driver_1'],
-      rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      rpNames: ['vehicle_1', 'driver_1'],
+      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       remarks: null
     };
   },
@@ -4055,6 +4046,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getVehicle();
     this.getPo();
     this.getDriver();
+    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
@@ -4158,8 +4150,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columns: [{
             "data": "id"
           }, {
-            "data": "serial_code"
-          }, {
             "data": "department"
           }, {
             "data": "purpose"
@@ -4179,17 +4169,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 4,
+            targets: 3,
             render: function render(data) {
               return _this2.$dateEng(data);
             }
           }, {
-            targets: 5,
+            targets: 4,
             render: function render(data) {
               return _this2.$timeEng(data);
             }
           }, {
-            targets: 6,
+            targets: 5,
             render: function render(data) {
               var status = {
                 1: {
@@ -4212,7 +4202,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
-            targets: 7,
+            targets: 6,
             render: function render(data) {
               return _this2.$dateTimeEng(data);
             }
@@ -4286,49 +4276,31 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
-          $('.checkbox-vehicle').change(function () {
+          $('.radio-vehicle').change(function () {
             vm.staff.office.total = vm.staff.rental.total = 1;
 
-            if (vm.staff.vehicle_office) {
+            if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
               $('#vehicle-select-1').select2({
                 placeholder: "Select a vehicle"
               });
               $('#driver-select-1').select2({
                 placeholder: "Select a driver"
               });
-              $('#vehicle-select-1').on('change', function () {
-                vm.staff.vehicle = $(this).val();
-              });
-              $('#driver-select-1').on('change', function () {
-                vm.staff.driver = $(this).val();
-              });
             } else {
-              vm.officeNames = ['vehicle_1', 'driver_1'];
+              vm.rpNames = ['vehicle_1', 'driver_1'];
             }
 
-            if (vm.staff.vehicle_rental) {
+            if (vm.vehicle_type == 4) {
               $('#travel_po-select').select2({
                 placeholder: "Select a Travel PO"
               });
               $('.select-remove').siblings('.select2').remove();
               $('.select-remove').siblings('.select2').remove();
             } else {
-              vm.rentalNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
-            }
-
-            if ($('#checkbox-office').is(":checked")) {
-              vm.defaultNames.push('office_vehicle');
-            } else {
-              vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
-            }
-
-            if ($('#checkbox-rental').is(":checked")) {
-              vm.defaultNames.push('rental_vehicle');
-            } else {
-              vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
+              vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
             }
           });
-          $('.checkbox-vehicle').on('change', function () {
+          $('.radio-vehicle').on('change', function () {
             $('.invalid-feedback-admin').remove();
             $('.invalid-admin').removeClass('is-invalid');
           });
@@ -4410,9 +4382,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }).filter(distinct);
         $('#kt_select_region').val(data.region);
         $('#kt_select_region').trigger('change');
-        var ctr_p = 0;
-        var ctr_c = 0;
-        var ctr_b = 0;
         setTimeout(function () {
           $('#kt_select_province').val(data.province);
           $('#kt_select_province').trigger('change');
@@ -4556,7 +4525,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
           var _keys = "".concat(key).replace(/[0-9]/g, '');
 
-          if ("".concat(key) == 'vehicle_office' || "".concat(key) == 'vehicle_rental') {
+          if ("".concat(key) == 'radio_vehicle') {
             if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
               $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
@@ -4564,10 +4533,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin">' + "".concat(value) + '</div>');
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().next().length == 0) {
@@ -4588,25 +4557,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this11.rentalNames.length; _i3++) {
-          if (_this11.rentalNames[_i3] == 'travel_po') {
-            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
-              if ($('#' + _this11.rentalNames[_i3] + '-select').next().next().length != 0) {
-                $('#' + _this11.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
+        for (var _i3 = 0; _i3 < _this11.hiredNames.length; _i3++) {
+          if (_this11.hiredNames[_i3] == 'travel_po') {
+            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
+              if ($('#' + _this11.hiredNames[_i3] + '-select').next().next().length != 0) {
+                $('#' + _this11.hiredNames[_i3] + '-select').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
-              $('[name="' + _this11.rentalNames[_i3] + '"]').removeClass('is-invalid');
-              $('[name="' + _this11.rentalNames[_i3] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
+              $('[name="' + _this11.hiredNames[_i3] + '"]').removeClass('is-invalid');
+              $('[name="' + _this11.hiredNames[_i3] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        for (var _i4 = 0; _i4 < _this11.officeNames.length; _i4++) {
-          if (keys.indexOf('' + _this11.officeNames[_i4] + '') == -1) {
-            if ($('[name="' + _this11.officeNames[_i4] + '"]').next().next().length != 0) {
-              $('[name="' + _this11.officeNames[_i4] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i4 = 0; _i4 < _this11.rpNames.length; _i4++) {
+          if (keys.indexOf('' + _this11.rpNames[_i4] + '') == -1) {
+            if ($('[name="' + _this11.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this11.rpNames[_i4] + '"]').next().next('.invalid-feedback').remove();
             }
           }
         }
@@ -4664,34 +4633,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a driver"
         });
       }, 100);
-      this.officeNames.push("vehicle_".concat(count));
-      this.officeNames.push("driver_".concat(count));
+      this.rpNames.push("vehicle_".concat(count));
+      this.rpNames.push("driver_".concat(count));
     },
     decrementOfficeVehicle: function decrementOfficeVehicle(event) {
       event.preventDefault();
 
       if (this.staff.office.total != 1) {
-        this.officeNames.pop();
-        this.officeNames.pop();
+        this.rpNames.pop();
+        this.rpNames.pop();
         this.staff.office.total -= 1;
       }
     },
     incrementRentalVehicle: function incrementRentalVehicle(event) {
       event.preventDefault();
       var count = this.staff.rental.total += 1;
-      this.rentalNames.push('vehicle_name_' + count);
-      this.rentalNames.push('vehicle_plate_' + count);
-      this.rentalNames.push('driver_name_' + count);
-      this.rentalNames.push('driver_contact_' + count);
+      this.hiredNames.push('vehicle_name_' + count);
+      this.hiredNames.push('vehicle_plate_' + count);
+      this.hiredNames.push('driver_name_' + count);
+      this.hiredNames.push('driver_contact_' + count);
     },
     decrementRentalVehicle: function decrementRentalVehicle(event) {
       event.preventDefault();
 
       if (this.staff.rental.total != 1) {
-        this.rentalNames.pop();
-        this.rentalNames.pop();
-        this.rentalNames.pop();
-        this.rentalNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
         this.staff.rental.total -= 1;
       }
     },
@@ -4715,9 +4684,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
         _this14.drivers = response.data;
       });
-    },
-    parseNum: function parseNum(data) {
-      return toParseNum(data);
     },
     declined: function declined() {
       this.remarks = '';
@@ -4770,6 +4736,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       if (day < 10) day = '0' + day.toString();
       var maxDate = year + '-' + month + '-' + day;
       this.maxDate = maxDate;
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this16 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this16.vehiclemodes = res.data.results;
+      });
     }
   }
 });
@@ -5513,6 +5486,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5550,8 +5529,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         status: false,
         total: 1
       },
+      puvNames: ['remarks'],
       rpNames: ['vehicle_1', 'driver_1'],
-      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1']
+      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      requesttrans: []
     };
   },
   components: {
@@ -5587,6 +5568,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.getVehicles();
     this.getDrivers();
     this.getVehicleModes();
+    this.getRequestTrans();
   },
   methods: {
     getRITO: function getRITO() {
@@ -5604,18 +5586,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                   _this.total = res.data.count;
                   _this.pages.totalPages = Math.ceil(res.data.count / 10);
                   _this.loading = false;
+                  $(function () {
+                    $('input.checkable:checkbox').change(function () {
+                      if ($(this).is(":checked")) {
+                        $(this).closest('tr').addClass('bg-gray');
+                      } else {
+                        $(this).closest('tr').removeClass('bg-gray');
+                      }
+                    });
+                  });
                 });
 
               case 3:
-                $('input.checkable:checkbox').change(function () {
-                  if ($(this).is(":checked")) {
-                    $(this).closest('tr').addClass('bg-gray');
-                  } else {
-                    $(this).closest('tr').removeClass('bg-gray');
-                  }
-                });
-
-              case 4:
               case "end":
                 return _context.stop();
             }
@@ -5777,6 +5759,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         $('input.checkable:checkbox:checked').click();
 
         _this6.getRITO();
+
+        _this6.getRequestTrans();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -5796,7 +5780,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
               $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
               $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
@@ -5841,6 +5825,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
         _this7.vehiclemodes = res.data.results;
+      });
+    },
+    getRequestTrans: function getRequestTrans() {
+      var _this8 = this;
+
+      axios.get(BASE_URL + '/api/v1/requesttrans').then(function (res) {
+        _this8.requesttrans = res.data;
       });
     }
   }
@@ -6373,19 +6364,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      date: null,
       passenger_count: 7,
       transaction: {
-        depart_time: null,
+        depart_time: [],
         department: null,
         gs_staff: null,
-        purpose: null,
-        travel_date: null,
-        return_date: null,
+        purpose: [],
+        travel_date: [],
+        return_date: [],
         serial_code: null,
-        is_status: null
+        is_status: null,
+        mot: null,
+        requestor: []
       },
       destinations: [],
       passengers: [],
@@ -6470,23 +6470,39 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
-        _this.transaction.serial_code = res.data.requests[0].serial_code;
-        _this.transaction.department = res.data.requests[0].department;
-        _this.transaction.purpose = res.data.requests[0].purpose;
-        _this.transaction.travel_date = _this.$dateEng(res.data.requests[0].travel_date);
-        _this.transaction.return_date = _this.$dateEng(res.data.requests[0].return_date);
-        _this.transaction.depart_time = _this.$timeEng(res.data.requests[0].depart_time);
-        _this.transaction.is_status = res.data.requests[0].is_status;
+        _this.transaction.serial_code = res.data.trans[0].serial_code;
+        _this.transaction.department = null;
+        _this.transaction.mot = res.data.trans[0].mot;
+        _this.date = _this.$dateEng(res.data.date_now);
 
-        for (var i = 0; i < res.data.destinations.length; i++) {
-          var brgy = res.data.destinations[i].brgy_name ? res.data.destinations[i].brgy_name : '';
-          var data = res.data.destinations[i].province_name + ', ' + res.data.destinations[i].city_name + ', ' + brgy + '\n';
+        for (var i = 0; i < res.data.travels.length; i++) {
+          if (_this.transaction.purpose.indexOf(res.data.travels[i].data[0].purpose) === -1) {
+            _this.transaction.purpose.push(res.data.travels[i].data[0].purpose);
+          }
 
-          _this.destinations.push(data);
+          if (_this.destinations.indexOf(res.data.travels[i].data[0].place) === -1) {
+            _this.destinations.push(res.data.travels[i].data[0].place);
+          }
+
+          if (_this.transaction.travel_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_from)) === -1) {
+            _this.transaction.travel_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_from));
+          }
+
+          if (_this.transaction.return_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_to)) === -1) {
+            _this.transaction.return_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_to));
+          }
+
+          if (_this.transaction.requestor.indexOf(res.data.travels[i].data[0].requested_by) === -1) {
+            _this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
+          }
+
+          for (var j = 0; j < res.data.travels[i].passengers.length; j++) {
+            _this.passengers.push(res.data.travels[i].passengers[j]);
+          }
         }
 
-        _this.passengers = res.data.passengers;
         _this.vehicles = res.data.vehicles;
+        _this.transaction.gs_staff = res.data.gs_staff;
         autosize($('#kt_autosize_1'));
       });
     }
@@ -7116,6 +7132,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -7127,6 +7144,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+=======
+>>>>>>> develop
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7141,7 +7160,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeCities: [],
       names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
       complete: false,
-      requestCode: null,
       createdAt: null,
       maxDate: null,
       travelDate: null,
@@ -7202,7 +7220,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_division').on('change', function () {
+<<<<<<< HEAD
           vm.activeDivision = $(this).val();
+=======
+          $('#kt_select_section').attr('disabled', 'disabled');
+          setTimeout(function () {
+            if ($('#kt_select_division').val() != "") {
+              $('#kt_select_section').select2('enable');
+              var id = $('#kt_select_division').val();
+
+              _this.getSection(id);
+
+              _this.sections = [];
+              _this.activeSections = [];
+            } else {
+              $("#kt_select_section").empty();
+            }
+          }, 500);
+        });
+        $('#kt_select_section').on('change', function () {
+          var id = $('#kt_select_section').val();
+          _this.section = id;
+>>>>>>> develop
         });
         $('#kt_select_region').on('change', function () {
           vm.activeRegion = $(this).val();
@@ -7282,13 +7321,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
     },
-    saveLogs: function saveLogs() {
-      console.log(this.$appName);
-    },
     saveForm: function saveForm() {
       var _this = this;
 
-      this.saveLogs();
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();
@@ -7298,9 +7333,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.$showToast(response.data.message, 'success');
 
         $('.details-input').attr('disabled', true);
+<<<<<<< HEAD
         _this.complete = true;
         _this.requestCode = response.data.result.serial_code;
         _this.createdAt = _this.$dateTimeEng(response.data.result.created_at);
+=======
+        _this2.complete = true;
+        _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
+>>>>>>> develop
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -7387,7 +7427,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('.details-input').attr('disabled', false);
       this.complete = false;
-      this.requestCode = null;
       this.createdAt = null;
     },
     dateConf: function dateConf() {
@@ -7429,8 +7468,6 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-//
-//
 //
 //
 //
@@ -7602,16 +7639,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#images').hide();
-        $('#kt_select_fullname').on('select2:clear', function () {
-          vm.formFields.status = '';
-          vm.formFields.gender = '';
-          vm.formFields.birthdate = '';
-          vm.formFields.contactNumber = '';
-          setTimeout(function () {
-            $('#images').hide();
-          }, 500);
-        });
-        $('#kt_select_fullname').on('select2:select', function () {
+        $('#kt_select_fullname').on('change', function () {
           vm.getData();
           $('#images').show();
         });
@@ -7768,19 +7796,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 2,
-            render: function render(data) {
-              return _this3.$dateEng(data);
-            }
-          }, {
             targets: 5,
             render: function render(data) {
               var status = {
-                0: {
+                'Inactive': {
                   'title': 'Inactive',
                   'class': ' label-light-warning'
                 },
-                1: {
+                'Active': {
                   'title': 'Active',
                   'class': ' label-light-primary'
                 }
@@ -8670,6 +8693,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8683,11 +8727,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         display: 5
       },
       loading: true,
-      searchData: null
+      searchData: null,
+      vehiclemodes: []
     };
   },
   created: function created() {
     this.getTravels();
+    this.getVehicleModes();
   },
   computed: {
     pagination: function pagination() {
@@ -8722,7 +8768,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.loading = true;
       axios.get(BASE_URL + '/tracking/travelsstatus?pages=' + this.pages.currentPage).then(function (res) {
-        _this.travels = res.data.data;
+        _this.travels = res.data.data ? res.data.data : null;
         _this.total = res.data.count;
         _this.pages.totalPages = Math.ceil(res.data.count / 10);
         _this.loading = false;
@@ -8743,7 +8789,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       this.getTravels();
     },
-    search: function search() {}
+    getVehicleModes: function getVehicleModes() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this2.vehiclemodes = res.data.results;
+      });
+    }
   }
 });
 
@@ -9653,6 +9705,42 @@ __webpack_require__.r(__webpack_exports__);
       return number.toLocaleString(undefined, {
         minimumFractionDigits: 2
       });
+    },
+    $chkStatus: function $chkStatus(stats) {
+      var label;
+
+      if (stats == 'Pending') {
+        label = '<span class="label label-inline label-light-warning">Pending</span>';
+      } else {
+        label = '<span class="label label-inline label-light-primary">Approved</span>';
+      }
+
+      return label;
+    },
+    $chkAssigned: function $chkAssigned(mot) {
+      var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var label;
+
+      if (mot) {
+        if (mot == 1) {
+          label = '<span class="label label-inline label-light-danger">Unassigned</span>';
+        } else if (mot == 2 || mot == 3 || mot == 4) {
+          label = '<span class="label label-inline label-light-primary">Assigned</span>';
+        }
+
+        $(function () {
+          if (id) {
+            $("#checkable_".concat(id)).prop('disabled', true);
+            $("#checkable_".concat(id)).closest('tr').addClass('bg-disabled');
+          }
+
+          ;
+        });
+      } else {
+        label = '<span class="label label-inline label-light-warning">Pending</span>';
+      }
+
+      return label;
     }
   }
 });
@@ -53985,7 +54073,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-12 row" }, [
-                          _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "col-lg-8" }, [
                             _c("div", { staticClass: "form-group" }, [
                               _c("input", {
                                 directives: [
@@ -54018,156 +54106,60 @@ var render = function() {
                               _vm._v(" "),
                               _c("label", [_vm._v("Type of Motor Vehicle")]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c(
-                                  "label",
-                                  { staticClass: "checkbox checkbox-solid" },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.staff.vehicle_office,
-                                          expression: "staff.vehicle_office"
-                                        }
-                                      ],
-                                      staticClass: "checkbox-vehicle",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "vehicle_office",
-                                        id: "checkbox-office",
-                                        value: "office"
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(
-                                          _vm.staff.vehicle_office
-                                        )
-                                          ? _vm._i(
-                                              _vm.staff.vehicle_office,
-                                              "office"
-                                            ) > -1
-                                          : _vm.staff.vehicle_office
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = _vm.staff.vehicle_office,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = "office",
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_office",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_office",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(
-                                              _vm.staff,
-                                              "vehicle_office",
-                                              $$c
-                                            )
+                              _c(
+                                "div",
+                                { staticClass: "checkbox-inline" },
+                                _vm._l(_vm.vehiclemodes, function(v, index) {
+                                  return _c(
+                                    "label",
+                                    {
+                                      key: index,
+                                      staticClass: "radio radio-solid mx-2"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.vehicle_type,
+                                            expression: "vehicle_type"
+                                          }
+                                        ],
+                                        staticClass: "radio-vehicle",
+                                        attrs: {
+                                          type: "radio",
+                                          name: "radio_vehicle"
+                                        },
+                                        domProps: {
+                                          value: v.id,
+                                          checked: _vm._q(
+                                            _vm.vehicle_type,
+                                            v.id
+                                          )
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            _vm.vehicle_type = v.id
                                           }
                                         }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      " Office\n                                        "
-                                    ),
-                                    _c("span")
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "label",
-                                  { staticClass: "checkbox checkbox-solid" },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.staff.vehicle_rental,
-                                          expression: "staff.vehicle_rental"
-                                        }
-                                      ],
-                                      staticClass: "checkbox-vehicle",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "vehicle_rental",
-                                        id: "checkbox-rental",
-                                        value: "rental"
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(
-                                          _vm.staff.vehicle_rental
-                                        )
-                                          ? _vm._i(
-                                              _vm.staff.vehicle_rental,
-                                              "rental"
-                                            ) > -1
-                                          : _vm.staff.vehicle_rental
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = _vm.staff.vehicle_rental,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = "rental",
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_rental",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_rental",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(
-                                              _vm.staff,
-                                              "vehicle_rental",
-                                              $$c
-                                            )
-                                          }
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      " Rental\n                                        "
-                                    ),
-                                    _c("span")
-                                  ]
-                                )
-                              ])
+                                      }),
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(v.name) +
+                                          "\n                                        "
+                                      ),
+                                      _c("span")
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
                             ])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-lg-6" }, [
-                            _vm.staff.vehicle_rental
+                          _c("div", { staticClass: "col-lg-4" }, [
+                            _vm.vehicle_type == 4
                               ? _c("div", { staticClass: "form-group" }, [
                                   _c("label", [_vm._v("Travel Po Number")]),
                                   _vm._v(" "),
@@ -54203,10 +54195,10 @@ var render = function() {
                                                   " - ₱ " +
                                                   _vm._s(
                                                     po.totalBalance
-                                                      ? _vm.parseNum(
+                                                      ? _vm.$toParseNum(
                                                           po.totalBalance
                                                         )
-                                                      : _vm.parseNum(
+                                                      : _vm.$toParseNum(
                                                           po.po_amount
                                                         )
                                                   )
@@ -54223,11 +54215,40 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm.staff.vehicle_rental || _vm.staff.vehicle_office
-                          ? _c("hr", { staticClass: "col-lg-12" })
+                        _vm.vehicle_type == 1
+                          ? _c("div", { staticClass: "col-lg-12 row" }, [
+                              _c("label", { staticClass: "h5 col-lg-12" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == _vm.vehicle_type
+                                    })[0].name
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group mb-1 col-lg-12" },
+                                [
+                                  _c("label", { attrs: { for: "remarks" } }, [
+                                    _vm._v("Remarks")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("textarea", {
+                                    staticClass: "form-control w-100",
+                                    attrs: {
+                                      name: "remarks",
+                                      id: "remarks",
+                                      rows: "3"
+                                    }
+                                  })
+                                ]
+                              )
+                            ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.staff.vehicle_office
+                        _vm.vehicle_type == 3 || _vm.vehicle_type == 2
                           ? _c("div", { staticClass: "col-lg-12 row" }, [
                               _c("div", { staticClass: "col-lg-12 d-flex" }, [
                                 _c("input", {
@@ -54242,7 +54263,7 @@ var render = function() {
                                   attrs: {
                                     id: "office-vehicle-total",
                                     type: "hidden",
-                                    name: "office_vehicle_total"
+                                    name: "rp_total"
                                   },
                                   domProps: { value: _vm.staff.office.total },
                                   on: {
@@ -54260,7 +54281,13 @@ var render = function() {
                                 }),
                                 _vm._v(" "),
                                 _c("label", { staticClass: "h5" }, [
-                                  _vm._v("Office Vehicle")
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.vehiclemodes.filter(function(i) {
+                                        return i.id == _vm.vehicle_type
+                                      })[0].name
+                                    )
+                                  )
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "ml-auto" }, [
@@ -54439,11 +54466,7 @@ var render = function() {
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.staff.vehicle_rental && _vm.staff.vehicle_office
-                          ? _c("hr", { staticClass: "col-lg-12" })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.staff.vehicle_rental
+                        _vm.vehicle_type == 4
                           ? _c("div", { staticClass: "col-lg-12 row" }, [
                               _c("div", { staticClass: "col-lg-12 d-flex" }, [
                                 _c("input", {
@@ -54458,7 +54481,7 @@ var render = function() {
                                   attrs: {
                                     id: "rental-vehicle-total",
                                     type: "hidden",
-                                    name: "rental_vehicle_total"
+                                    name: "hired_total"
                                   },
                                   domProps: { value: _vm.staff.rental.total },
                                   on: {
@@ -54476,7 +54499,13 @@ var render = function() {
                                 }),
                                 _vm._v(" "),
                                 _c("label", { staticClass: "h5" }, [
-                                  _vm._v("Rental Vehicle")
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.vehiclemodes.filter(function(i) {
+                                        return i.id == _vm.vehicle_type
+                                      })[0].name
+                                    )
+                                  )
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "ml-auto" }, [
@@ -54597,7 +54626,8 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("td", [
                                             _c("input", {
-                                              staticClass: "form-control",
+                                              staticClass:
+                                                "select-remove form-control",
                                               attrs: {
                                                 type: "text",
                                                 name: "vehicle_name_" + index,
@@ -54609,7 +54639,8 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("td", [
                                             _c("input", {
-                                              staticClass: "form-control",
+                                              staticClass:
+                                                "select-remove form-control",
                                               attrs: {
                                                 name: "driver_name_" + index,
                                                 type: "text",
@@ -54798,8 +54829,6 @@ var staticRenderFns = [
           _c("thead", [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Code")]),
               _vm._v(" "),
               _c("th", [_vm._v("Department")]),
               _vm._v(" "),
@@ -55460,8 +55489,8 @@ var render = function() {
             "div",
             {
               class: _vm.loading
-                ? "card-body overlay overlay-block"
-                : "card-body"
+                ? "card-body overlay overlay-block table-responsive"
+                : "card-body table-responsive"
             },
             [
               _vm.loading
@@ -55472,7 +55501,10 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "table",
-                { staticClass: "table", attrs: { id: "rito-tbl card-scroll" } },
+                {
+                  staticClass: "table ",
+                  attrs: { id: "rito-tbl card-scroll" }
+                },
                 [
                   _vm._m(1),
                   _vm._v(" "),
@@ -55487,7 +55519,10 @@ var render = function() {
                             [
                               _c("input", {
                                 staticClass: "checkable",
-                                attrs: { type: "checkbox" },
+                                attrs: {
+                                  type: "checkbox",
+                                  id: "checkable_" + r.id
+                                },
                                 domProps: { value: r.id }
                               }),
                               _vm._v(" "),
@@ -55519,9 +55554,28 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(r.purpose))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.means_of_transportation))]),
+                        _c("td", {
+                          domProps: {
+                            innerHTML: _vm._s(_vm.$chkStatus(r.status))
+                          }
+                        }),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.status))]),
+                        _c("td", {
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.$chkAssigned(
+                                _vm.requesttrans.filter(function(i) {
+                                  return i.request_id == r.id
+                                })[0]
+                                  ? _vm.requesttrans.filter(function(x) {
+                                      return x.request_id == r.id
+                                    })[0].mot
+                                  : null,
+                                r.id
+                              )
+                            )
+                          }
+                        }),
                         _vm._v(" "),
                         _c("td", [
                           _c(
@@ -55871,7 +55925,7 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _c("div", { staticClass: "w-100 row" }, [
+                      _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-lg-12" }, [
                           _c(
                             "div",
@@ -55909,8 +55963,6 @@ var render = function() {
                             ]
                           )
                         ]),
-                        _vm._v(" "),
-                        _c("hr", { staticClass: "col-lg-12" }),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-8" }, [
                           _c("div", { staticClass: "form-group" }, [
@@ -56019,6 +56071,39 @@ var render = function() {
                             : _vm._e()
                         ])
                       ]),
+                      _vm._v(" "),
+                      _vm.vehicle_type == 1
+                        ? _c("div", { staticClass: "row" }, [
+                            _c("label", { staticClass: "h5 col-lg-12" }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.vehiclemodes.filter(function(i) {
+                                    return i.id == _vm.vehicle_type
+                                  })[0].name
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "form-group mb-1 col-lg-12" },
+                              [
+                                _c("label", { attrs: { for: "remarks" } }, [
+                                  _vm._v("Remarks")
+                                ]),
+                                _vm._v(" "),
+                                _c("textarea", {
+                                  staticClass: "form-control w-100",
+                                  attrs: {
+                                    name: "remarks",
+                                    id: "remarks",
+                                    rows: "3"
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _vm.vehicle_type == 3 || _vm.vehicle_type == 2
                         ? _c("div", { staticClass: "col-lg-12 row" }, [
@@ -56383,9 +56468,7 @@ var render = function() {
               },
               proxy: true
             },
-            _vm.vehicle_type == 3 ||
-            _vm.vehicle_type == 2 ||
-            _vm.vehicle_type == 4
+            _vm.vehicle_type
               ? {
                   key: "footer",
                   fn: function() {
@@ -56443,25 +56526,23 @@ var staticRenderFns = [
       _c("tr", [
         _c("th"),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Tracking No.")]),
+        _c("th", [_vm._v("Tracking No.")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Destination")]),
+        _c("th", [_vm._v("Destination")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Travel Date")]),
+        _c("th", [_vm._v("Travel Date")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Return Date")]),
+        _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Purpose")]),
+        _c("th", [_vm._v("Purpose")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [
-          _vm._v("Means of Transportation")
-        ]),
+        _c("th", [_vm._v("Portal Status")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Status")]),
+        _c("th", [_vm._v("Tracking Status")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Passengers")]),
+        _c("th", [_vm._v("Passengers")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Requested By")])
+        _c("th", [_vm._v("Requested By")])
       ])
     ])
   }
@@ -57098,16 +57179,8 @@ var render = function() {
             _c("tbody", [
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _vm.transaction.is_status == 2
+                  _vm.transaction.mot == 1
                     ? _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "text-center d-block mr-auto ml-auto mt-5"
-                        },
-                        [_vm._v("Motor Vehicle Request")]
-                      )
-                    : _c(
                         "h5",
                         {
                           staticClass:
@@ -57115,11 +57188,28 @@ var render = function() {
                         },
                         [_vm._v("Motor Vehicle Declined Request")]
                       )
+                    : _c(
+                        "h5",
+                        {
+                          staticClass:
+                            "text-center d-block mr-auto ml-auto mt-5"
+                        },
+                        [_vm._v("Motor Vehicle Request")]
+                      )
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("p", { staticClass: "text-left my-10" }, [
+                    _vm._v("Date: "),
+                    _c("span", { staticClass: " text-underline" }, [
+                      _vm._v(_vm._s(_vm.date))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
                   _c("p", { staticClass: "text-right my-10" }, [
                     _vm._v("Series: "),
                     _c("span", { staticClass: " text-underline" }, [
@@ -57299,29 +57389,8 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
                   _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.depart_time,
-                        expression: "transaction.depart_time"
-                      }
-                    ],
                     staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.depart_time },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "depart_time",
-                          $event.target.value
-                        )
-                      }
-                    }
+                    attrs: { type: "text", disabled: "" }
                   })
                 ])
               ]),
@@ -57353,7 +57422,14 @@ var render = function() {
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                               attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.name }
+                              domProps: {
+                                value:
+                                  p.first_name +
+                                  " " +
+                                  p.middle_name +
+                                  " " +
+                                  p.last_name
+                              }
                             })
                           ]),
                           _vm._v(" "),
@@ -57361,7 +57437,7 @@ var render = function() {
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                               attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.designation }
+                              domProps: { value: p.position }
                             })
                           ]),
                           _vm._v(" "),
@@ -57419,14 +57495,14 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.transaction.gs_staff,
-                              expression: "transaction.gs_staff"
+                              value: _vm.transaction.requestor,
+                              expression: "transaction.requestor"
                             }
                           ],
                           staticClass:
                             "text-center input-text w-100 text-uppercase",
                           attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.gs_staff },
+                          domProps: { value: _vm.transaction.requestor },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -57434,7 +57510,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.transaction,
-                                "gs_staff",
+                                "requestor",
                                 $event.target.value
                               )
                             }
@@ -57442,7 +57518,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Staff")
+                          _vm._v("Requestor")
                         ])
                       ]),
                       _vm._v(" "),
@@ -57465,250 +57541,235 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm.transaction.is_status == 2
-            ? _c("hr", {
-                class:
-                  _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                    ? "d-none"
-                    : "dashed-border my-2"
-              })
-            : _vm._e(),
+          _c("hr", {
+            class:
+              _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                ? "d-none"
+                : "dashed-border my-2"
+          }),
           _vm._v(" "),
-          _vm.transaction.is_status == 2
-            ? _c(
-                "table",
-                {
-                  class:
-                    _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                      ? "break-page"
-                      : ""
-                },
-                [
-                  _vm.passengers.length > 5
-                    ? _c("thead", [
-                        _c("tr", [
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _c("div", { staticClass: "page-header mt-2" }, [
-                              _c("img", {
-                                staticClass: "print-logo d-block m-auto",
-                                attrs: {
-                                  alt: "Print Logo",
-                                  src: "assets/media/logos/dswd_print_logo.png"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "span",
-                                {
-                                  staticClass:
-                                    "header-text d-block m-auto text-center"
-                                },
-                                [
-                                  _vm._v("Field Office"),
-                                  _c("br"),
-                                  _vm._v("Butuan City")
-                                ]
-                              )
-                            ])
-                          ])
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("tbody", [
+          _c(
+            "table",
+            {
+              class:
+                _vm.passengers.length > 5 || _vm.vehicles.length > 2
+                  ? "break-page"
+                  : ""
+            },
+            [
+              _vm.passengers.length > 5
+                ? _c("thead", [
                     _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c(
-                          "h5",
-                          {
-                            staticClass:
-                              "text-center d-block mr-auto ml-auto my-8"
-                          },
-                          [_vm._v("Motor Vehicle Confirmation Slip")]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c("p", { staticClass: "text-right my-8" }, [
-                          _vm._v("Series: "),
-                          _c("span", { staticClass: "text-underline" }, [
-                            _vm._v(_vm._s(_vm.transaction.serial_code))
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { attrs: { colspan: "2" } }, [
-                        _c(
-                          "table",
-                          [
-                            _c("tr", [
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Vehicle Name")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Plate No.")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Driver Name")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticClass: "text-center table-border" },
-                                [_vm._v("Contact No.")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(v) {
-                              return _c("tr", { key: v.id }, [
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.name }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.plate_no }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.fullname }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "table-border" }, [
-                                  _c("input", {
-                                    staticClass:
-                                      "w-100 border-0 outline-0 pr-2 pl-2",
-                                    attrs: { type: "text", disabled: "" },
-                                    domProps: { value: v.contact }
-                                  })
-                                ])
-                              ])
-                            })
-                          ],
-                          2
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", [
-                        _c("p", { staticClass: "mt-5" }, [
-                          _vm._v("Confirmed No. of Passenger/s:")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
+                      _c("td", { attrs: { colspan: "3" } }, [
+                        _c("div", { staticClass: "page-header mt-2" }, [
+                          _c("img", {
+                            staticClass: "print-logo d-block m-auto",
+                            attrs: {
+                              alt: "Print Logo",
+                              src: "assets/media/logos/dswd_print_logo.png"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.passengers.length,
-                              expression: "passengers.length"
-                            }
-                          ],
-                          staticClass: "input-text w-100 mb-3 mt-n2",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.passengers.length },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.passengers,
-                                "length",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "p-4 pt-10" }, [
-                        _c("p", { staticClass: "mb-6" }, [
-                          _vm._v("Accepted by:")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.gs_staff,
-                              expression: "transaction.gs_staff"
-                            }
-                          ],
-                          staticClass:
-                            "text-center text-uppercase input-text w-100",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.gs_staff },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "gs_staff",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Assigned GS staff")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "p-4 pt-10" }, [
-                        _c("p", { staticClass: "mb-6" }, [
-                          _vm._v("Approved by:")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "input-text w-100",
-                          attrs: { type: "text", disabled: "" }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v("GSS Head")
+                              staticClass:
+                                "header-text d-block m-auto text-center"
+                            },
+                            [
+                              _vm._v("Field Office"),
+                              _c("br"),
+                              _vm._v("Butuan City")
+                            ]
+                          )
                         ])
                       ])
                     ])
                   ])
-                ]
-              )
-            : _vm._e()
+                : _vm._e(),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "text-center d-block mr-auto ml-auto my-8"
+                      },
+                      [_vm._v("Motor Vehicle Confirmation Slip")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "1" } }, [
+                    _c("p", { staticClass: "text-left my-10" }, [
+                      _vm._v("Date: "),
+                      _c("span", { staticClass: " text-underline" }, [
+                        _vm._v(_vm._s(_vm.date))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "1" } }, [
+                    _c("p", { staticClass: "text-right my-8" }, [
+                      _vm._v("Series: "),
+                      _c("span", { staticClass: "text-underline" }, [
+                        _vm._v(_vm._s(_vm.transaction.serial_code))
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c(
+                      "table",
+                      [
+                        _c("tr", [
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Vehicle Name")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Plate No.")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Driver Name")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-center table-border" },
+                            [_vm._v("Contact No.")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.vehicles, function(v) {
+                          return _c("tr", { key: v.id }, [
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.name }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.plate_no }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.fullname }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "table-border" }, [
+                              _c("input", {
+                                staticClass:
+                                  "w-100 border-0 outline-0 pr-2 pl-2",
+                                attrs: { type: "text", disabled: "" },
+                                domProps: { value: v.contact }
+                              })
+                            ])
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "mt-5" }, [
+                      _vm._v("Confirmed No. of Passenger/s:")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.passengers.length,
+                          expression: "passengers.length"
+                        }
+                      ],
+                      staticClass: "input-text w-100 mb-3 mt-n2",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.passengers.length },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.passengers,
+                            "length",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Accepted by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass:
+                        "text-center text-uppercase input-text w-100",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: {
+                        value:
+                          _vm.transaction.gs_staff.first_name +
+                          " " +
+                          _vm.transaction.gs_staff.last_name
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("Assigned GS staff")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "p-4 pt-10" }, [
+                    _c("p", { staticClass: "mb-6" }, [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "input-text w-100",
+                      attrs: { type: "text", disabled: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "text-center" }, [
+                      _vm._v("GSS Head")
+                    ])
+                  ])
+                ])
+              ])
+            ]
+          )
         ])
       ])
     ],
@@ -58443,12 +58504,6 @@ var render = function() {
             _c("div", { staticClass: "col-xl-8" }, [
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
-                    _c("span", [_vm._v("Your request code:")]),
-                    _vm._v(" "),
-                    _c("h1", { staticClass: "display-4" }, [
-                      _vm._v(_vm._s(_vm.requestCode))
-                    ]),
-                    _vm._v(" "),
                     _c("p", { staticClass: "lead" }, [
                       _vm._v("Your request has successfully completed!")
                     ]),
@@ -60764,6 +60819,26 @@ var render = function() {
           class: _vm.loading ? "card-body overlay overlay-block" : "card-body"
         },
         [
+          _vm.travels == null
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
+                  attrs: { role: "alert" }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "alert-text" }, [
+                    _vm._v("No data available!")
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _vm.loading
             ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
                 _c("div", { staticClass: "spinner spinner-primary" })
@@ -60778,138 +60853,185 @@ var render = function() {
                 attrs: { id: "pending-travels-tbl" }
               },
               [
-                _vm._m(0),
+                _vm._m(2),
                 _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.travels, function(t, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-light-primary m-1"
-                          },
-                          [_vm._v(_vm._s(t.type))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.tracking_no))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.place))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-primary m-1"
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                t.tracking_no.reduce(function(acc, item) {
-                                  return acc + parseInt(item.passenger_count)
-                                }, 0)
-                              )
+                _vm.travels
+                  ? _c(
+                      "tbody",
+                      _vm._l(_vm.travels, function(t, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [_vm._v(_vm._s(t.type))]
                             )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "label label-lg label-rounded label-inline label-light-primary m-1"
-                          },
-                          [_vm._v(_vm._s(t.transactions.length))]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.inclusive_from))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.inclusive_to))]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        _vm._l(t.tracking_no, function(t, index) {
-                          return _c(
-                            "span",
-                            {
-                              key: index,
-                              staticClass:
-                                "label label-lg label-rounded label-inline label-light-primary m-1"
-                            },
-                            [_vm._v(_vm._s(t.status))]
-                          )
-                        }),
-                        0
-                      )
-                    ])
-                  }),
-                  0
-                )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap"
+                              },
+                              [_vm._v(_vm._s(t.serial_code))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.tracking_no))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                },
+                                [_vm._v(_vm._s(t.place))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-primary m-1"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    t.tracking_no.reduce(function(acc, item) {
+                                      return (
+                                        acc + parseInt(item.passenger_count)
+                                      )
+                                    }, 0)
+                                  )
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [_vm._v(_vm._s(t.transactions.length))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == t.mot
+                                    })[0].name
+                                  )
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.inclusive_from))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.inclusive_to))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            _vm._l(t.tracking_no, function(t, index) {
+                              return _c(
+                                "span",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                },
+                                [_vm._v(_vm._s(t.status))]
+                              )
+                            }),
+                            0
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: "print_request?id=" + t.group,
+                                  target: "_blank"
+                                }
+                              },
+                              [_vm._m(3, true)]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  : _vm._e()
               ]
             )
           ])
@@ -60917,130 +61039,171 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex justify-content-between align-items-center flex-wrap"
-          },
-          [
-            _c(
+        _vm.travels
+          ? _c(
               "div",
-              { staticClass: "d-flex flex-wrap py-2 mr-3" },
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center flex-wrap"
+              },
               [
                 _c(
-                  "a",
-                  {
-                    class:
-                      _vm.loading || this.pages.currentPage < 2
-                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.pageSet("prev")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "ki ki-bold-arrow-back icon-xs" })]
+                  "div",
+                  { staticClass: "d-flex flex-wrap py-2 mr-3" },
+                  [
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading || this.pages.currentPage < 2
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("prev")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-back icon-xs"
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.pages.currentPage > 3
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.pagination, function(p) {
+                      return _c(
+                        "a",
+                        {
+                          key: p,
+                          class: _vm.loading
+                            ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                            : p == _vm.pages.currentPage
+                            ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                            : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                          attrs: { href: "#", disabled: _vm.loading },
+                          on: {
+                            click: function($event) {
+                              return _vm.pageSet("jump", p)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(p))]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm.pages.currentPage != _vm.pages.totalPages &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                    _vm.pages.currentPage != _vm.pages.totalPages - 2
+                      ? _c(
+                          "a",
+                          {
+                            staticClass:
+                              "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("...")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        class:
+                          _vm.loading ||
+                          this.pages.currentPage == this.pages.totalPages
+                            ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                            : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.pageSet("next")
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "ki ki-bold-arrow-next icon-xs"
+                        })
+                      ]
+                    )
+                  ],
+                  2
                 ),
                 _vm._v(" "),
-                _vm.pages.currentPage > 3
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                        attrs: { href: "#" }
-                      },
-                      [_vm._v("...")]
+                _c("div", { staticClass: "d-flex align-items-center py-3" }, [
+                  _vm.loading
+                    ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                        _c("div", { staticClass: "mr-2 text-muted" }, [
+                          _vm._v("Loading...")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "spinner mr-10" })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(
+                      "Displaying " +
+                        _vm._s(_vm.travels.length) +
+                        " of " +
+                        _vm._s(_vm.total) +
+                        " records"
                     )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.pagination, function(p) {
-                  return _c(
-                    "a",
-                    {
-                      key: p,
-                      class: _vm.loading
-                        ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
-                        : p == _vm.pages.currentPage
-                        ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
-                        : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                      attrs: { href: "#", disabled: _vm.loading },
-                      on: {
-                        click: function($event) {
-                          return _vm.pageSet("jump", p)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(p))]
-                  )
-                }),
-                _vm._v(" "),
-                _vm.pages.currentPage != _vm.pages.totalPages &&
-                _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
-                _vm.pages.currentPage != _vm.pages.totalPages - 2
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
-                        attrs: { href: "#" }
-                      },
-                      [_vm._v("...")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    class:
-                      _vm.loading ||
-                      this.pages.currentPage == this.pages.totalPages
-                        ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
-                        : "btn btn-icon btn-sm btn-light mr-2 my-1",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.pageSet("next")
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "ki ki-bold-arrow-next icon-xs" })]
-                )
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "d-flex align-items-center py-3" }, [
-              _vm.loading
-                ? _c("div", { staticClass: "d-flex align-items-center" }, [
-                    _c("div", { staticClass: "mr-2 text-muted" }, [
-                      _vm._v("Loading...")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "spinner mr-10" })
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-muted" }, [
-                _vm._v(
-                  "Displaying " +
-                    _vm._s(_vm.travels.length) +
-                    " of " +
-                    _vm._s(_vm.total) +
-                    " records"
-                )
-              ])
-            ])
-          ]
-        )
+                ])
+              ]
+            )
+          : _vm._e()
       ])
     ]
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-icon" }, [
+      _c("i", { staticClass: "flaticon-warning" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-close" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "alert",
+            "aria-label": "Close"
+          }
+        },
+        [
+          _c("span", { attrs: { "aria-hidden": "true" } }, [
+            _c("i", { staticClass: "ki ki-close" })
+          ])
+        ]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -61051,6 +61214,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Serial Code")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Tracking Number")]),
         _vm._v(" "),
         _c("th", [_vm._v("Destination")]),
@@ -61059,13 +61224,33 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Vehicles")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Assigned MOT")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Travel Date")]),
         _vm._v(" "),
         _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "200px" } }, [_vm._v("Status")])
+        _c("th", [_vm._v("Portal Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Slip")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-sm btn-clean btn-details",
+        attrs: { title: "View records" }
+      },
+      [
+        _c("i", { staticClass: "flaticon2-printer" }),
+        _vm._v(" Form\n                                ")
+      ]
+    )
   }
 ]
 render._withStripped = true

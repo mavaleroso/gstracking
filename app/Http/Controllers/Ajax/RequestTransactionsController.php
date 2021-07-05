@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Driver;
+use App\Models\RequestTransactions;
 
-class DriverController extends Controller
+class RequestTransactionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return response()->json(Driver::where('status', 'Active')->get());
+        return response()->json(RequestTransactions::where('type', 'rito')->groupBy('request_id')->get());
     }
 
     /**

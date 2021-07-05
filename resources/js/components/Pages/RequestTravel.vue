@@ -14,8 +14,6 @@
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
                         <div v-if="complete" class="jumbotron">
-                            <span>Your request code:</span>
-                            <h1 class="display-4">{{ requestCode }}</h1>
                             <p class="lead">Your request has successfully completed!</p>
                             <hr class="my-4">
                             <p>{{ createdAt }}</p>
@@ -169,7 +167,6 @@ export default {
             activeCities: [],
             names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
             complete: false,
-            requestCode: null,
             createdAt: null,
             maxDate: null,
             travelDate: null,
@@ -239,6 +236,11 @@ export default {
                 $('#kt_select_division').on('change', function() {
                     vm.activeDivision = $(this).val();
                 });
+                
+                $('#kt_select_section').on('change', () => {
+                    let id  = $('#kt_select_section').val();
+                    this.section = id;
+                });
 
                 $('#kt_select_region').on('change', function() {
                     vm.activeRegion = $(this).val();
@@ -304,22 +306,15 @@ export default {
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },  
-        saveLogs(){
-            console.log(this.$appName);
-        },
         saveForm() {
-            this.saveLogs();
-
             let requestform = $('#kt_form').serialize();
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
-
                 Swal.fire("Good job!", response.data.message, "success");
                 this.$showToast(response.data.message, 'success');
                 $('.details-input').attr('disabled', true);
                 this.complete = true;
-                this.requestCode = response.data.result.serial_code;
                 this.createdAt = this.$dateTimeEng(response.data.result.created_at);
             }).catch((error) => {
                 let data = error.response.data.errors;
@@ -397,7 +392,6 @@ export default {
             }
             $('.details-input').attr('disabled', false);
             this.complete = false;
-            this.requestCode = null;
             this.createdAt = null;
         },
         dateConf() {

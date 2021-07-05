@@ -16,7 +16,6 @@ class CreateTransactionVehiclesTable extends Migration
         Schema::create('transaction_vehicles', function (Blueprint $table) {
             $table->id();
             $table->string('trip_ticket')->nullable();
-            $table->string('type');
             $table->bigInteger('vehicle_id');
             $table->bigInteger('driver_id');
             $table->unsignedBigInteger('procurement_id')->nullable();

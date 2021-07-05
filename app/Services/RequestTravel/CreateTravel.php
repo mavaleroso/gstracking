@@ -32,15 +32,12 @@ class CreateTravel
     public function execute($fields, $url)
     {
 
-        $user = auth()->user()->id;
-        $arr = array('luser' => $user, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
-        $createLogs = createLogs($arr);
+        $arr = array('luser' => auth()->user()->id, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
+        createLogs($arr);
 
-        $rqt_code = $this->getCode->request_code();
 
         $request = Request::create([
             'user_id' => auth()->user()->id,
-            'serial_code' => $rqt_code,
             'division_id' => $fields['division'],
             'section_id' => $fields['section'],
             'purpose' => $fields['pur_travel'],
@@ -68,8 +65,6 @@ class CreateTravel
                 'gender' => $fields['pax_gen_'.$i]
             ]);
         }
-
-        ($request)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
 
         return $request->fresh();
     }

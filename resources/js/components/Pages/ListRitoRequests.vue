@@ -24,30 +24,30 @@
                     <!--end::Button-->
                 </div>
             </div>
-            <div :class="(loading) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div :class="(loading) ? 'card-body overlay overlay-block table-responsive' : 'card-body table-responsive'">
                 <div v-if="loading" class="overlay-layer bg-dark-o-10">
                     <div class="spinner spinner-primary"></div>
                 </div>
-                <table class="table" id="rito-tbl card-scroll">
+                <table class="table " id="rito-tbl card-scroll">
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="text-center">Tracking No.</th>
-                            <th class="text-center">Destination</th>
-                            <th class="text-center">Travel Date</th>
-                            <th class="text-center">Return Date</th>
-                            <th class="text-center">Purpose</th>
-                            <th class="text-center">Means of Transportation</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Passengers</th>
-                            <th class="text-center">Requested By</th>
+                            <th>Tracking No.</th>
+                            <th>Destination</th>
+                            <th>Travel Date</th>
+                            <th>Return Date</th>
+                            <th>Purpose</th>
+                            <th>Portal Status</th>
+                            <th>Tracking Status</th>
+                            <th>Passengers</th>
+                            <th>Requested By</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(r,index) in rito" :key="index">
                             <td>
                                 <label class="checkbox checkbox-single ml-4">
-                                    <input type="checkbox" :value="r.id" class="checkable"/>
+                                    <input type="checkbox" :id="'checkable_' + r.id" :value="r.id" class="checkable"/>
                                     <span></span>
                                 </label>
                             </td>
@@ -56,8 +56,8 @@
                             <td>{{ $dateEng(r.inclusive_from) }}</td>
                             <td>{{ $dateEng(r.inclusive_to) }}</td>
                             <td>{{ r.purpose }}</td>
-                            <td>{{ r.means_of_transportation }}</td>
-                            <td>{{ r.status }}</td>
+                            <td v-html="$chkStatus(r.status)"></td>
+                            <td v-html="$chkAssigned((requesttrans.filter(i => i.request_id == r.id)[0]) ? requesttrans.filter(x => x.request_id == r.id)[0].mot : null, r.id)"></td>
                             <td><button @click="getPassengers(r.id, r.tracking_no)" class="btn btn-sm btn-light-primary px-2 py-1">{{ r.passenger_count }}</button></td>
                             <td>{{ r.requested_by }}</td>
                         </tr>
@@ -125,12 +125,11 @@
                     <input type="hidden" name="selected" v-model="selected">
                     <input type="hidden" name="rp_total" v-model="rp.total">
                     <input type="hidden" name="hired_total" v-model="hired.total">
-                    <div class="w-100 row">
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="btn font-weight-bold btn-primary mr-2">Request <span class="label label-sm label-white ml-2">{{ selected.length }}</span></div>
                             <div class="btn font-weight-bold btn-primary mr-2">Passengers <span class="label label-sm label-white ml-2">{{ passengers_count }}</span></div>
                         </div>
-                        <hr class="col-lg-12">
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label>Type of Motor Vehicle</label>
@@ -150,6 +149,13 @@
                                     <option v-for="po in pos.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? $toParseNum(po.totalBalance) : $toParseNum(po.po_amount) }}</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div v-if="vehicle_type == 1" class="row">
+                        <label class="h5 col-lg-12">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
+                        <div class="form-group mb-1 col-lg-12">
+                            <label for="remarks">Remarks</label>
+                            <textarea name="remarks" class="form-control w-100" id="remarks" rows="3"></textarea>
                         </div>
                     </div>
                     <div v-if="vehicle_type == 3 || vehicle_type == 2" class="col-lg-12 row">
@@ -230,7 +236,7 @@
                     </div>
                 </form>
             </template>
-            <template v-if="vehicle_type == 3 || vehicle_type == 2 || vehicle_type == 4" v-slot:footer>
+            <template v-if="vehicle_type" v-slot:footer>
                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold text-uppercase" data-dismiss="modal">Close</button>
                 <button @click="approved" type="button" class="btn btn-sm btn-primary font-weight-bold text-uppercase">Approved</button>
             </template>
@@ -276,8 +282,10 @@ export default {
                 status: false,
                 total: 1,
             },
+            puvNames: ['remarks'],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
+            requesttrans: []
         }
     },  
     components: {
@@ -309,6 +317,7 @@ export default {
         this.getVehicles();
         this.getDrivers();
         this.getVehicleModes();
+        this.getRequestTrans();
     },
     methods: {
         async getRITO() {
@@ -318,15 +327,18 @@ export default {
                 this.total = res.data.count;
                 this.pages.totalPages = Math.ceil(res.data.count / 10);
                 this.loading = false;
+
+                $(() => {
+                    $('input.checkable:checkbox').change(function() {
+                        if ($(this).is(":checked")) {
+                            $(this).closest('tr').addClass('bg-gray');
+                        } else {
+                            $(this).closest('tr').removeClass('bg-gray');
+                        }
+                    });
+                });
             });
 
-            $('input.checkable:checkbox').change(function() {
-                if ($(this).is(":checked")) {
-                    $(this).closest('tr').addClass('bg-gray');
-                } else {
-                    $(this).closest('tr').removeClass('bg-gray');
-                }
-            });
         },
         indexers(idx) {
             return (this.pages.currentPage == 1) ? idx : ((this.pages.currentPage - 1) * 10) + idx;
@@ -471,6 +483,7 @@ export default {
                 $('#modal-approved').modal('toggle');
                 $('input.checkable:checkbox:checked').click();
                 this.getRITO();
+                this.getRequestTrans();
             }).catch(error => {
                 let data = error.response.data.errors;
                 let keys = [];
@@ -483,7 +496,7 @@ export default {
                         if ($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || `${key}` == 'remarks') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
                             $('[name="'+`${key}`+'"]').addClass('is-invalid');
                             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
@@ -526,6 +539,11 @@ export default {
         getVehicleModes() {
             axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
                 this.vehiclemodes = res.data.results;
+            });
+        },
+        getRequestTrans() {
+            axios.get(BASE_URL + '/api/v1/requesttrans').then(res => {
+                this.requesttrans = res.data;
             });
         }
     },

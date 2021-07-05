@@ -1,32 +1,50 @@
 <?php
 namespace App\Services\RitoRequest;
 
-use Illuminate\Support\Arr;
 use App\Models\RequestTransactions;
 use App\Models\TransactionVehicles;
 use App\Services\Core\GenerateTripTicket;
 use App\Models\System;
 use App\Models\Vehicle;
+use App\Services\Core\GenerateCode;
 use App\Models\Driver;
 
 class CreateRequestTransactions
 {
 
-    public function __construct(GenerateTripTicket $genTripTicket)
+    public function __construct(GenerateTripTicket $genTripTicket, GenerateCode $getCode)
     {
         $this->genTripTicket = $genTripTicket;
+        $this->getCode = $getCode;
     }
+
     public function execute($fields)
     {
         $rg = System::select('value')->where('handler', 'REQUEST_GROUP')->first();
+        $rqt_code = $this->getCode->request_code();
         $process = false;
 
+        if ($fields['radio_vehicle'] == 1) {
+            $request_id = explode(',',$fields['selected']);
+            for ($x=0; $x < count($request_id); $x++) { 
+                $rt = RequestTransactions::create([
+                    'type' => 'rito',
+                    'serial_code' => $rqt_code,
+                    'mot' => $fields['radio_vehicle'],
+                    'group' => $rg->value,
+                    'request_id' => $request_id[$x],
+                    'user_id' => auth()->user()->id,
+                    'remarks' => $fields['remarks'],
+                ]);
+            }
+        }
+
         if ($fields['radio_vehicle'] == 2 || $fields['radio_vehicle'] == 3) {
+            $trip_ticket = $this->genTripTicket->trip_ticket();
+
             for ($i=1; $i <= $fields['rp_total'] ; $i++) { 
-                $trip_ticket = $this->genTripTicket->trip_ticket();
 
                 $trans = TransactionVehicles::create([
-                    'type' => $fields['radio_vehicle'],
                     'vehicle_id' => $fields['vehicle_'.$i],
                     'driver_id' => $fields['driver_'.$i],
                     'trip_ticket' => $trip_ticket,
@@ -37,14 +55,15 @@ class CreateRequestTransactions
 
                 $request_id = explode(',',$fields['selected']);
                 for ($x=0; $x < count($request_id); $x++) { 
-
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
+                        'serial_code' => $rqt_code,
+                        'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
+                        'user_id' => auth()->user()->id,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,
                     ]);
-
                 }
             }
             $process = true;
@@ -67,7 +86,6 @@ class CreateRequestTransactions
                 ]);
 
                 $trans = TransactionVehicles::create([
-                    'type' => $fields['radio_vehicle'],
                     'vehicle_id' => $vehicle->id,
                     'driver_id' => $driver->id,
                     'procurement_id' => (isset($fields['travel_po']))? $fields['travel_po']:NULL,
@@ -79,19 +97,20 @@ class CreateRequestTransactions
 
                 $request_id = explode(',',$fields['selected']);
                 for ($x=0; $x < count($request_id); $x++) { 
-
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
+                        'serial_code' => $rqt_code,
+                        'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
+                        'user_id' => auth()->user()->id,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,
                     ]);
-
                 }
             }
             $process = true;
         }
-
+        ($rt)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
         ($process) ? System::where('handler', 'REQUEST_GROUP')->update(['value' => $rg->value + 1]) : NULL;
     }
 }

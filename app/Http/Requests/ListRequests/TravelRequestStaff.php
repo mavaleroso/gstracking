@@ -19,87 +19,96 @@ class TravelRequestStaff extends FormRequest
     
     public function rules()
     {
-        $data = [
+        $rules = [
             'id' => 'nullable',
-            'vehicle_office' => 'required_without:vehicle_rental',
-            'vehicle_rental' => 'required_without:vehicle_office',
+            'radio_vehicle' => 'required',
         ];
 
-        if ($this->request->has('vehicle_office')) {
-            $data['office_vehicle_total'] = 'nullable';
-            for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
-                $data['vehicle_'.$i] = 'required';
-                $data['driver_'.$i] = 'required';
+        if ($this->request->get('radio_vehicle') == 1) {
+            $rules['remarks'] = 'required';
+        }
+
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
+            $rules['rp_total'] = 'nullable';
+            for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
+                $rules['vehicle_'.$i] = 'required';
+                $rules['driver_'.$i] = 'required';
             }
         } 
         
-        if ($this->request->has('vehicle_rental')) {
-            $data['travel_po'] = 'required';
-            $data['rental_vehicle_total'] = 'nullable';
-            for ($i=1; $i <= $this->request->get('rental_vehicle_total'); $i++) { 
-                $data['vehicle_name_'.$i] = 'required';
-                $data['vehicle_plate_'.$i] = 'required';
-                $data['driver_name_'.$i] = 'required';
-                $data['driver_contact_'.$i] = 'required';
+        if ($this->request->get('radio_vehicle') == 4) {
+            $rules['travel_po'] = 'required';
+            $rules['hired_total'] = 'nullable';
+            for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
+                $rules['vehicle_name_'.$i] = 'required';
+                $rules['vehicle_plate_'.$i] = 'required';
+                $rules['driver_name_'.$i] = 'required';
+                $rules['driver_contact_'.$i] = 'required';
             }
             
         }
-
-        return $data;
+        return $rules;
     }
 
     public function attributes()
     {
-        $data = [
-            'vehicle_office' => 'Office Vehicle',
-            'vehicle_rental' => 'Rental Vehicle',
+        $attr = [
+            'radio_vehicle' => 'Mode of Transportation',
         ];
 
-        if ($this->request->has('vehicle_office')) {
-            for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
-                $data['vehicle_'.$i] = 'Vehicle';
-                $data['driver_'.$i] = 'Driver';
+        if ($this->request->get('radio_vehicle') == 1) {
+            $attr['remarks'] = 'Remarks';
+        }
+
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
+            for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
+                $attr['vehicle_'.$i] = 'Vehicle';
+                $attr['driver_'.$i] = 'Driver';
             }
         } 
         
-        if ($this->request->has('vehicle_rental')) {
-            $data['travel_po'] = 'Travel PO';
-            for ($i=1; $i <= $this->request->get('rental_vehicle_total'); $i++) { 
-                $data['vehicle_name_'.$i] = 'Description';
-                $data['vehicle_plate_'.$i] = 'Template';
-                $data['driver_name_'.$i] = 'Driver name';
-                $data['driver_contact_'.$i] = 'Driver Contact number';
+        if ($this->request->get('radio_vehicle') == 4) {
+            $attr['travel_po'] = 'Travel PO';
+            $attr['hired_total'] = 'Hired Total';
+            for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
+                $attr['vehicle_name_'.$i] = 'Description';
+                $attr['vehicle_plate_'.$i] = 'Template';
+                $attr['driver_name_'.$i] = 'Driver name';
+                $attr['driver_contact_'.$i] = 'Driver Contact number';
             }
         }
 
-        return $data;
+        return $attr;
 
     }
 
     public function messages()
     {
-        $data = [
-            'vehicle_office.required' => __('main/validations.required'),
-            'vehicle_rental.required' => __('main/validations.required'),
+        $msgs = [
+            'radio_vehicle.required' => __('main/validations.required'),
         ];
 
-        if ($this->request->has('vehicle_office')) {
-            for ($i=1; $i <= $this->request->get('office_vehicle_total'); $i++) { 
-                $data['vehicle_'.$i] = __('main/validations.required');
-                $data['driver_'.$i] = __('main/validations.required');
+        if ($this->request->get('radio_vehicle') == 1) {
+            $msgs['remarks'] = __('main/validations.required');
+        }
+
+        if ($this->request->get('radio_vehicle') == 2 || $this->request->get('radio_vehicle') == 3) {
+            for ($i=1; $i <= $this->request->get('rp_total'); $i++) { 
+                $msgs['vehicle_'.$i] = __('main/validations.required');
+                $msgs['driver_'.$i] = __('main/validations.required');
             }
         }
 
-        if ($this->request->has('vehicle_rental')) {
-            $data['travel_po'] =  __('main/validations.required');
-            for ($i=1; $i <= $this->request->get('rental_vehicle_total'); $i++) { 
-                $data['vehicle_name_'.$i] = __('main/validations.required');
-                $data['vehicle_plate_'.$i] = __('main/validations.required');
-                $data['driver_name_'.$i] = __('main/validations.required');
-                $data['driver_contact_'.$i] = __('main/validations.required');
+        if ($this->request->get('radio_vehicle') == 4) {
+            $msgs['travel_po'] =  __('main/validations.required');
+            for ($i=1; $i <= $this->request->get('hired_total'); $i++) { 
+                $msgs['vehicle_name_'.$i] = __('main/validations.required');
+                $msgs['vehicle_plate_'.$i] = __('main/validations.required');
+                $msgs['driver_name_'.$i] = __('main/validations.required');
+                $msgs['driver_contact_'.$i] = __('main/validations.required');
             }
         }
 
-        return $data;
+        return $msgs;
     }
 }

@@ -50,6 +50,35 @@ export default {
         $toParseNum(num) {
             let number = parseFloat(num);
             return number.toLocaleString(undefined, {minimumFractionDigits: 2});
+        },
+        $chkStatus(stats) {
+            let label;
+            if (stats == 'Pending') {
+                label = '<span class="label label-inline label-light-warning">Pending</span>';
+            } else {
+                label = '<span class="label label-inline label-light-primary">Approved</span>';
+            }
+            return label;
+        },
+        $chkAssigned(mot, id = null) {
+            let label;
+            if (mot) {
+                if (mot == 1) {
+                    label = '<span class="label label-inline label-light-danger">Unassigned</span>';
+                } else if (mot == 2 || mot == 3 || mot == 4) {
+                    label = '<span class="label label-inline label-light-primary">Assigned</span>';
+                }
+
+                $(() => {
+                    if (id) {
+                        $(`#checkable_${id}`).prop('disabled', true);
+                        $(`#checkable_${id}`).closest('tr').addClass('bg-disabled');
+                    };
+                });
+            } else {
+                label = '<span class="label label-inline label-light-warning">Pending</span>';
+            }
+            return label;
         }
     },
 }

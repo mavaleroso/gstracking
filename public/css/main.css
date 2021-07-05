@@ -112,14 +112,14 @@
     width: 15% !important;
 }
 
-#pending-travels-tbl th {
-    text-align: center;
-}
-
 .spinner {
     z-index: 20 !important;
 }
 
 .bg-gray {
     background-color: #eee !important;
+}
+
+.bg-disabled {
+    background-color: #f8f9fa !important;
 }
