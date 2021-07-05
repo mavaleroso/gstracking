@@ -18,7 +18,6 @@ class CreateRequestsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('division_id')->nullable();
             $table->unsignedBigInteger('section_id')->nullable();
-            $table->string('serial_code')->nullable();
             $table->string('purpose')->nullable();
             $table->date('travel_date')->nullable();
             $table->date('return_date')->nullable();

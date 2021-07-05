@@ -30,7 +30,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Code</th>
                             <th>Department</th>
                             <th>Purpose</th>
                             <th>Travel Date</th>
@@ -187,44 +186,39 @@
                     <div class="card-body row">
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Administrative Fill-in:</h5>
                         <div class="col-lg-12 row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-8">
                                 <div class="form-group">
                                     <input id="request-id" type="hidden" name="id" v-model="staff.id">
                                     <label>Type of Motor Vehicle</label>
                                     <div class="checkbox-inline">
-                                        <label class="checkbox checkbox-solid">
-                                            <input type="checkbox" name="vehicle_office" id="checkbox-office" class="checkbox-vehicle" value="office" v-model="staff.vehicle_office"/> Office
-                                            <span></span>
-                                        </label>
-                                        <label class="checkbox checkbox-solid">
-                                            <input type="checkbox" name="vehicle_rental" id="checkbox-rental" class="checkbox-vehicle" value="rental" v-model="staff.vehicle_rental"/> Rental
+                                        <label class="radio radio-solid mx-2" v-for="(v, index) in vehiclemodes" :key='index'>
+                                            <input type="radio" name="radio_vehicle" class="radio-vehicle" :value="v.id" v-model="vehicle_type"/> {{ v.name }}
                                             <span></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <!-- <div v-if="staff.vehicle_office" class="form-group">
-                                    <label>Fuel Po Number</label>
-                                    <select name="fuel_po" class="form-control select2 staff-required" id="fuel_po-select">
-                                        <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type == 2)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
-                                    </select>
-                                </div> -->
-                                <div v-if="staff.vehicle_rental" class="form-group">
+                            <div class="col-lg-4">
+                                <div v-if="vehicle_type == 4" class="form-group">
                                     <label>Travel Po Number</label>
                                     <select name="travel_po" class="form-control select2 staff-required" id="travel_po-select">
                                         <option label="Label"></option>
-                                        <option v-for="po in procurements.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? parseNum(po.totalBalance) : parseNum(po.po_amount) }}</option>
+                                        <option v-for="po in procurements.filter(i => i.type == 1)" :key="po.id" :value="po.id">{{ po.po_no }} - ₱ {{ (po.totalBalance)? $toParseNum(po.totalBalance) : $toParseNum(po.po_amount) }}</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <hr class="col-lg-12" v-if="staff.vehicle_rental || staff.vehicle_office">
-                        <div v-if="staff.vehicle_office" class="col-lg-12 row">
+                        <div v-if="vehicle_type == 1" class="col-lg-12 row">
+                            <label class="h5 col-lg-12">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
+                            <div class="form-group mb-1 col-lg-12">
+                                <label for="remarks">Remarks</label>
+                                <textarea name="remarks" class="form-control w-100" id="remarks" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div v-if="vehicle_type == 3 || vehicle_type == 2" class="col-lg-12 row">
                             <div class="col-lg-12 d-flex">
-                                <input id="office-vehicle-total" type="hidden" name="office_vehicle_total" v-model="staff.office.total">
-                                <label class="h5">Office Vehicle</label>
+                                <input id="office-vehicle-total" type="hidden" name="rp_total" v-model="staff.office.total">
+                                <label class="h5">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
                                 <div class="ml-auto">
                                     <button class="btn btn-sm btn-outline-primary" @click="incrementOfficeVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                     <button class="btn btn-sm btn-outline-primary" @click="decrementOfficeVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -259,11 +253,10 @@
                                 </table>
                             </div>
                         </div>
-                        <hr class="col-lg-12" v-if="staff.vehicle_rental && staff.vehicle_office">
-                        <div v-if="staff.vehicle_rental" class="col-lg-12 row">
+                        <div v-if="vehicle_type == 4" class="col-lg-12 row">
                             <div class="col-lg-12 d-flex">
-                                <input id="rental-vehicle-total" type="hidden" name="rental_vehicle_total" v-model="staff.rental.total">
-                                <label class="h5">Rental Vehicle</label>
+                                <input id="rental-vehicle-total" type="hidden" name="hired_total" v-model="staff.rental.total">
+                                <label class="h5">{{ vehiclemodes.filter(i => i.id == vehicle_type)[0].name }}</label>
                                 <div class="ml-auto">
                                     <button class="btn btn-sm btn-outline-primary" @click="incrementRentalVehicle"><i class="fa fa-plus-square p-0"></i></button>
                                     <button class="btn btn-sm btn-outline-primary" @click="decrementRentalVehicle"><i class="fa fa-minus-square p-0"></i></button>
@@ -287,10 +280,10 @@
                                                 <input type="text" :name="'vehicle_plate_'+index" class="select-remove form-control" placeholder="Enter vehicle plate no."/>
                                             </td>
                                             <td>
-                                                <input type="text" :name="'vehicle_name_'+index" class="form-control" placeholder="Enter vehicle name"/>
+                                                <input type="text" :name="'vehicle_name_'+index" class="select-remove form-control" placeholder="Enter vehicle name"/>
                                             </td>
                                             <td>
-                                                <input :name="'driver_name_'+index" type="text" class="form-control" placeholder="Enter driver name"/>
+                                                <input :name="'driver_name_'+index" type="text" class="select-remove form-control" placeholder="Enter driver name"/>
                                             </td>
                                             <td>
                                                 <input :name="'driver_contact_'+index" type="text" class="select-remove form-control" placeholder="Enter driver contact no."/>
@@ -339,6 +332,7 @@ import Modal from '../../components/Layouts/Modal';
 export default {
     data() {
         return {
+            vehicle_type: null,
             current_id: null,
             status: null,
             request_status: null,
@@ -368,25 +362,22 @@ export default {
             procurements: [],
             drivers: [],
             maxDate: null,
+            vehiclemodes: [],
             staff: {
                 id: null,
-                vehicle_office: false,
-                vehicle_rental: false,
                 office: {
                     total: 1,
                     data: [],
-                    po: null,
                 }, 
                 rental: {
                     total: 1,
-                    po: null,
                     data: []
                 }
             },
             names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: [],
-            officeNames: ['vehicle_1', 'driver_1'],
-            rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
+            rpNames: ['vehicle_1', 'driver_1'],
+            hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
             remarks: null
         }
     },  
@@ -398,6 +389,7 @@ export default {
         this.getVehicle();
         this.getPo();
         this.getDriver();
+        this.getVehiclemode();
     },
     mounted() {
         this.ini();
@@ -493,7 +485,6 @@ export default {
                     },
                     columns: [
                         { "data": "id" },
-                        { "data": "serial_code" },
                         { "data": "department" },
                         { "data": "purpose" },
                         { "data": "travel_date" },
@@ -506,19 +497,19 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 4,
+                            targets: 3,
                             render: data => {
                                 return this.$dateEng(data);
                             }
                         },
                         {
-                            targets: 5,
+                            targets: 4,
                             render: data => {
                                 return this.$timeEng(data); 
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 5,
                             render: data => {
                                 var status = {
                                     1: {
@@ -542,7 +533,7 @@ export default {
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 6,
                             render: data => {
                                 return this.$dateTimeEng(data);
                             }
@@ -614,9 +605,9 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
-                    $('.checkbox-vehicle').change(function() {
+                    $('.radio-vehicle').change(function() {
                         vm.staff.office.total = vm.staff.rental.total = 1;
-                        if(vm.staff.vehicle_office) {
+                        if(vm.vehicle_type == 3 || vm.vehicle_type == 2) {
                             $('#vehicle-select-1').select2({
                                 placeholder: "Select a vehicle",
                             });
@@ -625,19 +616,11 @@ export default {
                                 placeholder: "Select a driver",
                             });
 
-                            $('#vehicle-select-1').on('change', function() {
-                                vm.staff.vehicle = $(this).val();
-                            });
-
-                            $('#driver-select-1').on('change', function() {
-                                vm.staff.driver = $(this).val();
-                            });
-
                         } else {
-                            vm.officeNames = ['vehicle_1', 'driver_1'];
+                            vm.rpNames = ['vehicle_1', 'driver_1'];
                         }
                         
-                        if (vm.staff.vehicle_rental) {
+                        if (vm.vehicle_type == 4) {
                             $('#travel_po-select').select2({
                                 placeholder: "Select a Travel PO",
                             });
@@ -645,23 +628,12 @@ export default {
                             $('.select-remove').siblings('.select2').remove();
                             $('.select-remove').siblings('.select2').remove();
                         } else {
-                            vm.rentalNames = ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'];
+                            vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'];
                         }
 
-                        if ($('#checkbox-office').is(":checked")) {
-                            vm.defaultNames.push('office_vehicle');
-                        } else {
-                            vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
-                        }
-
-                        if ($('#checkbox-rental').is(":checked")) {
-                            vm.defaultNames.push('rental_vehicle');
-                        } else {
-                            vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
-                        }
                     });
 
-                    $('.checkbox-vehicle').on('change', () => {
+                    $('.radio-vehicle').on('change', () => {
                         $('.invalid-feedback-admin').remove();
                         $('.invalid-admin').removeClass('is-invalid');
                     });
@@ -719,9 +691,6 @@ export default {
 
                 $('#kt_select_region').val(data.region);
                 $('#kt_select_region').trigger('change');
-                let ctr_p = 0;
-                let ctr_c = 0;
-                let ctr_b = 0;
 
                 setTimeout(() => {
                     $('#kt_select_province').val(data.province);
@@ -841,7 +810,7 @@ export default {
                     keys.push(`${key}`);
                     values.push(`${value}`);
                     let _keys = `${key}`.replace(/[0-9]/g, '');
-                    if (`${key}` == 'vehicle_office' || `${key}` == 'vehicle_rental') {
+                    if (`${key}` == 'radio_vehicle') {
                         if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
                             $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
@@ -849,10 +818,10 @@ export default {
                         if($('#'+`${key}`+'-select').next().next().length == 0) {
                             $('#'+`${key}`+'-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">'+`${value}`+'</div>');
                         }
-                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+                    } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || `${key}` == 'remarks') {
                         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
-                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback invalid-feedback-admin">'+`${value}`+'</div>');
                         }
                     } else {
                         if($('[name="'+`${key}`+'"]').next().next().length == 0) {
@@ -871,24 +840,24 @@ export default {
                         } 
                     }
                 }
-                for (let i = 0; i < this.rentalNames.length; i++) {
-                    if (this.rentalNames[i] == 'travel_po') {
-                        if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
-                            if ($('#'+this.rentalNames[i]+'-select').next().next().length != 0) {
-                                $('#'+this.rentalNames[i]+'-select').next().next('.invalid-feedback').remove();
+                for (let i = 0; i < this.hiredNames.length; i++) {
+                    if (this.hiredNames[i] == 'travel_po') {
+                        if (keys.indexOf(''+this.hiredNames[i]+'') == -1) {
+                            if ($('#'+this.hiredNames[i]+'-select').next().next().length != 0) {
+                                $('#'+this.hiredNames[i]+'-select').next().next('.invalid-feedback').remove();
                             }
                         }
                     } else {
-                        if (keys.indexOf(''+this.rentalNames[i]+'') == -1) {
-                            $('[name="'+this.rentalNames[i]+'"]').removeClass('is-invalid');
-                            $('[name="'+this.rentalNames[i]+'"]').next('.invalid-feedback').remove();
+                        if (keys.indexOf(''+this.hiredNames[i]+'') == -1) {
+                            $('[name="'+this.hiredNames[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.hiredNames[i]+'"]').next('.invalid-feedback').remove();
                         }
                     }
                 }
-                for (let i = 0; i < this.officeNames.length; i++) {
-                    if (keys.indexOf(''+this.officeNames[i]+'') == -1) {
-                        if ($('[name="'+this.officeNames[i]+'"]').next().next().length != 0) {
-                            $('[name="'+this.officeNames[i]+'"]').next().next('.invalid-feedback').remove();
+                for (let i = 0; i < this.rpNames.length; i++) {
+                    if (keys.indexOf(''+this.rpNames[i]+'') == -1) {
+                        if ($('[name="'+this.rpNames[i]+'"]').next().next().length != 0) {
+                            $('[name="'+this.rpNames[i]+'"]').next().next('.invalid-feedback').remove();
                         }
                     }
                 }
@@ -945,15 +914,15 @@ export default {
                 });
             }, 100);
 
-            this.officeNames.push(`vehicle_${count}`);
-            this.officeNames.push(`driver_${count}`);
+            this.rpNames.push(`vehicle_${count}`);
+            this.rpNames.push(`driver_${count}`);
             
         },
         decrementOfficeVehicle(event) {
             event.preventDefault();
             if(this.staff.office.total != 1) {
-                this.officeNames.pop();
-                this.officeNames.pop();
+                this.rpNames.pop();
+                this.rpNames.pop();
 
                 this.staff.office.total -= 1;
             } 
@@ -962,18 +931,18 @@ export default {
         incrementRentalVehicle(event) {
             event.preventDefault();
             let count = this.staff.rental.total += 1;
-            this.rentalNames.push('vehicle_name_'+count);
-            this.rentalNames.push('vehicle_plate_'+count);
-            this.rentalNames.push('driver_name_'+count);
-            this.rentalNames.push('driver_contact_'+count);
+            this.hiredNames.push('vehicle_name_'+count);
+            this.hiredNames.push('vehicle_plate_'+count);
+            this.hiredNames.push('driver_name_'+count);
+            this.hiredNames.push('driver_contact_'+count);
         },
         decrementRentalVehicle(event) {
             event.preventDefault();
             if(this.staff.rental.total != 1) {
-                this.rentalNames.pop();
-                this.rentalNames.pop();
-                this.rentalNames.pop();
-                this.rentalNames.pop();
+                this.hiredNames.pop();
+                this.hiredNames.pop();
+                this.hiredNames.pop();
+                this.hiredNames.pop();
 
                 this.staff.rental.total -= 1;
             }
@@ -992,9 +961,6 @@ export default {
             axios.get(BASE_URL + '/api/v1/driver').then(response => {
                 this.drivers = response.data;
             });
-        },
-        parseNum(data) {
-            return toParseNum(data);
         },
         declined(){
             this.remarks='';
@@ -1039,6 +1005,11 @@ export default {
             var maxDate = year + '-' + month + '-' + day;
 
             this.maxDate = maxDate;
+        },
+        getVehiclemode() {
+            axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
+                this.vehiclemodes = res.data.results;
+            });
         },
     },
 }

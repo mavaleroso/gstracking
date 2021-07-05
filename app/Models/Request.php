@@ -26,7 +26,6 @@ class Request extends Model
         'user_id',
         'division_id',
         'section_id',
-        'serial_code',
         'type_vehicle',
         'department',
         'purpose',

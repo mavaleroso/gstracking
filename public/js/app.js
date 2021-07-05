@@ -3955,17 +3955,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      vehicle_type: null,
       current_id: null,
       status: null,
       request_status: null,
@@ -3995,25 +3989,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       procurements: [],
       drivers: [],
       maxDate: null,
+      vehiclemodes: [],
       staff: {
         id: null,
-        vehicle_office: false,
-        vehicle_rental: false,
         office: {
           total: 1,
-          data: [],
-          po: null
+          data: []
         },
         rental: {
           total: 1,
-          po: null,
           data: []
         }
       },
       names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
       defaultNames: [],
-      officeNames: ['vehicle_1', 'driver_1'],
-      rentalNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      rpNames: ['vehicle_1', 'driver_1'],
+      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       remarks: null
     };
   },
@@ -4025,6 +4016,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getVehicle();
     this.getPo();
     this.getDriver();
+    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
@@ -4128,8 +4120,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columns: [{
             "data": "id"
           }, {
-            "data": "serial_code"
-          }, {
             "data": "department"
           }, {
             "data": "purpose"
@@ -4149,17 +4139,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             "data": "id"
           }],
           columnDefs: [{
-            targets: 4,
+            targets: 3,
             render: function render(data) {
               return _this2.$dateEng(data);
             }
           }, {
-            targets: 5,
+            targets: 4,
             render: function render(data) {
               return _this2.$timeEng(data);
             }
           }, {
-            targets: 6,
+            targets: 5,
             render: function render(data) {
               var status = {
                 1: {
@@ -4182,7 +4172,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
             }
           }, {
-            targets: 7,
+            targets: 6,
             render: function render(data) {
               return _this2.$dateTimeEng(data);
             }
@@ -4256,49 +4246,31 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
-          $('.checkbox-vehicle').change(function () {
+          $('.radio-vehicle').change(function () {
             vm.staff.office.total = vm.staff.rental.total = 1;
 
-            if (vm.staff.vehicle_office) {
+            if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
               $('#vehicle-select-1').select2({
                 placeholder: "Select a vehicle"
               });
               $('#driver-select-1').select2({
                 placeholder: "Select a driver"
               });
-              $('#vehicle-select-1').on('change', function () {
-                vm.staff.vehicle = $(this).val();
-              });
-              $('#driver-select-1').on('change', function () {
-                vm.staff.driver = $(this).val();
-              });
             } else {
-              vm.officeNames = ['vehicle_1', 'driver_1'];
+              vm.rpNames = ['vehicle_1', 'driver_1'];
             }
 
-            if (vm.staff.vehicle_rental) {
+            if (vm.vehicle_type == 4) {
               $('#travel_po-select').select2({
                 placeholder: "Select a Travel PO"
               });
               $('.select-remove').siblings('.select2').remove();
               $('.select-remove').siblings('.select2').remove();
             } else {
-              vm.rentalNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
-            }
-
-            if ($('#checkbox-office').is(":checked")) {
-              vm.defaultNames.push('office_vehicle');
-            } else {
-              vm.defaultNames.splice(vm.defaultNames.indexOf('office_vehicle'), 1);
-            }
-
-            if ($('#checkbox-rental').is(":checked")) {
-              vm.defaultNames.push('rental_vehicle');
-            } else {
-              vm.defaultNames.splice(vm.defaultNames.indexOf('rental_vehicle'), 1);
+              vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
             }
           });
-          $('.checkbox-vehicle').on('change', function () {
+          $('.radio-vehicle').on('change', function () {
             $('.invalid-feedback-admin').remove();
             $('.invalid-admin').removeClass('is-invalid');
           });
@@ -4380,9 +4352,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }).filter(distinct);
         $('#kt_select_region').val(data.region);
         $('#kt_select_region').trigger('change');
-        var ctr_p = 0;
-        var ctr_c = 0;
-        var ctr_b = 0;
         setTimeout(function () {
           $('#kt_select_province').val(data.province);
           $('#kt_select_province').trigger('change');
@@ -4526,7 +4495,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
           var _keys = "".concat(key).replace(/[0-9]/g, '');
 
-          if ("".concat(key) == 'vehicle_office' || "".concat(key) == 'vehicle_rental') {
+          if ("".concat(key) == 'radio_vehicle') {
             if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
               $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
@@ -4534,10 +4503,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
               $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_') {
+          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
             if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin">' + "".concat(value) + '</div>');
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().next().length == 0) {
@@ -4558,25 +4527,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this11.rentalNames.length; _i3++) {
-          if (_this11.rentalNames[_i3] == 'travel_po') {
-            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
-              if ($('#' + _this11.rentalNames[_i3] + '-select').next().next().length != 0) {
-                $('#' + _this11.rentalNames[_i3] + '-select').next().next('.invalid-feedback').remove();
+        for (var _i3 = 0; _i3 < _this11.hiredNames.length; _i3++) {
+          if (_this11.hiredNames[_i3] == 'travel_po') {
+            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
+              if ($('#' + _this11.hiredNames[_i3] + '-select').next().next().length != 0) {
+                $('#' + _this11.hiredNames[_i3] + '-select').next().next('.invalid-feedback').remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this11.rentalNames[_i3] + '') == -1) {
-              $('[name="' + _this11.rentalNames[_i3] + '"]').removeClass('is-invalid');
-              $('[name="' + _this11.rentalNames[_i3] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
+              $('[name="' + _this11.hiredNames[_i3] + '"]').removeClass('is-invalid');
+              $('[name="' + _this11.hiredNames[_i3] + '"]').next('.invalid-feedback').remove();
             }
           }
         }
 
-        for (var _i4 = 0; _i4 < _this11.officeNames.length; _i4++) {
-          if (keys.indexOf('' + _this11.officeNames[_i4] + '') == -1) {
-            if ($('[name="' + _this11.officeNames[_i4] + '"]').next().next().length != 0) {
-              $('[name="' + _this11.officeNames[_i4] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i4 = 0; _i4 < _this11.rpNames.length; _i4++) {
+          if (keys.indexOf('' + _this11.rpNames[_i4] + '') == -1) {
+            if ($('[name="' + _this11.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this11.rpNames[_i4] + '"]').next().next('.invalid-feedback').remove();
             }
           }
         }
@@ -4634,34 +4603,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a driver"
         });
       }, 100);
-      this.officeNames.push("vehicle_".concat(count));
-      this.officeNames.push("driver_".concat(count));
+      this.rpNames.push("vehicle_".concat(count));
+      this.rpNames.push("driver_".concat(count));
     },
     decrementOfficeVehicle: function decrementOfficeVehicle(event) {
       event.preventDefault();
 
       if (this.staff.office.total != 1) {
-        this.officeNames.pop();
-        this.officeNames.pop();
+        this.rpNames.pop();
+        this.rpNames.pop();
         this.staff.office.total -= 1;
       }
     },
     incrementRentalVehicle: function incrementRentalVehicle(event) {
       event.preventDefault();
       var count = this.staff.rental.total += 1;
-      this.rentalNames.push('vehicle_name_' + count);
-      this.rentalNames.push('vehicle_plate_' + count);
-      this.rentalNames.push('driver_name_' + count);
-      this.rentalNames.push('driver_contact_' + count);
+      this.hiredNames.push('vehicle_name_' + count);
+      this.hiredNames.push('vehicle_plate_' + count);
+      this.hiredNames.push('driver_name_' + count);
+      this.hiredNames.push('driver_contact_' + count);
     },
     decrementRentalVehicle: function decrementRentalVehicle(event) {
       event.preventDefault();
 
       if (this.staff.rental.total != 1) {
-        this.rentalNames.pop();
-        this.rentalNames.pop();
-        this.rentalNames.pop();
-        this.rentalNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
+        this.hiredNames.pop();
         this.staff.rental.total -= 1;
       }
     },
@@ -4685,9 +4654,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
         _this14.drivers = response.data;
       });
-    },
-    parseNum: function parseNum(data) {
-      return toParseNum(data);
     },
     declined: function declined() {
       this.remarks = '';
@@ -4740,6 +4706,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       if (day < 10) day = '0' + day.toString();
       var maxDate = year + '-' + month + '-' + day;
       this.maxDate = maxDate;
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this16 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this16.vehiclemodes = res.data.results;
+      });
     }
   }
 });
@@ -5640,7 +5613,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       $('input.checkable:checkbox:checked').each(function () {
         arr.push($(this).val());
         vm.selected.push($(this).val());
-        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[9];
+        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];
         ;
         vm.passengers_count += parseInt(pasColumn.textContent);
         count++;
@@ -7129,8 +7102,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7145,7 +7116,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeCities: [],
       names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
       complete: false,
-      requestCode: null,
       createdAt: null,
       section: '',
       maxDate: null,
@@ -7311,7 +7281,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         $('.details-input').attr('disabled', true);
         _this2.complete = true;
-        _this2.requestCode = response.data.result.serial_code;
         _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -7435,7 +7404,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       $('.details-input').attr('disabled', false);
       this.complete = false;
-      this.requestCode = null;
       this.createdAt = null;
     },
     dateConf: function dateConf() {
@@ -53929,7 +53897,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-12 row" }, [
-                          _c("div", { staticClass: "col-lg-6" }, [
+                          _c("div", { staticClass: "col-lg-8" }, [
                             _c("div", { staticClass: "form-group" }, [
                               _c("input", {
                                 directives: [
@@ -53962,156 +53930,60 @@ var render = function() {
                               _vm._v(" "),
                               _c("label", [_vm._v("Type of Motor Vehicle")]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "checkbox-inline" }, [
-                                _c(
-                                  "label",
-                                  { staticClass: "checkbox checkbox-solid" },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.staff.vehicle_office,
-                                          expression: "staff.vehicle_office"
-                                        }
-                                      ],
-                                      staticClass: "checkbox-vehicle",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "vehicle_office",
-                                        id: "checkbox-office",
-                                        value: "office"
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(
-                                          _vm.staff.vehicle_office
-                                        )
-                                          ? _vm._i(
-                                              _vm.staff.vehicle_office,
-                                              "office"
-                                            ) > -1
-                                          : _vm.staff.vehicle_office
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = _vm.staff.vehicle_office,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = "office",
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_office",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_office",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(
-                                              _vm.staff,
-                                              "vehicle_office",
-                                              $$c
-                                            )
+                              _c(
+                                "div",
+                                { staticClass: "checkbox-inline" },
+                                _vm._l(_vm.vehiclemodes, function(v, index) {
+                                  return _c(
+                                    "label",
+                                    {
+                                      key: index,
+                                      staticClass: "radio radio-solid mx-2"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.vehicle_type,
+                                            expression: "vehicle_type"
+                                          }
+                                        ],
+                                        staticClass: "radio-vehicle",
+                                        attrs: {
+                                          type: "radio",
+                                          name: "radio_vehicle"
+                                        },
+                                        domProps: {
+                                          value: v.id,
+                                          checked: _vm._q(
+                                            _vm.vehicle_type,
+                                            v.id
+                                          )
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            _vm.vehicle_type = v.id
                                           }
                                         }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      " Office\n                                        "
-                                    ),
-                                    _c("span")
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "label",
-                                  { staticClass: "checkbox checkbox-solid" },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.staff.vehicle_rental,
-                                          expression: "staff.vehicle_rental"
-                                        }
-                                      ],
-                                      staticClass: "checkbox-vehicle",
-                                      attrs: {
-                                        type: "checkbox",
-                                        name: "vehicle_rental",
-                                        id: "checkbox-rental",
-                                        value: "rental"
-                                      },
-                                      domProps: {
-                                        checked: Array.isArray(
-                                          _vm.staff.vehicle_rental
-                                        )
-                                          ? _vm._i(
-                                              _vm.staff.vehicle_rental,
-                                              "rental"
-                                            ) > -1
-                                          : _vm.staff.vehicle_rental
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$a = _vm.staff.vehicle_rental,
-                                            $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
-                                          if (Array.isArray($$a)) {
-                                            var $$v = "rental",
-                                              $$i = _vm._i($$a, $$v)
-                                            if ($$el.checked) {
-                                              $$i < 0 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_rental",
-                                                  $$a.concat([$$v])
-                                                )
-                                            } else {
-                                              $$i > -1 &&
-                                                _vm.$set(
-                                                  _vm.staff,
-                                                  "vehicle_rental",
-                                                  $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1))
-                                                )
-                                            }
-                                          } else {
-                                            _vm.$set(
-                                              _vm.staff,
-                                              "vehicle_rental",
-                                              $$c
-                                            )
-                                          }
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      " Rental\n                                        "
-                                    ),
-                                    _c("span")
-                                  ]
-                                )
-                              ])
+                                      }),
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(v.name) +
+                                          "\n                                        "
+                                      ),
+                                      _c("span")
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
                             ])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-lg-6" }, [
-                            _vm.staff.vehicle_rental
+                          _c("div", { staticClass: "col-lg-4" }, [
+                            _vm.vehicle_type == 4
                               ? _c("div", { staticClass: "form-group" }, [
                                   _c("label", [_vm._v("Travel Po Number")]),
                                   _vm._v(" "),
@@ -54147,10 +54019,10 @@ var render = function() {
                                                   " - ₱ " +
                                                   _vm._s(
                                                     po.totalBalance
-                                                      ? _vm.parseNum(
+                                                      ? _vm.$toParseNum(
                                                           po.totalBalance
                                                         )
-                                                      : _vm.parseNum(
+                                                      : _vm.$toParseNum(
                                                           po.po_amount
                                                         )
                                                   )
@@ -54167,11 +54039,40 @@ var render = function() {
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm.staff.vehicle_rental || _vm.staff.vehicle_office
-                          ? _c("hr", { staticClass: "col-lg-12" })
+                        _vm.vehicle_type == 1
+                          ? _c("div", { staticClass: "col-lg-12 row" }, [
+                              _c("label", { staticClass: "h5 col-lg-12" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.vehiclemodes.filter(function(i) {
+                                      return i.id == _vm.vehicle_type
+                                    })[0].name
+                                  )
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-group mb-1 col-lg-12" },
+                                [
+                                  _c("label", { attrs: { for: "remarks" } }, [
+                                    _vm._v("Remarks")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("textarea", {
+                                    staticClass: "form-control w-100",
+                                    attrs: {
+                                      name: "remarks",
+                                      id: "remarks",
+                                      rows: "3"
+                                    }
+                                  })
+                                ]
+                              )
+                            ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.staff.vehicle_office
+                        _vm.vehicle_type == 3 || _vm.vehicle_type == 2
                           ? _c("div", { staticClass: "col-lg-12 row" }, [
                               _c("div", { staticClass: "col-lg-12 d-flex" }, [
                                 _c("input", {
@@ -54186,7 +54087,7 @@ var render = function() {
                                   attrs: {
                                     id: "office-vehicle-total",
                                     type: "hidden",
-                                    name: "office_vehicle_total"
+                                    name: "rp_total"
                                   },
                                   domProps: { value: _vm.staff.office.total },
                                   on: {
@@ -54204,7 +54105,13 @@ var render = function() {
                                 }),
                                 _vm._v(" "),
                                 _c("label", { staticClass: "h5" }, [
-                                  _vm._v("Office Vehicle")
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.vehiclemodes.filter(function(i) {
+                                        return i.id == _vm.vehicle_type
+                                      })[0].name
+                                    )
+                                  )
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "ml-auto" }, [
@@ -54383,11 +54290,7 @@ var render = function() {
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.staff.vehicle_rental && _vm.staff.vehicle_office
-                          ? _c("hr", { staticClass: "col-lg-12" })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.staff.vehicle_rental
+                        _vm.vehicle_type == 4
                           ? _c("div", { staticClass: "col-lg-12 row" }, [
                               _c("div", { staticClass: "col-lg-12 d-flex" }, [
                                 _c("input", {
@@ -54402,7 +54305,7 @@ var render = function() {
                                   attrs: {
                                     id: "rental-vehicle-total",
                                     type: "hidden",
-                                    name: "rental_vehicle_total"
+                                    name: "hired_total"
                                   },
                                   domProps: { value: _vm.staff.rental.total },
                                   on: {
@@ -54420,7 +54323,13 @@ var render = function() {
                                 }),
                                 _vm._v(" "),
                                 _c("label", { staticClass: "h5" }, [
-                                  _vm._v("Rental Vehicle")
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.vehiclemodes.filter(function(i) {
+                                        return i.id == _vm.vehicle_type
+                                      })[0].name
+                                    )
+                                  )
                                 ]),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "ml-auto" }, [
@@ -54541,7 +54450,8 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("td", [
                                             _c("input", {
-                                              staticClass: "form-control",
+                                              staticClass:
+                                                "select-remove form-control",
                                               attrs: {
                                                 type: "text",
                                                 name: "vehicle_name_" + index,
@@ -54553,7 +54463,8 @@ var render = function() {
                                           _vm._v(" "),
                                           _c("td", [
                                             _c("input", {
-                                              staticClass: "form-control",
+                                              staticClass:
+                                                "select-remove form-control",
                                               attrs: {
                                                 name: "driver_name_" + index,
                                                 type: "text",
@@ -54742,8 +54653,6 @@ var staticRenderFns = [
           _c("thead", [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Code")]),
               _vm._v(" "),
               _c("th", [_vm._v("Department")]),
               _vm._v(" "),
@@ -58419,12 +58328,6 @@ var render = function() {
             _c("div", { staticClass: "col-xl-8" }, [
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
-                    _c("span", [_vm._v("Your request code:")]),
-                    _vm._v(" "),
-                    _c("h1", { staticClass: "display-4" }, [
-                      _vm._v(_vm._s(_vm.requestCode))
-                    ]),
-                    _vm._v(" "),
                     _c("p", { staticClass: "lead" }, [
                       _vm._v("Your request has successfully completed!")
                     ]),
