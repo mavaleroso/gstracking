@@ -8688,6 +8688,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -60792,6 +60802,17 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                              },
+                              [_vm._v(_vm._s(t.serial_code))]
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c(
                             "td",
                             _vm._l(t.tracking_no, function(t, index) {
@@ -60921,7 +60942,20 @@ var render = function() {
                               )
                             }),
                             0
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href: "print_request?id=" + t.group,
+                                  target: "_blank"
+                                }
+                              },
+                              [_vm._m(3, true)]
+                            )
+                          ])
                         ])
                       }),
                       0
@@ -61109,6 +61143,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Serial Code")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Tracking Number")]),
         _vm._v(" "),
         _c("th", [_vm._v("Destination")]),
@@ -61123,9 +61159,27 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "200px" } }, [_vm._v("Status")])
+        _c("th", [_vm._v("Portal Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Slip")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-sm btn-clean btn-details",
+        attrs: { title: "View records" }
+      },
+      [
+        _c("i", { staticClass: "flaticon2-printer" }),
+        _vm._v(" Form\n                                ")
+      ]
+    )
   }
 ]
 render._withStripped = true

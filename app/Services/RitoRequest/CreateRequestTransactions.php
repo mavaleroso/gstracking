@@ -6,15 +6,18 @@ use App\Models\TransactionVehicles;
 use App\Services\Core\GenerateTripTicket;
 use App\Models\System;
 use App\Models\Vehicle;
+use App\Services\Core\GenerateCode;
 use App\Models\Driver;
 
 class CreateRequestTransactions
 {
 
-    public function __construct(GenerateTripTicket $genTripTicket)
+    public function __construct(GenerateTripTicket $genTripTicket, GenerateCode $getCode)
     {
         $this->genTripTicket = $genTripTicket;
+        $this->getCode = $getCode;
     }
+
     public function execute($fields)
     {
         $rg = System::select('value')->where('handler', 'REQUEST_GROUP')->first();
@@ -23,13 +26,16 @@ class CreateRequestTransactions
         if ($fields['radio_vehicle'] == 1) {
             $request_id = explode(',',$fields['selected']);
             for ($x=0; $x < count($request_id); $x++) { 
+                $rqt_code = $this->getCode->request_code();
                 $rt = RequestTransactions::create([
                     'type' => 'rito',
+                    'serial_code' => $rqt_code,
                     'mot' => $fields['radio_vehicle'],
                     'group' => $rg->value,
                     'request_id' => $request_id[$x],
                     'remarks' => $fields['remarks'],
                 ]);
+                ($rt)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
             }
         }
 
@@ -48,15 +54,16 @@ class CreateRequestTransactions
 
                 $request_id = explode(',',$fields['selected']);
                 for ($x=0; $x < count($request_id); $x++) { 
-
+                    $rqt_code = $this->getCode->request_code();
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
+                        'serial_code' => $rqt_code,
                         'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,
                     ]);
-
+                    ($rt)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
                 }
             }
             $process = true;
@@ -90,15 +97,16 @@ class CreateRequestTransactions
 
                 $request_id = explode(',',$fields['selected']);
                 for ($x=0; $x < count($request_id); $x++) { 
-
+                    $rqt_code = $this->getCode->request_code();
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
+                        'serial_code' => $rqt_code,
                         'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
                         'request_id' => $request_id[$x],
                         'transaction_vehicles_id' => $trans->id,
                     ]);
-
+                    ($rt)? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]):NULL;
                 }
             }
             $process = true;

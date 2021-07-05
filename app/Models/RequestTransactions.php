@@ -10,6 +10,7 @@ class RequestTransactions extends Model
 
     protected $fillable = [
         'type',
+        'serial_code',
         'mot',
         'group',
         'request_id',
