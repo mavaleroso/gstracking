@@ -122,9 +122,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr v-for="index in total" :key="index">
                                         <td scope="row" class="text-center">1</td>
-                                        <td><input name="pax_name_1" class="details-input form-control" type="text"/></td>
+                                        <!-- <select v-if="$store.getters['currentUser/loadingStats']" class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="fullname" disabled>
+                                            <option label="Label"></option>
+                                            <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                        </select> -->
+                                        <td><select  class="details-input form-control select2" id="pax_name_1" name="pax_name_1" v-model="pax_name_1">
+                                            <option label="Label"></option>
+                                            <option v-for="(result,index) in results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                        </select></td>
+                                        
+                                        <!-- <td><input name="pax_name_1" class="details-input form-control" type="text"/></td> -->
                                         <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
                                         <td>
                                             <select name="pax_gen_1" class="details-input form-control">
@@ -181,7 +190,10 @@ export default {
             currentlySelectedCities: [],
             currentlySelectedProvince: [],
             currentlySelectedBarangays: [],
-            currentCities: []
+            currentCities: [],
+            pax_name_1: '',
+            results: [],
+            total: 1
         }
     },
     created() {
@@ -195,6 +207,7 @@ export default {
     mounted() {
         this.ini();
         this.dateConf();
+        this.EmployeeList();
         
     },
     methods: {
@@ -227,6 +240,11 @@ export default {
                 });
                 $('#kt_select_section').select2({
                     placeholder: "Select a Section",
+                    allowClear: true
+                });
+
+                $('#pax_name_1').select2({
+                    placeholder: "Select fullname",
                     allowClear: true
                 });
 
@@ -273,6 +291,11 @@ export default {
                 });
             });
         },
+
+        EmployeeList(){
+            this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+            // this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
+        },
         convertToInt(data){
             console.log("Called");
             console.log(data);
@@ -280,12 +303,20 @@ export default {
         },
         addRow(event) {
             event.preventDefault();
-            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-            lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-            $('#pax-total').val(lastTr);
-            this.names.push('pax_name_'+lastTr);
-            this.names.push('pax_des_'+lastTr);
+            this.total += 1;
+
+            $('#pax_name_1').select2({
+                    placeholder: "Select fullname",
+                    allowClear: true
+            });
+
+            // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+            // lastTr += 1;
+            // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
+
+            // $('#pax-total').val(lastTr);
+            // this.names.push('pax_name_'+lastTr);
+            // this.names.push('pax_des_'+lastTr);
         },
         removeRow(event) {
             event.preventDefault();
