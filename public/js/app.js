@@ -1926,6 +1926,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.ini();
     this.vuexStore();
+    this.destination();
   },
   methods: {
     ini: function ini() {
@@ -1947,8 +1948,37 @@ __webpack_require__.r(__webpack_exports__);
       if (localStorage.getItem("ListEmployee") === null) {
         this.$store.dispatch('currentUser/loadEmployee');
       } else {
-        this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+        this.$store.dispatch('currentUser/setLocalData', JSON.parse(localStorage.getItem('ListEmployee')));
       }
+    },
+    destination: function destination() {
+      var division = localStorage.getItem("division");
+      var region = localStorage.getItem("region");
+      var section = localStorage.getItem("section");
+      var province = localStorage.getItem("province");
+      var city = localStorage.getItem("city");
+      var barangay = localStorage.getItem("barangay");
+
+      if (division === null || region === null || section === null || province === null || city === null || barangay === null) {
+        this.$store.dispatch('destination/loadDivision');
+        this.$store.dispatch('destination/loadRegion');
+        this.$store.dispatch('destination/loadSection');
+        this.$store.dispatch('destination/loadProvince');
+        this.$store.dispatch('destination/loadCity');
+        this.$store.dispatch('destination/loadBarangay');
+      } else {
+        this.$store.dispatch('destination/setLocalDivision', JSON.parse(localStorage.getItem('division')));
+        this.$store.dispatch('destination/setLocalRegion', JSON.parse(localStorage.getItem('region')));
+        this.$store.dispatch('destination/setLocalSection', JSON.parse(localStorage.getItem('section')));
+        this.$store.dispatch('destination/setLocalProvince', JSON.parse(localStorage.getItem('province]')));
+        this.$store.dispatch('destination/setLocalCity', JSON.parse(localStorage.getItem('city]')));
+        this.$store.dispatch('destination/setLocalBarangay', JSON.parse(localStorage.getItem('barangay]')));
+      } // if (localStorage.getItem("ListEmployee") === null) {
+      // } 
+      // else {
+      // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+      // }
+
     }
   }
 });
@@ -7111,6 +7141,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7120,21 +7159,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       provinces: [],
       cities: [],
       brgys: [],
-      activeProvinces: [],
+      activeProvinces: '',
       activeSections: [],
       activeCities: [],
       names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
       complete: false,
       createdAt: null,
-      section: '',
       maxDate: null,
       travelDate: null,
-      returnDate: null
+      returnDate: null,
+      activeDivision: null,
+      activeRegion: null,
+      activeProvince: null,
+      activeBarangay: null,
+      selectedProvinces: null,
+      selectedBarangays: null,
+      selectedCities: null,
+      currentlySelectedCities: [],
+      currentlySelectedProvince: [],
+      currentlySelectedBarangays: [],
+      currentCities: []
     };
   },
   created: function created() {
     this.getRegion();
     this.getDivision();
+    this.getSection();
+    this.getProvince();
+    this.getCity();
+    this.getBrgy();
   },
   mounted: function mounted() {
     this.ini();
@@ -7144,8 +7197,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     ini: function ini() {
       var _this = this;
 
+      var vm = this;
       $(function () {
-        $('#kt_select_section').attr('disabled', 'disabled');
         $('#kt_select_province').select2({
           placeholder: "Select a Province"
         }); // multi select
@@ -7173,77 +7226,57 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_division').on('change', function () {
-          $('#kt_select_section').attr('disabled', 'disabled');
-          setTimeout(function () {
-            if ($('#kt_select_division').val() != "") {
-              $('#kt_select_section').select2('enable');
-              var id = $('#kt_select_division').val();
-
-              _this.getSection(id);
-
-              _this.sections = [];
-              _this.activeSections = [];
-            } else {
-              $("#kt_select_section").empty();
-            }
-          }, 500);
+          vm.activeDivision = $(this).val();
         });
         $('#kt_select_section').on('change', function () {
           var id = $('#kt_select_section').val();
           _this.section = id;
         });
         $('#kt_select_region').on('change', function () {
-          var id = $('#kt_select_region').val();
-
-          _this.getProvince(id);
-
-          _this.provinces = [];
-          _this.cities = [];
-          _this.brgys = [];
-          _this.activeProvinces = [];
-          _this.activeCities = [];
+          vm.activeRegion = $(this).val();
         });
         $('#kt_select_province').on('change', function () {
-          var id = $('#kt_select_province').val();
-          id = id.map(function (i) {
+          var data_arr, data_int, res, prov;
+          vm.activeProvince = $(this).val();
+          console.log("active province");
+          console.log($(this).val());
+          data_arr = Object.values(vm.activeProvince);
+          data_int = data_arr.map(function (i) {
             return Number(i);
           });
-
-          _this.provinces.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
+          vm.selectedProvinces = data_int;
+          res = vm.cities.filter(function (item) {
+            return vm.selectedProvinces.includes(item.province_id);
           });
-
-          if (id.length != 0) {
-            _this.getCity(id);
-
-            _this.currentProv();
-          }
+          prov = vm.provinces.filter(function (item) {
+            return vm.selectedProvinces.includes(item.id);
+          });
+          vm.currentlySelectedCities = res;
+          vm.currentlySelectedProvince = prov;
         });
         $('#kt_select_city').on('change', function () {
-          var id = $('#kt_select_city').val();
-          id = id.map(function (i) {
+          var data_arr, data_int, res, city;
+          vm.activeBarangay = $(this).val();
+          data_arr = Object.values(vm.activeBarangay);
+          data_int = data_arr.map(function (i) {
             return Number(i);
           });
-
-          _this.cities.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
+          vm.selectedCities = data_int;
+          res = vm.brgys.filter(function (item) {
+            return vm.selectedCities.includes(item.city_id);
           });
-
-          if (id.length != 0) {
-            _this.getBrgy(id);
-
-            _this.currentCity();
-          }
+          city = vm.cities.filter(function (item) {
+            return vm.selectedCities.includes(item.id);
+          });
+          vm.currentlySelectedBarangays = res;
+          vm.currentCities = city;
         });
       });
+    },
+    convertToInt: function convertToInt(data) {
+      console.log("Called");
+      console.log(data);
+      return false;
     },
     addRow: function addRow(event) {
       event.preventDefault();
@@ -7335,58 +7368,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     getDivision: function getDivision() {
-      var _this3 = this;
-
-      axios.get(BASE_URL + "/api/v1/division").then(function (response) {
-        _this3.divisions = response.data;
-      });
+      this.divisions = JSON.parse(localStorage.getItem('division'));
     },
-    getSection: function getSection(id) {
-      var _this4 = this;
-
-      axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
-        _this4.sections = response.data;
-
-        _this4.sections.map(function (i) {
-          return i.active = "false";
-        });
-      });
+    getSection: function getSection() {
+      this.sections = JSON.parse(localStorage.getItem('section'));
     },
     getRegion: function getRegion() {
-      var _this5 = this;
-
-      axios.get(BASE_URL + "/api/v1/region").then(function (response) {
-        _this5.regions = response.data;
-      });
+      this.regions = JSON.parse(localStorage.getItem('region'));
     },
-    getProvince: function getProvince(id) {
-      var _this6 = this;
-
-      axios.get(BASE_URL + "/api/v1/province/" + id).then(function (response) {
-        _this6.provinces = response.data;
-
-        _this6.provinces.map(function (i) {
-          return i.active = "false";
-        });
-      });
+    getProvince: function getProvince() {
+      this.provinces = JSON.parse(localStorage.getItem('province'));
     },
-    getCity: function getCity(id) {
-      var _this7 = this;
-
-      axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
-        _this7.cities = response.data;
-
-        _this7.cities.map(function (i) {
-          return i.active = "false";
-        });
-      });
+    getCity: function getCity() {
+      this.cities = JSON.parse(localStorage.getItem('city'));
     },
-    getBrgy: function getBrgy(id) {
-      var _this8 = this;
-
-      axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
-        _this8.brgys = response.data;
-      });
+    getBrgy: function getBrgy() {
+      this.brgys = JSON.parse(localStorage.getItem('barangay'));
     },
     currentProv: function currentProv() {
       this.activeProvinces = this.provinces.filter(function (i) {
@@ -9768,7 +9765,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 vue__WEBPACK_IMPORTED_MODULE_7__.default.mixin(_mixins_config_vue__WEBPACK_IMPORTED_MODULE_6__.default);
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
-vue__WEBPACK_IMPORTED_MODULE_7__.default.prototype.$appName = 'example app';
 
 vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 _routes__WEBPACK_IMPORTED_MODULE_0__.default.beforeResolve(function (to, from, next) {
@@ -9992,16 +9988,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/currentUser */ "./resources/js/store/modules/currentUser.js");
+/* harmony import */ var _modules_destination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/destination */ "./resources/js/store/modules/destination.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use(vuex__WEBPACK_IMPORTED_MODULE_2__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_2__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
   modules: {
-    currentUser: _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__.default
+    currentUser: _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__.default,
+    destination: _modules_destination__WEBPACK_IMPORTED_MODULE_1__.default
   }
 }));
 
@@ -10042,6 +10041,10 @@ var actions = {
       commit('setLoadingStats', false);
       localStorage.setItem('ListEmployee', JSON.stringify(response.data));
     });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit('setEmployee', payload);
   }
 };
 var mutations = {
@@ -10050,6 +10053,153 @@ var mutations = {
   },
   setLoadingStats: function setLoadingStats(state, value) {
     state.loadingStats = value;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/destination.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/destination.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  Division: [],
+  loadingStats: false,
+  Region: [],
+  Section: [],
+  Province: [],
+  City: [],
+  Barangay: []
+};
+var getters = {
+  Division: function Division(state) {
+    return state.Division;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  },
+  Region: function Region(state) {
+    return state.Region;
+  },
+  Section: function Section(state) {
+    return state.Section;
+  },
+  Province: function Province(state) {
+    return state.Province;
+  },
+  City: function City(state) {
+    return state.City;
+  },
+  Barangay: function Barangay(state) {
+    return state.Barangay;
+  }
+};
+var actions = {
+  loadDivision: function loadDivision(_ref) {
+    var commit = _ref.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/division').then(function (response) {
+      commit('setDivision', response.data);
+      localStorage.setItem('division', JSON.stringify(response.data));
+    });
+  },
+  loadRegion: function loadRegion(_ref2) {
+    var commit = _ref2.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/region').then(function (response) {
+      commit('setRegion', response.data);
+      localStorage.setItem('region', JSON.stringify(response.data));
+    });
+  },
+  loadSection: function loadSection(_ref3) {
+    var commit = _ref3.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/section').then(function (response) {
+      commit('setRegion', response.data);
+      localStorage.setItem('section', JSON.stringify(response.data));
+    });
+  },
+  loadProvince: function loadProvince(_ref4) {
+    var commit = _ref4.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/province').then(function (response) {
+      commit('setProvince', response.data);
+      localStorage.setItem('province', JSON.stringify(response.data));
+    });
+  },
+  loadCity: function loadCity(_ref5) {
+    var commit = _ref5.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/city').then(function (response) {
+      commit('setCity', response.data);
+      localStorage.setItem('city', JSON.stringify(response.data));
+    });
+  },
+  loadBarangay: function loadBarangay(_ref6) {
+    var commit = _ref6.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/brgy').then(function (response) {
+      commit('setBarangay', response.data);
+      localStorage.setItem('barangay', JSON.stringify(response.data));
+    });
+  },
+  setLocalDivision: function setLocalDivision(_ref7, data) {
+    var commit = _ref7.commit;
+    commit('setDivision', data);
+  },
+  setLocalRegion: function setLocalRegion(_ref8, data) {
+    var commit = _ref8.commit;
+    commit('setRegion', data);
+  },
+  setLocalSection: function setLocalSection(_ref9, data) {
+    var commit = _ref9.commit;
+    commit('setSection', data);
+  },
+  setLocalProvince: function setLocalProvince(_ref10, data) {
+    var commit = _ref10.commit;
+    commit('setProvince', data);
+  },
+  setLocalCity: function setLocalCity(_ref11, data) {
+    var commit = _ref11.commit;
+    commit('setCity', data);
+  },
+  setLocalBarangay: function setLocalBarangay(_ref12, data) {
+    var commit = _ref12.commit;
+    commit('setBarangay', data);
+  }
+};
+var mutations = {
+  setDivision: function setDivision(state, division) {
+    state.Division = division;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  },
+  setRegion: function setRegion(state, region) {
+    state.Region = region;
+  },
+  setSection: function setSection(state, section) {
+    state.Section = section;
+  },
+  setProvince: function setProvince(state, province) {
+    state.Province = province;
+  },
+  setCity: function setCity(state, city) {
+    state.City = city;
+  },
+  setBarangay: function setBarangay(state, barangay) {
+    state.Barangay = barangay;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -58419,12 +58569,7 @@ var render = function() {
                       "select",
                       {
                         staticClass: "details-input form-control select2",
-                        attrs: { id: "kt_select_division", name: "division" },
-                        on: {
-                          change: function($event) {
-                            return _vm.onChange($event)
-                          }
-                        }
+                        attrs: { id: "kt_select_division", name: "division" }
                       },
                       [
                         _c("option", { attrs: { label: "Label" } }),
@@ -58454,45 +58599,27 @@ var render = function() {
                     _c(
                       "select",
                       {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.section,
-                            expression: "section"
-                          }
-                        ],
                         staticClass: "details-input form-control select2",
-                        attrs: { id: "kt_select_section", name: "section" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.section = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
+                        attrs: { id: "kt_select_section", name: "section" }
                       },
                       [
                         _c("option", { attrs: { label: "Label" } }),
                         _vm._v(" "),
-                        _vm._l(_vm.sections, function(section) {
-                          return _c(
-                            "option",
-                            {
-                              key: section.id,
-                              domProps: { value: section.id }
-                            },
-                            [_vm._v(_vm._s(section.section_name))]
-                          )
-                        })
+                        _vm._l(
+                          _vm.sections.filter(function(i) {
+                            return i.division_id == _vm.activeDivision
+                          }),
+                          function(section) {
+                            return _c(
+                              "option",
+                              {
+                                key: section.id,
+                                domProps: { value: section.id }
+                              },
+                              [_vm._v(_vm._s(section.section_name))]
+                            )
+                          }
+                        )
                       ],
                       2
                     )
@@ -58538,16 +58665,21 @@ var render = function() {
                           multiple: "multiple"
                         }
                       },
-                      _vm._l(_vm.provinces, function(province) {
-                        return _c(
-                          "option",
-                          {
-                            key: province.id,
-                            domProps: { value: province.id }
-                          },
-                          [_vm._v(_vm._s(province.province_name))]
-                        )
-                      }),
+                      _vm._l(
+                        _vm.provinces.filter(function(i) {
+                          return i.region_id == _vm.activeRegion
+                        }),
+                        function(province) {
+                          return _c(
+                            "option",
+                            {
+                              key: province.id,
+                              domProps: { value: province.id }
+                            },
+                            [_vm._v(_vm._s(province.province_name))]
+                          )
+                        }
+                      ),
                       0
                     ),
                     _vm._v(" "),
@@ -58562,7 +58694,9 @@ var render = function() {
                           multiple: "multiple"
                         }
                       },
-                      _vm._l(_vm.activeProvinces, function(activeProv) {
+                      _vm._l(_vm.currentlySelectedProvince, function(
+                        activeProv
+                      ) {
                         return _c(
                           "optgroup",
                           {
@@ -58570,7 +58704,7 @@ var render = function() {
                             attrs: { label: activeProv.province_name }
                           },
                           _vm._l(
-                            _vm.cities.filter(function(i) {
+                            _vm.currentlySelectedCities.filter(function(i) {
                               return i.province_id == activeProv.id
                             }),
                             function(city) {
@@ -58598,22 +58732,25 @@ var render = function() {
                           multiple: "multiple"
                         }
                       },
-                      _vm._l(_vm.activeCities, function(activeCity) {
+                      _vm._l(_vm.currentCities, function(activeBrgy) {
                         return _c(
                           "optgroup",
                           {
-                            key: activeCity.id,
-                            attrs: { label: activeCity.city_name }
+                            key: activeBrgy.id,
+                            attrs: { label: activeBrgy.city_name }
                           },
                           _vm._l(
-                            _vm.brgys.filter(function(i) {
-                              return i.city_id == activeCity.id
+                            _vm.currentlySelectedBarangays.filter(function(i) {
+                              return i.city_id == activeBrgy.id
                             }),
-                            function(brgy) {
+                            function(barangays) {
                               return _c(
                                 "option",
-                                { key: brgy.id, domProps: { value: brgy.id } },
-                                [_vm._v(_vm._s(brgy.brgy_name))]
+                                {
+                                  key: barangays.id,
+                                  domProps: { value: barangays.id }
+                                },
+                                [_vm._v(_vm._s(barangays.brgy_name))]
                               )
                             }
                           ),

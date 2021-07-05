@@ -4,14 +4,12 @@ const state = {
     loadingStats: false,
 };
 const getters = {
-
     employee(state){
         return state.employee
     },
     loadingStats(state){
         return state.loadingStats
     }
-
 };
 const actions = {
     loadEmployee({commit}){
@@ -21,6 +19,9 @@ const actions = {
             commit('setLoadingStats', false) ;
             localStorage.setItem('ListEmployee', JSON.stringify(response.data));
         });
+    },
+    setLocalData({commit}, payload) {
+        commit('setEmployee', payload) ;
     }
 };
 const mutations = {
@@ -31,7 +32,6 @@ const mutations = {
         state.loadingStats= value;
     },
 };
-
 export default {
     namespaced: true,
     state,

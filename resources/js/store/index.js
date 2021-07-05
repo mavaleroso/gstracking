@@ -1,10 +1,12 @@
 import Vue from "vue"
 import Vuex, { Store } from "vuex"
 import currentUser from "./modules/currentUser"
+import destination from "./modules/destination"
 Vue.use (Vuex);
 
 export default new Vuex.Store({
     modules:{
-        currentUser
+        currentUser,
+        destination
     }
 }) 

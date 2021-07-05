@@ -64,6 +64,7 @@ export default {
 	mounted() {
 		this.ini();
 		this.vuexStore();
+		this.destination();
 	},
 	methods: {
 		ini() {
@@ -81,16 +82,48 @@ export default {
                 tag.setAttribute("src", script);
                 document.getElementById("kt_body").appendChild(tag);
             });
-		},
+		}, 
 		vuexStore(){
 			if (localStorage.getItem("ListEmployee") === null) {
 				this.$store.dispatch('currentUser/loadEmployee');
 			} 
-			else {
-				this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
-				
-			}
-		},      
+            else {
+                this.$store.dispatch('currentUser/setLocalData', JSON.parse(localStorage.getItem('ListEmployee')));
+
+            }
+		},  
+		destination(){
+
+			let division = localStorage.getItem("division");
+			let region = localStorage.getItem("region");
+			let section = localStorage.getItem("section");
+			let province = localStorage.getItem("province");
+			let city = localStorage.getItem("city");
+			let barangay = localStorage.getItem("barangay");
+			     
+			if (division === null || region === null || section === null || province === null || city === null || barangay === null) {
+				this.$store.dispatch('destination/loadDivision');
+				this.$store.dispatch('destination/loadRegion');
+				this.$store.dispatch('destination/loadSection');
+				this.$store.dispatch('destination/loadProvince');
+				this.$store.dispatch('destination/loadCity');
+				this.$store.dispatch('destination/loadBarangay');
+			} 
+            else {
+                this.$store.dispatch('destination/setLocalDivision', JSON.parse(localStorage.getItem('division')));
+				this.$store.dispatch('destination/setLocalRegion', JSON.parse(localStorage.getItem('region')));
+				this.$store.dispatch('destination/setLocalSection', JSON.parse(localStorage.getItem('section')));
+				this.$store.dispatch('destination/setLocalProvince', JSON.parse(localStorage.getItem('province]')));
+				this.$store.dispatch('destination/setLocalCity', JSON.parse(localStorage.getItem('city]')));
+				this.$store.dispatch('destination/setLocalBarangay', JSON.parse(localStorage.getItem('barangay]')));
+            }
+
+			// if (localStorage.getItem("ListEmployee") === null) {
+			// } 
+			// else {
+			// 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+			// }
+		},
 	},
 }
 </script>
