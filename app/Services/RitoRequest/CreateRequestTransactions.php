@@ -20,6 +20,9 @@ class CreateRequestTransactions
 
     public function execute($fields)
     {
+
+        
+
         $rg = System::select('value')->where('handler', 'REQUEST_GROUP')->first();
         $rqt_code = $this->getCode->request_code();
         $process = false;

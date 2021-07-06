@@ -53,6 +53,8 @@ class RitoRequestController extends Controller
      */
     public function store(RequestTransactionStoreRequest $requestTransactionStoreRequest, CreateRequestTransactions $createRequestTransactions)
     {
+
+        dd($requestTransactionStoreRequest);
         $result = $createRequestTransactions->execute($requestTransactionStoreRequest->validated());
         return json_encode(['type' => 'success','message' => __('main/notifications.requestTransaction_created_successfully'), 'result' => $result]);
     }

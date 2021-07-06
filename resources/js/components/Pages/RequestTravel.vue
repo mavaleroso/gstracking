@@ -111,7 +111,7 @@
                                     <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
                             </div>
-                            <input id="pax-total" type="hidden" name="pax_total" value="1">
+                            <input id="pax-total" type="text" name="pax_total" value="1">
                             <table id="passenger-tbl" class="table w-100">
                                 <thead>
                                     <tr>
@@ -131,6 +131,7 @@
                                         <td>
                                             <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'passenger_'+index">
                                                 <option label="Label"></option>
+                                                <!-- <option v-for="index in results" :key="index" :value="index">{{ index.first_name }} {{ index.middle_name }} {{result.last_name}}</option> -->
                                             <!-- <option v-for="passenger in results" :key="passenger.id" :value="passenger.id">{{ passenger.first_name }} {{ passenger.middle_name }} {{passenger.last_name}}</option> -->
                                                 <option v-for="(result,index) in results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                             </select>
@@ -315,17 +316,17 @@ export default {
             }, 100);
 
 
-            // $('#pax_name_1').select2({
-            //         placeholder: "Select fullname",
-            //         allowClear: true
-            // });
+            $('#passenger_1').select2({
+                    placeholder: "Select fullname",
+                    allowClear: true
+            });
 
-            // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             // lastTr += 1;
             // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
 
             // $('#pax-total').val(lastTr);
-            // this.names.push('pax_name_'+lastTr);
+            // this.names.push('passenger_'+lastTr);
             // this.names.push('pax_des_'+lastTr);
         },
         removeRow(event) {
@@ -371,38 +372,38 @@ export default {
                 let data = error.response.data.errors;
                 let keys = [];
                 let values = [];
-                // for (const [key, value] of Object.entries(data)) {
-                //     keys.push(`${key}`);
-                //     values.push(`${value}`);
-                //     if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
-                //         if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
-                //                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                //                 console.log("heeeloo11");
-                //         }
-                //     } else {
-                //         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                //             $('[name="'+`${key}`+'"]').addClass('is-invalid');
-                //             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                //             console.log("heeeloo22");
-                //         }
-                //     }
-                // }
-                // for (let i = 0; i < this.names.length; i++) {
-                //     if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
-                //         if (keys.indexOf(''+this.names[i]+'') == -1) {
-                //             if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
-                //                 $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                //                 console.log("heeeloo33");
-                //             }
-                //         }
-                //     } else {
-                //         if (keys.indexOf(''+this.names[i]+'') == -1) {
-                //             $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
-                //             $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
-                //             console.log("heeeloo444");
-                //         }
-                //     }
-                // }
+                for (const [key, value] of Object.entries(data)) {
+                    keys.push(`${key}`);
+                    values.push(`${value}`);
+                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
+                        if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                                console.log("heeeloo11");
+                        }
+                    } else {
+                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            console.log("heeeloo22");
+                        }
+                    }
+                }
+                for (let i = 0; i < this.names.length; i++) {
+                    if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                                $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                                console.log("heeeloo33");
+                            }
+                        }
+                    } else {
+                        if (keys.indexOf(''+this.names[i]+'') == -1) {
+                            $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                            $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            console.log("heeeloo444");
+                        }
+                    }
+                }
                 this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
 

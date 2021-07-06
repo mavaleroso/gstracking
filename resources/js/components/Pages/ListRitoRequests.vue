@@ -475,6 +475,8 @@ export default {
         },
         approved() {
             let ritoData = $('#rito-form').serialize();
+
+            console.log(ritoData);
             axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(response => {
                 $('.invalid-feedback').remove();
                 $('.invalid').removeClass('is-invalid');

@@ -32,6 +32,9 @@ class CreateTravel
     public function execute($fields, $url)
     {
 
+        dd($fields);
+
+        
         $arr = array('luser' => auth()->user()->id, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
         createLogs($arr);
 
