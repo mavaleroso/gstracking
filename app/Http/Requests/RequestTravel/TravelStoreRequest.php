@@ -43,7 +43,7 @@ class TravelStoreRequest extends FormRequest
         ];
 
         for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $rules['pax_name_'.$i] = 'required';
+            $rules['passenger_'.$i] = 'required';
             $rules['pax_des_'.$i] = 'required';
             $rules['pax_gen_'.$i] = 'required';
         }
@@ -72,7 +72,7 @@ class TravelStoreRequest extends FormRequest
         ];
 
         for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $attributes['pax_name_'.$i] = 'Passenger Name';
+            $attributes['passenger_'.$i] = 'Passenger Name';
             $attributes['pax_des_'.$i] = 'Passenger Designation';
             $attributes['pax_gen_'.$i] = 'Passenger Gender';
         }
@@ -101,7 +101,7 @@ class TravelStoreRequest extends FormRequest
         ];
 
         for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $messages['pax_name_'.$i] = __('main/validations.required');
+            $messages['passenger_'.$i] = __('main/validations.required');
             $messages['pax_des_'.$i] = __('main/validations.required');
             $messages['pax_gen_'.$i] = __('main/validations.required');
         }

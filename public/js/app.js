@@ -6984,18 +6984,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
+//
+//
+//
 //
 //
 //
@@ -7171,7 +7162,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       activeProvinces: '',
       activeSections: [],
       activeCities: [],
-      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
+      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'passenger_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
       complete: false,
       createdAt: null,
       maxDate: null,
@@ -7188,7 +7179,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       currentlySelectedProvince: [],
       currentlySelectedBarangays: [],
       currentCities: [],
-      pax_name_1: '',
       results: [],
       total: 1
     };
@@ -7236,7 +7226,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a Section",
           allowClear: true
         });
-        $('#pax_name_1').select2({
+        $('#passenger-select-1').select2({
           placeholder: "Select fullname",
           allowClear: true
         });
@@ -7300,11 +7290,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addRow: function addRow(event) {
       event.preventDefault();
-      this.total += 1;
-      $('#pax_name_1').select2({
-        placeholder: "Select fullname",
-        allowClear: true
-      }); // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+      var count = this.total += 1;
+      setTimeout(function () {
+        $("#passenger-select-".concat(count)).select2({
+          placeholder: "Select a fullname",
+          allowClear: true
+        });
+      }, 100); // $('#pax_name_1').select2({
+      //         placeholder: "Select fullname",
+      //         allowClear: true
+      // });
+      // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       // lastTr += 1;
       // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
       // $('#pax-total').val(lastTr);
@@ -7338,7 +7334,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       var requestform = $('#kt_form').serialize();
-      axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
+      console.log(requestform);
+      axios.post(BASE_URL + '/travel/request', requestform).then(function (response) {
+        // $('.invalid-feedback').remove();
+        // $('.invalid').removeClass('is-invalid');
+        // Swal.fire("Good job!", response.data.message, "success");
+        // this.$showToast(response.data.message, 'success');
+        // $('#modal-approved').modal('toggle');
+        // $('input.checkable:checkbox:checked').click();
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid');
         Swal.fire("Good job!", response.data.message, "success");
@@ -7351,42 +7354,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
-        var values = [];
-
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
-
-          keys.push("".concat(key));
-          values.push("".concat(value));
-
-          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'division' || "".concat(key) == 'section') {
-            if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-              $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-            }
-          } else {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
-            }
-          }
-        }
-
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
-              }
-            }
-          } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
-            }
-          }
-        }
+        var values = []; // for (const [key, value] of Object.entries(data)) {
+        //     keys.push(`${key}`);
+        //     values.push(`${value}`);
+        //     if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
+        //         if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+        //                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+        //                 console.log("heeeloo11");
+        //         }
+        //     } else {
+        //         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+        //             $('[name="'+`${key}`+'"]').addClass('is-invalid');
+        //             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+        //             console.log("heeeloo22");
+        //         }
+        //     }
+        // }
+        // for (let i = 0; i < this.names.length; i++) {
+        //     if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
+        //         if (keys.indexOf(''+this.names[i]+'') == -1) {
+        //             if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+        //                 $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+        //                 console.log("heeeloo33");
+        //             }
+        //         }
+        //     } else {
+        //         if (keys.indexOf(''+this.names[i]+'') == -1) {
+        //             $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
+        //             $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+        //             console.log("heeeloo444");
+        //         }
+        //     }
+        // }
 
         _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
       });
@@ -58889,39 +58888,18 @@ var render = function() {
                               staticClass: "text-center",
                               attrs: { scope: "row" }
                             },
-                            [_vm._v("1")]
+                            [_vm._v(_vm._s(index))]
                           ),
                           _vm._v(" "),
                           _c("td", [
                             _c(
                               "select",
                               {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.pax_name_1,
-                                    expression: "pax_name_1"
-                                  }
-                                ],
                                 staticClass:
                                   "details-input form-control select2",
-                                attrs: { id: "pax_name_1", name: "pax_name_1" },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.pax_name_1 = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                                attrs: {
+                                  id: "passenger-select-" + index,
+                                  name: "passenger_" + index
                                 }
                               },
                               [

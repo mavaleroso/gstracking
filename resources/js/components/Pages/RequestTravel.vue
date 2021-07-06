@@ -123,15 +123,18 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="index in total" :key="index">
-                                        <td scope="row" class="text-center">1</td>
+                                        <td scope="row" class="text-center">{{ index }}</td>
                                         <!-- <select v-if="$store.getters['currentUser/loadingStats']" class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="fullname" disabled>
                                             <option label="Label"></option>
                                             <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                         </select> -->
-                                        <td><select  class="details-input form-control select2" id="pax_name_1" name="pax_name_1" v-model="pax_name_1">
-                                            <option label="Label"></option>
-                                            <option v-for="(result,index) in results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
-                                        </select></td>
+                                        <td>
+                                            <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'passenger_'+index">
+                                                <option label="Label"></option>
+                                            <!-- <option v-for="passenger in results" :key="passenger.id" :value="passenger.id">{{ passenger.first_name }} {{ passenger.middle_name }} {{passenger.last_name}}</option> -->
+                                                <option v-for="(result,index) in results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                            </select>
+                                        </td>
                                         
                                         <!-- <td><input name="pax_name_1" class="details-input form-control" type="text"/></td> -->
                                         <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
@@ -174,7 +177,7 @@ export default {
             activeProvinces: '',
             activeSections: [],
             activeCities: [],
-            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
+            names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'passenger_1','pax_gen_1', 'division','section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
             complete: false,
             createdAt: null,
             maxDate: null,
@@ -191,7 +194,6 @@ export default {
             currentlySelectedProvince: [],
             currentlySelectedBarangays: [],
             currentCities: [],
-            pax_name_1: '',
             results: [],
             total: 1
         }
@@ -243,7 +245,7 @@ export default {
                     allowClear: true
                 });
 
-                $('#pax_name_1').select2({
+                $('#passenger-select-1').select2({
                     placeholder: "Select fullname",
                     allowClear: true
                 });
@@ -303,12 +305,20 @@ export default {
         },
         addRow(event) {
             event.preventDefault();
-            this.total += 1;
+            let count = this.total += 1;
 
-            $('#pax_name_1').select2({
-                    placeholder: "Select fullname",
+            setTimeout(() => {
+                $(`#passenger-select-${count}`).select2({
+                    placeholder: "Select a fullname",
                     allowClear: true
-            });
+                });
+            }, 100);
+
+
+            // $('#pax_name_1').select2({
+            //         placeholder: "Select fullname",
+            //         allowClear: true
+            // });
 
             // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
             // lastTr += 1;
@@ -339,7 +349,17 @@ export default {
         },  
         saveForm() {
             let requestform = $('#kt_form').serialize();
-            axios.post(BASE_URL + "/travel/request", requestform).then(response => {
+
+            console.log(requestform);
+
+            axios.post(BASE_URL + '/travel/request', requestform).then(response => {
+                // $('.invalid-feedback').remove();
+                // $('.invalid').removeClass('is-invalid');
+                // Swal.fire("Good job!", response.data.message, "success");
+                // this.$showToast(response.data.message, 'success');
+                // $('#modal-approved').modal('toggle');
+                // $('input.checkable:checkbox:checked').click();
+
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
                 Swal.fire("Good job!", response.data.message, "success");
@@ -351,34 +371,38 @@ export default {
                 let data = error.response.data.errors;
                 let keys = [];
                 let values = [];
-                for (const [key, value] of Object.entries(data)) {
-                    keys.push(`${key}`);
-                    values.push(`${value}`);
-                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
-                        if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                        }
-                    } else {
-                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('[name="'+`${key}`+'"]').addClass('is-invalid');
-                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                        }
-                    }
-                }
-                for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
-                                $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                            }
-                        }
-                    } else {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
-                            $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
-                        }
-                    }
-                }
+                // for (const [key, value] of Object.entries(data)) {
+                //     keys.push(`${key}`);
+                //     values.push(`${value}`);
+                //     if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city' || `${key}` == 'division'|| `${key}` == 'section'){
+                //         if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
+                //                 $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                //                 console.log("heeeloo11");
+                //         }
+                //     } else {
+                //         if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                //             $('[name="'+`${key}`+'"]').addClass('is-invalid');
+                //             $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                //             console.log("heeeloo22");
+                //         }
+                //     }
+                // }
+                // for (let i = 0; i < this.names.length; i++) {
+                //     if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'division' || this.names[i] == 'section') {
+                //         if (keys.indexOf(''+this.names[i]+'') == -1) {
+                //             if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
+                //                 $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
+                //                 console.log("heeeloo33");
+                //             }
+                //         }
+                //     } else {
+                //         if (keys.indexOf(''+this.names[i]+'') == -1) {
+                //             $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                //             $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                //             console.log("heeeloo444");
+                //         }
+                //     }
+                // }
                 this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
             });
 
