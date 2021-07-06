@@ -6373,11 +6373,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      type: null,
       date: null,
       passenger_count: 7,
       transaction: {
         depart_time: [],
-        department: null,
+        department: [],
         gs_staff: null,
         purpose: [],
         travel_date: [],
@@ -6471,8 +6472,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
         _this.transaction.serial_code = res.data.trans[0].serial_code;
-        _this.transaction.department = null;
         _this.transaction.mot = res.data.trans[0].mot;
+        _this.type = res.data.trans[0].type;
         _this.date = _this.$dateEng(res.data.date_now);
 
         for (var i = 0; i < res.data.travels.length; i++) {
@@ -6496,13 +6497,21 @@ __webpack_require__.r(__webpack_exports__);
             _this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
           }
 
+          if (_this.transaction.department.indexOf(res.data.travels[i].data[0].department) === -1) {
+            _this.transaction.department.push(res.data.travels[i].data[0].department);
+          }
+
+          if (res.data.travels[i].data[0].depart_time && _this.transaction.depart_time.indexOf(_this.$timeEng(res.data.travels[i].data[0].depart_time)) === -1) {
+            _this.transaction.depart_time.push(_this.$timeEng(res.data.travels[i].data[0].depart_time));
+          }
+
           for (var j = 0; j < res.data.travels[i].passengers.length; j++) {
             _this.passengers.push(res.data.travels[i].passengers[j]);
           }
         }
 
         _this.vehicles = res.data.vehicles;
-        _this.transaction.gs_staff = res.data.gs_staff;
+        _this.transaction.gs_staff = res.data.gs_staff.first_name + ' ' + res.data.gs_staff.last_name;
         autosize($('#kt_autosize_1'));
       });
     }
@@ -9210,6 +9219,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       row_color: '#ECF0F3',
       travels: [],
       total: null,
+      vehiclemodes: [],
       pages: {
         totalPages: null,
         prevPage: null,
@@ -9282,10 +9292,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     this.getData();
-    this.getTripTicket();
-    this.getServiceProviders();
     this.getPoNumber();
     this.getDivision();
+    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
@@ -9557,39 +9566,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }, 500);
     },
-    getTripTicket: function getTripTicket() {
+    getPoNumber: function getPoNumber() {
       var _this6 = this;
 
-      axios.get(BASE_URL + "/api/v1/tripticket").then(function (response) {
-        _this6.filterDropdown.tripTicket = response.data;
-      });
-    },
-    getServiceProviders: function getServiceProviders() {
-      var _this7 = this;
-
-      axios.get(BASE_URL + "/api/v1/serviceprovider").then(function (response) {
-        _this7.filterDropdown.serviceProvider = response.data;
-      });
-    },
-    getPoNumber: function getPoNumber() {
-      var _this8 = this;
-
       axios.get(BASE_URL + "/api/v1/ponumber").then(function (response) {
-        _this8.filterDropdown.poNumber = response.data;
+        _this6.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
-      var _this9 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/division").then(function (response) {
-        _this9.filterDropdown.division = response.data;
+        _this7.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
-      var _this10 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
-        _this10.filterDropdown.section = response.data;
+        _this8.filterDropdown.section = response.data;
       });
     },
     indexers: function indexers(idx) {
@@ -9620,6 +9615,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       return status[stats].title;
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this9 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this9.vehiclemodes = res.data.results;
+      });
     }
   }
 });
@@ -57387,8 +57389,29 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
                   _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transaction.depart_time,
+                        expression: "transaction.depart_time"
+                      }
+                    ],
                     staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" }
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: _vm.transaction.depart_time },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.transaction,
+                          "depart_time",
+                          $event.target.value
+                        )
+                      }
+                    }
                   })
                 ])
               ]),
@@ -57422,11 +57445,13 @@ var render = function() {
                               attrs: { type: "text", disabled: "" },
                               domProps: {
                                 value:
-                                  p.first_name +
-                                  " " +
-                                  p.middle_name +
-                                  " " +
-                                  p.last_name
+                                  _vm.type == "rito"
+                                    ? p.first_name +
+                                      " " +
+                                      p.middle_name +
+                                      " " +
+                                      p.last_name
+                                    : p.name
                               }
                             })
                           ]),
@@ -57435,7 +57460,12 @@ var render = function() {
                             _c("input", {
                               staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
                               attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.position }
+                              domProps: {
+                                value:
+                                  _vm.type == "rito"
+                                    ? p.position
+                                    : p.designation
+                              }
                             })
                           ]),
                           _vm._v(" "),
@@ -57739,12 +57769,7 @@ var render = function() {
                       staticClass:
                         "text-center text-uppercase input-text w-100",
                       attrs: { type: "text", disabled: "" },
-                      domProps: {
-                        value:
-                          _vm.transaction.gs_staff.first_name +
-                          " " +
-                          _vm.transaction.gs_staff.last_name
-                      }
+                      domProps: { value: _vm.transaction.gs_staff }
                     }),
                     _vm._v(" "),
                     _c("p", { staticClass: "text-center" }, [
@@ -61019,7 +61044,7 @@ var render = function() {
                               "span",
                               {
                                 staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1"
+                                  "label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
                               },
                               [
                                 _vm._v(
@@ -61525,7 +61550,26 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(t.results.vehicle_type))]),
+                          _c(
+                            "td",
+                            _vm._l(
+                              _vm.vehiclemodes.filter(function(i) {
+                                return i.id == t.results.vehicle_type
+                              }),
+                              function(vm) {
+                                return _c(
+                                  "span",
+                                  {
+                                    key: vm.id,
+                                    staticClass:
+                                      "label label-lg label-inline label-light-primary text-nowrap"
+                                  },
+                                  [_vm._v(_vm._s(vm.name))]
+                                )
+                              }
+                            ),
+                            0
+                          ),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(t.results.plate_no))]),
                           _vm._v(" "),

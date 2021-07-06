@@ -73,7 +73,7 @@
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2">{{t.place}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-primary m-1">{{t.tracking_no.reduce((acc, item) => acc + parseInt(item.passenger_count), 0)}}</span></td>
                             <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.transactions.length}}</span></td>
-                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1">{{ vehiclemodes.filter(i=>i.id == t.mot)[0].name }}</span></td>
+                            <td><span class="label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto">{{ vehiclemodes.filter(i=>i.id == t.mot)[0].name }}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_from}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.inclusive_to}}</span></td>
                             <td><span v-for="(t,index) in t.tracking_no" :key="index" class="label label-lg label-rounded label-inline label-light-primary m-1">{{t.status}}</span></td>
