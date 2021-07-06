@@ -4,6 +4,7 @@ namespace App\Services\VehicleTravels;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionVehicles;
+use App\Models\RequestTransactions;
 use App\Models\System;
 use App\Models\Request;
 use App\Models\Destination;
@@ -18,11 +19,33 @@ class GetListingVehicleTravel
      */
     public function execute($fields)
     {
+        $reqt = RequestTransactions::select(DB::raw('GROUP_CONCAT(DISTINCT request_transactions.request_id) AS req_id'), 'type')->groupBy('group')->get();
+        for ($i = 0; $i < count($reqt); $i++) {
+            $data[] = ($reqt[$i]->type == 'rito') ? $this->api($reqt[$i]->req_id) : $this->local($reqt[$i]->req_id);
+        };
+
+        $ndata = [];
+
+        for ($x = 0; $x < count($data); $x++) {
+            for ($y = 0; $y < count($data[$x]); $y++) {
+                array_push($ndata, $data[$x][$y]);
+            }
+        }
+
+        $ids = [];
+
+        for ($i = 0; $i < count($ndata); $i++) {
+            if ($ndata[$i]->status == 'Approved') {
+                array_push($ids, $ndata[$i]->id);
+            }
+        }
+
         $results = [];
         $query = TransactionVehicles::leftJoin('vehicles', 'vehicles.id', '=', 'transaction_vehicles.vehicle_id')
             ->leftJoin('procurements', 'transaction_vehicles.procurement_id', '=', 'procurements.id')
             ->leftJoin('request_transactions', 'transaction_vehicles.id', '=', 'request_transactions.transaction_vehicles_id')
             ->select(['transaction_vehicles.id', 'transaction_vehicles.trip_ticket', 'transaction_vehicles.starting_odo', 'transaction_vehicles.ending_odo', 'transaction_vehicles.date_submit_proc', 'transaction_vehicles.travelled', 'procurements.po_no', 'procurements.po_amount', 'transaction_vehicles.rate_per_km', 'transaction_vehicles.flat_rate', 'transaction_vehicles.rate_per_night', 'transaction_vehicles.nights_count', 'transaction_vehicles.total_cost', 'transaction_vehicles.created_at', 'transaction_vehicles.remarks', 'request_transactions.mot as vehicle_type', 'vehicles.plate_no', 'transaction_vehicles.status', DB::raw('GROUP_CONCAT(DISTINCT request_transactions.request_id) AS req_id'), 'request_transactions.group', 'request_transactions.type'])
+            ->whereIn('request_transactions.request_id', $ids)
             ->groupBy('transaction_vehicles.id');
 
         $data = $query->paginate(10, ['*'], 'page', $fields['pages']);
@@ -33,7 +56,7 @@ class GetListingVehicleTravel
                 'results' => $data[$i]
             ];
         }
-        $results['count'] = count(TransactionVehicles::all());
+        $results['count'] = count($query->get());
 
         return $results;
     }
@@ -83,22 +106,31 @@ class GetListingVehicleTravel
 
     public function local($id)
     {
-        $req = Request::find($id);
+        $request = Request::find($id);
         $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
-                            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
-                            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
-                            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
-                            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
-                            ->where('destinations.request_id', $id)
-                            ->first();
-        $data[] = [
-            'purpose' => $req->purpose,
-            'inclusive_from' => $req->travel_date,
-            'inclusive_to' => $req->return_date,
+            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
+            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
+            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
+            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
+            ->where('destinations.request_id', $id)
+            ->first();
+        // $data =[
+        //     'purpose' => $request->purpose,
+        //     'inclusive_from' => $request->travel_date,
+        //     'inclusive_to' => $request->return_date,
+        //     'place' => $place->place,
+        //     'status' => "Approved",
+        //     'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
+        // ];
+        $data[] = (object) array(
+            'id' => $request->id,
+            'purpose' => $request->purpose,
+            'inclusive_from' => $request->travel_date,
+            'inclusive_to' => $request->return_date,
             'place' => $place->place,
+            'status' => "Approved",
             'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
-        ];
-
+        );
         return $data;
     }
 
