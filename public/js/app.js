@@ -9195,6 +9195,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       row_color: '#ECF0F3',
       travels: [],
       total: null,
+      vehiclemodes: [],
       pages: {
         totalPages: null,
         prevPage: null,
@@ -9267,10 +9268,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   created: function created() {
     this.getData();
-    this.getTripTicket();
-    this.getServiceProviders();
     this.getPoNumber();
     this.getDivision();
+    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
@@ -9542,39 +9542,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       }, 500);
     },
-    getTripTicket: function getTripTicket() {
+    getPoNumber: function getPoNumber() {
       var _this6 = this;
 
-      axios.get(BASE_URL + "/api/v1/tripticket").then(function (response) {
-        _this6.filterDropdown.tripTicket = response.data;
-      });
-    },
-    getServiceProviders: function getServiceProviders() {
-      var _this7 = this;
-
-      axios.get(BASE_URL + "/api/v1/serviceprovider").then(function (response) {
-        _this7.filterDropdown.serviceProvider = response.data;
-      });
-    },
-    getPoNumber: function getPoNumber() {
-      var _this8 = this;
-
       axios.get(BASE_URL + "/api/v1/ponumber").then(function (response) {
-        _this8.filterDropdown.poNumber = response.data;
+        _this6.filterDropdown.poNumber = response.data;
       });
     },
     getDivision: function getDivision() {
-      var _this9 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/division").then(function (response) {
-        _this9.filterDropdown.division = response.data;
+        _this7.filterDropdown.division = response.data;
       });
     },
     getSection: function getSection(id) {
-      var _this10 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/section/" + id).then(function (response) {
-        _this10.filterDropdown.section = response.data;
+        _this8.filterDropdown.section = response.data;
       });
     },
     indexers: function indexers(idx) {
@@ -9605,6 +9591,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       return status[stats].title;
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this9 = this;
+
+      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+        _this9.vehiclemodes = res.data.results;
+      });
     }
   }
 });
@@ -61465,7 +61458,26 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(t.results.vehicle_type))]),
+                          _c(
+                            "td",
+                            _vm._l(
+                              _vm.vehiclemodes.filter(function(i) {
+                                return i.id == t.results.vehicle_type
+                              }),
+                              function(vm) {
+                                return _c(
+                                  "span",
+                                  {
+                                    key: vm.id,
+                                    staticClass:
+                                      "label label-lg label-inline label-light-primary text-nowrap"
+                                  },
+                                  [_vm._v(_vm._s(vm.name))]
+                                )
+                              }
+                            ),
+                            0
+                          ),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(t.results.plate_no))]),
                           _vm._v(" "),
