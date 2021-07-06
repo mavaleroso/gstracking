@@ -63,7 +63,7 @@
                             <td><span class="label label-lg label-inline label-light-primary">{{ t.results.group }}</span></td>
                             <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-lg label-inline label-primary m-1 text-nowrap">{{ track.tracking_no }}</span></td>
                             <td><span class="label label-lg label-inline label-light-primary text-nowrap">{{ t.results.trip_ticket }}</span></td>
-                            <td>{{ t.results.vehicle_type }}</td>
+                            <td><span v-for="vm in vehiclemodes.filter(i=>i.id == t.results.vehicle_type)" :key="vm.id" class="label label-lg label-inline label-light-primary text-nowrap">{{ vm.name }}</span></td>
                             <td>{{ t.results.plate_no }}</td>
                             <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ track.place }}</span></td>
                             <td><span v-for="track in t.tracking_no" :key="track.id" class="label label-inline label-light-primary m-1 h-auto">{{ track.purpose }}</span></td>
@@ -377,6 +377,7 @@ export default {
             row_color: '#ECF0F3',
             travels: [],
             total: null,
+            vehiclemodes: [],
             pages: {
                 totalPages: null,
                 prevPage: null,
@@ -449,10 +450,9 @@ export default {
     },
     created() {
         this.getData();
-        this.getTripTicket();
-        this.getServiceProviders();
         this.getPoNumber();
         this.getDivision();
+        this.getVehiclemode();
     },
     mounted() {
         this.ini();
@@ -695,16 +695,6 @@ cddm
                 });
             },500);
         },
-        getTripTicket() {
-            axios.get(BASE_URL + "/api/v1/tripticket").then(response => {
-                this.filterDropdown.tripTicket = response.data;
-            });
-        },
-        getServiceProviders() {
-            axios.get(BASE_URL + "/api/v1/serviceprovider").then(response => {
-                this.filterDropdown.serviceProvider = response.data;
-            });
-        },
         getPoNumber() {
             axios.get(BASE_URL + "/api/v1/ponumber").then(response => {
                 this.filterDropdown.poNumber = response.data;
@@ -737,7 +727,12 @@ cddm
                 return data;
             }
             return status[stats].title;
-        }
+        },
+        getVehiclemode() {
+            axios.get(BASE_URL + '/api/v1/vehiclemode').then(res => {
+                this.vehiclemodes = res.data.results;
+            });
+        },
     }
 
 }

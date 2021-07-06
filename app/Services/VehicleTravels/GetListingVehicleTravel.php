@@ -5,6 +5,9 @@ namespace App\Services\VehicleTravels;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionVehicles;
 use App\Models\System;
+use App\Models\Request;
+use App\Models\Destination;
+use App\Models\Passenger;
 
 class GetListingVehicleTravel
 {
@@ -19,14 +22,14 @@ class GetListingVehicleTravel
         $query = TransactionVehicles::leftJoin('vehicles', 'vehicles.id', '=', 'transaction_vehicles.vehicle_id')
             ->leftJoin('procurements', 'transaction_vehicles.procurement_id', '=', 'procurements.id')
             ->leftJoin('request_transactions', 'transaction_vehicles.id', '=', 'request_transactions.transaction_vehicles_id')
-            ->select(['transaction_vehicles.id', 'transaction_vehicles.trip_ticket', 'transaction_vehicles.starting_odo', 'transaction_vehicles.ending_odo', 'transaction_vehicles.date_submit_proc', 'transaction_vehicles.travelled', 'procurements.po_no', 'procurements.po_amount', 'transaction_vehicles.rate_per_km', 'transaction_vehicles.fuel_charge', 'transaction_vehicles.fuel_liters', 'transaction_vehicles.flat_rate', 'transaction_vehicles.rate_per_night', 'transaction_vehicles.nights_count', 'transaction_vehicles.total_cost', 'transaction_vehicles.created_at', 'transaction_vehicles.remarks', 'transaction_vehicles.type as vehicle_type', 'vehicles.plate_no', 'transaction_vehicles.status', DB::raw('GROUP_CONCAT(DISTINCT request_transactions.request_id) AS req_id'), 'request_transactions.group', 'request_transactions.type'])
+            ->select(['transaction_vehicles.id', 'transaction_vehicles.trip_ticket', 'transaction_vehicles.starting_odo', 'transaction_vehicles.ending_odo', 'transaction_vehicles.date_submit_proc', 'transaction_vehicles.travelled', 'procurements.po_no', 'procurements.po_amount', 'transaction_vehicles.rate_per_km', 'transaction_vehicles.flat_rate', 'transaction_vehicles.rate_per_night', 'transaction_vehicles.nights_count', 'transaction_vehicles.total_cost', 'transaction_vehicles.created_at', 'transaction_vehicles.remarks', 'request_transactions.mot as vehicle_type', 'vehicles.plate_no', 'transaction_vehicles.status', DB::raw('GROUP_CONCAT(DISTINCT request_transactions.request_id) AS req_id'), 'request_transactions.group', 'request_transactions.type'])
             ->groupBy('transaction_vehicles.id');
 
         $data = $query->paginate(10, ['*'], 'page', $fields['pages']);
 
         for ($i = 0; $i < count($data); $i++) {
             $results['data'][] = [
-                'tracking_no' => $this->api($data[$i]->req_id),
+                'tracking_no' => ($data[$i]->type == 'rito') ? $this->api($data[$i]->req_id) : $this->local($data[$i]->req_id),
                 'results' => $data[$i]
             ];
         }
@@ -76,6 +79,27 @@ class GetListingVehicleTravel
         }
 
         return $tracking;
+    }
+
+    public function local($id)
+    {
+        $req = Request::find($id);
+        $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
+                            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
+                            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
+                            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
+                            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
+                            ->where('destinations.request_id', $id)
+                            ->first();
+        $data[] = [
+            'purpose' => $req->purpose,
+            'inclusive_from' => $req->travel_date,
+            'inclusive_to' => $req->return_date,
+            'place' => $place->place,
+            'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
+        ];
+
+        return $data;
     }
 
     // if ($fields['division']){
