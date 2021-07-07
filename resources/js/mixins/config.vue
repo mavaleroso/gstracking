@@ -55,13 +55,17 @@ export default {
             let label;
             if (stats == 'Pending') {
                 label = '<span class="label label-inline label-light-warning">Pending</span>';
-            } else {
+            } else if (stats == 'Approved') {
                 label = '<span class="label label-inline label-light-primary">Approved</span>';
+            } else if (stats == 'Completed') {
+                label = '<span class="label label-inline label-light-success">Completed</span>';
             }
             return label;
         },
         $chkAssigned(mot, id = null) {
             let label;
+            $(`#checkable_${id}`).prop('disabled', false);
+            $(`#checkable_${id}`).closest('tr').removeClass('bg-disabled');
             if (mot) {
                 if (mot == 1) {
                     label = '<span class="label label-inline label-light-danger">Unassigned</span>';

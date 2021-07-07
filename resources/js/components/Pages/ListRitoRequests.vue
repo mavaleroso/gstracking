@@ -322,6 +322,7 @@ export default {
     methods: {
         async getRITO() {
             this.loading = true;
+            this.rito = [];
             await axios.get(BASE_URL + '/travel/ritorequest?pages='+this.pages.currentPage).then(res => {
                 this.rito = res.data.data;
                 this.total = res.data.count;
