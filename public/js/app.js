@@ -7154,12 +7154,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7290,7 +7284,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.currentlySelectedBarangays = res;
           vm.currentCities = city;
         });
+        $('[id^="passenger-select-"]').on('change', function (e) {
+          vm.getData(e.target.selectedIndex); // vm.getData();
+        });
       });
+    },
+    // switchRoom (){
+    //     alert("helloaaa");
+    //     console.log("fasfsafsaf");
+    // },
+    getData: function getData(id) {
+      // let id  = $('#passenger-select-').val();
+      var vm = this;
+      vm.gender = vm.results[id].gender;
+      vm.designation = vm.results[id].position;
     },
     EmployeeList: function EmployeeList() {
       this.results = JSON.parse(localStorage.getItem('ListEmployee'));

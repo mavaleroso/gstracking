@@ -136,12 +136,6 @@
                                         <td>
 
                                             <input :name="'pax_gen_'+index" class="details-input form-control" type="text" disabled v-model="gender"/>
-
-                                            <!-- <select :name="'pax_gen_'+index"   class="details-input form-control" disabled>
-                                                <option value=""></option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </select> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -207,10 +201,12 @@ export default {
         this.getCity();
         this.getBrgy();
         this.EmployeeList();
+        
     },
     mounted() {
         this.ini();
         this.dateConf();
+        
         
     },
     methods: {
@@ -291,7 +287,25 @@ export default {
                     vm.currentlySelectedBarangays = res;
                     vm.currentCities = city;
                 });
+                
+                $('[id^="passenger-select-"]').on('change', e => {
+                vm.getData(e.target.selectedIndex);
+                // vm.getData();
+                }); 
+
             });
+        },
+        // switchRoom (){
+        //     alert("helloaaa");
+        //     console.log("fasfsafsaf");
+        // },
+
+        getData(id){
+     
+            // let id  = $('#passenger-select-').val();
+            let vm = this;
+            vm.gender = vm.results[id].gender;
+            vm.designation = vm.results[id].position;
         },
         EmployeeList(){
             this.results = JSON.parse(localStorage.getItem('ListEmployee'));
