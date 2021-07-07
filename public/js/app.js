@@ -6371,6 +6371,217 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6409,7 +6620,7 @@ __webpack_require__.r(__webpack_exports__);
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
-        $('.print-content').append(tag);
+        $(".print-content").append(tag);
       });
 
       document.onkeypress = function (event) {
@@ -6436,42 +6647,20 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
 
-      document.addEventListener('contextmenu', function (e) {// e.preventDefault();
+      document.addEventListener("contextmenu", function (e) {// e.preventDefault();
       });
-      $('.btn-print').click(function () {
+      $(".btn-print").click(function () {
         $("#page-1").printThis();
       });
       var url = window.location.href;
-      var data = this.parseURLParams(url);
+      var data = this.$parseURLParams(url);
       this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
       // $('#footer').css('page-break-before', 'always');
-    },
-    parseURLParams: function parseURLParams(url) {
-      var queryStart = url.indexOf("?") + 1,
-          queryEnd = url.indexOf("#") + 1 || url.length + 1,
-          query = url.slice(queryStart, queryEnd - 1),
-          pairs = query.replace(/\+/g, " ").split("&"),
-          parms = {},
-          i,
-          n,
-          v,
-          nv;
-      if (query === url || query === "") return;
-
-      for (i = 0; i < pairs.length; i++) {
-        nv = pairs[i].split("=", 2);
-        n = decodeURIComponent(nv[0]);
-        v = decodeURIComponent(nv[1]);
-        if (!parms.hasOwnProperty(n)) parms[n] = [];
-        parms[n].push(nv.length === 2 ? v : null);
-      }
-
-      return parms;
     },
     getData: function getData(id) {
       var _this = this;
 
-      axios.get(BASE_URL + '/travel/printrequest/' + id).then(function (res) {
+      axios.get(BASE_URL + "/travel/printrequest/" + id).then(function (res) {
         _this.transaction.serial_code = res.data.trans[0].serial_code;
         _this.transaction.mot = res.data.trans[0].mot;
         _this.type = res.data.trans[0].type;
@@ -6512,8 +6701,8 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         _this.vehicles = res.data.vehicles;
-        _this.transaction.gs_staff = res.data.gs_staff.first_name + ' ' + res.data.gs_staff.last_name;
-        autosize($('#kt_autosize_1'));
+        _this.transaction.gs_staff = res.data.gs_staff.first_name + " " + res.data.gs_staff.last_name;
+        autosize($("#kt_autosize_1"));
       });
     }
   }
@@ -6863,26 +7052,262 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      date: null,
+      request: {
+        purpose: [],
+        destinations: [],
+        requested_by: null
+      },
       travel: {
         fullname: null,
-        purpose: null,
         vehicle_name: null,
         vehicle_plate_no: null,
         vehicle_type: null,
-        travel_date: null,
-        destinations: []
+        starting_odo: null,
+        ending_odo: null,
+        distance_travelled: null
       },
-      destinations: []
+      destinations: [],
+      vehiclemodes: []
     };
   },
   computed: {
     freeDestinations: function freeDestinations() {
-      var res = 5 - this.destinations.length;
+      var res = 5 - this.request.destinations.length;
       return res;
     }
+  },
+  created: function created() {
+    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
@@ -6893,7 +7318,7 @@ __webpack_require__.r(__webpack_exports__);
       scripts.forEach(function (script) {
         var tag = document.createElement("script");
         tag.setAttribute("src", script);
-        $('.print-content').append(tag);
+        $(".print-content").append(tag);
       });
 
       document.onkeypress = function (event) {
@@ -6920,53 +7345,47 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
 
-      document.addEventListener('contextmenu', function (e) {// e.preventDefault();
+      document.addEventListener("contextmenu", function (e) {// e.preventDefault();
       });
-      $('.btn-print').click(function () {
+      $(".btn-print").click(function () {
         $("#page-1").printThis();
       });
       var url = window.location.href;
-      var data = this.parseURLParams(url);
-      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
-      // $('#footer').css('page-break-before', 'always');
-    },
-    parseURLParams: function parseURLParams(url) {
-      var queryStart = url.indexOf("?") + 1,
-          queryEnd = url.indexOf("#") + 1 || url.length + 1,
-          query = url.slice(queryStart, queryEnd - 1),
-          pairs = query.replace(/\+/g, " ").split("&"),
-          parms = {},
-          i,
-          n,
-          v,
-          nv;
-      if (query === url || query === "") return;
-
-      for (i = 0; i < pairs.length; i++) {
-        nv = pairs[i].split("=", 2);
-        n = decodeURIComponent(nv[0]);
-        v = decodeURIComponent(nv[1]);
-        if (!parms.hasOwnProperty(n)) parms[n] = [];
-        parms[n].push(nv.length === 2 ? v : null);
-      }
-
-      return parms;
+      var data = this.$parseURLParams(url);
+      this.getData(data.id[0]);
     },
     getData: function getData(id) {
       var _this = this;
 
-      axios.get(BASE_URL + '/travel/printtripticket/' + id).then(function (res) {
-        _this.travel.fullname = res.data.travel[0].fullname;
-        _this.travel.purpose = res.data.travel[0].purpose;
-        _this.travel.vehicle_name = res.data.travel[0].vehicle_name;
-        _this.travel.vehicle_plate_no = res.data.travel[0].vehicle_plate_no;
-        _this.travel.vehicle_type = res.data.travel[0].vehicle_type;
-        _this.travel.travel_date = _this.$dateEng(res.data.travel[0].travel_date);
-        _this.destinations = res.data.destinations;
+      axios.get(BASE_URL + "/travel/printtripticket/" + id).then(function (res) {
+        _this.date = res.data.date_now; // Travel Data
 
-        for (var i = 0; i < res.data.destinations.length; i++) {
-          _this.travel.destinations.push(res.data.destinations[i].city_name + ' (' + res.data.destinations[i].province_code + ')');
+        _this.travel.fullname = res.data.travel.fullname;
+        _this.travel.starting_odo = res.data.travel.starting_odo;
+        _this.travel.ending_odo = res.data.travel.ending_odo;
+        _this.travel.distance_travelled = res.data.travel.travelled;
+        _this.travel.vehicle_name = res.data.travel.vehicle_name;
+        _this.travel.vehicle_plate_no = res.data.travel.vehicle_plate_no;
+        _this.travel.vehicle_type = res.data.travel.mot; // Request Data
+
+        _this.request.requested_by = res.data.request[0].requested_by;
+
+        for (var i = 0; i < res.data.request.length; i++) {
+          if (_this.$searchInArray(res.data.request[i].purpose, _this.request.purpose) == false) {
+            _this.request.purpose.push(res.data.request[i].purpose);
+          }
+
+          if (_this.$searchInArray(res.data.request[i].place, _this.request.destinations) == false) {
+            _this.request.destinations.push(res.data.request[i].place);
+          }
         }
+      });
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
+        _this2.vehiclemodes = res.data.results;
       });
     }
   }
@@ -9734,6 +10153,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10130,62 +10557,62 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     $showToast: function $showToast(data, type) {
       toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "5000",
-        "timeOut": "3000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "5000",
+        timeOut: "3000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
       };
-      type == 'error' ? toastr.error(data) : type == 'info' ? toastr.info(data) : toastr.success(data);
+      type == "error" ? toastr.error(data) : type == "info" ? toastr.info(data) : toastr.success(data);
     },
     $timeEng: function $timeEng(nTime) {
       var time = nTime.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
       if (time.length > 1) {
         time = time.slice(1);
-        time[3] = +time[0] < 12 ? ' AM' : ' PM';
+        time[3] = +time[0] < 12 ? " AM" : " PM";
         time[0] = +time[0] % 12 || 12;
       }
 
-      return time.join('');
+      return time.join("");
     },
     $dateEng: function $dateEng(nDate) {
       var date = new Date(nDate);
       var options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+        year: "numeric",
+        month: "long",
+        day: "numeric"
       };
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString("en-US", options);
     },
     $dateEng2: function $dateEng2(nDate) {
       var date = new Date(nDate);
       var options = {
-        month: 'short',
-        day: 'numeric'
+        month: "short",
+        day: "numeric"
       };
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString("en-US", options);
     },
     $dateTimeEng: function $dateTimeEng(nDateTime) {
       var date = new Date(nDateTime);
       var options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric"
       };
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString("en-US", options);
     },
     $toParseNum: function $toParseNum(num) {
       var number = parseFloat(num);
@@ -10196,11 +10623,11 @@ __webpack_require__.r(__webpack_exports__);
     $chkStatus: function $chkStatus(stats) {
       var label;
 
-      if (stats == 'Pending') {
+      if (stats == "Pending") {
         label = '<span class="label label-inline label-light-warning">Pending</span>';
-      } else if (stats == 'Approved') {
+      } else if (stats == "Approved") {
         label = '<span class="label label-inline label-light-primary">Approved</span>';
-      } else if (stats == 'Completed') {
+      } else if (stats == "Completed") {
         label = '<span class="label label-inline label-light-success">Completed</span>';
       }
 
@@ -10209,8 +10636,8 @@ __webpack_require__.r(__webpack_exports__);
     $chkAssigned: function $chkAssigned(mot) {
       var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var label;
-      $("#checkable_".concat(id)).prop('disabled', false);
-      $("#checkable_".concat(id)).closest('tr').removeClass('bg-disabled');
+      $("#checkable_".concat(id)).prop("disabled", false);
+      $("#checkable_".concat(id)).closest("tr").removeClass("bg-disabled");
 
       if (mot) {
         if (mot == 1) {
@@ -10221,17 +10648,46 @@ __webpack_require__.r(__webpack_exports__);
 
         $(function () {
           if (id) {
-            $("#checkable_".concat(id)).prop('disabled', true);
-            $("#checkable_".concat(id)).closest('tr').addClass('bg-disabled');
+            $("#checkable_".concat(id)).prop("disabled", true);
+            $("#checkable_".concat(id)).closest("tr").addClass("bg-disabled");
           }
-
-          ;
         });
       } else {
         label = '<span class="label label-inline label-light-warning">Pending</span>';
       }
 
       return label;
+    },
+    $parseURLParams: function $parseURLParams(url) {
+      var queryStart = url.indexOf("?") + 1,
+          queryEnd = url.indexOf("#") + 1 || url.length + 1,
+          query = url.slice(queryStart, queryEnd - 1),
+          pairs = query.replace(/\+/g, " ").split("&"),
+          parms = {},
+          i,
+          n,
+          v,
+          nv;
+      if (query === url || query === "") return;
+
+      for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+      }
+
+      return parms;
+    },
+    $searchInArray: function $searchInArray(searchString, arrayOfLists) {
+      var matchingStrings = [];
+      arrayOfLists.forEach(function (list) {
+        if (list.toLocaleLowerCase().search(searchString.toLocaleLowerCase()) > -1) {
+          matchingStrings.push(list);
+        }
+      });
+      return matchingStrings;
     }
   }
 });
@@ -57677,7 +58133,11 @@ var render = function() {
                           staticClass:
                             "text-center d-block mr-auto ml-auto mt-5"
                         },
-                        [_vm._v("Motor Vehicle Declined Request")]
+                        [
+                          _vm._v(
+                            "\n                                Motor Vehicle Declined Request\n                            "
+                          )
+                        ]
                       )
                     : _c(
                         "h5",
@@ -57685,7 +58145,11 @@ var render = function() {
                           staticClass:
                             "text-center d-block mr-auto ml-auto mt-5"
                         },
-                        [_vm._v("Motor Vehicle Request")]
+                        [
+                          _vm._v(
+                            "\n                                Motor Vehicle Request\n                            "
+                          )
+                        ]
                       )
                 ])
               ]),
@@ -57693,7 +58157,9 @@ var render = function() {
               _c("tr", [
                 _c("td", { attrs: { colspan: "2" } }, [
                   _c("p", { staticClass: "text-left my-10" }, [
-                    _vm._v("Date: "),
+                    _vm._v(
+                      "\n                                Date:\n                                "
+                    ),
                     _c("span", { staticClass: " text-underline" }, [
                       _vm._v(_vm._s(_vm.date))
                     ])
@@ -57702,7 +58168,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", { attrs: { colspan: "1" } }, [
                   _c("p", { staticClass: "text-right my-10" }, [
-                    _vm._v("Series: "),
+                    _vm._v(
+                      "\n                                Series:\n                                "
+                    ),
                     _c("span", { staticClass: " text-underline" }, [
                       _vm._v(_vm._s(_vm.transaction.serial_code))
                     ])
@@ -57914,17 +58382,25 @@ var render = function() {
                     [
                       _c("tr", [
                         _c("td", { staticClass: "text-center table-border" }, [
-                          _vm._v("Name of Passenger/s")
+                          _vm._v(
+                            "\n                                        Name of Passenger/s\n                                    "
+                          )
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-center table-border" }, [
-                          _vm._v("Position/Designation")
+                          _vm._v(
+                            "\n                                        Position/Designation\n                                    "
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
                           "td",
                           { staticClass: "text-center table-border w-10" },
-                          [_vm._v("Gender")]
+                          [
+                            _vm._v(
+                              "\n                                        Gender\n                                    "
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -58050,7 +58526,9 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Section/Program/Division Head")
+                          _vm._v(
+                            "\n                                            Section/Program/Division Head\n                                        "
+                          )
                         ])
                       ])
                     ])
@@ -58115,7 +58593,11 @@ var render = function() {
                       {
                         staticClass: "text-center d-block mr-auto ml-auto my-8"
                       },
-                      [_vm._v("Motor Vehicle Confirmation Slip")]
+                      [
+                        _vm._v(
+                          "\n                                Motor Vehicle Confirmation Slip\n                            "
+                        )
+                      ]
                     )
                   ])
                 ]),
@@ -58123,7 +58605,9 @@ var render = function() {
                 _c("tr", [
                   _c("td", { attrs: { colspan: "1" } }, [
                     _c("p", { staticClass: "text-left my-10" }, [
-                      _vm._v("Date: "),
+                      _vm._v(
+                        "\n                                Date:\n                                "
+                      ),
                       _c("span", { staticClass: " text-underline" }, [
                         _vm._v(_vm._s(_vm.date))
                       ])
@@ -58132,7 +58616,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "1" } }, [
                     _c("p", { staticClass: "text-right my-8" }, [
-                      _vm._v("Series: "),
+                      _vm._v(
+                        "\n                                Series:\n                                "
+                      ),
                       _c("span", { staticClass: "text-underline" }, [
                         _vm._v(_vm._s(_vm.transaction.serial_code))
                       ])
@@ -58149,25 +58635,41 @@ var render = function() {
                           _c(
                             "td",
                             { staticClass: "text-center table-border" },
-                            [_vm._v("Vehicle Name")]
+                            [
+                              _vm._v(
+                                "\n                                        Vehicle Name\n                                    "
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c(
                             "td",
                             { staticClass: "text-center table-border" },
-                            [_vm._v("Plate No.")]
+                            [
+                              _vm._v(
+                                "\n                                        Plate No.\n                                    "
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c(
                             "td",
                             { staticClass: "text-center table-border" },
-                            [_vm._v("Driver Name")]
+                            [
+                              _vm._v(
+                                "\n                                        Driver Name\n                                    "
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c(
                             "td",
                             { staticClass: "text-center table-border" },
-                            [_vm._v("Contact No.")]
+                            [
+                              _vm._v(
+                                "\n                                        Contact No.\n                                    "
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),
@@ -58219,7 +58721,9 @@ var render = function() {
                 _c("tr", [
                   _c("td", [
                     _c("p", { staticClass: "mt-5" }, [
-                      _vm._v("Confirmed No. of Passenger/s:")
+                      _vm._v(
+                        "\n                                Confirmed No. of Passenger/s:\n                            "
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -58323,7 +58827,9 @@ var render = function() {
               _c("tr", [
                 _c("td", [
                   _c("p", { staticClass: "page-header-right" }, [
-                    _vm._v("DSWD-FO-Caraga-F-AD-GS-003")
+                    _vm._v(
+                      "\n                                DSWD-FO-Caraga-F-AD-GS-003\n                            "
+                    )
                   ])
                 ])
               ]),
@@ -58342,7 +58848,11 @@ var render = function() {
                     _c(
                       "span",
                       { staticClass: "header-text d-block m-auto text-center" },
-                      [_vm._v("Field Office Caraga, Capitol Site, Butuan City")]
+                      [
+                        _vm._v(
+                          "Field Office Caraga, Capitol Site,\n                                    Butuan City"
+                        )
+                      ]
                     )
                   ])
                 ])
@@ -58358,7 +58868,11 @@ var render = function() {
                       staticClass:
                         "text-center d-block mr-auto ml-auto mt-5 mb-10"
                     },
-                    [_vm._v("VEHICLE TRIP TICKET")]
+                    [
+                      _vm._v(
+                        "\n                                VEHICLE TRIP TICKET\n                            "
+                      )
+                    ]
                   )
                 ])
               ]),
@@ -58367,10 +58881,11 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "d-flex w-25 ml-auto" }, [
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Date: ")
+                      _vm._v("Date:")
                     ]),
+                    _vm._v(" "),
                     _c("span", { staticClass: "underline text-center" }, [
-                      _vm._v(_vm._s(_vm.travel.travel_date))
+                      _vm._v(_vm._s(_vm.$dateEng(_vm.date)))
                     ])
                   ])
                 ])
@@ -58380,8 +58895,11 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "d-flex mt-3" }, [
                     _c("span", { staticClass: "box-letter" }, [_vm._v("A")]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "m-0" }, [
-                      _vm._v("To filled-up by the Requesting Party")
+                      _vm._v(
+                        "\n                                    To filled-up by the Requesting Party\n                                "
+                      )
                     ])
                   ])
                 ])
@@ -58391,9 +58909,13 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
                     _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Name of Driver of Vehicle :")
+                      _vm._v(
+                        "\n                                    Name of Driver of Vehicle :\n                                "
+                      )
                     ]),
+                    _vm._v(" "),
                     _c(
                       "span",
                       { staticClass: "underline pl-8 font-weight-bold" },
@@ -58405,29 +58927,44 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", [
-                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Government Car to be used / Plate Number :")
-                    ]),
-                    _c(
-                      "span",
-                      { staticClass: "underline pl-8 font-weight-bold" },
-                      [
+                  _c(
+                    "div",
+                    { staticClass: "d-flex pl-8 mt-3" },
+                    [
+                      _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "m-0 text-nowrap" }, [
                         _vm._v(
-                          _vm._s(_vm.travel.vehicle_name) +
-                            " (" +
-                            _vm._s(
-                              _vm.travel.vehicle_type == 1
-                                ? " Office "
-                                : " Rental "
-                            ) +
-                            ") " +
-                            _vm._s(_vm.travel.vehicle_plate_no)
+                          "\n                                    Government Car to be used / Plate Number\n                                    :\n                                "
                         )
-                      ]
-                    )
-                  ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(
+                        _vm.vehiclemodes.filter(function(i) {
+                          return i.id == _vm.travel.vehicle_type
+                        }),
+                        function(vm) {
+                          return _c(
+                            "span",
+                            {
+                              key: vm.id,
+                              staticClass: "underline pl-8 font-weight-bold"
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(_vm.travel.vehicle_name) +
+                                  " (" +
+                                  _vm._s(vm.name) +
+                                  ") " +
+                                  _vm._s(_vm.travel.vehicle_plate_no)
+                              )
+                            ]
+                          )
+                        }
+                      )
+                    ],
+                    2
+                  )
                 ])
               ]),
               _vm._v(" "),
@@ -58435,9 +58972,13 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
                     _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Name of Authorized Passenger :")
+                      _vm._v(
+                        "\n                                    Name of Authorized Passenger :\n                                "
+                      )
                     ]),
+                    _vm._v(" "),
                     _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
@@ -58455,47 +58996,38 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
                     _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v(
-                        "Place to be visited (for Butuan City proper, please indicate specific location)"
+                        "\n                                    Place to be visited (for Butuan City\n                                    proper, please indicate specific\n                                    location)\n                                "
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c(
-                      "span",
-                      { staticClass: "underline pl-8 font-weight-bold" },
-                      [_vm._v(_vm._s(_vm.travel.destinations.toString()))]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                  _c("div", { staticClass: "pl-18 div-height mt-2" }, [
+                    _c("span", { staticClass: "underline font-weight-bold" }, [
+                      _vm._v(_vm._s(_vm.request.destinations.toString()) + ".")
+                    ])
                   ])
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
                 _c("td", [
-                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Purpose :")
+                  _c("div", { staticClass: "pl-8 mt-3" }, [
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "m-0 text-nowrap" }, [
+                        _vm._v("Purpose :")
+                      ])
                     ]),
-                    _c("span", { staticClass: "underline" })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "ml-9 underline font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.request.purpose.toString()) + ".")]
+                    )
                   ])
                 ])
               ]),
@@ -58513,11 +59045,19 @@ var render = function() {
                             staticClass:
                               "underline mb-1 text-center font-weight-bold"
                           },
-                          [_vm._v(" User 1")]
+                          [
+                            _vm._v(
+                              "\n                                            " +
+                                _vm._s(_vm.request.requested_by) +
+                                "\n                                        "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Division / Project / Unit / Section Head")
+                          _vm._v(
+                            "\n                                            Division / Project / Unit /\n                                            Section Head\n                                        "
+                          )
                         ])
                       ])
                     ]),
@@ -58532,11 +59072,17 @@ var render = function() {
                             staticClass:
                               "underline mb-1 text-center font-weight-bold"
                           },
-                          [_vm._v("TERESA M. BIDAURE, AO-III")]
+                          [
+                            _vm._v(
+                              "\n                                            TERESA M. BIDAURE, AO-III\n                                        "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Head General Services")
+                          _vm._v(
+                            "\n                                            Head General Services\n                                        "
+                          )
                         ])
                       ])
                     ])
@@ -58552,8 +59098,11 @@ var render = function() {
                 _c("td", { attrs: { colspan: "2" } }, [
                   _c("div", { staticClass: "d-flex mt-3" }, [
                     _c("span", { staticClass: "box-letter" }, [_vm._v("B")]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "m-0" }, [
-                      _vm._v("To filled-up by the Driver")
+                      _vm._v(
+                        "\n                                    To filled-up by the Driver\n                                "
+                      )
                     ])
                   ])
                 ])
@@ -58565,7 +59114,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Time of Departure from Station / Office :")
+                      _vm._v(
+                        "\n                                    Time of Departure from Station / Office\n                                    :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58588,7 +59139,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Time of Arrival per # 4 above :")
+                      _vm._v(
+                        "\n                                    Time of Arrival per # 4 above :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58611,7 +59164,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Time of Departure per # 4 above :")
+                      _vm._v(
+                        "\n                                    Time of Departure per # 4 above :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58634,7 +59189,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Time of Arrival at the Station / Office :")
+                      _vm._v(
+                        "\n                                    Time of Arrival at the Station / Office\n                                    :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58667,7 +59224,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Fuel issued, purchased and used")
+                      _vm._v(
+                        "\n                                    Fuel issued, purchased and used\n                                "
+                      )
                     ])
                   ])
                 ])
@@ -58679,7 +59238,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("a")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Balance in Tank :")
+                      _vm._v(
+                        "\n                                    Balance in Tank :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58702,7 +59263,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("b")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Issued on Office from Stock :")
+                      _vm._v(
+                        "\n                                    Issued on Office from Stock :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58725,7 +59288,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("c")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Additional purchase during trip :")
+                      _vm._v(
+                        "\n                                    Additional purchase during trip :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58771,7 +59336,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("e")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Used during trip (to and from) :")
+                      _vm._v(
+                        "\n                                    Used during trip (to and from) :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58794,7 +59361,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("f")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Balance in tank at the end trip :")
+                      _vm._v(
+                        "\n                                    Balance in tank at the end trip :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58817,7 +59386,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("6")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Motor Oil used :")
+                      _vm._v(
+                        "\n                                    Motor Oil used :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58837,7 +59408,9 @@ var render = function() {
                     _c("span", { staticClass: "box-number" }, [_vm._v("7")]),
                     _vm._v(" "),
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Break Fluid used :")
+                      _vm._v(
+                        "\n                                    Break Fluid used :\n                                "
+                      )
                     ])
                   ])
                 ]),
@@ -58855,7 +59428,9 @@ var render = function() {
                 _c("td", { attrs: { colspan: "2" } }, [
                   _c("div", { staticClass: "d-flex mt-3" }, [
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Odometer Reading")
+                      _vm._v(
+                        "\n                                    Odometer Reading\n                                "
+                      )
                     ])
                   ])
                 ])
@@ -58877,28 +59452,53 @@ var render = function() {
                           _c("td", [_vm._v("Distance travelled (km)")]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v("Signature "),
+                            _vm._v(
+                              "\n                                            Signature\n                                            "
+                            ),
                             _c("br"),
-                            _vm._v("(Passenger/Driver)")
+                            _vm._v(
+                              "(Passenger/Driver)\n                                        "
+                            )
                           ])
                         ]),
                         _vm._v(" "),
-                        _vm._l(_vm.destinations, function(d, index) {
+                        _vm._l(_vm.request.destinations, function(d, index) {
                           return _c("tr", { key: index }, [
                             _c("td", { staticClass: "row-height" }, [
                               _vm._v(
-                                _vm._s(d.city_name) +
-                                  " (" +
-                                  _vm._s(d.province_code) +
-                                  ")"
+                                "\n                                            " +
+                                  _vm._s(d) +
+                                  "\n                                        "
                               )
                             ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
+                            _c("td", { staticClass: "row-height" }, [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(_vm.travel.starting_odo) +
+                                  "\n                                        "
+                              )
+                            ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
+                            _c("td", { staticClass: "row-height" }, [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(_vm.travel.ending_odo) +
+                                  "\n                                        "
+                              )
+                            ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
+                            _c("td", { staticClass: "row-height" }, [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(
+                                    _vm.travel.distance_travelled
+                                      ? _vm.travel.distance_travelled
+                                      : ""
+                                  ) +
+                                  "\n                                        "
+                              )
+                            ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "row-height" })
                           ])
@@ -58930,6 +59530,7 @@ var render = function() {
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v("Remarks :")
                     ]),
+                    _vm._v(" "),
                     _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
@@ -58944,7 +59545,7 @@ var render = function() {
                   _c("div", { staticClass: "d-flex mt-3" }, [
                     _c("p", { staticClass: "m-0 text-nowrap" }, [
                       _vm._v(
-                        "I hereby certify to the correction of the above statement / record travel"
+                        "\n                                    I hereby certify to the correction of\n                                    the above statement / record travel\n                                "
                       )
                     ])
                   ])
@@ -58962,7 +59563,13 @@ var render = function() {
                         staticClass:
                           "underline mb-1 text-center font-weight-bold text-uppercase"
                       },
-                      [_vm._v(_vm._s(_vm.travel.fullname))]
+                      [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.travel.fullname) +
+                            "\n                                "
+                        )
+                      ]
                     ),
                     _vm._v(" "),
                     _c("p", { staticClass: "text-center" }, [_vm._v("Driver")])
@@ -61926,7 +62533,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              "\n                           " +
+                              "\n                            " +
                                 _vm._s(t.results.type) +
                                 "\n                        "
                             )
@@ -62169,11 +62776,13 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              _vm._s(
-                                t.results.total_cost
-                                  ? _vm.$toParseNum(t.results.total_cost)
-                                  : ""
-                              ) + "\n                        "
+                              "\n                            " +
+                                _vm._s(
+                                  t.results.total_cost
+                                    ? _vm.$toParseNum(t.results.total_cost)
+                                    : ""
+                                ) +
+                                "\n                        "
                             )
                           ]),
                           _vm._v(" "),
