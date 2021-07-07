@@ -13,7 +13,7 @@ use App\Services\VehicleTravels\UpdateVehicleStatus;
 class VehicleTravelsController extends Controller
 {
 
-     /**
+    /**
      * Initialization
      */
     public function __construct()
@@ -25,7 +25,7 @@ class VehicleTravelsController extends Controller
         $this->middleware('permission:vehicletravels-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:vehicletravels-delete', ['only' => ['destroy']]);
         $this->middleware('permission:vehicletravels-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -88,17 +88,18 @@ class VehicleTravelsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(VehicleTravelRequest $vehicleTravelRequest, UpdateVehicleTravel $updateVehicleTravel , $id)
+    public function update(VehicleTravelRequest $vehicleTravelRequest, UpdateVehicleTravel $updateVehicleTravel, $id)
     {
         $url = $vehicleTravelRequest->url();
         $result = $updateVehicleTravel->execute($id, $vehicleTravelRequest->validated(), $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
-    public function undo($id,Request $request, UpdateVehicleStatus $updateVehicleStatus){
+    public function undo($id, Request $request, UpdateVehicleStatus $updateVehicleStatus)
+    {
         $url = $request->url();
         $result = $updateVehicleStatus->execute($id, $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.list_travel_updated_successfully'), 'result' => $result]);
     }
 
     /**
