@@ -111,7 +111,7 @@
                                     <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
                             </div>
-                            <input type="text" id="pax-total" name="pax_total" v-model="total">
+                            <input type="hidden" id="pax-total" name="pax_total" v-model="total">
 
                             <table id="passenger-tbl" class="table w-100">
                                 <thead>
@@ -129,16 +129,19 @@
                                             <td>
                                                 <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
                                                     <option label="Label"></option>
-                                                    <option v-for="(result,index) in results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                                    <option v-for="(result,index) in results" :key="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                                 </select>
                                             </td>
-                                        <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
+                                        <td><input :name="'pax_des_'+index" class="details-input form-control" type="text" disabled v-model="designation"/></td>
                                         <td>
-                                            <select name="pax_gen_1" class="details-input form-control">
+
+                                            <input :name="'pax_gen_'+index" class="details-input form-control" type="text" disabled v-model="gender"/>
+
+                                            <!-- <select :name="'pax_gen_'+index"   class="details-input form-control" disabled>
                                                 <option value=""></option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
-                                            </select>
+                                            </select> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -190,7 +193,10 @@ export default {
             currentlySelectedBarangays: [],
             currentCities: [],
             results: [],
-            total: 1
+            total: 1,
+            gender: '',
+            designation: ''
+
         }
     },
     created() {

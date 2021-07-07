@@ -7157,6 +7157,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7187,7 +7190,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       currentlySelectedBarangays: [],
       currentCities: [],
       results: [],
-      total: 1
+      total: 1,
+      gender: '',
+      designation: ''
     };
   },
   created: function created() {
@@ -58875,7 +58880,7 @@ var render = function() {
                       expression: "total"
                     }
                   ],
-                  attrs: { type: "text", id: "pax-total", name: "pax_total" },
+                  attrs: { type: "hidden", id: "pax-total", name: "pax_total" },
                   domProps: { value: _vm.total },
                   on: {
                     input: function($event) {
@@ -58926,7 +58931,17 @@ var render = function() {
                                 _vm._l(_vm.results, function(result, index) {
                                   return _c(
                                     "option",
-                                    { key: index, domProps: { value: index } },
+                                    {
+                                      key: index,
+                                      domProps: {
+                                        value:
+                                          result.first_name +
+                                          " " +
+                                          result.middle_name +
+                                          " " +
+                                          result.last_name
+                                      }
+                                    },
                                     [
                                       _vm._v(
                                         _vm._s(result.first_name) +
@@ -58943,9 +58958,61 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _vm._m(4, true),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.designation,
+                                  expression: "designation"
+                                }
+                              ],
+                              staticClass: "details-input form-control",
+                              attrs: {
+                                name: "pax_des_" + index,
+                                type: "text",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.designation },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.designation = $event.target.value
+                                }
+                              }
+                            })
+                          ]),
                           _vm._v(" "),
-                          _vm._m(5, true)
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.gender,
+                                  expression: "gender"
+                                }
+                              ],
+                              staticClass: "details-input form-control",
+                              attrs: {
+                                name: "pax_gen_" + index,
+                                type: "text",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.gender },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.gender = $event.target.value
+                                }
+                              }
+                            })
+                          ])
                         ])
                       }),
                       0
@@ -59053,38 +59120,6 @@ var staticRenderFns = [
           _vm._v("Gender")
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("input", {
-        staticClass: "details-input form-control",
-        attrs: { name: "pax_des_1", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "select",
-        {
-          staticClass: "details-input form-control",
-          attrs: { name: "pax_gen_1" }
-        },
-        [
-          _c("option", { attrs: { value: "" } }),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Male" } }, [_vm._v("Male")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Female" } }, [_vm._v("Female")])
-        ]
-      )
     ])
   }
 ]
