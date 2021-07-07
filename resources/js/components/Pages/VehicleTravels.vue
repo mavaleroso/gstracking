@@ -107,7 +107,7 @@
                                 }}</span>
                             </td>
                             <td>
-                               {{ t.results.type }}
+                                {{ t.results.type }}
                             </td>
                             <td>
                                 {{ t.results.group }}
@@ -128,8 +128,8 @@
                             </td>
                             <td
                                 v-for="vm in vehiclemodes.filter(
-                                        i => i.id == t.results.vehicle_type
-                                    )"
+                                    i => i.id == t.results.vehicle_type
+                                )"
                                 :key="vm.id"
                             >
                                 {{ vm.name }}
@@ -179,7 +179,7 @@
                             <td>
                                 {{
                                     t.results.travelled
-                                        ? t.results.travelled + ' KM'
+                                        ? t.results.travelled + " KM"
                                         : ""
                                 }}
                             </td>
@@ -232,13 +232,22 @@
                                         : ""
                                 }}
                             </td>
-                            <td>{{ 
+                            <td>
+                                {{
                                     t.results.total_cost
                                         ? $toParseNum(t.results.total_cost)
-                                        : "" 
+                                        : ""
                                 }}
                             </td>
-                            <td v-html="$chkStatus((t.results.status == 2) ? 'Approved' : 'Completed')"></td>
+                            <td
+                                v-html="
+                                    $chkStatus(
+                                        t.results.status == 2
+                                            ? 'Approved'
+                                            : 'Completed'
+                                    )
+                                "
+                            ></td>
                             <td>{{ t.results.remarks }}</td>
                             <td>{{ dateEng(t.results.created_at, 1) }}</td>
                             <td>
@@ -468,15 +477,13 @@
                 <form class="form">
                     <div class="card-body row pt-0">
                         <div class="col-lg-12 mb-3">
-                            <h3 
+                            <h3
                                 v-for="vm in vehiclemodes.filter(
-                                        i => i.id == formFields.vehicle_type
+                                    i => i.id == formFields.vehicle_type
                                 )"
                                 :key="vm.id"
                             >
-                                {{
-                                    vm.name
-                                }}
+                                {{ vm.name }}
                             </h3>
                         </div>
                         <div class="col-lg-12">
@@ -484,7 +491,8 @@
                                 <div
                                     class="col-lg-6"
                                     v-if="
-                                        (formFields.vehicle_type == 2 || formFields.vehicle_type == 3) &&
+                                        (formFields.vehicle_type == 2 ||
+                                            formFields.vehicle_type == 3) &&
                                             vehicle_image
                                     "
                                 >
@@ -989,7 +997,7 @@ export default {
                 "starting_odo",
                 "ending_odo",
                 "date_submitted_proc",
-                "rate_per_km",
+                "rate_per_km"
             ]
         };
     },

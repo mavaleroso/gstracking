@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\PrintRequest;
 
 use App\Models\UserDetail;
@@ -21,7 +22,7 @@ class GetPrintRequestById
     {
         $reqTrans = RequestTransactions::where('group', $id)->groupBy('request_id')->get();
 
-        for ($i=0; $i < count($reqTrans); $i++) { 
+        for ($i = 0; $i < count($reqTrans); $i++) {
             $requests['travels'][] = [
                 'data' => ($reqTrans[0]->type == 'rito') ? $this->rito_travel_api($reqTrans[$i]->request_id) : $this->local_travel($reqTrans[$i]->request_id),
                 'passengers' => ($reqTrans[0]->type == 'rito') ? $this->rito_passenger_api($reqTrans[$i]->request_id) : $this->local_passenger($reqTrans[$i]->request_id),
@@ -31,8 +32,8 @@ class GetPrintRequestById
         $requests['date_now'] = System::select([DB::raw('now() as dn')])->first()->dn;
         $requests['gs_staff'] = UserDetail::where('user_id', $reqTrans[0]->user_id)->first();
         $requests['vehicles'] = $this->vehicles_drivers($id);
-      
-       
+
+
         return $requests;
     }
 
@@ -95,11 +96,11 @@ class GetPrintRequestById
     public function vehicles_drivers($id)
     {
         $query = RequestTransactions::select(['vehicles.name', 'vehicles.plate_no', 'drivers.fullname', 'drivers.contact'])
-                                    ->leftJoin('transaction_vehicles', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
-                                    ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-                                    ->leftJoin('drivers', 'transaction_vehicles.driver_id', '=', 'drivers.id')
-                                    ->where('request_transactions.group', $id)
-                                    ->get();
+            ->leftJoin('transaction_vehicles', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
+            ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
+            ->leftJoin('drivers', 'transaction_vehicles.driver_id', '=', 'drivers.id')
+            ->where('request_transactions.group', $id)
+            ->get();
 
         return $query;
     }
@@ -108,17 +109,17 @@ class GetPrintRequestById
     {
         $req = Request::find($id);
         $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
-                            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
-                            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
-                            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
-                            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
-                            ->where('destinations.request_id', $id)
-                            ->first();
-                
+            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
+            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
+            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
+            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
+            ->where('destinations.request_id', $id)
+            ->first();
+
         $department = Request::select(DB::raw('CONCAT(divisions.division_name, " ", sections.section_name) as dept'))
-                            ->leftJoin('divisions', 'divisions.id', '=', 'requests.division_id')
-                            ->leftJoin('sections', 'sections.id', '=', 'requests.section_id')
-                            ->where('requests.id', $id)->first()->dept;
+            ->leftJoin('divisions', 'divisions.id', '=', 'requests.division_id')
+            ->leftJoin('sections', 'sections.id', '=', 'requests.section_id')
+            ->where('requests.id', $id)->first()->dept;
         $data[] = [
             'department' => $department,
             'depart_time' => $req->depart_time,

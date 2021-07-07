@@ -114,14 +114,7 @@ class GetListingVehicleTravel
             ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
             ->where('destinations.request_id', $id)
             ->first();
-        // $data =[
-        //     'purpose' => $request->purpose,
-        //     'inclusive_from' => $request->travel_date,
-        //     'inclusive_to' => $request->return_date,
-        //     'place' => $place->place,
-        //     'status' => "Approved",
-        //     'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
-        // ];
+
         $data[] = (object) array(
             'id' => $request->id,
             'purpose' => $request->purpose,
