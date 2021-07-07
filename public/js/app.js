@@ -7150,6 +7150,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7178,7 +7185,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       currentlySelectedCities: [],
       currentlySelectedProvince: [],
       currentlySelectedBarangays: [],
-      currentCities: []
+      currentCities: [],
+      results: [],
+      total: 1
     };
   },
   created: function created() {
@@ -7188,6 +7197,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
+    this.EmployeeList();
   },
   mounted: function mounted() {
     this.ini();
@@ -7221,6 +7231,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $('#kt_select_section').select2({
           placeholder: "Select a Section",
+          allowClear: true
+        });
+        $('#passenger-select-1').select2({
+          placeholder: "Select fullname",
           allowClear: true
         });
         $('.menu-item').removeClass('menu-item-active');
@@ -7273,6 +7287,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       });
     },
+    EmployeeList: function EmployeeList() {
+      this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+    },
     convertToInt: function convertToInt(data) {
       console.log("Called");
       console.log(data);
@@ -7280,12 +7297,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addRow: function addRow(event) {
       event.preventDefault();
-      var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-      lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="details-input form-control" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="details-input form-control" type="text" /></td><td><select name="pax_gen_' + lastTr + '" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-      $('#pax-total').val(lastTr);
-      this.names.push('pax_name_' + lastTr);
-      this.names.push('pax_des_' + lastTr);
+      var count = this.total += 1;
+      setTimeout(function () {
+        $("#passenger-select-".concat(count)).select2({
+          placeholder: "Select a fullname",
+          allowClear: true
+        });
+      }, 100);
+      $('#pax_name_1').select2({
+        placeholder: "Select fullname",
+        allowClear: true
+      });
+      this.names.push("pax_name_".concat(count));
+      this.names.push("pax_des_".concat(count)); // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+      // lastTr += 1;
+      // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
+      // $('#pax-total').val(lastTr);
+      // this.names.push('pax_name_'+lastTr);
+      // this.names.push('pax_des_'+lastTr);
     },
     removeRow: function removeRow(event) {
       event.preventDefault();
@@ -58838,15 +58867,91 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("input", {
-                  attrs: {
-                    id: "pax-total",
-                    type: "hidden",
-                    name: "pax_total",
-                    value: "1"
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.total,
+                      expression: "total"
+                    }
+                  ],
+                  attrs: { type: "text", id: "pax-total", name: "pax_total" },
+                  domProps: { value: _vm.total },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.total = $event.target.value
+                    }
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(3)
+                _c(
+                  "table",
+                  {
+                    staticClass: "table w-100",
+                    attrs: { id: "passenger-tbl" }
+                  },
+                  [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.total, function(index) {
+                        return _c("tr", { key: index }, [
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-center",
+                              attrs: { scope: "row" }
+                            },
+                            [_vm._v(_vm._s(index))]
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "select",
+                              {
+                                staticClass:
+                                  "details-input form-control select2",
+                                attrs: {
+                                  id: "passenger-select-" + index,
+                                  name: "pax_name_" + index
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { label: "Label" } }),
+                                _vm._v(" "),
+                                _vm._l(_vm.results, function(result, index) {
+                                  return _c(
+                                    "option",
+                                    { key: index, domProps: { value: index } },
+                                    [
+                                      _vm._v(
+                                        _vm._s(result.first_name) +
+                                          " " +
+                                          _vm._s(result.middle_name) +
+                                          " " +
+                                          _vm._s(result.last_name)
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(4, true),
+                          _vm._v(" "),
+                          _vm._m(5, true)
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
               ])
             ]),
             _vm._v(" "),
@@ -58930,74 +59035,57 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "table",
-      { staticClass: "table w-100", attrs: { id: "passenger-tbl" } },
-      [
-        _c("thead", [
-          _c("tr", [
-            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-              _vm._v("#")
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-              _vm._v("Name of Passenger/s")
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-              _vm._v("Position/Designation")
-            ]),
-            _vm._v(" "),
-            _c(
-              "th",
-              { staticClass: "text-center w-15", attrs: { scope: "col" } },
-              [_vm._v("Gender")]
-            )
-          ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("#")
         ]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("td", { staticClass: "text-center", attrs: { scope: "row" } }, [
-              _vm._v("1")
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c("input", {
-                staticClass: "details-input form-control",
-                attrs: { name: "pax_name_1", type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c("input", {
-                staticClass: "details-input form-control",
-                attrs: { name: "pax_des_1", type: "text" }
-              })
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "select",
-                {
-                  staticClass: "details-input form-control",
-                  attrs: { name: "pax_gen_1" }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "Male" } }, [_vm._v("Male")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "Female" } }, [
-                    _vm._v("Female")
-                  ])
-                ]
-              )
-            ])
-          ])
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Name of Passenger/s")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Position/Designation")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center w-15", attrs: { scope: "col" } }, [
+          _vm._v("Gender")
         ])
-      ]
-    )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("input", {
+        staticClass: "details-input form-control",
+        attrs: { name: "pax_des_1", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c(
+        "select",
+        {
+          staticClass: "details-input form-control",
+          attrs: { name: "pax_gen_1" }
+        },
+        [
+          _c("option", { attrs: { value: "" } }),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Male" } }, [_vm._v("Male")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Female" } }, [_vm._v("Female")])
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true

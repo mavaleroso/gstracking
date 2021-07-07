@@ -24,6 +24,7 @@ class TravelStoreRequest extends FormRequest
      */
     public function rules()
     {
+        
         $rules = [
             'request_id' => 'nullable',
             'travel_radio' => 'nullable',
@@ -48,6 +49,8 @@ class TravelStoreRequest extends FormRequest
             $rules['pax_gen_'.$i] = 'required';
         }
 
+
+        
         return $rules;        
     }
 
@@ -71,11 +74,14 @@ class TravelStoreRequest extends FormRequest
             'time_depart' => 'Time',
         ];
 
+        // dd($this->request->get('pax_total'));
+
         for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
             $attributes['pax_name_'.$i] = 'Passenger Name';
             $attributes['pax_des_'.$i] = 'Passenger Designation';
             $attributes['pax_gen_'.$i] = 'Passenger Gender';
         }
+        
 
         return $attributes;
     }
