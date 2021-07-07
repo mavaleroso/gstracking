@@ -7186,7 +7186,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       results: [],
       total: 1,
       gender: '',
-      designation: ''
+      designation: '',
+      semi_total: 1,
+      pax_des: [],
+      pax_gen: []
     };
   },
   created: function created() {
@@ -7236,6 +7239,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select fullname",
           allowClear: true
         });
+        $("#passenger-select-1").change(function () {
+          var paxVal = $(this).find(':selected').data('id');
+          console.log(paxVal);
+          console.log("paxval sa taas");
+          vm.getData(paxVal, 1);
+          console.log(paxVal);
+        });
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
         $('#kt_select_division').on('change', function () {
@@ -7283,21 +7293,46 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           });
           vm.currentlySelectedBarangays = res;
           vm.currentCities = city;
-        });
-        $('[id^="passenger-select-"]').on('change', function (e) {
-          vm.getData(e.target.selectedIndex); // vm.getData();
-        });
+        }); // for(let i = 1; i <= vm.total; i++ ){
+        //     $('#passenger-select-'+i).on('change', function() {
+        //         // vm.getData(e.target.selectedIndex);
+        //         let paxVal = $('#passenger-select-'+i).find(':selected').data('id');
+        //         console.log(paxVal);
+        //     });
+        // $('[id^="passenger-select-"]').on('change', e => {
+        // vm.getData(e.target.selectedIndex);
+        // alert(e.target.selectedIndex);
+        // }); 
+        // }
       });
     },
     // switchRoom (){
     //     alert("helloaaa");
     //     console.log("fasfsafsaf");
     // },
-    getData: function getData(id) {
+    getData: function getData(id, idx) {
+      // let id  = $('#kt_select_fullname').val();
       // let id  = $('#passenger-select-').val();
+      console.log("indexx");
+      console.log(idx);
+      console.log("---");
       var vm = this;
-      vm.gender = vm.results[id].gender;
-      vm.designation = vm.results[id].position;
+      this.pax_des.push(vm.results[id].position);
+      this.pax_gen.push(vm.results[id].gender);
+      $("[name=\"pax_gen_".concat(idx, "\"]")).val(vm.results[id].gender);
+      $("[name=\"pax_des_".concat(idx, "\"]")).val(vm.results[id].position);
+    },
+    clearData: function clearData(id, idx) {
+      // let id  = $('#kt_select_fullname').val();
+      // let id  = $('#passenger-select-').val();
+      console.log("indexx");
+      console.log(idx);
+      console.log("---");
+      var vm = this;
+      this.pax_des.push("");
+      this.pax_gen.push("");
+      $("[name=\"pax_gen_".concat(idx, "\"]")).val(vm.results[id].gender);
+      $("[name=\"pax_des_".concat(idx, "\"]")).val(vm.results[id].position);
     },
     EmployeeList: function EmployeeList() {
       this.results = JSON.parse(localStorage.getItem('ListEmployee'));
@@ -7310,18 +7345,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     addRow: function addRow(event) {
       event.preventDefault();
       var count = this.total += 1;
+      this.semi_total += 1;
+      var vm = this;
       setTimeout(function () {
         $("#passenger-select-".concat(count)).select2({
           placeholder: "Select a fullname",
           allowClear: true
         });
-      }, 100);
-      $('#pax_name_1').select2({
-        placeholder: "Select fullname",
-        allowClear: true
-      });
-      this.names.push("pax_name_".concat(count));
-      this.names.push("pax_des_".concat(count)); // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+        $("#passenger-select-".concat(count)).change(function () {
+          var paxVal = $(this).find(':selected').data('id');
+          vm.getData(paxVal, count);
+          console.log(paxVal);
+        });
+
+        for (var i = 1; i < count; i++) {
+          var test = $("#passenger-select-".concat(count)).find(':selected').data('id');
+          console.log(test);
+        }
+      }, 100); // this.names.push(`pax_name_${count}`);
+      // this.names.push(`pax_des_${count}`);
+      // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       // lastTr += 1;
       // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
       // $('#pax-total').val(lastTr);
@@ -7330,7 +7373,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     removeRow: function removeRow(event) {
       event.preventDefault();
+      var paxVal = $(this).find(':selected').data('id');
+      var count = this.total -= 1;
       var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+      this.clearData(paxVal, count);
 
       if (lastTr.find('td:eq(0)').text() != '1') {
         var aliasNames = this.names;
@@ -58940,6 +58986,7 @@ var render = function() {
                                     "option",
                                     {
                                       key: index,
+                                      attrs: { "data-id": index },
                                       domProps: {
                                         value:
                                           result.first_name +
@@ -58971,8 +59018,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.designation,
-                                  expression: "designation"
+                                  value: _vm.pax_des[index - 1],
+                                  expression: "pax_des[index-1]"
                                 }
                               ],
                               staticClass: "details-input form-control",
@@ -58981,13 +59028,17 @@ var render = function() {
                                 type: "text",
                                 disabled: ""
                               },
-                              domProps: { value: _vm.designation },
+                              domProps: { value: _vm.pax_des[index - 1] },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
-                                  _vm.designation = $event.target.value
+                                  _vm.$set(
+                                    _vm.pax_des,
+                                    index - 1,
+                                    $event.target.value
+                                  )
                                 }
                               }
                             })
@@ -58999,8 +59050,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.gender,
-                                  expression: "gender"
+                                  value: _vm.pax_gen[index - 1],
+                                  expression: "pax_gen[index-1]"
                                 }
                               ],
                               staticClass: "details-input form-control",
@@ -59009,13 +59060,17 @@ var render = function() {
                                 type: "text",
                                 disabled: ""
                               },
-                              domProps: { value: _vm.gender },
+                              domProps: { value: _vm.pax_gen[index - 1] },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
-                                  _vm.gender = $event.target.value
+                                  _vm.$set(
+                                    _vm.pax_gen,
+                                    index - 1,
+                                    $event.target.value
+                                  )
                                 }
                               }
                             })
