@@ -47,7 +47,7 @@
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
+                                    <input name="pur_travel" id="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -125,18 +125,18 @@
                                 <tbody>
                                     <tr v-for="index in total" :key="index">
                                         <td scope="row" class="text-center">{{index}}</td>
-                                        <!-- <td><input name="pax_name_1" class="details-input form-control" type="text"/></td> -->
                                             <td>
                                                 <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
                                                     <option label="Label"></option>
                                                     <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                                 </select>
                                             </td>
-                                        <td><input :name="'pax_des_'+index" class="details-input form-control" type="text" disabled v-model="pax_des[index-1]" /></td>
-                                        <td>
-
-                                            <input :name="'pax_gen_'+index" class="details-input form-control" type="text" disabled v-model="pax_gen[index-1]"/>
-                                        </td>
+                                            <td>
+                                                <input :name="'pax_des_'+index" :id="'pax_des_'+index"  class="details-input data-entry form-control " type="text"  v-model="pax_des[index-1]" disabled  />
+                                            </td>
+                                            <td>
+                                                <input :name="'pax_gen_'+index" :id="'pax_gen_'+index" class="details-input data-entry form-control " type="text" v-model="pax_gen[index-1]" disabled/>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -204,6 +204,7 @@ export default {
         this.getCity();
         this.getBrgy();
         this.EmployeeList();
+        this.isDisabled();
         
     },
     mounted() {
@@ -248,15 +249,16 @@ export default {
                     placeholder: "Select fullname",
                     allowClear: true
                 });
-
-                $(`#passenger-select-1`).change(function() {
+                $(`#passenger-select-1`).on('select2:select', function (e) {
                     let paxVal = $(this).find(':selected').data('id');
-
-                    console.log(paxVal);
-                    console.log("paxval sa taas");
-
                     vm.getData(paxVal , 1);
-                    console.log(paxVal);
+                });
+
+                $(`#passenger-select-1`).on('select2:clear', function (e) {
+                    $("#pax_des_1").val(null);
+                    $("#pax_gen_1").val(null);
+                    vm.pax_gen[0] = "";
+                    vm.pax_des[0] ="";
                 });
 
                 $('.menu-item').removeClass('menu-item-active');
@@ -300,54 +302,26 @@ export default {
                     vm.currentlySelectedBarangays = res;
                     vm.currentCities = city;
                 });
-                
-                // for(let i = 1; i <= vm.total; i++ ){
-                //     $('#passenger-select-'+i).on('change', function() {
-                //         // vm.getData(e.target.selectedIndex);
-                //         let paxVal = $('#passenger-select-'+i).find(':selected').data('id');
-
-                //         console.log(paxVal);
-                //     });
-
-                // $('[id^="passenger-select-"]').on('change', e => {
-                // vm.getData(e.target.selectedIndex);
-                // alert(e.target.selectedIndex);
-                    
-                // }); 
-
-                // }
-
-
             });
         },
-        // switchRoom (){
-        //     alert("helloaaa");
-        //     console.log("fasfsafsaf");
-        // },
-
-        getData(id, idx){
-            // let id  = $('#kt_select_fullname').val();
-            // let id  = $('#passenger-select-').val();
+        getData(id, index){
             console.log("indexx");
-            console.log(idx);
+            console.log(index);
             console.log("---");
             let vm = this; 
-            this.pax_des.push(vm.results[id].position);
-            this.pax_gen.push(vm.results[id].gender);
-            $(`[name="pax_gen_${idx}"]`).val(vm.results[id].gender);
-            $(`[name="pax_des_${idx}"]`).val(vm.results[id].position);
+            this.pax_des[index-1] =vm.results[id].position;
+            this.pax_gen[index-1] =vm.results[id].gender;
+            $(`[name="pax_gen_${index}"]`).val(vm.results[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
         },
-        clearData(id, idx){
-            // let id  = $('#kt_select_fullname').val();
-            // let id  = $('#passenger-select-').val();
-            console.log("indexx");
-            console.log(idx);
-            console.log("---");
+        clearData(idx){
             let vm = this; 
-            this.pax_des.push("");
-            this.pax_gen.push("");
-            $(`[name="pax_gen_${idx}"]`).val(vm.results[id].gender);
-            $(`[name="pax_des_${idx}"]`).val(vm.results[id].position);
+            var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+            var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+            parsedobj_desc.splice(idx, 1);
+            parsedobj_gen.splice(idx, 1);
+            vm.pax_des = parsedobj_desc;
+            vm.pax_gen = parsedobj_gen;
         },
         EmployeeList(){
             this.results = JSON.parse(localStorage.getItem('ListEmployee'));
@@ -368,11 +342,22 @@ export default {
                     placeholder: "Select a fullname",
                     allowClear: true
                 });
-
-                $(`#passenger-select-${count}`).change(function() {
+                $(`#passenger-select-${count}`).on('select2:select', function (e) {
                     let paxVal = $(this).find(':selected').data('id');
                     vm.getData(paxVal, count);
-                    console.log(paxVal);
+                    console.log("kanniii");
+                    console.log(count); 
+                });
+
+                $(`#passenger-select-${count}`).on('select2:clear', function (e) {
+                    $("#pax_des_" +`${count}`).val(null);
+                    $("#pax_gen_" +`${count}`).val(null);
+                    vm.pax_gen[count-1] = "";
+                    vm.pax_des[count-1] ="";
+                    console.log("clearr ni");
+                    console.log(count);
+                    console.log(`${count}`);
+
                 });
 
                 for(let i = 1; i < count; i++){
@@ -380,45 +365,19 @@ export default {
                     console.log(test);
                 }
             }, 100);
-
-
-
-            
-            // this.names.push(`pax_name_${count}`);
-            // this.names.push(`pax_des_${count}`);
-
-
-            // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-            // lastTr += 1;
-            // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-            // $('#pax-total').val(lastTr);
-            // this.names.push('pax_name_'+lastTr);
-            // this.names.push('pax_des_'+lastTr);
         },
         removeRow(event) {
             event.preventDefault();
-            let paxVal = $(this).find(':selected').data('id');
-            let count = this.total -=1;
-            let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
-            this.clearData(paxVal,count);
-            if(lastTr.find('td:eq(0)').text() != '1') {
-                let aliasNames = this.names;
-                let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
-                let paxDes = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
-                if (paxName > -1) {
-                    aliasNames.splice(paxName, 1);
-                }
-                if (paxDes > -1) {
-                    aliasNames.splice(paxDes, 1);
-                }
-                this.names = aliasNames;
-
-                lastTr.remove();
+            if (this.total !=1){
+                let count = this.total -=1;
+                this.clearData(count);
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },  
         saveForm() {
+            $('.data-entry').attr('disabled', false);
             let requestform = $('#kt_form').serialize();
+            
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
@@ -428,6 +387,7 @@ export default {
                 this.complete = true;
                 this.createdAt = this.$dateTimeEng(response.data.result.created_at);
             }).catch((error) => {
+                $('.data-entry').attr('disabled', true);
                 let data = error.response.data.errors;
                 let keys = [];
                 let values = [];

@@ -7200,6 +7200,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getCity();
     this.getBrgy();
     this.EmployeeList();
+    this.isDisabled();
   },
   mounted: function mounted() {
     this.ini();
@@ -7239,12 +7240,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select fullname",
           allowClear: true
         });
-        $("#passenger-select-1").change(function () {
+        $("#passenger-select-1").on('select2:select', function (e) {
           var paxVal = $(this).find(':selected').data('id');
-          console.log(paxVal);
-          console.log("paxval sa taas");
           vm.getData(paxVal, 1);
-          console.log(paxVal);
+        });
+        $("#passenger-select-1").on('select2:clear', function (e) {
+          $("#pax_des_1").val(null);
+          $("#pax_gen_1").val(null);
+          vm.pax_gen[0] = "";
+          vm.pax_des[0] = "";
         });
         $('.menu-item').removeClass('menu-item-active');
         $('.router-link-active').parent().addClass('menu-item-active');
@@ -7293,46 +7297,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           });
           vm.currentlySelectedBarangays = res;
           vm.currentCities = city;
-        }); // for(let i = 1; i <= vm.total; i++ ){
-        //     $('#passenger-select-'+i).on('change', function() {
-        //         // vm.getData(e.target.selectedIndex);
-        //         let paxVal = $('#passenger-select-'+i).find(':selected').data('id');
-        //         console.log(paxVal);
-        //     });
-        // $('[id^="passenger-select-"]').on('change', e => {
-        // vm.getData(e.target.selectedIndex);
-        // alert(e.target.selectedIndex);
-        // }); 
-        // }
+        });
       });
     },
-    // switchRoom (){
-    //     alert("helloaaa");
-    //     console.log("fasfsafsaf");
-    // },
-    getData: function getData(id, idx) {
-      // let id  = $('#kt_select_fullname').val();
-      // let id  = $('#passenger-select-').val();
+    getData: function getData(id, index) {
       console.log("indexx");
-      console.log(idx);
+      console.log(index);
       console.log("---");
       var vm = this;
-      this.pax_des.push(vm.results[id].position);
-      this.pax_gen.push(vm.results[id].gender);
-      $("[name=\"pax_gen_".concat(idx, "\"]")).val(vm.results[id].gender);
-      $("[name=\"pax_des_".concat(idx, "\"]")).val(vm.results[id].position);
+      this.pax_des[index - 1] = vm.results[id].position;
+      this.pax_gen[index - 1] = vm.results[id].gender;
+      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
+      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
-    clearData: function clearData(id, idx) {
-      // let id  = $('#kt_select_fullname').val();
-      // let id  = $('#passenger-select-').val();
-      console.log("indexx");
-      console.log(idx);
-      console.log("---");
+    clearData: function clearData(idx) {
       var vm = this;
-      this.pax_des.push("");
-      this.pax_gen.push("");
-      $("[name=\"pax_gen_".concat(idx, "\"]")).val(vm.results[id].gender);
-      $("[name=\"pax_des_".concat(idx, "\"]")).val(vm.results[id].position);
+      var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+      var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+      parsedobj_desc.splice(idx, 1);
+      parsedobj_gen.splice(idx, 1);
+      vm.pax_des = parsedobj_desc;
+      vm.pax_gen = parsedobj_gen;
     },
     EmployeeList: function EmployeeList() {
       this.results = JSON.parse(localStorage.getItem('ListEmployee'));
@@ -7352,47 +7337,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a fullname",
           allowClear: true
         });
-        $("#passenger-select-".concat(count)).change(function () {
+        $("#passenger-select-".concat(count)).on('select2:select', function (e) {
           var paxVal = $(this).find(':selected').data('id');
           vm.getData(paxVal, count);
-          console.log(paxVal);
+          console.log("kanniii");
+          console.log(count);
+        });
+        $("#passenger-select-".concat(count)).on('select2:clear', function (e) {
+          $("#pax_des_" + "".concat(count)).val(null);
+          $("#pax_gen_" + "".concat(count)).val(null);
+          vm.pax_gen[count - 1] = "";
+          vm.pax_des[count - 1] = "";
+          console.log("clearr ni");
+          console.log(count);
+          console.log("".concat(count));
         });
 
         for (var i = 1; i < count; i++) {
           var test = $("#passenger-select-".concat(count)).find(':selected').data('id');
           console.log(test);
         }
-      }, 100); // this.names.push(`pax_name_${count}`);
-      // this.names.push(`pax_des_${count}`);
-      // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-      // lastTr += 1;
-      // $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-      // $('#pax-total').val(lastTr);
-      // this.names.push('pax_name_'+lastTr);
-      // this.names.push('pax_des_'+lastTr);
+      }, 100);
     },
     removeRow: function removeRow(event) {
       event.preventDefault();
-      var paxVal = $(this).find(':selected').data('id');
-      var count = this.total -= 1;
-      var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
-      this.clearData(paxVal, count);
 
-      if (lastTr.find('td:eq(0)').text() != '1') {
-        var aliasNames = this.names;
-        var paxName = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
-        var paxDes = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
-
-        if (paxName > -1) {
-          aliasNames.splice(paxName, 1);
-        }
-
-        if (paxDes > -1) {
-          aliasNames.splice(paxDes, 1);
-        }
-
-        this.names = aliasNames;
-        lastTr.remove();
+      if (this.total != 1) {
+        var count = this.total -= 1;
+        this.clearData(count);
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
@@ -7400,6 +7372,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     saveForm: function saveForm() {
       var _this2 = this;
 
+      $('.data-entry').attr('disabled', false);
       var requestform = $('#kt_form').serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
         $('.invalid-feedback').remove();
@@ -7412,6 +7385,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this2.complete = true;
         _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
+        $('.data-entry').attr('disabled', true);
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
@@ -59022,9 +58996,11 @@ var render = function() {
                                   expression: "pax_des[index-1]"
                                 }
                               ],
-                              staticClass: "details-input form-control",
+                              staticClass:
+                                "details-input data-entry form-control ",
                               attrs: {
                                 name: "pax_des_" + index,
+                                id: "pax_des_" + index,
                                 type: "text",
                                 disabled: ""
                               },
@@ -59054,9 +59030,11 @@ var render = function() {
                                   expression: "pax_gen[index-1]"
                                 }
                               ],
-                              staticClass: "details-input form-control",
+                              staticClass:
+                                "details-input data-entry form-control ",
                               attrs: {
                                 name: "pax_gen_" + index,
+                                id: "pax_gen_" + index,
                                 type: "text",
                                 disabled: ""
                               },
@@ -59138,6 +59116,7 @@ var staticRenderFns = [
           staticClass: "details-input form-control",
           attrs: {
             name: "pur_travel",
+            id: "pur_travel",
             type: "text",
             placeholder: "Enter purpose here"
           }
