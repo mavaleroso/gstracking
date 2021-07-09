@@ -126,7 +126,7 @@
                                     <tr v-for="index in total" :key="index">
                                         <td scope="row" class="text-center">{{index}}</td>
                                             <td>
-                                                <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
+                                                <select  class="details-input form-control data-set select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
                                                     <option label="Label"></option>
                                                     <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                                 </select>
@@ -203,9 +203,7 @@ export default {
         this.getProvince();
         this.getCity();
         this.getBrgy();
-        this.EmployeeList();
-        this.isDisabled();
-        
+        this.EmployeeList();        
     },
     mounted() {
         this.ini();
@@ -305,23 +303,18 @@ export default {
             });
         },
         getData(id, index){
-            console.log("indexx");
-            console.log(index);
-            console.log("---");
             let vm = this; 
             this.pax_des[index-1] =vm.results[id].position;
             this.pax_gen[index-1] =vm.results[id].gender;
             $(`[name="pax_gen_${index}"]`).val(vm.results[id].gender);
             $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
         },
-        clearData(idx){
+        clearData(){
+            $('.data-set').val(null).trigger("change");
             let vm = this; 
-            var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
-            var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
-            parsedobj_desc.splice(idx, 1);
-            parsedobj_gen.splice(idx, 1);
-            vm.pax_des = parsedobj_desc;
-            vm.pax_gen = parsedobj_gen;
+            vm.total = 1;
+            vm.pax_des.length = 0;
+            vm.pax_gen.length = 0;
         },
         EmployeeList(){
             this.results = JSON.parse(localStorage.getItem('ListEmployee'));
@@ -344,9 +337,7 @@ export default {
                 });
                 $(`#passenger-select-${count}`).on('select2:select', function (e) {
                     let paxVal = $(this).find(':selected').data('id');
-                    vm.getData(paxVal, count);
-                    console.log("kanniii");
-                    console.log(count); 
+                    vm.getData(paxVal, count); 
                 });
 
                 $(`#passenger-select-${count}`).on('select2:clear', function (e) {
@@ -354,10 +345,6 @@ export default {
                     $("#pax_gen_" +`${count}`).val(null);
                     vm.pax_gen[count-1] = "";
                     vm.pax_des[count-1] ="";
-                    console.log("clearr ni");
-                    console.log(count);
-                    console.log(`${count}`);
-
                 });
 
                 for(let i = 1; i < count; i++){
@@ -370,7 +357,13 @@ export default {
             event.preventDefault();
             if (this.total !=1){
                 let count = this.total -=1;
-                this.clearData(count);
+                let vm = this; 
+                var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+                var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+                parsedobj_desc.splice(count, 1);
+                parsedobj_gen.splice(count, 1);
+                vm.pax_des = parsedobj_desc;
+                vm.pax_gen = parsedobj_gen;
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },  
@@ -449,6 +442,7 @@ export default {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
         newRequest() {
+            this.clearData();
             for (let i = 0; i < this.names.length; i++) {
                 if(this.names[i] == 'section' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
                     $('#kt_select_'+this.names[i]).empty();                           
