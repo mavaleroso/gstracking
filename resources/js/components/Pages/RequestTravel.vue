@@ -204,8 +204,6 @@ export default {
         this.getCity();
         this.getBrgy();
         this.EmployeeList();
-        this.isDisabled();
-        
     },
     mounted() {
         this.ini();

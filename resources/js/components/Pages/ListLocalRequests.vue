@@ -159,7 +159,16 @@
                                     <tbody>
                                         <tr v-for="(pax, index) in passengers" :key="index">
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
-                                            <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
+
+                                            <td> 
+                                                <select  class="details-input form-control select2" :id="'passenger-select-' + paxIndex(index)" :name="'pax_name_' + paxIndex(index)">
+                                                    <option label="Label"></option>
+                                                    <!-- <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option> -->
+                                                </select>
+                                            </td>
+
+
+                                            <!-- <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td> -->
                                             <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
                                             <td>
                                                 <!-- <input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/> -->
@@ -671,6 +680,7 @@ export default {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
         getDetails(id) {
+            
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
             $('#kt_select_region').val();
@@ -704,7 +714,35 @@ export default {
                     $('#kt_select_brgy').val(data.brgy);
                     $('#kt_select_brgy').trigger('change');
                 }, 1500);
+                
+                setTimeout(() => {
+                    for (let i = 0; i < this.passengers.length + 1; i++) {
+                        $('#passenger-select-'+i).select2({
+                            placeholder: "Select fullname",
+                            allowClear: true
+                        });
+                    } 
+                }, 500);
+
+
+
+
                     
+
+
+
+                // let datas = ['hello','ea','b']
+                // console.log("this is sdss "+this.passengers.length);
+                // console.log("Fasfasfasf" + this.passengers.length);
+                // console.log("datas");
+                //     for (let i = 0; i < datas.length; i++) {
+                //         // console.log(this.[i]);
+                //         // $('#passenger-select-'+datas[i]).select2({
+                //         //     placeholder: "Select fullname",
+                //         //     allowClear: true
+                //         // });
+                //     }
+       
             });
             this.dateConf();
         },
@@ -868,14 +906,52 @@ export default {
             });
         },
         addPassengerRow(event){
+            this.passengers.length +=1;
+            console.log("this is passenger"+this.passengers.length);
+
             event.preventDefault();
-            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-            lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-            $('#pax-total').val(lastTr);
-            this.names.push('pax_name_'+lastTr);
-            this.names.push('pax_des_'+lastTr);
-            this.names.push('pax_gen_'+lastTr);
+            let count = this.passengers.length += 1;
+            // this.semi_total += 1;
+            let vm = this;
+
+            setTimeout(() => {
+                $(`#passenger-select-${count}`).select2({
+                    placeholder: "Select a fullname",
+                    allowClear: true
+                });
+                $(`#passenger-select-${count}`).on('select2:select', function (e) {
+                    let paxVal = $(this).find(':selected').data('id');
+                    vm.getData(paxVal, count);
+                    console.log("kanniii");
+                    console.log(count); 
+                });
+
+                $(`#passenger-select-${count}`).on('select2:clear', function (e) {
+                    $("#pax_des_" +`${count}`).val(null);
+                    $("#pax_gen_" +`${count}`).val(null);
+                    vm.pax_gen[count-1] = "";
+                    vm.pax_des[count-1] ="";
+                    console.log("clearr ni");
+                    console.log(count);
+                    console.log(`${count}`);
+
+                });
+
+                for(let i = 1; i < count; i++){
+                    let test = $(`#passenger-select-${count}`).find(':selected').data('id');
+                    console.log(test);
+                }
+            }, 100);
+
+            
+            // event.preventDefault();
+            // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
+            // lastTr += 1;
+            // $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
+            // $('#pax-total').val(lastTr);
+            // this.names.push('pax_name_'+lastTr);
+            // this.names.push('pax_des_'+lastTr);
+            // this.names.push('pax_gen_'+lastTr);
         },
         removePassengerRow(event){
             event.preventDefault();
