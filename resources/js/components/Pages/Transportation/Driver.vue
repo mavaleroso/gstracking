@@ -166,9 +166,19 @@ export default {
             let vm = this;
             $(() => {
                 $('#images').hide();
-                $('#kt_select_fullname').on('change', () => {
+                $(`#kt_select_fullname`).on('select2:select', function (e) {
                     vm.getData();
                     $('#images').show();
+                });
+
+                $(`#kt_select_fullname`).on('select2:clear', function (e) {
+                    setTimeout(() => {
+                        $('#images').hide();
+                    }, 100);
+                    vm.formFields.contactNumber = '';
+                    vm.formFields.gender = '';    
+                    vm.formFields.status = '';
+                    vm.formFields.birthdate = '';
                 });
                 $('.card-label span').text('Create Driver');
                 $('#kt_select_fullname').select2({
