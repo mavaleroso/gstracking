@@ -7574,6 +7574,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7619,8 +7620,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
-    this.EmployeeList();
     this.isDisabled();
+  },
+  computed: {
+    loadingStats: function loadingStats() {
+      var res = this.$store.getters['currentUser/loadingStats'];
+
+      if (!res) {
+        this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+      }
+
+      return res;
+    }
   },
   mounted: function mounted() {
     this.ini();
@@ -59998,199 +60009,281 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
               _vm._v(" "),
-              _c("div", { staticClass: "my-5" }, [
-                _c("div", { staticClass: "d-flex" }, [
-                  _c(
-                    "h3",
-                    { staticClass: "text-dark font-weight-bold mb-10" },
-                    [_vm._v("Passenger Details:")]
-                  ),
-                  _vm._v(" "),
-                  _vm.complete == false
-                    ? _c("div", { staticClass: "ml-auto" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-outline-primary",
-                            on: { click: _vm.addRow }
-                          },
-                          [_c("i", { staticClass: "fa fa-plus-square p-0" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-outline-primary",
-                            on: { click: _vm.removeRow }
-                          },
-                          [_c("i", { staticClass: "fa fa-minus-square p-0" })]
-                        )
+              _c(
+                "div",
+                {
+                  class: _vm.loadingStats
+                    ? "card-body overlay overlay-block"
+                    : "card-body"
+                },
+                [
+                  _vm.loadingStats
+                    ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                        _c("div", { staticClass: "spinner spinner-primary" })
                       ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.total,
-                      expression: "total"
-                    }
-                  ],
-                  attrs: { type: "hidden", id: "pax-total", name: "pax_total" },
-                  domProps: { value: _vm.total },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.total = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "table",
-                  {
-                    staticClass: "table w-100",
-                    attrs: { id: "passenger-tbl" }
-                  },
-                  [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.total, function(index) {
-                        return _c("tr", { key: index }, [
-                          _c(
-                            "td",
-                            {
-                              staticClass: "text-center",
-                              attrs: { scope: "row" }
-                            },
-                            [_vm._v(_vm._s(index))]
-                          ),
-                          _vm._v(" "),
-                          _c("td", [
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-5" }, [
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c(
+                        "h3",
+                        { staticClass: "text-dark font-weight-bold mb-10" },
+                        [_vm._v("Passenger Details:")]
+                      ),
+                      _vm._v(" "),
+                      _vm.complete == false
+                        ? _c("div", { staticClass: "ml-auto" }, [
                             _c(
-                              "select",
+                              "button",
                               {
-                                staticClass:
-                                  "details-input form-control select2",
-                                attrs: {
-                                  id: "passenger-select-" + index,
-                                  name: "pax_name_" + index
-                                }
+                                staticClass: "btn btn-sm btn-outline-primary",
+                                on: { click: _vm.addRow }
                               },
                               [
-                                _c("option", { attrs: { label: "Label" } }),
-                                _vm._v(" "),
-                                _vm._l(_vm.results, function(result, index) {
-                                  return _c(
-                                    "option",
-                                    {
-                                      key: index,
-                                      attrs: { "data-id": index },
-                                      domProps: {
-                                        value:
-                                          result.first_name +
-                                          " " +
-                                          result.middle_name +
-                                          " " +
-                                          result.last_name
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(result.first_name) +
-                                          " " +
-                                          _vm._s(result.middle_name) +
-                                          " " +
-                                          _vm._s(result.last_name)
-                                      )
-                                    ]
-                                  )
+                                _c("i", {
+                                  staticClass: "fa fa-plus-square p-0"
                                 })
-                              ],
-                              2
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-sm btn-outline-primary",
+                                on: { click: _vm.removeRow }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-minus-square p-0"
+                                })
+                              ]
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.pax_des[index - 1],
-                                  expression: "pax_des[index-1]"
-                                }
-                              ],
-                              staticClass:
-                                "details-input data-entry form-control ",
-                              attrs: {
-                                name: "pax_des_" + index,
-                                id: "pax_des_" + index,
-                                type: "text",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.pax_des[index - 1] },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.pax_des,
-                                    index - 1,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.pax_gen[index - 1],
-                                  expression: "pax_gen[index-1]"
-                                }
-                              ],
-                              staticClass:
-                                "details-input data-entry form-control ",
-                              attrs: {
-                                name: "pax_gen_" + index,
-                                id: "pax_gen_" + index,
-                                type: "text",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.pax_gen[index - 1] },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.pax_gen,
-                                    index - 1,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
                           ])
-                        ])
-                      }),
-                      0
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.total,
+                          expression: "total"
+                        }
+                      ],
+                      attrs: {
+                        type: "hidden",
+                        id: "pax-total",
+                        name: "pax_total"
+                      },
+                      domProps: { value: _vm.total },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.total = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table w-100",
+                        attrs: { id: "passenger-tbl" }
+                      },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.total, function(index) {
+                            return _c("tr", { key: index }, [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-center",
+                                  attrs: { scope: "row" }
+                                },
+                                [_vm._v(_vm._s(index))]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm.$store.getters["currentUser/loadingStats"]
+                                  ? _c(
+                                      "select",
+                                      {
+                                        staticClass:
+                                          "details-input form-control select2",
+                                        attrs: {
+                                          id: "passenger-select-" + index,
+                                          name: "pax_name_" + index,
+                                          disabled: ""
+                                        }
+                                      },
+                                      [
+                                        _c("option", {
+                                          attrs: { label: "Label" }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.results, function(
+                                          result,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: index,
+                                              attrs: { "data-id": index },
+                                              domProps: {
+                                                value:
+                                                  result.first_name +
+                                                  " " +
+                                                  result.middle_name +
+                                                  " " +
+                                                  result.last_name
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(result.first_name) +
+                                                  " " +
+                                                  _vm._s(result.middle_name) +
+                                                  " " +
+                                                  _vm._s(result.last_name)
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  : _c(
+                                      "select",
+                                      {
+                                        staticClass:
+                                          "details-input form-control select2",
+                                        attrs: {
+                                          id: "passenger-select-" + index,
+                                          name: "pax_name_" + index
+                                        }
+                                      },
+                                      [
+                                        _c("option", {
+                                          attrs: { label: "Label" }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.results, function(
+                                          result,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: index,
+                                              attrs: { "data-id": index },
+                                              domProps: {
+                                                value:
+                                                  result.first_name +
+                                                  " " +
+                                                  result.middle_name +
+                                                  " " +
+                                                  result.last_name
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(result.first_name) +
+                                                  " " +
+                                                  _vm._s(result.middle_name) +
+                                                  " " +
+                                                  _vm._s(result.last_name)
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.pax_des[index - 1],
+                                      expression: "pax_des[index-1]"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "details-input data-entry form-control ",
+                                  attrs: {
+                                    name: "pax_des_" + index,
+                                    id: "pax_des_" + index,
+                                    type: "text",
+                                    disabled: ""
+                                  },
+                                  domProps: { value: _vm.pax_des[index - 1] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.pax_des,
+                                        index - 1,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.pax_gen[index - 1],
+                                      expression: "pax_gen[index-1]"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "details-input data-entry form-control ",
+                                  attrs: {
+                                    name: "pax_gen_" + index,
+                                    id: "pax_gen_" + index,
+                                    type: "text",
+                                    disabled: ""
+                                  },
+                                  domProps: { value: _vm.pax_gen[index - 1] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.pax_gen,
+                                        index - 1,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ]
                     )
-                  ]
-                )
-              ])
+                  ])
+                ]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-xl-2" })

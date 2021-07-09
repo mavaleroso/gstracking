@@ -63,21 +63,13 @@
 
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_city" name="city[]" multiple="multiple">
                                         <optgroup v-for="activeProv in currentlySelectedProvince" :key="activeProv.id" :label="activeProv.province_name">
-
                                             <option v-for="city in currentlySelectedCities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
-                                            
                                         </optgroup>
                                     </select>                                  
                                     <select class="details-input form-control select2 kt_select2_3" id="kt_select_brgy" name="brgy[]" multiple="multiple">
                                           <optgroup v-for="activeBrgy in currentCities" :key="activeBrgy.id" :label="activeBrgy.city_name">
-
                                             <option v-for="barangays in currentlySelectedBarangays.filter(i=>i.city_id == activeBrgy.id)" :key="barangays.id" :value="barangays.id">{{ barangays.brgy_name }}</option>
-                                            
                                         </optgroup>
-                                        
-                                        <!-- <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
-                                            <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
-                                        </optgroup> -->
                                     </select>
                                     <input name="destination_place" id="destination_place" type="text" class="details-input form-control" placeholder="Enter place here"/>
                                 </div>
@@ -103,43 +95,52 @@
                             </div>
                         </div>
                         <div class="separator separator-dashed my-10"></div>
-                        <div class="my-5">
-                            <div class="d-flex">
-                                <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
-                                <div v-if="complete == false" class="ml-auto">
-                                    <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
-                                    <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
-                                </div>
+                        <div :class="(loadingStats) ? 'card-body overlay overlay-block' : 'card-body'">
+                            <div v-if="loadingStats" class="overlay-layer bg-dark-o-10">
+                                <div class="spinner spinner-primary"></div>
                             </div>
-                            <input type="hidden" id="pax-total" name="pax_total" v-model="total">
+                            <div class="my-5">
+                                <div class="d-flex">
+                                    <h3 class="text-dark font-weight-bold mb-10">Passenger Details:</h3>
+                                    <div v-if="complete == false" class="ml-auto">
+                                        <button class="btn btn-sm btn-outline-primary" @click="addRow"><i class="fa fa-plus-square p-0"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="pax-total" name="pax_total" v-model="total">
 
-                            <table id="passenger-tbl" class="table w-100">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center">#</th>
-                                        <th scope="col" class="text-center">Name of Passenger/s</th>
-                                        <th scope="col" class="text-center">Position/Designation</th>
-                                        <th scope="col" class="text-center w-15">Gender</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="index in total" :key="index">
-                                        <td scope="row" class="text-center">{{index}}</td>
-                                            <td>
-                                                <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
-                                                    <option label="Label"></option>
-                                                    <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input :name="'pax_des_'+index" :id="'pax_des_'+index"  class="details-input data-entry form-control " type="text"  v-model="pax_des[index-1]" disabled  />
-                                            </td>
-                                            <td>
-                                                <input :name="'pax_gen_'+index" :id="'pax_gen_'+index" class="details-input data-entry form-control " type="text" v-model="pax_gen[index-1]" disabled/>
-                                            </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <table id="passenger-tbl" class="table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">#</th>
+                                            <th scope="col" class="text-center">Name of Passenger/s</th>
+                                            <th scope="col" class="text-center">Position/Designation</th>
+                                            <th scope="col" class="text-center w-15">Gender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="index in total" :key="index">
+                                            <td scope="row" class="text-center">{{index}}</td>
+                                                <td>
+                                                    <select v-if="$store.getters['currentUser/loadingStats']" class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index" disabled>
+                                                        <option label="Label"></option>
+                                                        <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                                    </select>
+                                                    <select v-else class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
+                                                        <option label="Label"></option>
+                                                        <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input :name="'pax_des_'+index" :id="'pax_des_'+index"  class="details-input data-entry form-control " type="text"  v-model="pax_des[index-1]" disabled  />
+                                                </td>
+                                                <td>
+                                                    <input :name="'pax_gen_'+index" :id="'pax_gen_'+index" class="details-input data-entry form-control " type="text" v-model="pax_gen[index-1]" disabled/>
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xl-2"></div>
@@ -203,9 +204,17 @@ export default {
         this.getProvince();
         this.getCity();
         this.getBrgy();
-        this.EmployeeList();
         this.isDisabled();
         
+    },
+    computed: {
+        loadingStats() {
+            let res = this.$store.getters['currentUser/loadingStats'];
+            if(!res) {
+                this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+            }
+            return res;
+        }
     },
     mounted() {
         this.ini();
