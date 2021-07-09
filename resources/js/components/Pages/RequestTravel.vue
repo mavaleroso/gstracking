@@ -47,7 +47,7 @@
                             <div class="form-group row">
                                 <label class="col-3 mt-3">Purpose of travel</label>
                                 <div class="col-9">
-                                    <input name="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
+                                    <input name="pur_travel" id="pur_travel" type="text" class="details-input form-control" placeholder="Enter purpose here"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -111,7 +111,8 @@
                                     <button class="btn btn-sm btn-outline-primary" @click="removeRow"><i class="fa fa-minus-square p-0"></i></button>
                                 </div>
                             </div>
-                            <input id="pax-total" type="hidden" name="pax_total" value="1">
+                            <input type="hidden" id="pax-total" name="pax_total" v-model="total">
+
                             <table id="passenger-tbl" class="table w-100">
                                 <thead>
                                     <tr>
@@ -122,17 +123,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td scope="row" class="text-center">1</td>
-                                        <td><input name="pax_name_1" class="details-input form-control" type="text"/></td>
-                                        <td><input name="pax_des_1" class="details-input form-control" type="text"/></td>
-                                        <td>
-                                            <select name="pax_gen_1" class="details-input form-control">
-                                                <option value=""></option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </select>
-                                        </td>
+                                    <tr v-for="index in total" :key="index">
+                                        <td scope="row" class="text-center">{{index}}</td>
+                                            <td>
+                                                <select  class="details-input form-control select2" :id="'passenger-select-'+index" :name="'pax_name_'+index">
+                                                    <option label="Label"></option>
+                                                    <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input :name="'pax_des_'+index" :id="'pax_des_'+index"  class="details-input data-entry form-control " type="text"  v-model="pax_des[index-1]" disabled  />
+                                            </td>
+                                            <td>
+                                                <input :name="'pax_gen_'+index" :id="'pax_gen_'+index" class="details-input data-entry form-control " type="text" v-model="pax_gen[index-1]" disabled/>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -181,7 +185,15 @@ export default {
             currentlySelectedCities: [],
             currentlySelectedProvince: [],
             currentlySelectedBarangays: [],
-            currentCities: []
+            currentCities: [],
+            results: [],
+            total: 1,
+            gender: '',
+            designation: '',
+            semi_total: 1,
+            pax_des: [],
+            pax_gen: []
+
         }
     },
     created() {
@@ -191,10 +203,14 @@ export default {
         this.getProvince();
         this.getCity();
         this.getBrgy();
+        this.EmployeeList();
+        this.isDisabled();
+        
     },
     mounted() {
         this.ini();
         this.dateConf();
+        
         
     },
     methods: {
@@ -228,6 +244,21 @@ export default {
                 $('#kt_select_section').select2({
                     placeholder: "Select a Section",
                     allowClear: true
+                });
+                $('#passenger-select-1').select2({
+                    placeholder: "Select fullname",
+                    allowClear: true
+                });
+                $(`#passenger-select-1`).on('select2:select', function (e) {
+                    let paxVal = $(this).find(':selected').data('id');
+                    vm.getData(paxVal , 1);
+                });
+
+                $(`#passenger-select-1`).on('select2:clear', function (e) {
+                    $("#pax_des_1").val(null);
+                    $("#pax_gen_1").val(null);
+                    vm.pax_gen[0] = "";
+                    vm.pax_des[0] ="";
                 });
 
                 $('.menu-item').removeClass('menu-item-active');
@@ -273,6 +304,28 @@ export default {
                 });
             });
         },
+        getData(id, index){
+            console.log("indexx");
+            console.log(index);
+            console.log("---");
+            let vm = this; 
+            this.pax_des[index-1] =vm.results[id].position;
+            this.pax_gen[index-1] =vm.results[id].gender;
+            $(`[name="pax_gen_${index}"]`).val(vm.results[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
+        },
+        clearData(idx){
+            let vm = this; 
+            var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+            var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+            parsedobj_desc.splice(idx, 1);
+            parsedobj_gen.splice(idx, 1);
+            vm.pax_des = parsedobj_desc;
+            vm.pax_gen = parsedobj_gen;
+        },
+        EmployeeList(){
+            this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+        },
         convertToInt(data){
             console.log("Called");
             console.log(data);
@@ -280,34 +333,51 @@ export default {
         },
         addRow(event) {
             event.preventDefault();
-            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-            lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="details-input form-control" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="details-input form-control" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-            $('#pax-total').val(lastTr);
-            this.names.push('pax_name_'+lastTr);
-            this.names.push('pax_des_'+lastTr);
+            let count = this.total += 1;
+            this.semi_total += 1;
+            let vm = this;
+
+            setTimeout(() => {
+                $(`#passenger-select-${count}`).select2({
+                    placeholder: "Select a fullname",
+                    allowClear: true
+                });
+                $(`#passenger-select-${count}`).on('select2:select', function (e) {
+                    let paxVal = $(this).find(':selected').data('id');
+                    vm.getData(paxVal, count);
+                    console.log("kanniii");
+                    console.log(count); 
+                });
+
+                $(`#passenger-select-${count}`).on('select2:clear', function (e) {
+                    $("#pax_des_" +`${count}`).val(null);
+                    $("#pax_gen_" +`${count}`).val(null);
+                    vm.pax_gen[count-1] = "";
+                    vm.pax_des[count-1] ="";
+                    console.log("clearr ni");
+                    console.log(count);
+                    console.log(`${count}`);
+
+                });
+
+                for(let i = 1; i < count; i++){
+                    let test = $(`#passenger-select-${count}`).find(':selected').data('id');
+                    console.log(test);
+                }
+            }, 100);
         },
         removeRow(event) {
             event.preventDefault();
-            let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
-            if(lastTr.find('td:eq(0)').text() != '1') {
-                let aliasNames = this.names;
-                let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
-                let paxDes = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
-                if (paxName > -1) {
-                    aliasNames.splice(paxName, 1);
-                }
-                if (paxDes > -1) {
-                    aliasNames.splice(paxDes, 1);
-                }
-                this.names = aliasNames;
-
-                lastTr.remove();
+            if (this.total !=1){
+                let count = this.total -=1;
+                this.clearData(count);
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },  
         saveForm() {
+            $('.data-entry').attr('disabled', false);
             let requestform = $('#kt_form').serialize();
+            
             axios.post(BASE_URL + "/travel/request", requestform).then(response => {
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
@@ -317,6 +387,7 @@ export default {
                 this.complete = true;
                 this.createdAt = this.$dateTimeEng(response.data.result.created_at);
             }).catch((error) => {
+                $('.data-entry').attr('disabled', true);
                 let data = error.response.data.errors;
                 let keys = [];
                 let values = [];
