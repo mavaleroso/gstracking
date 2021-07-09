@@ -8103,9 +8103,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
       $(function () {
         $('#images').hide();
-        $('#kt_select_fullname').on('change', function () {
+        $("#kt_select_fullname").on('select2:select', function (e) {
           vm.getData();
           $('#images').show();
+        });
+        $("#kt_select_fullname").on('select2:clear', function (e) {
+          setTimeout(function () {
+            $('#images').hide();
+          }, 100);
+          vm.formFields.contactNumber = '';
+          vm.formFields.gender = '';
+          vm.formFields.status = '';
+          vm.formFields.birthdate = '';
         });
         $('.card-label span').text('Create Driver');
         $('#kt_select_fullname').select2({
