@@ -3992,8 +3992,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4044,7 +4042,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       defaultNames: [],
       rpNames: ['vehicle_1', 'driver_1'],
       hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
-      remarks: null
+      remarks: null,
+      employee_results: []
     };
   },
   components: {
@@ -4056,6 +4055,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getPo();
     this.getDriver();
     this.getVehiclemode();
+    this.EmployeeList();
   },
   mounted: function mounted() {
     this.ini();
@@ -4285,6 +4285,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
+          var count = _this3.passengers.length;
+          console.log("ccc " + count);
           $('.radio-vehicle').change(function () {
             vm.staff.office.total = vm.staff.rental.total = 1;
 
@@ -4312,6 +4314,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           $('.radio-vehicle').on('change', function () {
             $('.invalid-feedback-admin').remove();
             $('.invalid-admin').removeClass('is-invalid');
+          });
+
+          for (var i = 0; i < count + 1; i++) {
+            $("#passenger-select-".concat(count)).on('select2:select', function (e) {
+              var paxVala = $("#passenger-select-1 option:selected").index();
+              alert(paxVala);
+              console.log(paxVal);
+            });
+          }
+
+          $("#passenger-select-".concat(count)).on('select2:select', function (e) {
+            var paxVal = $("#passenger-select-1 option:selected").index();
+            alert(count);
+            console.log(paxVal);
+          });
+          $("#passenger-select-1").on('select2:clear', function (e) {
+            alert("tests");
           });
         }, 500);
       });
@@ -4361,6 +4380,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.activeCities = this.cities.filter(function (i) {
         return i.active === 'true';
       });
+    },
+    EmployeeList: function EmployeeList() {
+      this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
     },
     getDetails: function getDetails(id) {
       var _this8 = this;
@@ -7816,6 +7838,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $("#passenger-select-".concat(count)).on('select2:select', function (e) {
           var paxVal = $(this).find(':selected').data('id');
+          alert(paxVal);
           vm.getData(paxVal, count);
           console.log("kanniii");
           console.log(count);
@@ -55027,14 +55050,50 @@ var render = function() {
                                                 _vm.paxIndex(index),
                                               name:
                                                 "pax_name_" +
-                                                _vm.paxIndex(index)
-                                            }
+                                                _vm.paxIndex(index),
+                                              disabled: "disabled"
+                                            },
+                                            domProps: { value: pax.name }
                                           },
                                           [
                                             _c("option", {
                                               attrs: { label: "Label" }
-                                            })
-                                          ]
+                                            }),
+                                            _vm._v(" "),
+                                            _vm._l(
+                                              _vm.employee_results,
+                                              function(result, index) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    key: index,
+                                                    domProps: {
+                                                      value:
+                                                        result.first_name +
+                                                        " " +
+                                                        result.middle_name +
+                                                        " " +
+                                                        result.last_name
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        result.first_name
+                                                      ) +
+                                                        " " +
+                                                        _vm._s(
+                                                          result.middle_name
+                                                        ) +
+                                                        " " +
+                                                        _vm._s(result.last_name)
+                                                    )
+                                                  ]
+                                                )
+                                              }
+                                            )
+                                          ],
+                                          2
                                         )
                                       ]),
                                       _vm._v(" "),

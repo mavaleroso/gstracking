@@ -161,13 +161,11 @@
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
 
                                             <td> 
-                                                <select  class="details-input form-control select2" :id="'passenger-select-' + paxIndex(index)" :name="'pax_name_' + paxIndex(index)">
+                                                <select  class="details-input form-control select2" :id="'passenger-select-'+ paxIndex(index)" :name="'pax_name_' + paxIndex(index)" disabled="disabled" :value="pax.name" >
                                                     <option label="Label"></option>
-                                                    <!-- <option v-for="(result,index) in results" :key="index" :data-id="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name ">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option> -->
+                                                    <option v-for="(result,index) in employee_results" :key="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name " >{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                                 </select>
                                             </td>
-
-
                                             <!-- <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td> -->
                                             <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
                                             <td>
@@ -387,7 +385,8 @@ export default {
             defaultNames: [],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
-            remarks: null
+            remarks: null,
+            employee_results: []
         }
     },  
     components: {
@@ -399,6 +398,7 @@ export default {
         this.getPo();
         this.getDriver();
         this.getVehiclemode();
+        this.EmployeeList();
     },
     mounted() {
         this.ini();
@@ -475,7 +475,6 @@ export default {
                     vm.request_edit = 0;
                     $('.btn-edit span').text('Edit');
                 });
-
             });
         },
         tdatatable() {
@@ -614,6 +613,8 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
+                    let count = this.passengers.length;
+                    console.log("ccc "+count);
                     $('.radio-vehicle').change(function() {
                         vm.staff.office.total = vm.staff.rental.total = 1;
                         if(vm.vehicle_type == 3 || vm.vehicle_type == 2) {
@@ -647,7 +648,32 @@ export default {
                         $('.invalid-admin').removeClass('is-invalid');
                     });
 
+                  
+
+
+
+                     for (let i = 0; i < count+1; i++) {
+                        $(`#passenger-select-${count}`).on('select2:select', function (e) {
+                            let paxVala = $("#passenger-select-1 option:selected").index();
+                            alert(paxVala);
+                            console.log(paxVal);
+                        });
+                     
+
+                     }
+
+                    $(`#passenger-select-${count}`).on('select2:select', function (e) {
+                        let paxVal = $("#passenger-select-1 option:selected").index();
+                        alert(count);
+                        console.log(paxVal);
+                    });
+
+                    $(`#passenger-select-1`).on('select2:clear', function (e) {
+                    alert("tests");
+                    });
+
                 }, 500);
+
 
             });
         },
@@ -678,6 +704,9 @@ export default {
         },
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
+        },
+        EmployeeList(){
+            this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
         },
         getDetails(id) {
             

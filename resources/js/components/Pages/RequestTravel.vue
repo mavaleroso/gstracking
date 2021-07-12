@@ -342,6 +342,9 @@ export default {
                 });
                 $(`#passenger-select-${count}`).on('select2:select', function (e) {
                     let paxVal = $(this).find(':selected').data('id');
+                    alert(paxVal);
+
+
                     vm.getData(paxVal, count);
                     console.log("kanniii");
                     console.log(count); 
