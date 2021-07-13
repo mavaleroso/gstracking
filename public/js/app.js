@@ -7620,7 +7620,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
+<<<<<<< HEAD
     this.isDisabled();
+=======
+    this.EmployeeList();
+>>>>>>> develop
   },
   computed: {
     loadingStats: function loadingStats() {
@@ -7732,23 +7736,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     getData: function getData(id, index) {
-      console.log("indexx");
-      console.log(index);
-      console.log("---");
       var vm = this;
       this.pax_des[index - 1] = vm.results[id].position;
       this.pax_gen[index - 1] = vm.results[id].gender;
       $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
-    clearData: function clearData(idx) {
+    clearData: function clearData() {
+      $('.data-set').val(null).trigger("change");
       var vm = this;
-      var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
-      var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
-      parsedobj_desc.splice(idx, 1);
-      parsedobj_gen.splice(idx, 1);
-      vm.pax_des = parsedobj_desc;
-      vm.pax_gen = parsedobj_gen;
+      vm.total = 1;
+      vm.pax_des.length = 0;
+      vm.pax_gen.length = 0;
     },
     EmployeeList: function EmployeeList() {
       this.results = JSON.parse(localStorage.getItem('ListEmployee'));
@@ -7771,17 +7770,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $("#passenger-select-".concat(count)).on('select2:select', function (e) {
           var paxVal = $(this).find(':selected').data('id');
           vm.getData(paxVal, count);
-          console.log("kanniii");
-          console.log(count);
         });
         $("#passenger-select-".concat(count)).on('select2:clear', function (e) {
           $("#pax_des_" + "".concat(count)).val(null);
           $("#pax_gen_" + "".concat(count)).val(null);
           vm.pax_gen[count - 1] = "";
           vm.pax_des[count - 1] = "";
-          console.log("clearr ni");
-          console.log(count);
-          console.log("".concat(count));
         });
 
         for (var i = 1; i < count; i++) {
@@ -7795,7 +7789,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.total != 1) {
         var count = this.total -= 1;
-        this.clearData(count);
+        var vm = this;
+        var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+        var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+        parsedobj_desc.splice(count, 1);
+        parsedobj_gen.splice(count, 1);
+        vm.pax_des = parsedobj_desc;
+        vm.pax_gen = parsedobj_gen;
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
@@ -7888,6 +7888,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     newRequest: function newRequest() {
+      this.clearData();
+
       for (var i = 0; i < this.names.length; i++) {
         if (this.names[i] == 'section' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
           $('#kt_select_' + this.names[i]).empty();
@@ -60036,8 +60038,17 @@ var render = function() {
                             _c(
                               "button",
                               {
+<<<<<<< HEAD
                                 staticClass: "btn btn-sm btn-outline-primary",
                                 on: { click: _vm.addRow }
+=======
+                                staticClass:
+                                  "details-input form-control data-set select2",
+                                attrs: {
+                                  id: "passenger-select-" + index,
+                                  name: "pax_name_" + index
+                                }
+>>>>>>> develop
                               },
                               [
                                 _c("i", {
