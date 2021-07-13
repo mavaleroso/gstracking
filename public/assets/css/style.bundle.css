@@ -531,9 +531,9 @@ pre {
   .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
     max-width: 1340px; } }
 
-@media (min-width: 1600px) {
+/* @media (min-width: 1600px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl, .container-xxxl{
-    max-width: 1635px; } }
+    max-width: 1635px; } } */
 
 .row {
   display: -webkit-box;
