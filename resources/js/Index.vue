@@ -1,7 +1,7 @@
 <template>
     <div id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable">
         <mobile></mobile>
-        <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-root w-100">
 			<!--begin::Page-->
 			<div class="d-flex flex-row flex-column-fluid page">
 				<!--begin::Aside-->
@@ -20,7 +20,7 @@
 						<!--begin::Entry-->
 						<div id="container-div" class="d-flex flex-column-fluid">
 							<!--begin::Container-->
-							<div class="container">
+							<div class="container-fluid">
 								<router-view></router-view>
 							</div>
 							<!--end::Container-->

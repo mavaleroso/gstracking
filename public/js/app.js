@@ -7654,6 +7654,269 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -7663,10 +7926,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       provinces: [],
       cities: [],
       brgys: [],
-      activeProvinces: '',
+      activeProvinces: "",
       activeSections: [],
       activeCities: [],
-      names: ['region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'division', 'section', 'pur_travel', 'time_depart', 'date_return', 'destination_place'],
+      names: ["region", "province", "city", "brgy", "date_travel", "pax_des_1", "pax_name_1", "pax_gen_1", "division", "section", "pur_travel", "time_depart", "date_return", "destination_place"],
       complete: false,
       createdAt: null,
       maxDate: null,
@@ -7685,8 +7948,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       currentCities: [],
       results: [],
       total: 1,
-      gender: '',
-      designation: '',
+      gender: "",
+      designation: "",
       semi_total: 1,
       pax_des: [],
       pax_gen: []
@@ -7699,7 +7962,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
+    this.isDisabled();
     this.EmployeeList();
+  },
+  computed: {
+    loadingStats: function loadingStats() {
+      var res = this.$store.getters["currentUser/loadingStats"];
+
+      if (!res) {
+        this.results = JSON.parse(localStorage.getItem("ListEmployee"));
+      }
+
+      return res;
+    }
   },
   mounted: function mounted() {
     this.ini();
@@ -7711,57 +7986,57 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var vm = this;
       $(function () {
-        $('#kt_select_province').select2({
+        $("#kt_select_province").select2({
           placeholder: "Select a Province"
         }); // multi select
 
-        $('#kt_select_city').select2({
+        $("#kt_select_city").select2({
           placeholder: "Select a City"
         }); // multi select
 
-        $('#kt_select_brgy').select2({
+        $("#kt_select_brgy").select2({
           placeholder: "Select a Barangay"
         }); // basic
 
-        $('#kt_select_region').select2({
+        $("#kt_select_region").select2({
           placeholder: "Select a Region",
           allowClear: true
         });
-        $('#kt_select_division').select2({
+        $("#kt_select_division").select2({
           placeholder: "Select a Division",
           allowClear: true
         });
-        $('#kt_select_section').select2({
+        $("#kt_select_section").select2({
           placeholder: "Select a Section",
           allowClear: true
         });
-        $('#passenger-select-1').select2({
+        $("#passenger-select-1").select2({
           placeholder: "Select fullname",
           allowClear: true
         });
-        $("#passenger-select-1").on('select2:select', function (e) {
-          var paxVal = $(this).find(':selected').data('id');
+        $("#passenger-select-1").on("select2:select", function (e) {
+          var paxVal = $(this).find(":selected").data("id");
           vm.getData(paxVal, 1);
         });
-        $("#passenger-select-1").on('select2:clear', function (e) {
+        $("#passenger-select-1").on("select2:clear", function (e) {
           $("#pax_des_1").val(null);
           $("#pax_gen_1").val(null);
           vm.pax_gen[0] = "";
           vm.pax_des[0] = "";
         });
-        $('.menu-item').removeClass('menu-item-active');
-        $('.router-link-active').parent().addClass('menu-item-active');
-        $('#kt_select_division').on('change', function () {
+        $(".menu-item").removeClass("menu-item-active");
+        $(".router-link-active").parent().addClass("menu-item-active");
+        $("#kt_select_division").on("change", function () {
           vm.activeDivision = $(this).val();
         });
-        $('#kt_select_section').on('change', function () {
-          var id = $('#kt_select_section').val();
+        $("#kt_select_section").on("change", function () {
+          var id = $("#kt_select_section").val();
           _this.section = id;
         });
-        $('#kt_select_region').on('change', function () {
+        $("#kt_select_region").on("change", function () {
           vm.activeRegion = $(this).val();
         });
-        $('#kt_select_province').on('change', function () {
+        $("#kt_select_province").on("change", function () {
           var data_arr, data_int, res, prov;
           vm.activeProvince = $(this).val();
           console.log("active province");
@@ -7780,7 +8055,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.currentlySelectedCities = res;
           vm.currentlySelectedProvince = prov;
         });
-        $('#kt_select_city').on('change', function () {
+        $("#kt_select_city").on("change", function () {
           var data_arr, data_int, res, city;
           vm.activeBarangay = $(this).val();
           data_arr = Object.values(vm.activeBarangay);
@@ -7800,26 +8075,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     getData: function getData(id, index) {
-      console.log("indexx");
-      console.log(index);
-      console.log("---");
       var vm = this;
       this.pax_des[index - 1] = vm.results[id].position;
       this.pax_gen[index - 1] = vm.results[id].gender;
       $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
-    clearData: function clearData(idx) {
+    clearData: function clearData() {
+      $(".data-set").val(null).trigger("change");
       var vm = this;
-      var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
-      var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
-      parsedobj_desc.splice(idx, 1);
-      parsedobj_gen.splice(idx, 1);
-      vm.pax_des = parsedobj_desc;
-      vm.pax_gen = parsedobj_gen;
+      vm.total = 1;
+      vm.pax_des.length = 0;
+      vm.pax_gen.length = 0;
     },
     EmployeeList: function EmployeeList() {
-      this.results = JSON.parse(localStorage.getItem('ListEmployee'));
+      this.results = JSON.parse(localStorage.getItem("ListEmployee"));
     },
     convertToInt: function convertToInt(data) {
       console.log("Called");
@@ -7836,25 +8106,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           placeholder: "Select a fullname",
           allowClear: true
         });
-        $("#passenger-select-".concat(count)).on('select2:select', function (e) {
-          var paxVal = $(this).find(':selected').data('id');
-          alert(paxVal);
+        $("#passenger-select-".concat(count)).on("select2:select", function (e) {
+          var paxVal = $(this).find(":selected").data("id");
           vm.getData(paxVal, count);
-          console.log("kanniii");
-          console.log(count);
         });
-        $("#passenger-select-".concat(count)).on('select2:clear', function (e) {
+        $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
           $("#pax_des_" + "".concat(count)).val(null);
           $("#pax_gen_" + "".concat(count)).val(null);
           vm.pax_gen[count - 1] = "";
           vm.pax_des[count - 1] = "";
-          console.log("clearr ni");
-          console.log(count);
-          console.log("".concat(count));
         });
 
         for (var i = 1; i < count; i++) {
-          var test = $("#passenger-select-".concat(count)).find(':selected').data('id');
+          var test = $("#passenger-select-".concat(count)).find(":selected").data("id");
           console.log(test);
         }
       }, 100);
@@ -7864,28 +8128,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.total != 1) {
         var count = this.total -= 1;
-        this.clearData(count);
+        var vm = this;
+        var parsedobj_desc = JSON.parse(JSON.stringify(vm.pax_des));
+        var parsedobj_gen = JSON.parse(JSON.stringify(vm.pax_gen));
+        parsedobj_desc.splice(count, 1);
+        parsedobj_gen.splice(count, 1);
+        vm.pax_des = parsedobj_desc;
+        vm.pax_gen = parsedobj_gen;
       }
 
-      $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+      $("#pax-total").val(parseInt($("#passenger-tbl tbody tr:eq(-1) td:eq(0)").text()));
     },
     saveForm: function saveForm() {
       var _this2 = this;
 
-      $('.data-entry').attr('disabled', false);
-      var requestform = $('#kt_form').serialize();
+      $(".data-entry").attr("disabled", false);
+      var requestform = $("#kt_form").serialize();
       axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, 'success');
+        _this2.$showToast(response.data.message, "success");
 
-        $('.details-input').attr('disabled', true);
+        $(".details-input").attr("disabled", true);
         _this2.complete = true;
         _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
       })["catch"](function (error) {
-        $('.data-entry').attr('disabled', true);
+        $(".data-entry").attr("disabled", true);
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
@@ -7898,78 +8168,80 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city' || "".concat(key) == 'division' || "".concat(key) == 'section') {
-            if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-              $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == "region" || "".concat(key) == "province" || "".concat(key) == "city" || "".concat(key) == "division" || "".concat(key) == "section") {
+            if ($("#kt_select_" + "".concat(key)).next().next().length == 0 || $("#kt_select_" + "".concat(key)).next().next().attr("class").search("invalid-feedback") == -1) {
+              $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
           } else {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
             }
           }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'region' || _this2.names[i] == 'province' || _this2.names[i] == 'city' || _this2.names[i] == 'division' || _this2.names[i] == 'section') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+          if (_this2.names[i] == "region" || _this2.names[i] == "province" || _this2.names[i] == "city" || _this2.names[i] == "division" || _this2.names[i] == "section") {
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
+                $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     getDivision: function getDivision() {
-      this.divisions = JSON.parse(localStorage.getItem('division'));
+      this.divisions = JSON.parse(localStorage.getItem("division"));
     },
     getSection: function getSection() {
-      this.sections = JSON.parse(localStorage.getItem('section'));
+      this.sections = JSON.parse(localStorage.getItem("section"));
     },
     getRegion: function getRegion() {
-      this.regions = JSON.parse(localStorage.getItem('region'));
+      this.regions = JSON.parse(localStorage.getItem("region"));
     },
     getProvince: function getProvince() {
-      this.provinces = JSON.parse(localStorage.getItem('province'));
+      this.provinces = JSON.parse(localStorage.getItem("province"));
     },
     getCity: function getCity() {
-      this.cities = JSON.parse(localStorage.getItem('city'));
+      this.cities = JSON.parse(localStorage.getItem("city"));
     },
     getBrgy: function getBrgy() {
-      this.brgys = JSON.parse(localStorage.getItem('barangay'));
+      this.brgys = JSON.parse(localStorage.getItem("barangay"));
     },
     currentProv: function currentProv() {
       this.activeProvinces = this.provinces.filter(function (i) {
-        return i.active === 'true';
+        return i.active === "true";
       });
     },
     currentCity: function currentCity() {
       this.activeCities = this.cities.filter(function (i) {
-        return i.active === 'true';
+        return i.active === "true";
       });
     },
     newRequest: function newRequest() {
+      this.clearData();
+
       for (var i = 0; i < this.names.length; i++) {
-        if (this.names[i] == 'section' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
-          $('#kt_select_' + this.names[i]).empty();
-        } else if (this.names[i] == 'division' || this.names[i] == 'region') {
-          $('#kt_select_region').val(null).trigger("change");
+        if (this.names[i] == "section" || this.names[i] == "province" || this.names[i] == "city" || this.names[i] == "brgy") {
+          $("#kt_select_" + this.names[i]).empty();
+        } else if (this.names[i] == "division" || this.names[i] == "region") {
+          $("#kt_select_region").val(null).trigger("change");
         } else {
           $('[name="' + this.names[i] + '"]').val(null);
         }
 
-        $('#kt_select_division').val(null).trigger("change");
+        $("#kt_select_division").val(null).trigger("change");
       }
 
-      $('.details-input').attr('disabled', false);
+      $(".details-input").attr("disabled", false);
       this.complete = false;
       this.createdAt = null;
     },
@@ -7978,9 +8250,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var month = dtToday.getMonth() + 1;
       var day = dtToday.getDate();
       var year = dtToday.getFullYear();
-      if (month < 10) month = '0' + month.toString();
-      if (day < 10) day = '0' + day.toString();
-      var maxDate = year + '-' + month + '-' + day;
+      if (month < 10) month = "0" + month.toString();
+      if (day < 10) day = "0" + day.toString();
+      var maxDate = year + "-" + month + "-" + day;
       this.maxDate = maxDate;
     }
   }
@@ -50282,7 +50554,7 @@ var render = function() {
     [
       _c("mobile"),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex flex-column flex-root" }, [
+      _c("div", { staticClass: "d-flex flex-column flex-root w-100" }, [
         _c(
           "div",
           { staticClass: "d-flex flex-row flex-column-fluid page" },
@@ -50318,7 +50590,7 @@ var render = function() {
                       [
                         _c(
                           "div",
-                          { staticClass: "container" },
+                          { staticClass: "container-fluid" },
                           [_c("router-view")],
                           1
                         )
@@ -59821,7 +60093,9 @@ var render = function() {
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
                     _c("p", { staticClass: "lead" }, [
-                      _vm._v("Your request has successfully completed!")
+                      _vm._v(
+                        "\n                            Your request has successfully completed!\n                        "
+                      )
                     ]),
                     _vm._v(" "),
                     _c("hr", { staticClass: "my-4" }),
@@ -59866,7 +60140,9 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
-                  _vm._v("Requestor Info:")
+                  _vm._v(
+                    "\n                            Requestor Info:\n                        "
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
@@ -60123,199 +60399,291 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
               _vm._v(" "),
-              _c("div", { staticClass: "my-5" }, [
-                _c("div", { staticClass: "d-flex" }, [
-                  _c(
-                    "h3",
-                    { staticClass: "text-dark font-weight-bold mb-10" },
-                    [_vm._v("Passenger Details:")]
-                  ),
-                  _vm._v(" "),
-                  _vm.complete == false
-                    ? _c("div", { staticClass: "ml-auto" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-outline-primary",
-                            on: { click: _vm.addRow }
-                          },
-                          [_c("i", { staticClass: "fa fa-plus-square p-0" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-outline-primary",
-                            on: { click: _vm.removeRow }
-                          },
-                          [_c("i", { staticClass: "fa fa-minus-square p-0" })]
-                        )
+              _c(
+                "div",
+                {
+                  class: _vm.loadingStats
+                    ? "card-body overlay overlay-block"
+                    : "card-body"
+                },
+                [
+                  _vm.loadingStats
+                    ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                        _c("div", { staticClass: "spinner spinner-primary" })
                       ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.total,
-                      expression: "total"
-                    }
-                  ],
-                  attrs: { type: "hidden", id: "pax-total", name: "pax_total" },
-                  domProps: { value: _vm.total },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.total = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "table",
-                  {
-                    staticClass: "table w-100",
-                    attrs: { id: "passenger-tbl" }
-                  },
-                  [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.total, function(index) {
-                        return _c("tr", { key: index }, [
-                          _c(
-                            "td",
-                            {
-                              staticClass: "text-center",
-                              attrs: { scope: "row" }
-                            },
-                            [_vm._v(_vm._s(index))]
-                          ),
-                          _vm._v(" "),
-                          _c("td", [
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "my-5" }, [
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c(
+                        "h3",
+                        { staticClass: "text-dark font-weight-bold mb-10" },
+                        [
+                          _vm._v(
+                            "\n                                    Passenger Details:\n                                "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.complete == false
+                        ? _c("div", { staticClass: "ml-auto" }, [
                             _c(
-                              "select",
+                              "button",
                               {
-                                staticClass:
-                                  "details-input form-control select2",
-                                attrs: {
-                                  id: "passenger-select-" + index,
-                                  name: "pax_name_" + index
-                                }
+                                staticClass: "btn btn-sm btn-outline-primary",
+                                on: { click: _vm.addRow }
                               },
                               [
-                                _c("option", { attrs: { label: "Label" } }),
-                                _vm._v(" "),
-                                _vm._l(_vm.results, function(result, index) {
-                                  return _c(
-                                    "option",
-                                    {
-                                      key: index,
-                                      attrs: { "data-id": index },
-                                      domProps: {
-                                        value:
-                                          result.first_name +
-                                          " " +
-                                          result.middle_name +
-                                          " " +
-                                          result.last_name
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(result.first_name) +
-                                          " " +
-                                          _vm._s(result.middle_name) +
-                                          " " +
-                                          _vm._s(result.last_name)
-                                      )
-                                    ]
-                                  )
+                                _c("i", {
+                                  staticClass: "fa fa-plus-square p-0"
                                 })
-                              ],
-                              2
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-sm btn-outline-primary",
+                                on: { click: _vm.removeRow }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-minus-square p-0"
+                                })
+                              ]
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.pax_des[index - 1],
-                                  expression: "pax_des[index-1]"
-                                }
-                              ],
-                              staticClass:
-                                "details-input data-entry form-control ",
-                              attrs: {
-                                name: "pax_des_" + index,
-                                id: "pax_des_" + index,
-                                type: "text",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.pax_des[index - 1] },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.pax_des,
-                                    index - 1,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.pax_gen[index - 1],
-                                  expression: "pax_gen[index-1]"
-                                }
-                              ],
-                              staticClass:
-                                "details-input data-entry form-control ",
-                              attrs: {
-                                name: "pax_gen_" + index,
-                                id: "pax_gen_" + index,
-                                type: "text",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.pax_gen[index - 1] },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.pax_gen,
-                                    index - 1,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
                           ])
-                        ])
-                      }),
-                      0
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.total,
+                          expression: "total"
+                        }
+                      ],
+                      attrs: {
+                        type: "hidden",
+                        id: "pax-total",
+                        name: "pax_total"
+                      },
+                      domProps: { value: _vm.total },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.total = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "table",
+                      {
+                        staticClass: "table w-100",
+                        attrs: { id: "passenger-tbl" }
+                      },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.total, function(index) {
+                            return _c("tr", { key: index }, [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-center",
+                                  attrs: { scope: "row" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                            " +
+                                      _vm._s(index) +
+                                      "\n                                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm.$store.getters["currentUser/loadingStats"]
+                                  ? _c(
+                                      "select",
+                                      {
+                                        staticClass:
+                                          "details-input form-control select2",
+                                        attrs: {
+                                          id: "passenger-select-" + index,
+                                          name: "pax_name_" + index,
+                                          disabled: ""
+                                        }
+                                      },
+                                      [
+                                        _c("option", {
+                                          attrs: { label: "Label" }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.results, function(
+                                          result,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: index,
+                                              attrs: { "data-id": index },
+                                              domProps: {
+                                                value:
+                                                  result.first_name +
+                                                  " " +
+                                                  result.middle_name +
+                                                  " " +
+                                                  result.last_name
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(result.first_name) +
+                                                  "\n                                                    " +
+                                                  _vm._s(result.middle_name) +
+                                                  "\n                                                    " +
+                                                  _vm._s(result.last_name)
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                                  : _c(
+                                      "select",
+                                      {
+                                        staticClass:
+                                          "details-input form-control select2",
+                                        attrs: {
+                                          id: "passenger-select-" + index,
+                                          name: "pax_name_" + index
+                                        }
+                                      },
+                                      [
+                                        _c("option", {
+                                          attrs: { label: "Label" }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm._l(_vm.results, function(
+                                          result,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: index,
+                                              attrs: { "data-id": index },
+                                              domProps: {
+                                                value:
+                                                  result.first_name +
+                                                  " " +
+                                                  result.middle_name +
+                                                  " " +
+                                                  result.last_name
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(result.first_name) +
+                                                  "\n                                                    " +
+                                                  _vm._s(result.middle_name) +
+                                                  "\n                                                    " +
+                                                  _vm._s(result.last_name)
+                                              )
+                                            ]
+                                          )
+                                        })
+                                      ],
+                                      2
+                                    )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.pax_des[index - 1],
+                                      expression: "pax_des[index - 1]"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "details-input data-entry form-control ",
+                                  attrs: {
+                                    name: "pax_des_" + index,
+                                    id: "pax_des_" + index,
+                                    type: "text",
+                                    disabled: ""
+                                  },
+                                  domProps: { value: _vm.pax_des[index - 1] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.pax_des,
+                                        index - 1,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.pax_gen[index - 1],
+                                      expression: "pax_gen[index - 1]"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "details-input data-entry form-control ",
+                                  attrs: {
+                                    name: "pax_gen_" + index,
+                                    id: "pax_gen_" + index,
+                                    type: "text",
+                                    disabled: ""
+                                  },
+                                  domProps: { value: _vm.pax_gen[index - 1] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.pax_gen,
+                                        index - 1,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ]
                     )
-                  ]
-                )
-              ])
+                  ])
+                ]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-xl-2" })
@@ -60335,7 +60703,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "ki ki-check icon-sm" }),
-                  _vm._v("Save Form")
+                  _vm._v("Save Form\n            ")
                 ]
               )
             ])
@@ -60352,7 +60720,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
-          _vm._v("Motor Vehicle\n            "),
+          _vm._v("\n                Motor Vehicle\n                "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),
           _c("small", {}, [_vm._v("Request Form")])
@@ -60402,19 +60770,27 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-          _vm._v("#")
+          _vm._v(
+            "\n                                            #\n                                        "
+          )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-          _vm._v("Name of Passenger/s")
+          _vm._v(
+            "\n                                            Name of Passenger/s\n                                        "
+          )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-          _vm._v("Position/Designation")
+          _vm._v(
+            "\n                                            Position/Designation\n                                        "
+          )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center w-15", attrs: { scope: "col" } }, [
-          _vm._v("Gender")
+          _vm._v(
+            "\n                                            Gender\n                                        "
+          )
         ])
       ])
     ])
