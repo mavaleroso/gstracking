@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE','Asia/Bangkok'),
+    'timezone' => env('TIMEZONE', 'Asia/Bangkok'),
 
     /*
     |--------------------------------------------------------------------------

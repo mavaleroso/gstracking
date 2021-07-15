@@ -17,9 +17,8 @@ class AuthKey
      */
     public function handle(Request $request, Closure $next)
     {
-        $host = Api::where('host', $request->header('host'))->first();
-        $token = $request->header('authorization');
-        if ($host == false || $token != 'Bearer '.env('APP_KEY')) {
+        $api = Api::where('host', $request->header('host'))->where('key', $request->header('KEY'))->first();
+        if (!$api) {
             return response()->json(['message' => 'App key not found'], 401);
         }
         return $next($request);

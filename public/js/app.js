@@ -56778,8 +56778,8 @@ var render = function() {
             "div",
             {
               class: _vm.loading
-                ? "card-body overlay overlay-block table-responsive overflow-auto"
-                : "card-body table-responsive overflow-auto"
+                ? "card-body overlay overlay-block table-responsive"
+                : "card-body table-responsive"
             },
             [
               _vm.loading

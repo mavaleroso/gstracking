@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Api;
 
 use Illuminate\Support\Arr;
@@ -13,7 +14,7 @@ class CreateExternalPassengers
      */
     public function execute($fields)
     {
- 
+
         $passenger = Passenger::create([
             'type' => 2,
             'request_id' => $fields['travel_id'],
