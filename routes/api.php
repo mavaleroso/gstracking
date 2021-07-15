@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.api'], function () {    
+Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.api'], function () {
     Route::resource('region', 'RegionController', [
         'names' => [
             'index' => 'ajax.region.index',
@@ -73,7 +73,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.a
             'show' => 'ajax.vehicle.show',
         ]
     ]);
-    
+
     Route::resource('role', 'RoleController', [
         'names' => [
             'index' => 'ajax.role.index',
@@ -153,16 +153,17 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Ajax', 'middleware' => 'locale.a
     ]);
 });
 
-Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {    
+Route::group(['prefix' => 'v2', 'namespace' => 'Api', 'middleware' => 'auth.key'], function () {
     Route::resource('external', 'PassengerController', [
         'names' => [
             'store' => 'api.external.store',
         ]
     ]);
+    Route::resource('travel', 'TravelController', [
+        'names' => [
+            'show' => 'api.travel.show',
+        ]
+    ]);
 });
 
 // AXIOS
-
-
-
-

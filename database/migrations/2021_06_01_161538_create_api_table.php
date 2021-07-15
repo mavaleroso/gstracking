@@ -16,6 +16,7 @@ class CreateApiTable extends Migration
         Schema::create('api', function (Blueprint $table) {
             $table->id();
             $table->string('host');
+            $table->mediumText('key');
             $table->timestamps();
         });
     }

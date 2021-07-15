@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Api\GetTravelById;
 use Illuminate\Http\Request;
-use App\Services\Api\CreateExternalPassengers;
 
-class PassengerController extends Controller
+class TravelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,14 +34,9 @@ class PassengerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, CreateExternalPassengers $createExternalPassengers)
+    public function store(Request $request)
     {
-        if (isset($request->travel_id) && isset($request->fullname) && isset($request->designation) && isset($request->gender)) {
-            $result = $createExternalPassengers->execute($request);
-            return json_encode(['type' => 'success', 'message' => __('main/notifications.passenger_created_successfully'), 'result' => $result]);
-        } else {
-            return response()->json(['message' => 'Parameters not correct'], 400);
-        }
+        //
     }
 
     /**
@@ -50,9 +45,10 @@ class PassengerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetTravelById $getTravelById)
     {
-        //
+        $result = $getTravelById->execute($id);
+        return $result;
     }
 
     /**
