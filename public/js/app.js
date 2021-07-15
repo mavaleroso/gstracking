@@ -4326,7 +4326,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             });
           };
 
-          for (var i = 0; i < count; i++) {
+          for (var i = 0; i <= count; i++) {
             _loop(i);
           }
 
@@ -4439,10 +4439,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     getData: function getData(id, index) {
       var vm = this;
+      console.log(index);
       this.pax_des[index - 1] = vm.employee_results[id].position;
       this.pax_gen[index - 1] = vm.employee_results[id].gender;
-      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
-      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
+      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.employee_results[id].gender);
+      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.employee_results[id].position);
     },
     getPassengers: function getPassengers(id) {
       var _this9 = this;

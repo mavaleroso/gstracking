@@ -650,7 +650,7 @@ export default {
                         $('.invalid-admin').removeClass('is-invalid');
                     });
 
-                     for (let i = 0; i < count; i++) {
+                     for (let i = 0; i <= count; i++) {
                         $("#passenger-select-"+i).on('select2:select', function (e) {
                             let paxVal = $(`#passenger-select-${i} option:selected`).index();
                             paxVal = paxVal-1
@@ -749,11 +749,11 @@ export default {
         },
         getData(id, index) {
             let vm = this;
-
+            console.log(index);
             this.pax_des[index - 1] = vm.employee_results[id].position;
             this.pax_gen[index - 1] = vm.employee_results[id].gender;
-            $(`[name="pax_gen_${index}"]`).val(vm.results[id].gender);
-            $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
+            $(`[name="pax_gen_${index}"]`).val(vm.employee_results[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.employee_results[id].position);
         },
         getPassengers(id) {
             axios.get(BASE_URL + "/api/v1/passenger/" + id).then(response => {
