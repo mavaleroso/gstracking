@@ -4043,7 +4043,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       rpNames: ['vehicle_1', 'driver_1'],
       hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
       remarks: null,
-      employee_results: []
+      employee_results: [],
+      pax_des: [],
+      pax_gen: []
     };
   },
   components: {
@@ -4316,19 +4318,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $('.invalid-admin').removeClass('is-invalid');
           });
 
-          for (var i = 0; i < count + 1; i++) {
-            $("#passenger-select-".concat(count)).on('select2:select', function (e) {
-              var paxVala = $("#passenger-select-1 option:selected").index();
-              alert(paxVala);
-              console.log(paxVal);
+          var _loop = function _loop(i) {
+            $("#passenger-select-" + i).on('select2:select', function (e) {
+              var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
+              paxVal = paxVal - 1;
+              vm.getData(paxVal, i);
             });
+          };
+
+          for (var i = 0; i < count; i++) {
+            _loop(i);
           }
 
-          $("#passenger-select-".concat(count)).on('select2:select', function (e) {
-            var paxVal = $("#passenger-select-1 option:selected").index();
-            alert(count);
-            console.log(paxVal);
-          });
           $("#passenger-select-1").on('select2:clear', function (e) {
             alert("tests");
           });
@@ -4432,19 +4433,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               allowClear: true
             });
           }
-        }, 500); // let datas = ['hello','ea','b']
-        // console.log("this is sdss "+this.passengers.length);
-        // console.log("Fasfasfasf" + this.passengers.length);
-        // console.log("datas");
-        //     for (let i = 0; i < datas.length; i++) {
-        //         // console.log(this.[i]);
-        //         // $('#passenger-select-'+datas[i]).select2({
-        //         //     placeholder: "Select fullname",
-        //         //     allowClear: true
-        //         // });
-        //     }
+        }, 500);
       });
       this.dateConf();
+    },
+    getData: function getData(id, index) {
+      var vm = this;
+      this.pax_des[index - 1] = vm.employee_results[id].position;
+      this.pax_gen[index - 1] = vm.employee_results[id].gender;
+      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
+      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
     getPassengers: function getPassengers(id) {
       var _this9 = this;
@@ -7962,7 +7960,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
-    this.isDisabled();
     this.EmployeeList();
   },
   computed: {
@@ -8108,6 +8105,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $("#passenger-select-".concat(count)).on("select2:select", function (e) {
           var paxVal = $(this).find(":selected").data("id");
+          console.log("paxval" + paxVal + " count" + count);
           vm.getData(paxVal, count);
         });
         $("#passenger-select-".concat(count)).on("select2:clear", function (e) {

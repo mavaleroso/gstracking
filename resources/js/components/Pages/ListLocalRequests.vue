@@ -167,10 +167,10 @@
                                                 </select>
                                             </td>
                                             <!-- <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td> -->
-                                            <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
+                                            <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"   /></td>
                                             <td>
                                                 <!-- <input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/> -->
-                                                <select :name="'pax_gen_' + paxIndex(index)" class="details-input form-control" disabled="disabled" :value="pax.gender">
+                                                <select :name="'pax_gen_' + paxIndex(index)" class="details-input form-control" disabled="disabled" :value="pax.gender"  >
                                                     <option value=""></option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -386,7 +386,9 @@ export default {
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
             remarks: null,
-            employee_results: []
+            employee_results: [],
+            pax_des: [],
+            pax_gen: []
         }
     },  
     components: {
@@ -648,28 +650,18 @@ export default {
                         $('.invalid-admin').removeClass('is-invalid');
                     });
 
-                  
-
-
-
-                     for (let i = 0; i < count+1; i++) {
-                        $(`#passenger-select-${count}`).on('select2:select', function (e) {
-                            let paxVala = $("#passenger-select-1 option:selected").index();
-                            alert(paxVala);
-                            console.log(paxVal);
+                     for (let i = 0; i < count; i++) {
+                        $("#passenger-select-"+i).on('select2:select', function (e) {
+                            let paxVal = $(`#passenger-select-${i} option:selected`).index();
+                            paxVal = paxVal-1
+                            vm.getData(paxVal, i);
                         });
                      
 
                      }
 
-                    $(`#passenger-select-${count}`).on('select2:select', function (e) {
-                        let paxVal = $("#passenger-select-1 option:selected").index();
-                        alert(count);
-                        console.log(paxVal);
-                    });
-
                     $(`#passenger-select-1`).on('select2:clear', function (e) {
-                    alert("tests");
+                        alert("tests");
                     });
 
                 }, 500);
@@ -752,28 +744,16 @@ export default {
                         });
                     } 
                 }, 500);
-
-
-
-
-                    
-
-
-
-                // let datas = ['hello','ea','b']
-                // console.log("this is sdss "+this.passengers.length);
-                // console.log("Fasfasfasf" + this.passengers.length);
-                // console.log("datas");
-                //     for (let i = 0; i < datas.length; i++) {
-                //         // console.log(this.[i]);
-                //         // $('#passenger-select-'+datas[i]).select2({
-                //         //     placeholder: "Select fullname",
-                //         //     allowClear: true
-                //         // });
-                //     }
-       
             });
             this.dateConf();
+        },
+        getData(id, index) {
+            let vm = this;
+
+            this.pax_des[index - 1] = vm.employee_results[id].position;
+            this.pax_gen[index - 1] = vm.employee_results[id].gender;
+            $(`[name="pax_gen_${index}"]`).val(vm.results[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
         },
         getPassengers(id) {
             axios.get(BASE_URL + "/api/v1/passenger/" + id).then(response => {

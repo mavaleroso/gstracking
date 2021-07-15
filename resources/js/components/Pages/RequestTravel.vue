@@ -480,7 +480,6 @@ export default {
         this.getProvince();
         this.getCity();
         this.getBrgy();
-        this.isDisabled();
         this.EmployeeList();
     },
     computed: {
@@ -635,9 +634,8 @@ export default {
                     allowClear: true
                 });
                 $(`#passenger-select-${count}`).on("select2:select", function(e) {
-                    let paxVal = $(this)
-                        .find(":selected")
-                        .data("id");
+                    let paxVal = $(this).find(":selected").data("id");
+                    console.log("paxval" + paxVal + " count" + count);
                     vm.getData(paxVal, count);
                 });
 
