@@ -1,131 +1,140 @@
-import VueRouter from 'vue-router';
-import Dashboard from './components/Pages/Dashboard';
-import RequestTravel from './components/Pages/RequestTravel';
-import ListLocalRequest from './components/Pages/ListLocalRequests';
-import ListRitoRequest from './components/Pages/ListRitoRequests';
-import VehicleTravels from './components/Pages/VehicleTravels';
-import Log from './components/Pages/Logs';
-import Vehicle from './components/Pages/Transportation/Vehicle';
-import Driver from './components/Pages/Transportation/Driver';
-import ListPo from './components/Pages/ListPo';
-import ListUsers from './components/Pages/ListUsers';
-import travelCalendar from './components/Pages/TravelCalendar';
-import printRequest from './components/Pages/PrintRequest';
-import printTripTicket from './components/Pages/PrintTripTicket';
-import TravelsStatus from './components/Pages/TravelsStatus';
+import VueRouter from "vue-router";
+import Dashboard from "./components/Pages/Dashboard";
+import RequestTravel from "./components/Pages/RequestTravel";
+import ListLocalRequest from "./components/Pages/ListLocalRequests";
+import ListRitoRequest from "./components/Pages/ListRitoRequests";
+import VehicleTravels from "./components/Pages/VehicleTravels";
+import Log from "./components/Pages/Logs";
+import Vehicle from "./components/Pages/Transportation/Vehicle";
+import Driver from "./components/Pages/Transportation/Driver";
+import ListPo from "./components/Pages/ListPo";
+import ListUsers from "./components/Pages/ListUsers";
+import travelCalendar from "./components/Pages/TravelCalendar";
+import printRequest from "./components/Pages/PrintRequest";
+import printTripTicket from "./components/Pages/PrintTripTicket";
+import TravelsStatus from "./components/Pages/TravelsStatus";
+import FuelCharges from "./components/Pages/FuelCharges";
 
 const routes = [
     {
-        path: '/dashboard',
+        path: "/dashboard",
         component: Dashboard,
-        name: 'dashboard',
+        name: "dashboard",
         meta: {
-            title: 'Dashboard'
+            title: "Dashboard"
         }
     },
     {
-        path: '/request_travel',
+        path: "/request_travel",
         component: RequestTravel,
-        name: 'requestTravel',
+        name: "requestTravel",
         meta: {
-            title: 'Request Travel'
+            title: "Request Travel"
         }
     },
     {
-        path: '/local_requests',
+        path: "/local_requests",
         component: ListLocalRequest,
-        name: 'listLocalRequests',
+        name: "listLocalRequests",
         meta: {
-            title: 'Local Requests'
+            title: "Local Requests"
         }
     },
     {
-        path: '/rito_requests',
+        path: "/rito_requests",
         component: ListRitoRequest,
-        name: 'listRitoRequests',
+        name: "listRitoRequests",
         meta: {
-            title: 'RITO Requests'
+            title: "RITO Requests"
         }
     },
     {
-        path: '/travels_status',
+        path: "/travels_status",
         component: TravelsStatus,
-        name: 'travelsStatus',
+        name: "travelsStatus",
         meta: {
-            title: 'List of Travels Status'
-        }  
-    },
-    {
-        path: '/vehicle_travels',
-        component: VehicleTravels,
-        name: 'vehicleTravels',
-        meta: {
-            title: 'List of Vehicle Travels'
+            title: "List of Travels Status"
         }
     },
     {
-        path: '/list_vehicle',
+        path: "/vehicle_travels",
+        component: VehicleTravels,
+        name: "vehicleTravels",
+        meta: {
+            title: "List of Vehicle Travels"
+        }
+    },
+    {
+        path: "/list_vehicle",
         component: Vehicle,
-        name: 'listVehicle',
+        name: "listVehicle",
         meta: {
-            title: 'List of Vehicles'
-        }   
+            title: "List of Vehicles"
+        }
     },
     {
-        path: '/list_drivers',
+        path: "/list_drivers",
         component: Driver,
-        name: 'listDriver',
+        name: "listDriver",
         meta: {
-            title: 'List of Drivers'
-        }   
+            title: "List of Drivers"
+        }
     },
     {
-        path: '/transaction_logs',
+        path: "/transaction_logs",
         component: Log,
-        name: 'Logs',
+        name: "Logs",
         meta: {
-            title: 'List of Logs'
-        }   
+            title: "List of Logs"
+        }
     },
     {
-        path: '/list_po',
+        path: "/fuel_charges",
+        component: FuelCharges,
+        name: "fuelCharges",
+        meta: {
+            title: "List of Fuel Charges"
+        }
+    },
+    {
+        path: "/list_po",
         component: ListPo,
-        name: 'listPo',
+        name: "listPo",
         meta: {
-            title: 'List of PO'
-        }   
+            title: "List of PO"
+        }
     },
     {
-        path: '/list_users',
+        path: "/list_users",
         component: ListUsers,
-        name: 'listUsers',
+        name: "listUsers",
         meta: {
-            title: 'List of Users'
-        }   
+            title: "List of Users"
+        }
     },
     {
-        path: '/travel_calendar',
+        path: "/travel_calendar",
         component: travelCalendar,
-        name: 'travelCalendar',
+        name: "travelCalendar",
         meta: {
-            title: 'Travel Calendar'
-        }   
+            title: "Travel Calendar"
+        }
     },
     {
-        path: '/print_request',
+        path: "/print_request",
         component: printRequest,
-        name: 'printRequest'
+        name: "printRequest"
     },
     {
-        path: '/print_trip_ticket',
+        path: "/print_trip_ticket",
         component: printTripTicket,
-        name: 'printTripTicket'
+        name: "printTripTicket"
     }
-]
+];
 
 const router = new VueRouter({
     routes,
-    mode: 'history'
+    mode: "history"
 });
 
 export default router;

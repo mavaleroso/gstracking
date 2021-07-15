@@ -2666,6 +2666,472 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     this.ini();
@@ -2674,20 +3140,20 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     ini: function ini() {
       var pageLabel = this.$route.meta.title;
-      var pages = ['List of Transportation', 'List of Vehicles', 'List of Drivers', 'List of PO'];
+      var pages = ["List of Transportation", "List of Vehicles", "List of Drivers", "List of PO"];
 
       if (pages.indexOf(pageLabel) != -1) {
-        $('#dropdown-transpo').addClass('menu-item-open');
+        $("#dropdown-transpo").addClass("menu-item-open");
       }
     },
     active: function active() {
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      type == 'menu' ? $('#dropdown-transpo').removeClass('menu-item-open') : null;
-      $('.menu-item').removeClass('menu-item-active');
-      $('.router-link-active').parent().addClass('menu-item-active');
+      type == "menu" ? $("#dropdown-transpo").removeClass("menu-item-open") : null;
+      $(".menu-item").removeClass("menu-item-active");
+      $(".router-link-active").parent().addClass("menu-item-active");
 
       try {
-        $('#dialog').dialog('destroy');
+        $("#dialog").dialog("destroy");
       } catch (error) {}
     }
   }
@@ -8318,6 +8784,132 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -8327,19 +8919,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     return {
       create: false,
       formFields: {
-        id: '',
-        fullname: '',
-        birthdate: '',
-        gender: '',
-        contactNumber: '',
-        status: '',
+        id: "",
+        fullname: "",
+        birthdate: "",
+        gender: "",
+        contactNumber: "",
+        status: "",
         results: [],
-        image: ''
+        image: ""
       },
-      loadingStatus: 'true',
+      loadingStatus: "true",
       listdata: [],
       states: [],
-      names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
+      names: ["fullname", "birthdate", "gender", "contactNumber", "status"]
     };
   },
   created: function created() {},
@@ -8349,10 +8941,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   computed: {
     loadingStats: function loadingStats() {
-      var res = this.$store.getters['currentUser/loadingStats'];
+      var res = this.$store.getters["currentUser/loadingStats"];
 
       if (!res) {
-        this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+        this.formFields.results = JSON.parse(localStorage.getItem("ListEmployee"));
       }
 
       return res;
@@ -8367,29 +8959,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     EmployeeList: function EmployeeList() {
-      this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
-      this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
+      this.formFields.results = JSON.parse(localStorage.getItem("ListEmployee"));
+      this.loadingStatus = this.$store.getters["currentUser/loadingStats"];
     },
     newEntry: function newEntry() {
       this.create = true;
       var vm = this;
       $(function () {
-        $('#images').hide();
-        $("#kt_select_fullname").on('select2:select', function (e) {
+        $("#images").hide();
+        $("#kt_select_fullname").on("select2:select", function (e) {
           vm.getData();
-          $('#images').show();
+          $("#images").show();
         });
-        $("#kt_select_fullname").on('select2:clear', function (e) {
+        $("#kt_select_fullname").on("select2:clear", function (e) {
           setTimeout(function () {
-            $('#images').hide();
+            $("#images").hide();
           }, 100);
-          vm.formFields.contactNumber = '';
-          vm.formFields.gender = '';
-          vm.formFields.status = '';
-          vm.formFields.birthdate = '';
+          vm.formFields.contactNumber = "";
+          vm.formFields.gender = "";
+          vm.formFields.status = "";
+          vm.formFields.birthdate = "";
         });
-        $('.card-label span').text('Create Driver');
-        $('#kt_select_fullname').select2({
+        $(".card-label span").text("Create Driver");
+        $("#kt_select_fullname").select2({
           placeholder: "Select fullname",
           allowClear: true
         });
@@ -8397,8 +8989,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     getData: function getData() {
       var vm = this;
-      var id = $('#kt_select_fullname').val();
-      var fullname = vm.formFields.results[id].first_name + ' ' + vm.formFields.results[id].middle_name + ' ' + vm.formFields.results[id].last_name;
+      var id = $("#kt_select_fullname").val();
+      var fullname = vm.formFields.results[id].first_name + " " + vm.formFields.results[id].middle_name + " " + vm.formFields.results[id].last_name;
       vm.formFields.contactNumber = vm.formFields.results[id].contact;
       vm.formFields.gender = vm.formFields.results[id].gender;
       vm.formFields.status = vm.formFields.results[id].status;
@@ -8407,12 +8999,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       vm.formFields.image = vm.formFields.results[id].image_path;
     },
     cancelEntry: function cancelEntry() {
-      this.formFields.id = '';
-      this.formFields.fullname = '';
-      this.formFields.birthdate = '';
-      this.formFields.gender = '';
-      this.formFields.contactNumber = '';
-      this.formFields.status = '';
+      this.formFields.id = "";
+      this.formFields.fullname = "";
+      this.formFields.birthdate = "";
+      this.formFields.gender = "";
+      this.formFields.contactNumber = "";
+      this.formFields.status = "";
       this.create = false;
       this.ini();
     },
@@ -8422,27 +9014,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var formD = new FormData();
       var method = null;
       var putParams = null;
-      formD.append('id', this.formFields.id);
-      formD.append('fullname', this.formFields.fullname);
-      formD.append('birthdate', this.formFields.birthdate);
-      formD.append('gender', this.formFields.gender);
-      formD.append('contactNumber', this.formFields.contactNumber);
-      formD.append('status', this.formFields.status);
-      method = this.create ? 'POST' : 'PUT';
-      putParams = this.create ? '' : '/' + this.formFields.id;
+      formD.append("id", this.formFields.id);
+      formD.append("fullname", this.formFields.fullname);
+      formD.append("birthdate", this.formFields.birthdate);
+      formD.append("gender", this.formFields.gender);
+      formD.append("contactNumber", this.formFields.contactNumber);
+      formD.append("status", this.formFields.status);
+      method = this.create ? "POST" : "PUT";
+      putParams = this.create ? "" : "/" + this.formFields.id;
       axios({
         method: method,
-        url: BASE_URL + '/transportation/driver' + putParams,
+        url: BASE_URL + "/transportation/driver" + putParams,
         data: formD,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, 'success');
+        _this2.$showToast(response.data.message, "success");
 
         setTimeout(function () {
           _this2.cancelEntry();
@@ -8460,47 +9052,47 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'fullname') {
-            if ($('#kt_select_' + "".concat(key)).next().next().length == 0) {
-              $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == "fullname") {
+            if ($("#kt_select_" + "".concat(key)).next().next().length == 0) {
+              $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
           } else {
-            if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="driver_' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="driver_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="driver_' + "".concat(key) + '"]').next().length == 0 || $('[name="driver_' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="driver_' + "".concat(key) + '"]').addClass("is-invalid");
+              $('[name="driver_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
             }
           }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'fullname') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#kt_select_' + _this2.names[i]).next().next().length != 0) {
-                $('#kt_select_' + _this2.names[i]).next().next('.invalid-feedback').remove();
+          if (_this2.names[i] == "fullname") {
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
+                $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="driver_' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="driver_' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              $('[name="driver_' + _this2.names[i] + '"]').removeClass("is-invalid");
+              $('[name="driver_' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     deleteEntry: function deleteEntry(id) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: 'You won"t be able to revert this!',
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"](BASE_URL + '/transportation/driver/' + id).then(function (response) {
-            Swal.fire('Deleted!', response.data.message, 'success');
+          axios["delete"](BASE_URL + "/transportation/driver/" + id).then(function (response) {
+            Swal.fire("Deleted!", response.data.message, "success");
             $("#driver-tbl").DataTable().ajax.reload();
           });
         }
@@ -8512,54 +9104,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#driver-tbl');
+        var table = $("#driver-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/driver',
-            type: 'GET'
+            url: BASE_URL + "/transportation/driver",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "fullname"
+            data: "fullname"
           }, {
-            "data": "birthdate"
+            data: "birthdate"
           }, {
-            "data": "sex"
+            data: "sex"
           }, {
-            "data": "contact"
+            data: "contact"
           }, {
-            "data": "status"
+            data: "status"
           }, {
-            "data": "updated_at"
+            data: "updated_at"
           }, {
-            "data": "id"
+            data: "id"
           }],
           columnDefs: [{
             targets: 5,
             render: function render(data) {
               var status = {
-                'Inactive': {
-                  'title': 'Inactive',
-                  'class': ' label-light-warning'
+                Inactive: {
+                  title: "Inactive",
+                  "class": " label-light-warning"
                 },
-                'Active': {
-                  'title': 'Active',
-                  'class': ' label-light-primary'
+                Active: {
+                  title: "Active",
+                  "class": " label-light-primary"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: -1,
-            title: 'Action',
+            title: "Action",
             orderable: false,
-            width: '125px',
+            width: "125px",
             render: function render(data) {
               return '\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
@@ -8582,8 +9174,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }],
           drawCallback: function drawCallback() {
-            $('.btn-delete').click(function () {
-              var id = $(this).data('id');
+            $(".btn-delete").click(function () {
+              var id = $(this).data("id");
               vm.deleteEntry(id);
             });
           }
@@ -11152,7 +11744,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Pages/Dashboard */ "./resources/js/components/Pages/Dashboard.vue");
 /* harmony import */ var _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Pages/RequestTravel */ "./resources/js/components/Pages/RequestTravel.vue");
 /* harmony import */ var _components_Pages_ListLocalRequests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Pages/ListLocalRequests */ "./resources/js/components/Pages/ListLocalRequests.vue");
@@ -11167,6 +11759,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pages_PrintRequest__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/Pages/PrintRequest */ "./resources/js/components/Pages/PrintRequest.vue");
 /* harmony import */ var _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/Pages/PrintTripTicket */ "./resources/js/components/Pages/PrintTripTicket.vue");
 /* harmony import */ var _components_Pages_TravelsStatus__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/Pages/TravelsStatus */ "./resources/js/components/Pages/TravelsStatus.vue");
+/* harmony import */ var _components_Pages_FuelCharges__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Pages/FuelCharges */ "./resources/js/components/Pages/FuelCharges.vue");
+
 
 
 
@@ -11183,101 +11777,108 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [{
-  path: '/dashboard',
+  path: "/dashboard",
   component: _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__.default,
-  name: 'dashboard',
+  name: "dashboard",
   meta: {
-    title: 'Dashboard'
+    title: "Dashboard"
   }
 }, {
-  path: '/request_travel',
+  path: "/request_travel",
   component: _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__.default,
-  name: 'requestTravel',
+  name: "requestTravel",
   meta: {
-    title: 'Request Travel'
+    title: "Request Travel"
   }
 }, {
-  path: '/local_requests',
+  path: "/local_requests",
   component: _components_Pages_ListLocalRequests__WEBPACK_IMPORTED_MODULE_2__.default,
-  name: 'listLocalRequests',
+  name: "listLocalRequests",
   meta: {
-    title: 'Local Requests'
+    title: "Local Requests"
   }
 }, {
-  path: '/rito_requests',
+  path: "/rito_requests",
   component: _components_Pages_ListRitoRequests__WEBPACK_IMPORTED_MODULE_3__.default,
-  name: 'listRitoRequests',
+  name: "listRitoRequests",
   meta: {
-    title: 'RITO Requests'
+    title: "RITO Requests"
   }
 }, {
-  path: '/travels_status',
+  path: "/travels_status",
   component: _components_Pages_TravelsStatus__WEBPACK_IMPORTED_MODULE_13__.default,
-  name: 'travelsStatus',
+  name: "travelsStatus",
   meta: {
-    title: 'List of Travels Status'
+    title: "List of Travels Status"
   }
 }, {
-  path: '/vehicle_travels',
+  path: "/vehicle_travels",
   component: _components_Pages_VehicleTravels__WEBPACK_IMPORTED_MODULE_4__.default,
-  name: 'vehicleTravels',
+  name: "vehicleTravels",
   meta: {
-    title: 'List of Vehicle Travels'
+    title: "List of Vehicle Travels"
   }
 }, {
-  path: '/list_vehicle',
+  path: "/list_vehicle",
   component: _components_Pages_Transportation_Vehicle__WEBPACK_IMPORTED_MODULE_6__.default,
-  name: 'listVehicle',
+  name: "listVehicle",
   meta: {
-    title: 'List of Vehicles'
+    title: "List of Vehicles"
   }
 }, {
-  path: '/list_drivers',
+  path: "/list_drivers",
   component: _components_Pages_Transportation_Driver__WEBPACK_IMPORTED_MODULE_7__.default,
-  name: 'listDriver',
+  name: "listDriver",
   meta: {
-    title: 'List of Drivers'
+    title: "List of Drivers"
   }
 }, {
-  path: '/transaction_logs',
+  path: "/transaction_logs",
   component: _components_Pages_Logs__WEBPACK_IMPORTED_MODULE_5__.default,
-  name: 'Logs',
+  name: "Logs",
   meta: {
-    title: 'List of Logs'
+    title: "List of Logs"
   }
 }, {
-  path: '/list_po',
+  path: "/fuel_charges",
+  component: _components_Pages_FuelCharges__WEBPACK_IMPORTED_MODULE_14__.default,
+  name: "fuelCharges",
+  meta: {
+    title: "List of Fuel Charges"
+  }
+}, {
+  path: "/list_po",
   component: _components_Pages_ListPo__WEBPACK_IMPORTED_MODULE_8__.default,
-  name: 'listPo',
+  name: "listPo",
   meta: {
-    title: 'List of PO'
+    title: "List of PO"
   }
 }, {
-  path: '/list_users',
+  path: "/list_users",
   component: _components_Pages_ListUsers__WEBPACK_IMPORTED_MODULE_9__.default,
-  name: 'listUsers',
+  name: "listUsers",
   meta: {
-    title: 'List of Users'
+    title: "List of Users"
   }
 }, {
-  path: '/travel_calendar',
+  path: "/travel_calendar",
   component: _components_Pages_TravelCalendar__WEBPACK_IMPORTED_MODULE_10__.default,
-  name: 'travelCalendar',
+  name: "travelCalendar",
   meta: {
-    title: 'Travel Calendar'
+    title: "Travel Calendar"
   }
 }, {
-  path: '/print_request',
+  path: "/print_request",
   component: _components_Pages_PrintRequest__WEBPACK_IMPORTED_MODULE_11__.default,
-  name: 'printRequest'
+  name: "printRequest"
 }, {
-  path: '/print_trip_ticket',
+  path: "/print_trip_ticket",
   component: _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_12__.default,
-  name: 'printTripTicket'
+  name: "printTripTicket"
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_14__.default({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_15__.default({
   routes: routes,
-  mode: 'history'
+  mode: "history"
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
@@ -49095,6 +49696,43 @@ component.options.__file = "resources/js/components/Pages/Dashboard.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/FuelCharges.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Pages/FuelCharges.vue ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FuelCharges.vue?vue&type=template&id=375ec43a& */ "./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
+  script,
+  _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/FuelCharges.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/ListLocalRequests.vue":
 /*!*************************************************************!*\
   !*** ./resources/js/components/Pages/ListLocalRequests.vue ***!
@@ -50223,6 +50861,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_7365c9ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=template&id=7365c9ce& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=template&id=7365c9ce&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a& ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FuelCharges.vue?vue&type=template&id=375ec43a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a&");
 
 
 /***/ }),
@@ -52806,6 +53461,97 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "menu-link menu-toggle",
+                        attrs: { to: { name: "fuelCharges" } }
+                      },
+                      [
+                        _c("span", { staticClass: "svg-icon menu-icon" }, [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("rect", {
+                                    attrs: {
+                                      x: "0",
+                                      y: "0",
+                                      width: "24",
+                                      height: "24"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("rect", {
+                                    attrs: {
+                                      fill: "#000000",
+                                      opacity: "0.3",
+                                      x: "12",
+                                      y: "7",
+                                      width: "10",
+                                      height: "2",
+                                      rx: "1"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M2,9 C1.44771525,9 1,8.55228475 1,8 C1,7.44771525 1.44771525,7 2,7 L7.35012691,7 C8.14050434,7 8.85674733,7.46546704 9.17775001,8.18772307 L12.6498731,16 L22,16 C22.5522847,16 23,16.4477153 23,17 C23,17.5522847 22.5522847,18 22,18 L12.6498731,18 C11.8594957,18 11.1432527,17.534533 10.82225,16.8122769 L7.35012691,9 L2,9 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "menu-text" }, [
+                          _vm._v("Fuel Charges")
+                        ])
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass: "menu-item menu-item-submenu",
+                    attrs: {
+                      "aria-haspopup": "true",
+                      "data-menu-toggle": "hover"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.active("menu")
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "menu-link menu-toggle",
                         attrs: { to: { name: "listPo" } }
                       },
                       [
@@ -54427,6 +55173,45 @@ var staticRenderFns = [
         ])
       ])
     ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "card card-custom card-stretch gutter-b",
+        attrs: { id: "fuel-charge-page" }
+      },
+      [_c("div", { staticClass: "card-body " })]
+    )
   }
 ]
 render._withStripped = true
@@ -60820,9 +61605,9 @@ var render = function() {
                                         [
                                           _vm._v(
                                             _vm._s(result.first_name) +
-                                              " " +
+                                              "\n                                        " +
                                               _vm._s(result.middle_name) +
-                                              " " +
+                                              "\n                                        " +
                                               _vm._s(result.last_name)
                                           )
                                         ]
@@ -60887,9 +61672,9 @@ var render = function() {
                                         [
                                           _vm._v(
                                             _vm._s(result.first_name) +
-                                              " " +
+                                              "\n                                        " +
                                               _vm._s(result.middle_name) +
-                                              " " +
+                                              "\n                                        " +
                                               _vm._s(result.last_name)
                                           )
                                         ]
@@ -61060,7 +61845,11 @@ var render = function() {
                               staticClass: "btn btn-primary mr-2",
                               attrs: { type: "submit" }
                             },
-                            [_vm._v("Save")]
+                            [
+                              _vm._v(
+                                "\n                                Save\n                            "
+                              )
+                            ]
                           ),
                           _vm._v(" "),
                           _c(
@@ -61070,7 +61859,11 @@ var render = function() {
                               attrs: { type: "reset" },
                               on: { click: _vm.cancelEntry }
                             },
-                            [_vm._v("Cancel")]
+                            [
+                              _vm._v(
+                                "\n                                Cancel\n                            "
+                              )
+                            ]
                           )
                         ])
                       ])

@@ -1,60 +1,144 @@
 <template>
     <div id="driver-page">
-        <div v-if="create == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+        <div
+            v-if="create == true"
+            class="card card-custom gutter-b animate__animated animate__fadeInRight"
+        >
             <div class="card-header flex-wrap">
                 <div class="card-title">
-                    <h3 class="card-label"><span></span>
-                    <i class="mr-2"></i>
-                    <small class="">Form</small></h3>
+                    <h3 class="card-label">
+                        <span></span>
+                        <i class="mr-2"></i>
+                        <small class="">Form</small>
+                    </h3>
                 </div>
             </div>
-            <div :class="(loadingStats) ? 'card-body overlay overlay-block' : 'card-body'">
+            <div
+                :class="
+                    loadingStats
+                        ? 'card-body overlay overlay-block'
+                        : 'card-body'
+                "
+            >
                 <div v-if="loadingStats" class="overlay-layer bg-dark-o-10">
                     <div class="spinner spinner-primary"></div>
                 </div>
                 <form class="form" id="driver-form" @submit.prevent="saveEntry">
                     <div class="card-body">
                         <div class="row">
-                            <div v-if="formFields.image!=''" class="col-lg-12" id="images">
-                                 <div class="form-group">
-                                    <label>Image: </label> <br>
-                                    
-                                    <img :src="formFields.image" style="width:100px;height:100px;" >
+                            <div
+                                v-if="formFields.image != ''"
+                                class="col-lg-12"
+                                id="images"
+                            >
+                                <div class="form-group">
+                                    <label>Image: </label> <br />
+
+                                    <img
+                                        :src="formFields.image"
+                                        style="width:100px;height:100px;"
+                                    />
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                               
                                 <div class="form-group">
                                     <label>Fullname:</label>
-                                    <select v-if="$store.getters['currentUser/loadingStats']" class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname" disabled>
+                                    <select
+                                        v-if="
+                                            $store.getters[
+                                                'currentUser/loadingStats'
+                                            ]
+                                        "
+                                        class="details-input form-control select2"
+                                        id="kt_select_fullname"
+                                        name="fullname"
+                                        v-model="formFields.fullname"
+                                        disabled
+                                    >
                                         <option label="Label"></option>
-                                        <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                        <option
+                                            v-for="(result,
+                                            index) in formFields.results"
+                                            :key="index"
+                                            :value="index"
+                                            >{{ result.first_name }}
+                                            {{ result.middle_name }}
+                                            {{ result.last_name }}</option
+                                        >
                                     </select>
-                                    <select v-else class="details-input form-control select2" id="kt_select_fullname" name="fullname" v-model="formFields.fullname">
+                                    <select
+                                        v-else
+                                        class="details-input form-control select2"
+                                        id="kt_select_fullname"
+                                        name="fullname"
+                                        v-model="formFields.fullname"
+                                    >
                                         <option label="Label"></option>
-                                        <option v-for="(result,index) in formFields.results" :key="index" :value="index">{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                        <option
+                                            v-for="(result,
+                                            index) in formFields.results"
+                                            :key="index"
+                                            :value="index"
+                                            >{{ result.first_name }}
+                                            {{ result.middle_name }}
+                                            {{ result.last_name }}</option
+                                        >
                                     </select>
-                                  </div>
+                                </div>
                                 <div class="form-group">
                                     <label>Gender:</label>
-                                    <input type="text" class="form-control required-field" name="driver_gender" placeholder="Gender" v-model="formFields.gender" disabled/>
+                                    <input
+                                        type="text"
+                                        class="form-control required-field"
+                                        name="driver_gender"
+                                        placeholder="Gender"
+                                        v-model="formFields.gender"
+                                        disabled
+                                    />
                                 </div>
                                 <div class="form-group">
                                     <label>Status:</label>
-                                    <input type="text" class="form-control required-field" name="driver_status" placeholder="Status" v-model="formFields.status" disabled/>
+                                    <input
+                                        type="text"
+                                        class="form-control required-field"
+                                        name="driver_status"
+                                        placeholder="Status"
+                                        v-model="formFields.status"
+                                        disabled
+                                    />
                                     <!-- <input v-else type="text" class="form-control required-field" name="driver_status" placeholder="Status" value="Inactive" disabled/> -->
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Birthdate:</label>
-                                    <input type="text" class="form-control required-field" name="driver_birthdate" placeholder="Birthdate" v-model="formFields.birthdate" disabled/>
+                                    <input
+                                        type="text"
+                                        class="form-control required-field"
+                                        name="driver_birthdate"
+                                        placeholder="Birthdate"
+                                        v-model="formFields.birthdate"
+                                        disabled
+                                    />
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Number:</label>
                                     <div class="input-group">
-                                        <div class="input-group-prepend"><span class="input-group-text"><i class="la la-mobile-phone icon-lg"></i></span></div>
-                                        <input type="number" class="form-control required-field" name="driver_contactNumber" placeholder="Enter contact number" v-model="formFields.contactNumber" disabled/>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"
+                                                ><i
+                                                    class="la la-mobile-phone icon-lg"
+                                                ></i
+                                            ></span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            class="form-control required-field"
+                                            name="driver_contactNumber"
+                                            placeholder="Enter contact number"
+                                            v-model="formFields.contactNumber"
+                                            disabled
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -63,37 +147,79 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                <button @click="cancelEntry" type="reset" class="btn btn-secondary">Cancel</button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary mr-2"
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    @click="cancelEntry"
+                                    type="reset"
+                                    class="btn btn-secondary"
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div v-else class="card card-custom gutter-b animate__animated animate__fadeIn" >
+        <div
+            v-else
+            class="card card-custom gutter-b animate__animated animate__fadeIn"
+        >
             <div class="card-header flex-wrap">
                 <div class="card-title"></div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a class="btn btn-primary font-weight-bolder" @click="newEntry">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <circle fill="#000000" cx="9" cy="15" r="6" />
-                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>New Entry</a>
+                    <a
+                        class="btn btn-primary font-weight-bolder"
+                        @click="newEntry"
+                    >
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px"
+                                height="24px"
+                                viewBox="0 0 24 24"
+                                version="1.1"
+                            >
+                                <g
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                >
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle
+                                        fill="#000000"
+                                        cx="9"
+                                        cy="15"
+                                        r="6"
+                                    />
+                                    <path
+                                        d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                        fill="#000000"
+                                        opacity="0.3"
+                                    />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon--> </span
+                        >New Entry</a
+                    >
                     <!--end::Button-->
                 </div>
             </div>
             <div class="card-body">
                 <!--begin: Datatable-->
-                <table class="table table-separate table-head-custom table-checkable" id="driver-tbl">
+                <table
+                    class="table table-separate table-head-custom table-checkable"
+                    id="driver-tbl"
+                >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -110,101 +236,116 @@
                 <!--end: Datatable-->
             </div>
         </div>
-    </div>      
+    </div>
 </template>
 <script>
-import Dialog from '../../Layouts/Dialog.vue';
+import Dialog from "../../Layouts/Dialog.vue";
 export default {
-  components: { Dialog },
+    components: { Dialog },
     data() {
         return {
             create: false,
             formFields: {
-                id: '',
-                fullname: '',
-                birthdate: '',
-                gender: '',
-                contactNumber: '',
-                status: '',
+                id: "",
+                fullname: "",
+                birthdate: "",
+                gender: "",
+                contactNumber: "",
+                status: "",
                 results: [],
-                image:''
+                image: ""
             },
-            loadingStatus: 'true',
-            listdata:[],
-            states:[],
-            names: ['fullname', 'birthdate', 'gender', 'contactNumber', 'status']
-        }
+            loadingStatus: "true",
+            listdata: [],
+            states: [],
+            names: [
+                "fullname",
+                "birthdate",
+                "gender",
+                "contactNumber",
+                "status"
+            ]
+        };
     },
-    created() {
-        
-    },
+    created() {},
     mounted() {
         this.ini();
         this.EmployeeList();
     },
     computed: {
         loadingStats() {
-            let res = this.$store.getters['currentUser/loadingStats'];
-            if(!res) {
-                this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
+            let res = this.$store.getters["currentUser/loadingStats"];
+            if (!res) {
+                this.formFields.results = JSON.parse(
+                    localStorage.getItem("ListEmployee")
+                );
             }
             return res;
         }
     },
     methods: {
         ini() {
-            $(()=>{
-                this.tdatatable().init();   
+            $(() => {
+                this.tdatatable().init();
             });
         },
-        EmployeeList(){
-            this.formFields.results = JSON.parse(localStorage.getItem('ListEmployee'));
-            this.loadingStatus = this.$store.getters['currentUser/loadingStats'];
+        EmployeeList() {
+            this.formFields.results = JSON.parse(
+                localStorage.getItem("ListEmployee")
+            );
+            this.loadingStatus = this.$store.getters[
+                "currentUser/loadingStats"
+            ];
         },
-        newEntry() { 
+        newEntry() {
             this.create = true;
             let vm = this;
             $(() => {
-                $('#images').hide();
-                $(`#kt_select_fullname`).on('select2:select', function (e) {
+                $("#images").hide();
+                $(`#kt_select_fullname`).on("select2:select", function(e) {
                     vm.getData();
-                    $('#images').show();
+                    $("#images").show();
                 });
 
-                $(`#kt_select_fullname`).on('select2:clear', function (e) {
+                $(`#kt_select_fullname`).on("select2:clear", function(e) {
                     setTimeout(() => {
-                        $('#images').hide();
+                        $("#images").hide();
                     }, 100);
-                    vm.formFields.contactNumber = '';
-                    vm.formFields.gender = '';    
-                    vm.formFields.status = '';
-                    vm.formFields.birthdate = '';
+                    vm.formFields.contactNumber = "";
+                    vm.formFields.gender = "";
+                    vm.formFields.status = "";
+                    vm.formFields.birthdate = "";
                 });
-                $('.card-label span').text('Create Driver');
-                $('#kt_select_fullname').select2({
+                $(".card-label span").text("Create Driver");
+                $("#kt_select_fullname").select2({
                     placeholder: "Select fullname",
                     allowClear: true
                 });
             });
         },
-        getData(){
+        getData() {
             let vm = this;
-            let id  = $('#kt_select_fullname').val();
-            let fullname = vm.formFields.results[id].first_name +' '+vm.formFields.results[id].middle_name+' '+vm.formFields.results[id].last_name;
+            let id = $("#kt_select_fullname").val();
+            let fullname =
+                vm.formFields.results[id].first_name +
+                " " +
+                vm.formFields.results[id].middle_name +
+                " " +
+                vm.formFields.results[id].last_name;
             vm.formFields.contactNumber = vm.formFields.results[id].contact;
-            vm.formFields.gender = vm.formFields.results[id].gender;    
+            vm.formFields.gender = vm.formFields.results[id].gender;
             vm.formFields.status = vm.formFields.results[id].status;
             vm.formFields.birthdate = vm.formFields.results[id].birthdate;
             vm.formFields.fullname = fullname;
             vm.formFields.image = vm.formFields.results[id].image_path;
         },
         cancelEntry() {
-            this.formFields.id = '';
-            this.formFields.fullname = '';
-            this.formFields.birthdate = '';
-            this.formFields.gender = '';
-            this.formFields.contactNumber = '';
-            this.formFields.status = '';
+            this.formFields.id = "";
+            this.formFields.fullname = "";
+            this.formFields.birthdate = "";
+            this.formFields.gender = "";
+            this.formFields.contactNumber = "";
+            this.formFields.status = "";
             this.create = false;
             this.ini();
         },
@@ -212,130 +353,185 @@ export default {
             let formD = new FormData();
             let method = null;
             let putParams = null;
-            formD.append('id', this.formFields.id);
-            formD.append('fullname', this.formFields.fullname);
-            formD.append('birthdate', this.formFields.birthdate);
-            formD.append('gender', this.formFields.gender);
-            formD.append('contactNumber', this.formFields.contactNumber);
-            formD.append('status', this.formFields.status);
-            method = (this.create)? 'POST':'PUT';
-            putParams = (this.create)? '':'/' + this.formFields.id;
-            axios({method: method,url: BASE_URL + '/transportation/driver' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
-                    $('.invalid-feedback').remove();
-                    $('.is-invalid').removeClass('is-invalid');
+            formD.append("id", this.formFields.id);
+            formD.append("fullname", this.formFields.fullname);
+            formD.append("birthdate", this.formFields.birthdate);
+            formD.append("gender", this.formFields.gender);
+            formD.append("contactNumber", this.formFields.contactNumber);
+            formD.append("status", this.formFields.status);
+            method = this.create ? "POST" : "PUT";
+            putParams = this.create ? "" : "/" + this.formFields.id;
+            axios({
+                method: method,
+                url: BASE_URL + "/transportation/driver" + putParams,
+                data: formD,
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+                .then(response => {
+                    $(".invalid-feedback").remove();
+                    $(".is-invalid").removeClass("is-invalid");
                     Swal.fire("Good job!", response.data.message, "success");
-                    this.$showToast(response.data.message, 'success');
+                    this.$showToast(response.data.message, "success");
                     setTimeout(() => {
                         this.cancelEntry();
                     }, 1000);
                 })
-                .catch((error) => {
+                .catch(error => {
                     let data = error.response.data.errors;
                     let keys = [];
                     let values = [];
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(`${key}` == 'fullname'){
-                            if ($('#kt_select_'+`${key}`).next().next().length == 0) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                                
+                        if (`${key}` == "fullname") {
+                            if (
+                                $("#kt_select_" + `${key}`)
+                                    .next()
+                                    .next().length == 0
+                            ) {
+                                $("#kt_select_" + `${key}`)
+                                    .next()
+                                    .after(
+                                        '<div class="invalid-feedback d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
                             }
                         } else {
-                            if ($('[name="driver_'+`${key}`+'"]').next().length == 0 || $('[name="driver_'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                                $('[name="driver_'+`${key}`+'"]').addClass('is-invalid');
-                                $('[name="driver_'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
+                            if (
+                                $('[name="driver_' + `${key}` + '"]').next()
+                                    .length == 0 ||
+                                $('[name="driver_' + `${key}` + '"]')
+                                    .next()
+                                    .attr("class")
+                                    .search("invalid-feedback") == -1
+                            ) {
+                                $('[name="driver_' + `${key}` + '"]').addClass(
+                                    "is-invalid"
+                                );
+                                $('[name="driver_' + `${key}` + '"]').after(
+                                    '<div class="invalid-feedback">' +
+                                        `${value}` +
+                                        "</div>"
+                                );
                             }
                         }
                     }
                     for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'fullname') {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#kt_select_'+ this.names[i]).next().next().length != 0) {
-                                    $('#kt_select_'+ this.names[i]).next().next('.invalid-feedback').remove();
+                        if (this.names[i] == "fullname") {
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                if (
+                                    $("#kt_select_" + this.names[i])
+                                        .next()
+                                        .next().length != 0
+                                ) {
+                                    $("#kt_select_" + this.names[i])
+                                        .next()
+                                        .next(".invalid-feedback")
+                                        .remove();
                                 }
                             }
                         } else {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                $('[name="driver_'+this.names[i]+'"]').removeClass('is-invalid');
-                                $('[name="driver_'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                $(
+                                    '[name="driver_' + this.names[i] + '"]'
+                                ).removeClass("is-invalid");
+                                $('[name="driver_' + this.names[i] + '"]')
+                                    .next(".invalid-feedback")
+                                    .remove();
                             }
                         }
                     }
-                    
-                this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
-            });
+
+                    this.$showToast(
+                        values.toString().replace(/,/g, "</br>"),
+                        "error"
+                    );
+                });
         },
         deleteEntry(id) {
-             Swal.fire({
-                title: 'Are you sure?',
+            Swal.fire({
+                title: "Are you sure?",
                 text: 'You won"t be able to revert this!',
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: "Yes, delete it!"
             }).then(result => {
                 if (result.value) {
-                    axios.delete(BASE_URL + '/transportation/driver/'+id).then(response => {
-                        Swal.fire(
-                            'Deleted!',
-                            response.data.message,
-                            'success'
-                        );
-                        
-                        $("#driver-tbl").DataTable().ajax.reload();
-                    });
+                    axios
+                        .delete(BASE_URL + "/transportation/driver/" + id)
+                        .then(response => {
+                            Swal.fire(
+                                "Deleted!",
+                                response.data.message,
+                                "success"
+                            );
+
+                            $("#driver-tbl")
+                                .DataTable()
+                                .ajax.reload();
+                        });
                 }
             });
         },
         tdatatable() {
             var vm = this;
             var initTable = () => {
-            var table = $('#driver-tbl');
+                var table = $("#driver-tbl");
                 table.DataTable({
-                    scrollY: '50vh',
+                    scrollY: "50vh",
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + '/transportation/driver',
-                        type: 'GET'
+                        url: BASE_URL + "/transportation/driver",
+                        type: "GET"
                     },
                     columns: [
-                        { "data": "id" },
-                        { "data": "fullname" },
-                        { "data": "birthdate" },
-                        { "data": "sex" },
-                        { "data": "contact" },
-                        { "data": "status" },
-                        { "data": "updated_at" },
-                        { "data": "id" }
+                        { data: "id" },
+                        { data: "fullname" },
+                        { data: "birthdate" },
+                        { data: "sex" },
+                        { data: "contact" },
+                        { data: "status" },
+                        { data: "updated_at" },
+                        { data: "id" }
                     ],
                     columnDefs: [
                         {
                             targets: 5,
                             render: data => {
                                 var status = {
-                                    'Inactive': {
-                                        'title': 'Inactive',
-                                        'class': ' label-light-warning'
+                                    Inactive: {
+                                        title: "Inactive",
+                                        class: " label-light-warning"
                                     },
-                                    'Active': {
-                                        'title': 'Active',
-                                        'class': ' label-light-primary'
+                                    Active: {
+                                        title: "Active",
+                                        class: " label-light-primary"
                                     }
                                 };
-                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                                return (
+                                    '<span class="btn-details label label-lg font-weight-bold ' +
+                                    status[data].class +
+                                    ' label-inline">' +
+                                    status[data].title +
+                                    "</span>"
+                                );
                             }
                         },
                         {
                             targets: -1,
-                            title: 'Action',
+                            title: "Action",
                             orderable: false,
-                            width: '125px',
+                            width: "125px",
                             render: data => {
-                                return '\
-                                    <a href="javascript:;" data-id="'+ data +'" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                return (
+                                    '\
+                                    <a href="javascript:;" data-id="' +
+                                    data +
+                                    '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -346,8 +542,9 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                ';
-                            },
+                                '
+                                );
+                            }
                         },
                         {
                             targets: 6,
@@ -357,20 +554,19 @@ export default {
                         }
                     ],
                     drawCallback: () => {
-                        $('.btn-delete').click(function() {
-                            let id = $(this).data('id');
+                        $(".btn-delete").click(function() {
+                            let id = $(this).data("id");
                             vm.deleteEntry(id);
                         });
                     }
-                    
                 });
             };
             return {
                 init: function() {
                     initTable();
-                },
+                }
             };
-        },
-    },
-}
+        }
+    }
+};
 </script>

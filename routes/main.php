@@ -33,6 +33,7 @@ Route::get('/list_drivers', 'base\DashboardController@index');
 Route::get('/list_po', 'base\DashboardController@index');
 Route::get('/list_users', 'base\DashboardController@index');
 Route::get('/travel_calendar', 'base\DashboardController@index');
+Route::get('/fuel_charges', 'base\DashboardController@index');
 Route::get('/print_request', 'base\PrintController@index')->name('main.print_request');
 Route::get('/print_trip_ticket', 'base\PrintController@index')->name('main.print_ticket');
 
@@ -149,9 +150,6 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
     ]);
 
     Route::post('driver/autoComplete', 'TransportationDriverController@typehead');
-
-    
-
 });
 Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
     Route::resource('log', 'LogController', [
