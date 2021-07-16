@@ -4632,13 +4632,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     addPassengerRow: function addPassengerRow(event) {
-      this.passengers.length += 1;
-      console.log("this is passenger" + this.passengers.length);
       event.preventDefault();
-      var count = this.passengers.length += 1; // this.semi_total += 1;
+      console.log("this is passenger" + this.passengers.length);
+      var ndata = {
+        created_at: null,
+        designation: null,
+        gender: null,
+        id: null,
+        name: null,
+        request_id: null,
+        updated_at: null
+      };
+      this.passengers.push(ndata);
+      var count = this.passengers.length; // this.semi_total += 1;
 
       var vm = this;
       setTimeout(function () {
+        console.log("this is count " + count);
         $("#passenger-select-".concat(count)).select2({
           placeholder: "Select a fullname",
           allowClear: true
@@ -4647,7 +4657,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           var paxVal = $(this).find(':selected').data('id');
           vm.getData(paxVal, count);
           console.log("kanniii");
-          console.log(count);
+          console.log("aaa " + count);
         });
         $("#passenger-select-".concat(count)).on('select2:clear', function (e) {
           $("#pax_des_" + "".concat(count)).val(null);
@@ -4655,14 +4665,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.pax_gen[count - 1] = "";
           vm.pax_des[count - 1] = "";
           console.log("clearr ni");
-          console.log(count);
-          console.log("".concat(count));
+          console.log("bb" + count);
+          console.log("c" + "".concat(count));
         });
-
-        for (var i = 1; i < count; i++) {
-          var test = $("#passenger-select-".concat(count)).find(':selected').data('id');
-          console.log(test);
-        }
       }, 100); // event.preventDefault();
       // let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
       // lastTr += 1;
@@ -8115,11 +8120,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.pax_gen[count - 1] = "";
           vm.pax_des[count - 1] = "";
         });
-
-        for (var i = 1; i < count; i++) {
-          var test = $("#passenger-select-".concat(count)).find(":selected").data("id");
-          console.log(test);
-        }
       }, 100);
     },
     removeRow: function removeRow(event) {
@@ -55322,7 +55322,9 @@ var render = function() {
                                               name:
                                                 "pax_name_" +
                                                 _vm.paxIndex(index),
-                                              disabled: "disabled"
+                                              disabled: !_vm.request_edit
+                                                ? true
+                                                : false
                                             },
                                             domProps: { value: pax.name }
                                           },

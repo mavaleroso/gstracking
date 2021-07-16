@@ -161,7 +161,7 @@
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
 
                                             <td> 
-                                                <select  class="details-input form-control select2" :id="'passenger-select-'+ paxIndex(index)" :name="'pax_name_' + paxIndex(index)" disabled="disabled" :value="pax.name" >
+                                                <select  class="details-input form-control select2" :id="'passenger-select-'+ paxIndex(index)" :name="'pax_name_' + paxIndex(index)" :disabled="(!request_edit) ? true : false" :value="pax.name" >
                                                     <option label="Label"></option>
                                                     <option v-for="(result,index) in employee_results" :key="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name " >{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
                                                 </select>
@@ -915,15 +915,24 @@ export default {
             });
         },
         addPassengerRow(event){
-            this.passengers.length +=1;
-            console.log("this is passenger"+this.passengers.length);
-
             event.preventDefault();
-            let count = this.passengers.length += 1;
+            console.log("this is passenger"+this.passengers.length);
+            let ndata = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+            }
+            this.passengers.push(ndata);
+            let count = this.passengers.length;
             // this.semi_total += 1;
             let vm = this;
 
             setTimeout(() => {
+                console.log("this is count " + count);
                 $(`#passenger-select-${count}`).select2({
                     placeholder: "Select a fullname",
                     allowClear: true
@@ -932,7 +941,7 @@ export default {
                     let paxVal = $(this).find(':selected').data('id');
                     vm.getData(paxVal, count);
                     console.log("kanniii");
-                    console.log(count); 
+                    console.log("aaa "+ count); 
                 });
 
                 $(`#passenger-select-${count}`).on('select2:clear', function (e) {
@@ -941,15 +950,10 @@ export default {
                     vm.pax_gen[count-1] = "";
                     vm.pax_des[count-1] ="";
                     console.log("clearr ni");
-                    console.log(count);
-                    console.log(`${count}`);
+                    console.log("bb" + count);
+                    console.log("c" + `${count}`);
 
                 });
-
-                for(let i = 1; i < count; i++){
-                    let test = $(`#passenger-select-${count}`).find(':selected').data('id');
-                    console.log(test);
-                }
             }, 100);
 
             

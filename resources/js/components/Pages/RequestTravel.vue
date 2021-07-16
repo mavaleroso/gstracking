@@ -647,13 +647,6 @@ export default {
                     vm.pax_gen[count - 1] = "";
                     vm.pax_des[count - 1] = "";
                 });
-
-                for (let i = 1; i < count; i++) {
-                    let test = $(`#passenger-select-${count}`)
-                        .find(":selected")
-                        .data("id");
-                    console.log(test);
-                }
             }, 100);
         },
         removeRow(event) {
