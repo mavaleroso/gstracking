@@ -4098,6 +4098,277 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      fuel_request: false
+    };
+  },
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var _this = this;
+
+      $(function () {
+        _this.tdatatable();
+      });
+    },
+    tdatatable: function tdatatable() {
+      var vm = this;
+
+      var initTable = function initTable() {
+        var table = $("#fuel-charges-tbl");
+        table.DataTable({
+          scrollY: "50vh",
+          scrollX: true,
+          scrollCollapse: true,
+          processing: true,
+          serverSide: true,
+          // ajax: {
+          //     url: BASE_URL + "/transportation/driver",
+          //     type: "GET"
+          // },
+          columns: [{
+            data: "id"
+          }, {
+            data: "fullname"
+          }, {
+            data: "birthdate"
+          }, {
+            data: "sex"
+          }, {
+            data: "contact"
+          }, {
+            data: "status"
+          }, {
+            data: "updated_at"
+          }, {
+            data: "id"
+          }],
+          columnDefs: [{
+            targets: -1,
+            title: "Action",
+            orderable: false,
+            width: "125px",
+            render: function render(data) {
+              return '\
+                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
+                                                    <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                ';
+            }
+          }]
+        });
+      };
+
+      return {
+        init: function init() {
+          initTable();
+        }
+      };
+    },
+    fuelRequest: function fuelRequest() {
+      this.fuel_request = true;
+      setTimeout(function () {
+        $("#kt_select_driver").select2({
+          placeholder: "Select a Driver",
+          allowClear: true
+        });
+        $("#kt_select_vehicle").select2({
+          placeholder: "Select a Vehicle",
+          allowClear: true
+        });
+        $("#kt_select_po").select2({
+          placeholder: "Select a PO",
+          allowClear: true
+        });
+      }, 100);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListLocalRequests.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/ListLocalRequests.vue?vue&type=script&lang=js& ***!
@@ -9351,6 +9622,134 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9358,18 +9757,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       edit: false,
       drivers: [],
       formFields: {
-        id: '',
-        picture: '',
-        pictureName: '',
-        name: '',
-        description: '',
-        templateNumber: '',
-        capacityNumber: '',
+        id: "",
+        picture: "",
+        pictureName: "",
+        name: "",
+        description: "",
+        templateNumber: "",
+        capacityNumber: "",
         status: 0,
-        remarks: '',
-        driver: ''
+        remarks: "",
+        driver: ""
       },
-      names: ['status_radio', 'name', 'templateNumber', 'capacityNumber']
+      names: ["status_radio", "name", "templateNumber", "capacityNumber"]
     };
   },
   created: function created() {},
@@ -9390,18 +9789,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.create = true;
       var vm = this;
       $(function () {
-        vm.formFields.id = '';
-        vm.formFields.pictureName = '';
-        vm.formFields.name = '';
-        vm.formFields.description = '';
-        vm.formFields.capacityNumber = '';
-        vm.formFields.templateNumber = '';
-        vm.formFields.status = '';
-        vm.formFields.remarks = '';
+        vm.formFields.id = "";
+        vm.formFields.pictureName = "";
+        vm.formFields.name = "";
+        vm.formFields.description = "";
+        vm.formFields.capacityNumber = "";
+        vm.formFields.templateNumber = "";
+        vm.formFields.status = "";
+        vm.formFields.remarks = "";
 
         _this2.image();
 
-        $('.card-label span').text('Create Vehicle');
+        $(".card-label span").text("Create Vehicle");
       });
     },
     editEntry: function editEntry(id) {
@@ -9419,13 +9818,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.formFields.templateNumber = response.data.vehicles[0].plate_no;
           vm.formFields.status = response.data.vehicles[0].status;
           vm.formFields.remarks = response.data.vehicles[0].remarks;
-          var img = response.data.vehicles[0].image ? BASE_URL + '/storage/images/' + response.data.vehicles[0].image : BASE_URL + '/storage/images/vehicle-photo-default.png';
-          $('#kt_image_5').css('background-image', 'url(' + img + ')');
+          var img = response.data.vehicles[0].image ? BASE_URL + "/storage/images/" + response.data.vehicles[0].image : BASE_URL + "/storage/images/vehicle-photo-default.png";
+          $("#kt_image_5").css("background-image", "url(" + img + ")");
         });
 
         _this3.image();
 
-        $('.card-label span').text('Edit Vehicle');
+        $(".card-label span").text("Edit Vehicle");
       });
     },
     cancelEntry: function cancelEntry() {
@@ -9439,30 +9838,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var formD = new FormData();
       var method = null;
       var putParams = null;
-      formD.append('id', this.formFields.id);
-      formD.append('picture', this.formFields.picture);
-      formD.append('pictureName', this.formFields.pictureName);
-      formD.append('name', this.formFields.name);
-      formD.append('description', this.formFields.description);
-      formD.append('templateNumber', this.formFields.templateNumber);
-      formD.append('capacityNumber', this.formFields.capacityNumber);
-      formD.append('status_radio', this.formFields.status);
-      formD.append('remarks', this.formFields.remarks);
-      method = this.create ? 'POST' : 'PUT';
-      putParams = this.create ? '' : '/' + this.formFields.id;
+      formD.append("id", this.formFields.id);
+      formD.append("picture", this.formFields.picture);
+      formD.append("pictureName", this.formFields.pictureName);
+      formD.append("name", this.formFields.name);
+      formD.append("description", this.formFields.description);
+      formD.append("templateNumber", this.formFields.templateNumber);
+      formD.append("capacityNumber", this.formFields.capacityNumber);
+      formD.append("status_radio", this.formFields.status);
+      formD.append("remarks", this.formFields.remarks);
+      method = this.create ? "POST" : "PUT";
+      putParams = this.create ? "" : "/" + this.formFields.id;
       axios({
         method: method,
-        url: BASE_URL + '/transportation/vehicle' + putParams,
+        url: BASE_URL + "/transportation/vehicle" + putParams,
         data: formD,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this4.$showToast(response.data.message, 'success');
+        _this4.$showToast(response.data.message, "success");
 
         setTimeout(function () {
           _this4.cancelEntry();
@@ -9480,46 +9879,46 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'status_radio') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == "status_radio") {
+            if ($(".checkbox-inline").next().length == 0 || $(".checkbox-inline").next().attr("class").search("invalid-feedback") == -1) {
+              $(".checkbox-inline").after('<div class="invalid-feedback invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
-          } else if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-            $('[name="vehicle_' + "".concat(key) + '"]').addClass('is-invalid');
-            $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+          } else if ($('[name="vehicle_' + "".concat(key) + '"]').next().length == 0 || $('[name="vehicle_' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+            $('[name="vehicle_' + "".concat(key) + '"]').addClass("is-invalid");
+            $('[name="vehicle_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
           }
         }
 
         for (var i = 0; i < _this4.names.length; i++) {
-          if (_this4.names[i] == 'status_radio') {
+          if (_this4.names[i] == "status_radio") {
             console.log("1");
             console.log(keys);
 
-            if (keys.indexOf('status_radio') == -1) {
-              if ($('.checkbox-inline').next().length != 0) {
-                $('.checkbox-inline').next('.invalid-feedback').remove();
+            if (keys.indexOf("status_radio") == -1) {
+              if ($(".checkbox-inline").next().length != 0) {
+                $(".checkbox-inline").next(".invalid-feedback").remove();
               }
             }
-          } else if (keys.indexOf('' + _this4.names[i] + '') == -1) {
-            $('[name="vehicle_' + _this4.names[i] + '"]').removeClass('is-invalid');
-            $('[name="vehicle_' + _this4.names[i] + '"]').next('.invalid-feedback').remove();
+          } else if (keys.indexOf("" + _this4.names[i] + "") == -1) {
+            $('[name="vehicle_' + _this4.names[i] + '"]').removeClass("is-invalid");
+            $('[name="vehicle_' + _this4.names[i] + '"]').next(".invalid-feedback").remove();
           }
         }
 
-        _this4.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this4.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     deleteEntry: function deleteEntry(id) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: 'You won"t be able to revert this!',
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"](BASE_URL + '/transportation/vehicle/' + id).then(function (response) {
-            Swal.fire('Deleted!', response.data.message, 'success');
+          axios["delete"](BASE_URL + "/transportation/vehicle/" + id).then(function (response) {
+            Swal.fire("Deleted!", response.data.message, "success");
             $("#vehicle-tbl").DataTable().ajax.reload();
           });
         }
@@ -9531,46 +9930,46 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#vehicle-tbl');
+        var table = $("#vehicle-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/transportation/vehicle',
-            type: 'GET'
+            url: BASE_URL + "/transportation/vehicle",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "image"
+            data: "image"
           }, {
-            "data": "name"
+            data: "name"
           }, {
-            "data": "description"
+            data: "description"
           }, {
-            "data": "capacity"
+            data: "capacity"
           }, {
-            "data": "plate_no"
+            data: "plate_no"
           }, {
-            "data": "status"
+            data: "status"
           }, {
-            "data": "remarks"
+            data: "remarks"
           }, {
-            "data": "updated_at"
+            data: "updated_at"
           }, {
-            "data": "id"
+            data: "id"
           }],
           columnDefs: [{
             targets: [1, 4],
             orderable: false
           }, {
             targets: -1,
-            title: 'Actions',
+            title: "Actions",
             orderable: false,
-            width: '125px',
+            width: "125px",
             render: function render(data) {
               return '\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
@@ -9600,13 +9999,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             targets: 1,
             render: function render(data) {
-              var img_path = data ? BASE_URL + '/storage/images/' + data : BASE_URL + '/storage/images/vehicle-photo-default.png';
+              var img_path = data ? BASE_URL + "/storage/images/" + data : BASE_URL + "/storage/images/vehicle-photo-default.png";
               return '<a class="vehicle-img-viewer" href="' + img_path + '"><img class="img-fluid img-thumbnail vehicle-img" src="' + img_path + '"></a>';
             }
           }, {
             targets: [3, 7],
             render: function render(data) {
-              var data = data == 'null' ? '' : data;
+              var data = data == "null" ? "" : data;
               return data;
             }
           }, {
@@ -9614,15 +10013,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               var status = {
                 0: {
-                  'title': 'Inactive',
-                  'class': ' label-light-warning'
+                  title: "Inactive",
+                  "class": " label-light-warning"
                 },
                 1: {
-                  'title': 'Active',
-                  'class': ' label-light-primary'
+                  title: "Active",
+                  "class": " label-light-primary"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: 8,
@@ -9632,12 +10031,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }],
           drawCallback: function drawCallback() {
             $(".vehicle-img-viewer").fancybox();
-            $('.btn-edit').click(function () {
-              var id = $(this).data('id');
+            $(".btn-edit").click(function () {
+              var id = $(this).data("id");
               vm.editEntry(id);
             });
-            $('.btn-delete').click(function () {
-              var id = $(this).data('id');
+            $(".btn-delete").click(function () {
+              var id = $(this).data("id");
               vm.deleteEntry(id);
             });
           }
@@ -9651,27 +10050,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
     },
     image: function image() {
-      var avatar5 = new KTImageInput('kt_image_5');
+      var avatar5 = new KTImageInput("kt_image_5");
       var vm = this;
-      avatar5.on('cancel', function (imageInput) {
+      avatar5.on("cancel", function (imageInput) {
         swal.fire({
-          title: 'Image successfully changed !',
-          type: 'success',
+          title: "Image successfully changed !",
+          type: "success",
           buttonsStyling: false,
-          confirmButtonText: 'Awesome!',
-          confirmButtonClass: 'btn btn-primary font-weight-bold'
+          confirmButtonText: "Awesome!",
+          confirmButtonClass: "btn btn-primary font-weight-bold"
         });
       });
-      avatar5.on('change', function (imageInput) {
+      avatar5.on("change", function (imageInput) {
         vm.formFields.picture = imageInput.input.files[0];
       });
-      avatar5.on('remove', function (imageInput) {
+      avatar5.on("remove", function (imageInput) {
         swal.fire({
-          title: 'Image successfully removed !',
-          type: 'error',
+          title: "Image successfully removed !",
+          type: "error",
           buttonsStyling: false,
-          confirmButtonText: 'Got it!',
-          confirmButtonClass: 'btn btn-primary font-weight-bold'
+          confirmButtonText: "Got it!",
+          confirmButtonClass: "btn btn-primary font-weight-bold"
         });
       });
     }
@@ -49708,15 +50107,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FuelCharges.vue?vue&type=template&id=375ec43a& */ "./resources/js/components/Pages/FuelCharges.vue?vue&type=template&id=375ec43a&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _FuelCharges_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FuelCharges.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 ;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__.default)(
-  script,
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _FuelCharges_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.render,
   _FuelCharges_vue_vue_type_template_id_375ec43a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
@@ -50421,6 +50822,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Dashboard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Dashboard.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FuelCharges_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FuelCharges.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/FuelCharges.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FuelCharges_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -55197,21 +55614,298 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "w-100 h-100", attrs: { id: "fuel-charge-page" } },
+    [
+      !_vm.fuel_request
+        ? _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "card-title" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-toolbar" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-primary font-weight-bolder",
+                    on: { click: _vm.fuelRequest }
+                  },
+                  [
+                    _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                            width: "24px",
+                            height: "24px",
+                            viewBox: "0 0 24 24",
+                            version: "1.1"
+                          }
+                        },
+                        [
+                          _c(
+                            "g",
+                            {
+                              attrs: {
+                                stroke: "none",
+                                "stroke-width": "1",
+                                fill: "none",
+                                "fill-rule": "evenodd"
+                              }
+                            },
+                            [
+                              _c("rect", {
+                                attrs: {
+                                  x: "0",
+                                  y: "0",
+                                  width: "24",
+                                  height: "24"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("circle", {
+                                attrs: {
+                                  fill: "#000000",
+                                  opacity: "0.3",
+                                  cx: "12",
+                                  cy: "12",
+                                  r: "10"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z",
+                                  fill: "#000000"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v("Fuel Request")
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        : _c(
+            "div",
+            {
+              staticClass:
+                "card card-custom card-stretch gutter-b animate__animated animate__fadeInRight"
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-footer" }, [
+                _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-light-primary btn-sm mx-1",
+                      on: {
+                        click: function($event) {
+                          _vm.fuel_request = false
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Cancel\n                ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-sm mx-1",
+                      on: {
+                        click: function($event) {
+                          _vm.fuel_request = false
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Submit\n                ")]
+                  )
+                ])
+              ])
+            ]
+          )
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card card-custom card-stretch gutter-b",
-        attrs: { id: "fuel-charge-page" }
-      },
-      [_c("div", { staticClass: "card-body " })]
-    )
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        {
+          staticClass: "table table-separate table-head-custom",
+          attrs: { id: "fuel-charges-tbl" }
+        },
+        [
+          _c("thead", [
+            _c("tr", [
+              _c("th", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Code")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Vehicle Description")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Plate No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Gasoline Liters")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Diesel Liters")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Total KM travelled")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("KM/Liters")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Date Requested")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO No.")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("PO Balance")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Remarks")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Action")])
+            ])
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _c("span", [_vm._v("Fuel Request")]),
+          _vm._v(" "),
+          _c("small", [_vm._v("Form")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body p-20" }, [
+      _c(
+        "form",
+        { staticClass: "form row", attrs: { id: "fuel-request-form" } },
+        [
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Driver:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control select2",
+                  attrs: { id: "kt_select_driver" }
+                },
+                [
+                  _c("option", { attrs: { label: "Label" } }),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Test")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Vehicle description:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control select2",
+                  attrs: { id: "kt_select_vehicle" }
+                },
+                [
+                  _c("option", { attrs: { label: "Label" } }),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Test")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Plate No:")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "text", disabled: "" }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Date:")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "date" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("PO Number:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control select2",
+                  attrs: { id: "kt_select_po" }
+                },
+                [
+                  _c("option", { attrs: { label: "Label" } }),
+                  _vm._v(" "),
+                  _c("option", [_vm._v("Test")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("PO Balance:")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "text", disabled: "" }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Purpose:")]),
+              _vm._v(" "),
+              _c("textarea", {
+                staticClass: "form-control",
+                attrs: { rows: "3" }
+              })
+            ])
+          ])
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -62164,7 +62858,7 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(
-                                  " Active\n                                            "
+                                  "\n                                            Active\n                                            "
                                 ),
                                 _c("span")
                               ]),
@@ -62199,7 +62893,7 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(
-                                  " Inactive\n                                            "
+                                  "\n                                            Inactive\n                                            "
                                 ),
                                 _c("span")
                               ])
@@ -62393,7 +63087,11 @@ var render = function() {
                             staticClass: "btn btn-primary mr-2",
                             attrs: { type: "submit" }
                           },
-                          [_vm._v("Save")]
+                          [
+                            _vm._v(
+                              "\n                                Save\n                            "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c(
@@ -62403,7 +63101,11 @@ var render = function() {
                             attrs: { type: "reset" },
                             on: { click: _vm.cancelEntry }
                           },
-                          [_vm._v("Cancel")]
+                          [
+                            _vm._v(
+                              "\n                                Cancel\n                            "
+                            )
+                          ]
                         )
                       ])
                     ])
