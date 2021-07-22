@@ -159,11 +159,18 @@
                                     <tbody>
                                         <tr v-for="(pax, index) in passengers" :key="index">
                                             <td scope="row" class="text-center">{{ paxIndex(index) }}</td>
-                                            <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td>
-                                            <td><input :name="'pax_des_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.designation"/></td>
+
+                                            <td> 
+                                                <select  class="details-input form-control select2" :id="'passenger-select-'+ paxIndex(index)" :name="'pax_name_' + paxIndex(index)" :disabled="(!request_edit) ? true : false" :value="pax.name" >
+                                                    <option label="Label"></option>
+                                                    <option v-for="(result,index) in employee_results" :key="index" :value="result.first_name + ' ' + result.middle_name + ' ' + result.last_name " >{{result.first_name}} {{result.middle_name}} {{result.last_name}}</option>
+                                                </select>
+                                            </td>
+                                            <!-- <td><input :name="'pax_name_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.name"/></td> -->
+                                            <td><input :name="'pax_des_' + paxIndex(index)" class="data-entry form-control " type="text" disabled="disabled" :value="pax.designation"   /></td>
                                             <td>
                                                 <!-- <input :name="'pax_gen_' + paxIndex(index)" class="form-control details-input" type="text" disabled="disabled" :value="pax.gender"/> -->
-                                                <select :name="'pax_gen_' + paxIndex(index)" class="details-input form-control" disabled="disabled" :value="pax.gender">
+                                                <select :name="'pax_gen_' + paxIndex(index)" class="data-entry form-control" disabled="disabled" :value="pax.gender"  >
                                                     <option value=""></option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -378,7 +385,10 @@ export default {
             defaultNames: [],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
-            remarks: null
+            remarks: null,
+            employee_results: [],
+            pax_des: [],
+            pax_gen: []
         }
     },  
     components: {
@@ -390,6 +400,7 @@ export default {
         this.getPo();
         this.getDriver();
         this.getVehiclemode();
+        this.EmployeeList();
     },
     mounted() {
         this.ini();
@@ -466,7 +477,6 @@ export default {
                     vm.request_edit = 0;
                     $('.btn-edit span').text('Edit');
                 });
-
             });
         },
         tdatatable() {
@@ -605,6 +615,7 @@ export default {
                 (!app)? $('#kt_datatable_modal').modal('show') : NULL;
 
                 setTimeout(() => {
+                    let count = this.passengers.length;
                     $('.radio-vehicle').change(function() {
                         vm.staff.office.total = vm.staff.rental.total = 1;
                         if(vm.vehicle_type == 3 || vm.vehicle_type == 2) {
@@ -638,7 +649,22 @@ export default {
                         $('.invalid-admin').removeClass('is-invalid');
                     });
 
+                     for (let i = 0; i <= count; i++) {
+                        $("#passenger-select-"+i).on('select2:select', function (e) {
+                            let paxVal = $(`#passenger-select-${i} option:selected`).index();
+                            paxVal = paxVal-1
+                            vm.getData(paxVal, i);
+                        });
+                     }
+                    $(`#passenger-select-1`).on('select2:clear', function (e) {
+                        $("#pax_des_1").val(null);
+                        $("#pax_gen_1").val(null);
+                        vm.pax_gen[0] = "";
+                        vm.pax_des[0] = "";
+                    });
+
                 }, 500);
+
 
             });
         },
@@ -670,7 +696,11 @@ export default {
         currentCity() {
             this.activeCities = this.cities.filter(i => i.active === 'true');
         },
+        EmployeeList(){
+            this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
+        },
         getDetails(id) {
+            
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
             $('#kt_select_region').val();
@@ -704,9 +734,24 @@ export default {
                     $('#kt_select_brgy').val(data.brgy);
                     $('#kt_select_brgy').trigger('change');
                 }, 1500);
-                    
+                
+                setTimeout(() => {
+                    for (let i = 0; i < this.passengers.length + 1; i++) {
+                        $('#passenger-select-'+i).select2({
+                            placeholder: "Select fullname",
+                            allowClear: true
+                        });
+                    } 
+                }, 500);
             });
             this.dateConf();
+        },
+        getData(id, index) {
+            let vm = this;
+            this.pax_des[index - 1] = vm.employee_results[id].position;
+            this.pax_gen[index - 1] = vm.employee_results[id].gender;
+            $(`[name="pax_gen_${index}"]`).val(vm.employee_results[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.employee_results[id].position);
         },
         getPassengers(id) {
             axios.get(BASE_URL + "/api/v1/passenger/" + id).then(response => {
@@ -732,10 +777,12 @@ export default {
             
         },
         save(id) {
+            $(".data-entry").attr("disabled", false);
             let requestform = $('#request-form').serialize();
             axios.put(BASE_URL + "/travel/localrequest/" + id, requestform).then(response => {
                 $('.new-row').remove();
                 $('.details-input').attr('disabled',true);
+                $(".data-entry").attr("disabled", true);
                 this.request_edit = 0;
                 $('.btn-edit span').text('Edit');
                 $('.invalid-feedback').remove();
@@ -745,6 +792,7 @@ export default {
                 $('#request-tbl').DataTable().ajax.reload();
                 this.getPassengers(this.current_id);
             }).catch((error) => {
+                $(".data-entry").attr("disabled", true);
                 let data = error.response.data.errors;
                 let keys = [];
                 let values = [];
@@ -869,17 +917,62 @@ export default {
         },
         addPassengerRow(event){
             event.preventDefault();
-            let lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-            lastTr += 1;
-            $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">'+lastTr+'</td><td><input name="pax_name_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_des_'+lastTr+'" class="form-control details-input" type="text" /></td><td><input name="pax_gen_'+lastTr+'" class="form-control details-input" type="text" /></td><td><select name="pax_gen_'+lastTr+'" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-            $('#pax-total').val(lastTr);
-            this.names.push('pax_name_'+lastTr);
-            this.names.push('pax_des_'+lastTr);
-            this.names.push('pax_gen_'+lastTr);
+            let ndata = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+            }
+            this.passengers.push(ndata);
+            let count = this.passengers.length;
+            let vm = this;
+
+            setTimeout(() => {
+                $(`#passenger-select-${count}`).select2({
+                    placeholder: "Select a fullname",
+                    allowClear: true
+                });
+                for (let i = 0; i <= count; i++) {
+                $("#passenger-select-"+i).on('select2:select', function (e) {
+                    let paxVal = $(`#passenger-select-${i} option:selected`).index();
+                    paxVal = paxVal-1
+                    vm.getData(paxVal, i);
+                    let fullname = vm.employee_results[paxVal].first_name + " " + vm.employee_results[paxVal].middle_name + " "+ vm.employee_results[paxVal].last_name;
+                    let data = {
+                        created_at: null,
+                        designation: vm.employee_results[paxVal].position,
+                        gender:  vm.employee_results[paxVal].gender,
+                        id: 1,
+                        name: fullname ,
+                        request_id: 1,
+                        updated_at: null
+                    }
+                    vm.passengers[count-1] = data;
+                });
+                $(`#passenger-select-${i}`).on('select2:clear', function (e) {
+                    let data = {
+                        created_at: null,
+                        designation: null,
+                        gender:  null,
+                        id: null,
+                        name: null ,
+                        request_id: null,
+                        updated_at: null
+                    }
+                    vm.passengers[count-1] = data;
+                    $(`[name="pax_gen_${i}"]`).val(null);
+                    $(`[name="pax_des_${i}"]`).val(null);
+                });
+                }
+            }, 100);
         },
         removePassengerRow(event){
             event.preventDefault();
             let lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+            let count = this.passengers.length;
             if(lastTr.find('td:eq(0)').text() != '1') {
                 let aliasNames = this.names;
                 let paxName = aliasNames.indexOf('pax_name_'+lastTr.find('td:eq(0)').text());
@@ -895,8 +988,10 @@ export default {
                     aliasNames.splice(paxSex, 1);
                 }
                 this.names = aliasNames;
-
                 lastTr.remove();
+                var parsedobj_passenger = JSON.parse(JSON.stringify(this.passengers));
+                parsedobj_passenger.splice(count-1, 1);
+                this.passengers = parsedobj_passenger;
             }
             $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
         },

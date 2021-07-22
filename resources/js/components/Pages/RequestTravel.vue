@@ -480,7 +480,6 @@ export default {
         this.getProvince();
         this.getCity();
         this.getBrgy();
-        this.isDisabled();
         this.EmployeeList();
     },
     computed: {
@@ -634,12 +633,9 @@ export default {
                     placeholder: "Select a fullname",
                     allowClear: true
                 });
-                $(`#passenger-select-${count}`).on("select2:select", function(
-                    e
-                ) {
-                    let paxVal = $(this)
-                        .find(":selected")
-                        .data("id");
+                $(`#passenger-select-${count}`).on("select2:select", function(e) {
+                    let paxVal = $(this).find(":selected").data("id");
+                    console.log("paxval" + paxVal + " count" + count);
                     vm.getData(paxVal, count);
                 });
 
@@ -651,13 +647,6 @@ export default {
                     vm.pax_gen[count - 1] = "";
                     vm.pax_des[count - 1] = "";
                 });
-
-                for (let i = 1; i < count; i++) {
-                    let test = $(`#passenger-select-${count}`)
-                        .find(":selected")
-                        .data("id");
-                    console.log(test);
-                }
             }, 100);
         },
         removeRow(event) {

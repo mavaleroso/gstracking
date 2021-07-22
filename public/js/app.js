@@ -4722,6 +4722,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -4772,7 +4779,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       defaultNames: [],
       rpNames: ['vehicle_1', 'driver_1'],
       hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
-      remarks: null
+      remarks: null,
+      employee_results: [],
+      pax_des: [],
+      pax_gen: []
     };
   },
   components: {
@@ -4784,6 +4794,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getPo();
     this.getDriver();
     this.getVehiclemode();
+    this.EmployeeList();
   },
   mounted: function mounted() {
     this.ini();
@@ -5013,6 +5024,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.getPassengers(vm.current_id);
         !app ? $('#kt_datatable_modal').modal('show') : NULL;
         setTimeout(function () {
+          var count = _this3.passengers.length;
           $('.radio-vehicle').change(function () {
             vm.staff.office.total = vm.staff.rental.total = 1;
 
@@ -5040,6 +5052,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           $('.radio-vehicle').on('change', function () {
             $('.invalid-feedback-admin').remove();
             $('.invalid-admin').removeClass('is-invalid');
+          });
+
+          var _loop = function _loop(i) {
+            $("#passenger-select-" + i).on('select2:select', function (e) {
+              var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
+              paxVal = paxVal - 1;
+              vm.getData(paxVal, i);
+            });
+          };
+
+          for (var i = 0; i <= count; i++) {
+            _loop(i);
+          }
+
+          $("#passenger-select-1").on('select2:clear', function (e) {
+            $("#pax_des_1").val(null);
+            $("#pax_gen_1").val(null);
+            vm.pax_gen[0] = "";
+            vm.pax_des[0] = "";
           });
         }, 500);
       });
@@ -5090,6 +5121,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         return i.active === 'true';
       });
     },
+    EmployeeList: function EmployeeList() {
+      this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
+    },
     getDetails: function getDetails(id) {
       var _this8 = this;
 
@@ -5131,8 +5165,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           $('#kt_select_brgy').val(data.brgy);
           $('#kt_select_brgy').trigger('change');
         }, 1500);
+        setTimeout(function () {
+          for (var i = 0; i < _this8.passengers.length + 1; i++) {
+            $('#passenger-select-' + i).select2({
+              placeholder: "Select fullname",
+              allowClear: true
+            });
+          }
+        }, 500);
       });
       this.dateConf();
+    },
+    getData: function getData(id, index) {
+      var vm = this;
+      this.pax_des[index - 1] = vm.employee_results[id].position;
+      this.pax_gen[index - 1] = vm.employee_results[id].gender;
+      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.employee_results[id].gender);
+      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.employee_results[id].position);
     },
     getPassengers: function getPassengers(id) {
       var _this9 = this;
@@ -5162,10 +5211,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     save: function save(id) {
       var _this10 = this;
 
+      $(".data-entry").attr("disabled", false);
       var requestform = $('#request-form').serialize();
       axios.put(BASE_URL + "/travel/localrequest/" + id, requestform).then(function (response) {
         $('.new-row').remove();
         $('.details-input').attr('disabled', true);
+        $(".data-entry").attr("disabled", true);
         _this10.request_edit = 0;
         $('.btn-edit span').text('Edit');
         $('.invalid-feedback').remove();
@@ -5178,6 +5229,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         _this10.getPassengers(_this10.current_id);
       })["catch"](function (error) {
+        $(".data-entry").attr("disabled", true);
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
@@ -5322,17 +5374,66 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addPassengerRow: function addPassengerRow(event) {
       event.preventDefault();
-      var lastTr = parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text());
-      lastTr += 1;
-      $('#passenger-tbl tbody').append('<tr class="new-row"><td scope="row" class="text-center">' + lastTr + '</td><td><input name="pax_name_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_des_' + lastTr + '" class="form-control details-input" type="text" /></td><td><input name="pax_gen_' + lastTr + '" class="form-control details-input" type="text" /></td><td><select name="pax_gen_' + lastTr + '" class="details-input form-control"><option value=""></option><option value="Male">Male</option><option value="Female">Female</option></select></td></tr>');
-      $('#pax-total').val(lastTr);
-      this.names.push('pax_name_' + lastTr);
-      this.names.push('pax_des_' + lastTr);
-      this.names.push('pax_gen_' + lastTr);
+      var ndata = {
+        created_at: null,
+        designation: null,
+        gender: null,
+        id: null,
+        name: null,
+        request_id: null,
+        updated_at: null
+      };
+      this.passengers.push(ndata);
+      var count = this.passengers.length;
+      var vm = this;
+      setTimeout(function () {
+        $("#passenger-select-".concat(count)).select2({
+          placeholder: "Select a fullname",
+          allowClear: true
+        });
+
+        var _loop2 = function _loop2(i) {
+          $("#passenger-select-" + i).on('select2:select', function (e) {
+            var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
+            paxVal = paxVal - 1;
+            vm.getData(paxVal, i);
+            var fullname = vm.employee_results[paxVal].first_name + " " + vm.employee_results[paxVal].middle_name + " " + vm.employee_results[paxVal].last_name;
+            var data = {
+              created_at: null,
+              designation: vm.employee_results[paxVal].position,
+              gender: vm.employee_results[paxVal].gender,
+              id: 1,
+              name: fullname,
+              request_id: 1,
+              updated_at: null
+            };
+            vm.passengers[count - 1] = data;
+          });
+          $("#passenger-select-".concat(i)).on('select2:clear', function (e) {
+            var data = {
+              created_at: null,
+              designation: null,
+              gender: null,
+              id: null,
+              name: null,
+              request_id: null,
+              updated_at: null
+            };
+            vm.passengers[count - 1] = data;
+            $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
+            $("[name=\"pax_des_".concat(i, "\"]")).val(null);
+          });
+        };
+
+        for (var i = 0; i <= count; i++) {
+          _loop2(i);
+        }
+      }, 100);
     },
     removePassengerRow: function removePassengerRow(event) {
       event.preventDefault();
       var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+      var count = this.passengers.length;
 
       if (lastTr.find('td:eq(0)').text() != '1') {
         var aliasNames = this.names;
@@ -5354,6 +5455,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         this.names = aliasNames;
         lastTr.remove();
+        var parsedobj_passenger = JSON.parse(JSON.stringify(this.passengers));
+        parsedobj_passenger.splice(count - 1, 1);
+        this.passengers = parsedobj_passenger;
       }
 
       $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
@@ -8619,7 +8723,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getProvince();
     this.getCity();
     this.getBrgy();
-    this.isDisabled();
     this.EmployeeList();
   },
   computed: {
@@ -8765,6 +8868,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $("#passenger-select-".concat(count)).on("select2:select", function (e) {
           var paxVal = $(this).find(":selected").data("id");
+          console.log("paxval" + paxVal + " count" + count);
           vm.getData(paxVal, count);
         });
         $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
@@ -8773,11 +8877,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.pax_gen[count - 1] = "";
           vm.pax_des[count - 1] = "";
         });
-
-        for (var i = 1; i < count; i++) {
-          var test = $("#passenger-select-".concat(count)).find(":selected").data("id");
-          console.log(test);
-        }
       }, 100);
     },
     removeRow: function removeRow(event) {
@@ -56710,23 +56809,70 @@ var render = function() {
                                       ),
                                       _vm._v(" "),
                                       _c("td", [
-                                        _c("input", {
-                                          staticClass:
-                                            "form-control details-input",
-                                          attrs: {
-                                            name:
-                                              "pax_name_" + _vm.paxIndex(index),
-                                            type: "text",
-                                            disabled: "disabled"
+                                        _c(
+                                          "select",
+                                          {
+                                            staticClass:
+                                              "details-input form-control select2",
+                                            attrs: {
+                                              id:
+                                                "passenger-select-" +
+                                                _vm.paxIndex(index),
+                                              name:
+                                                "pax_name_" +
+                                                _vm.paxIndex(index),
+                                              disabled: !_vm.request_edit
+                                                ? true
+                                                : false
+                                            },
+                                            domProps: { value: pax.name }
                                           },
-                                          domProps: { value: pax.name }
-                                        })
+                                          [
+                                            _c("option", {
+                                              attrs: { label: "Label" }
+                                            }),
+                                            _vm._v(" "),
+                                            _vm._l(
+                                              _vm.employee_results,
+                                              function(result, index) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    key: index,
+                                                    domProps: {
+                                                      value:
+                                                        result.first_name +
+                                                        " " +
+                                                        result.middle_name +
+                                                        " " +
+                                                        result.last_name
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        result.first_name
+                                                      ) +
+                                                        " " +
+                                                        _vm._s(
+                                                          result.middle_name
+                                                        ) +
+                                                        " " +
+                                                        _vm._s(result.last_name)
+                                                    )
+                                                  ]
+                                                )
+                                              }
+                                            )
+                                          ],
+                                          2
+                                        )
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
                                         _c("input", {
                                           staticClass:
-                                            "form-control details-input",
+                                            "data-entry form-control ",
                                           attrs: {
                                             name:
                                               "pax_des_" + _vm.paxIndex(index),
@@ -56742,7 +56888,7 @@ var render = function() {
                                           "select",
                                           {
                                             staticClass:
-                                              "details-input form-control",
+                                              "data-entry form-control",
                                             attrs: {
                                               name:
                                                 "pax_gen_" +
