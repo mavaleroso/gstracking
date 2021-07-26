@@ -103,87 +103,8 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-3">Destination</label>
+                                <label class="col-3 mt-3">Destination</label>
                                 <div class="col-9">
-                                    <select
-                                        class="details-input form-control select2"
-                                        id="kt_select_region"
-                                        name="region"
-                                    >
-                                        <option label="Label"></option>
-                                        <option
-                                            v-for="region in regions"
-                                            :key="region.id"
-                                            :value="region.id"
-                                            >{{ region.region_name }}</option
-                                        >
-                                    </select>
-                                    <select
-                                        class="details-input form-control select2 kt_select2_3"
-                                        id="kt_select_province"
-                                        name="province[]"
-                                        multiple="multiple"
-                                    >
-                                        <option
-                                            v-for="province in provinces.filter(
-                                                i => i.region_id == activeRegion
-                                            )"
-                                            :key="province.id"
-                                            :value="province.id"
-                                            >{{
-                                                province.province_name
-                                            }}</option
-                                        >
-                                    </select>
-
-                                    <select
-                                        class="details-input form-control select2 kt_select2_3"
-                                        id="kt_select_city"
-                                        name="city[]"
-                                        multiple="multiple"
-                                    >
-                                        <optgroup
-                                            v-for="activeProv in currentlySelectedProvince"
-                                            :key="activeProv.id"
-                                            :label="activeProv.province_name"
-                                        >
-                                            <option
-                                                v-for="city in currentlySelectedCities.filter(
-                                                    i =>
-                                                        i.province_id ==
-                                                        activeProv.id
-                                                )"
-                                                :key="city.id"
-                                                :value="city.id"
-                                                >{{ city.city_name }}</option
-                                            >
-                                        </optgroup>
-                                    </select>
-                                    <select
-                                        class="details-input form-control select2 kt_select2_3"
-                                        id="kt_select_brgy"
-                                        name="brgy[]"
-                                        multiple="multiple"
-                                    >
-                                        <optgroup
-                                            v-for="activeBrgy in currentCities"
-                                            :key="activeBrgy.id"
-                                            :label="activeBrgy.city_name"
-                                        >
-                                            <option
-                                                v-for="barangays in currentlySelectedBarangays.filter(
-                                                    i =>
-                                                        i.city_id ==
-                                                        activeBrgy.id
-                                                )"
-                                                :key="barangays.id"
-                                                :value="barangays.id"
-                                                >{{
-                                                    barangays.brgy_name
-                                                }}</option
-                                            >
-                                        </optgroup>
-                                    </select>
                                     <input
                                         name="destination_place"
                                         id="destination_place"
@@ -425,11 +346,6 @@ export default {
         return {
             divisions: [],
             sections: [],
-            regions: [],
-            provinces: [],
-            cities: [],
-            brgys: [],
-            activeProvinces: "",
             activeSections: [],
             activeCities: [],
             names: [
@@ -454,16 +370,6 @@ export default {
             travelDate: null,
             returnDate: null,
             activeDivision: null,
-            activeRegion: null,
-            activeProvince: null,
-            activeBarangay: null,
-            selectedProvinces: null,
-            selectedBarangays: null,
-            selectedCities: null,
-            currentlySelectedCities: [],
-            currentlySelectedProvince: [],
-            currentlySelectedBarangays: [],
-            currentCities: [],
             results: [],
             total: 1,
             gender: "",
@@ -474,12 +380,8 @@ export default {
         };
     },
     created() {
-        this.getRegion();
         this.getDivision();
         this.getSection();
-        this.getProvince();
-        this.getCity();
-        this.getBrgy();
         this.EmployeeList();
     },
     computed: {
@@ -499,26 +401,6 @@ export default {
         ini() {
             let vm = this;
             $(() => {
-                $("#kt_select_province").select2({
-                    placeholder: "Select a Province"
-                });
-
-                // multi select
-                $("#kt_select_city").select2({
-                    placeholder: "Select a City"
-                });
-
-                // multi select
-                $("#kt_select_brgy").select2({
-                    placeholder: "Select a Barangay"
-                });
-
-                // basic
-                $("#kt_select_region").select2({
-                    placeholder: "Select a Region",
-                    allowClear: true
-                });
-
                 $("#kt_select_division").select2({
                     placeholder: "Select a Division",
                     allowClear: true
@@ -562,40 +444,6 @@ export default {
                 $("#kt_select_region").on("change", function() {
                     vm.activeRegion = $(this).val();
                 });
-
-                $("#kt_select_province").on("change", function() {
-                    let data_arr, data_int, res, prov;
-                    vm.activeProvince = $(this).val();
-                    console.log("active province");
-                    console.log($(this).val());
-                    data_arr = Object.values(vm.activeProvince);
-                    data_int = data_arr.map(i => Number(i));
-                    vm.selectedProvinces = data_int;
-                    res = vm.cities.filter(item =>
-                        vm.selectedProvinces.includes(item.province_id)
-                    );
-                    prov = vm.provinces.filter(item =>
-                        vm.selectedProvinces.includes(item.id)
-                    );
-                    vm.currentlySelectedCities = res;
-                    vm.currentlySelectedProvince = prov;
-                });
-
-                $("#kt_select_city").on("change", function() {
-                    let data_arr, data_int, res, city;
-                    vm.activeBarangay = $(this).val();
-                    data_arr = Object.values(vm.activeBarangay);
-                    data_int = data_arr.map(i => Number(i));
-                    vm.selectedCities = data_int;
-                    res = vm.brgys.filter(item =>
-                        vm.selectedCities.includes(item.city_id)
-                    );
-                    city = vm.cities.filter(item =>
-                        vm.selectedCities.includes(item.id)
-                    );
-                    vm.currentlySelectedBarangays = res;
-                    vm.currentCities = city;
-                });
             });
         },
         getData(id, index) {
@@ -606,7 +454,7 @@ export default {
             $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
         },
         clearData() {
-            $(".data-set")
+            $(".details-input")
                 .val(null)
                 .trigger("change");
             let vm = this;
@@ -691,9 +539,6 @@ export default {
                         keys.push(`${key}`);
                         values.push(`${value}`);
                         if (
-                            `${key}` == "region" ||
-                            `${key}` == "province" ||
-                            `${key}` == "city" ||
                             `${key}` == "division" ||
                             `${key}` == "section"
                         ) {
@@ -737,9 +582,6 @@ export default {
                     }
                     for (let i = 0; i < this.names.length; i++) {
                         if (
-                            this.names[i] == "region" ||
-                            this.names[i] == "province" ||
-                            this.names[i] == "city" ||
                             this.names[i] == "division" ||
                             this.names[i] == "section"
                         ) {
@@ -779,49 +621,20 @@ export default {
         getSection() {
             this.sections = JSON.parse(localStorage.getItem("section"));
         },
-        getRegion() {
-            this.regions = JSON.parse(localStorage.getItem("region"));
-        },
-        getProvince() {
-            this.provinces = JSON.parse(localStorage.getItem("province"));
-        },
-        getCity() {
-            this.cities = JSON.parse(localStorage.getItem("city"));
-        },
-        getBrgy() {
-            this.brgys = JSON.parse(localStorage.getItem("barangay"));
-        },
-        currentProv() {
-            this.activeProvinces = this.provinces.filter(
-                i => i.active === "true"
-            );
-        },
-        currentCity() {
-            this.activeCities = this.cities.filter(i => i.active === "true");
-        },
         newRequest() {
             this.clearData();
+            setTimeout(() => {
+                $(".data-entry").attr("disabled", true);
+            }, 500);
+            $(".data-entry").attr("disabled", true);
             for (let i = 0; i < this.names.length; i++) {
-                if (
-                    this.names[i] == "section" ||
-                    this.names[i] == "province" ||
-                    this.names[i] == "city" ||
-                    this.names[i] == "brgy"
-                ) {
-                    $("#kt_select_" + this.names[i]).empty();
-                } else if (
+                 if (
                     this.names[i] == "division" ||
                     this.names[i] == "region"
                 ) {
-                    $("#kt_select_region")
-                        .val(null)
-                        .trigger("change");
                 } else {
                     $('[name="' + this.names[i] + '"]').val(null);
                 }
-                $("#kt_select_division")
-                    .val(null)
-                    .trigger("change");
             }
             $(".details-input").attr("disabled", false);
             this.complete = false;

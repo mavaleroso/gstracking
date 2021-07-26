@@ -8599,95 +8599,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       divisions: [],
       sections: [],
-      regions: [],
-      provinces: [],
-      cities: [],
-      brgys: [],
-      activeProvinces: "",
       activeSections: [],
       activeCities: [],
       names: ["region", "province", "city", "brgy", "date_travel", "pax_des_1", "pax_name_1", "pax_gen_1", "division", "section", "pur_travel", "time_depart", "date_return", "destination_place"],
@@ -8697,16 +8613,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       travelDate: null,
       returnDate: null,
       activeDivision: null,
-      activeRegion: null,
-      activeProvince: null,
-      activeBarangay: null,
-      selectedProvinces: null,
-      selectedBarangays: null,
-      selectedCities: null,
-      currentlySelectedCities: [],
-      currentlySelectedProvince: [],
-      currentlySelectedBarangays: [],
-      currentCities: [],
       results: [],
       total: 1,
       gender: "",
@@ -8717,12 +8623,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   created: function created() {
-    this.getRegion();
     this.getDivision();
     this.getSection();
-    this.getProvince();
-    this.getCity();
-    this.getBrgy();
     this.EmployeeList();
   },
   computed: {
@@ -8746,22 +8648,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var vm = this;
       $(function () {
-        $("#kt_select_province").select2({
-          placeholder: "Select a Province"
-        }); // multi select
-
-        $("#kt_select_city").select2({
-          placeholder: "Select a City"
-        }); // multi select
-
-        $("#kt_select_brgy").select2({
-          placeholder: "Select a Barangay"
-        }); // basic
-
-        $("#kt_select_region").select2({
-          placeholder: "Select a Region",
-          allowClear: true
-        });
         $("#kt_select_division").select2({
           placeholder: "Select a Division",
           allowClear: true
@@ -8796,42 +8682,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $("#kt_select_region").on("change", function () {
           vm.activeRegion = $(this).val();
         });
-        $("#kt_select_province").on("change", function () {
-          var data_arr, data_int, res, prov;
-          vm.activeProvince = $(this).val();
-          console.log("active province");
-          console.log($(this).val());
-          data_arr = Object.values(vm.activeProvince);
-          data_int = data_arr.map(function (i) {
-            return Number(i);
-          });
-          vm.selectedProvinces = data_int;
-          res = vm.cities.filter(function (item) {
-            return vm.selectedProvinces.includes(item.province_id);
-          });
-          prov = vm.provinces.filter(function (item) {
-            return vm.selectedProvinces.includes(item.id);
-          });
-          vm.currentlySelectedCities = res;
-          vm.currentlySelectedProvince = prov;
-        });
-        $("#kt_select_city").on("change", function () {
-          var data_arr, data_int, res, city;
-          vm.activeBarangay = $(this).val();
-          data_arr = Object.values(vm.activeBarangay);
-          data_int = data_arr.map(function (i) {
-            return Number(i);
-          });
-          vm.selectedCities = data_int;
-          res = vm.brgys.filter(function (item) {
-            return vm.selectedCities.includes(item.city_id);
-          });
-          city = vm.cities.filter(function (item) {
-            return vm.selectedCities.includes(item.id);
-          });
-          vm.currentlySelectedBarangays = res;
-          vm.currentCities = city;
-        });
       });
     },
     getData: function getData(id, index) {
@@ -8842,7 +8692,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
     clearData: function clearData() {
-      $(".data-set").val(null).trigger("change");
+      $(".details-input").val(null).trigger("change");
       var vm = this;
       vm.total = 1;
       vm.pax_des.length = 0;
@@ -8924,7 +8774,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == "region" || "".concat(key) == "province" || "".concat(key) == "city" || "".concat(key) == "division" || "".concat(key) == "section") {
+          if ("".concat(key) == "division" || "".concat(key) == "section") {
             if ($("#kt_select_" + "".concat(key)).next().next().length == 0 || $("#kt_select_" + "".concat(key)).next().next().attr("class").search("invalid-feedback") == -1) {
               $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
@@ -8937,7 +8787,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "region" || _this2.names[i] == "province" || _this2.names[i] == "city" || _this2.names[i] == "division" || _this2.names[i] == "section") {
+          if (_this2.names[i] == "division" || _this2.names[i] == "section") {
             if (keys.indexOf("" + _this2.names[i] + "") == -1) {
               if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
                 $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
@@ -8960,41 +8810,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getSection: function getSection() {
       this.sections = JSON.parse(localStorage.getItem("section"));
     },
-    getRegion: function getRegion() {
-      this.regions = JSON.parse(localStorage.getItem("region"));
-    },
-    getProvince: function getProvince() {
-      this.provinces = JSON.parse(localStorage.getItem("province"));
-    },
-    getCity: function getCity() {
-      this.cities = JSON.parse(localStorage.getItem("city"));
-    },
-    getBrgy: function getBrgy() {
-      this.brgys = JSON.parse(localStorage.getItem("barangay"));
-    },
-    currentProv: function currentProv() {
-      this.activeProvinces = this.provinces.filter(function (i) {
-        return i.active === "true";
-      });
-    },
-    currentCity: function currentCity() {
-      this.activeCities = this.cities.filter(function (i) {
-        return i.active === "true";
-      });
-    },
     newRequest: function newRequest() {
       this.clearData();
+      setTimeout(function () {
+        $(".data-entry").attr("disabled", true);
+      }, 500);
+      $(".data-entry").attr("disabled", true);
 
       for (var i = 0; i < this.names.length; i++) {
-        if (this.names[i] == "section" || this.names[i] == "province" || this.names[i] == "city" || this.names[i] == "brgy") {
-          $("#kt_select_" + this.names[i]).empty();
-        } else if (this.names[i] == "division" || this.names[i] == "region") {
-          $("#kt_select_region").val(null).trigger("change");
-        } else {
+        if (this.names[i] == "division" || this.names[i] == "region") {} else {
           $('[name="' + this.names[i] + '"]').val(null);
         }
-
-        $("#kt_select_division").val(null).trigger("change");
       }
 
       $(".details-input").attr("disabled", false);
@@ -61714,149 +61540,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm._m(1),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group row" }, [
-                  _c("label", { staticClass: "col-3" }, [
-                    _vm._v("Destination")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-9" }, [
-                    _c(
-                      "select",
-                      {
-                        staticClass: "details-input form-control select2",
-                        attrs: { id: "kt_select_region", name: "region" }
-                      },
-                      [
-                        _c("option", { attrs: { label: "Label" } }),
-                        _vm._v(" "),
-                        _vm._l(_vm.regions, function(region) {
-                          return _c(
-                            "option",
-                            { key: region.id, domProps: { value: region.id } },
-                            [_vm._v(_vm._s(region.region_name))]
-                          )
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass:
-                          "details-input form-control select2 kt_select2_3",
-                        attrs: {
-                          id: "kt_select_province",
-                          name: "province[]",
-                          multiple: "multiple"
-                        }
-                      },
-                      _vm._l(
-                        _vm.provinces.filter(function(i) {
-                          return i.region_id == _vm.activeRegion
-                        }),
-                        function(province) {
-                          return _c(
-                            "option",
-                            {
-                              key: province.id,
-                              domProps: { value: province.id }
-                            },
-                            [_vm._v(_vm._s(province.province_name))]
-                          )
-                        }
-                      ),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass:
-                          "details-input form-control select2 kt_select2_3",
-                        attrs: {
-                          id: "kt_select_city",
-                          name: "city[]",
-                          multiple: "multiple"
-                        }
-                      },
-                      _vm._l(_vm.currentlySelectedProvince, function(
-                        activeProv
-                      ) {
-                        return _c(
-                          "optgroup",
-                          {
-                            key: activeProv.id,
-                            attrs: { label: activeProv.province_name }
-                          },
-                          _vm._l(
-                            _vm.currentlySelectedCities.filter(function(i) {
-                              return i.province_id == activeProv.id
-                            }),
-                            function(city) {
-                              return _c(
-                                "option",
-                                { key: city.id, domProps: { value: city.id } },
-                                [_vm._v(_vm._s(city.city_name))]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass:
-                          "details-input form-control select2 kt_select2_3",
-                        attrs: {
-                          id: "kt_select_brgy",
-                          name: "brgy[]",
-                          multiple: "multiple"
-                        }
-                      },
-                      _vm._l(_vm.currentCities, function(activeBrgy) {
-                        return _c(
-                          "optgroup",
-                          {
-                            key: activeBrgy.id,
-                            attrs: { label: activeBrgy.city_name }
-                          },
-                          _vm._l(
-                            _vm.currentlySelectedBarangays.filter(function(i) {
-                              return i.city_id == activeBrgy.id
-                            }),
-                            function(barangays) {
-                              return _c(
-                                "option",
-                                {
-                                  key: barangays.id,
-                                  domProps: { value: barangays.id }
-                                },
-                                [_vm._v(_vm._s(barangays.brgy_name))]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "details-input form-control",
-                      attrs: {
-                        name: "destination_place",
-                        id: "destination_place",
-                        type: "text",
-                        placeholder: "Enter place here"
-                      }
-                    })
-                  ])
-                ]),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
                   _c("label", { staticClass: "col-3 mt-3" }, [
@@ -61894,7 +61578,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(3)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "separator separator-dashed my-10" }),
@@ -61988,7 +61672,7 @@ var render = function() {
                         attrs: { id: "passenger-tbl" }
                       },
                       [
-                        _vm._m(3),
+                        _vm._m(4),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -62243,6 +61927,26 @@ var staticRenderFns = [
             id: "pur_travel",
             type: "text",
             placeholder: "Enter purpose here"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-3 mt-3" }, [_vm._v("Destination")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-9" }, [
+        _c("input", {
+          staticClass: "details-input form-control",
+          attrs: {
+            name: "destination_place",
+            id: "destination_place",
+            type: "text",
+            placeholder: "Enter place here"
           }
         })
       ])
