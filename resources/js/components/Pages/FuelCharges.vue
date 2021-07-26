@@ -72,7 +72,11 @@
         </div>
         <div
             v-else
-            class="card card-custom card-stretch gutter-b animate__animated animate__fadeInRight"
+            class="
+        card card-custom card-stretch
+        gutter-b
+        animate__animated animate__fadeInRight
+      "
         >
             <div class="card-header flex-wrap">
                 <div class="card-title">
@@ -90,50 +94,100 @@
                             <select
                                 class="form-control select2"
                                 id="kt_select_driver"
+                                name="driver_id"
                             >
                                 <option label="Label"></option>
-                                <option>Test</option>
+                                <option
+                                    v-for="driver in drivers"
+                                    :key="driver.id"
+                                    :value="driver.id"
+                                >
+                                    {{ driver.fullname }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group mb-0">
-                            <label>Vehicle description:</label>
+                            <label>Vehicle:</label>
                             <select
                                 class="form-control select2"
                                 id="kt_select_vehicle"
+                                name="vehicle_id"
                             >
                                 <option label="Label"></option>
-                                <option>Test</option>
+                                <option
+                                    v-for="vehicle in vehicles"
+                                    :key="vehicle.id"
+                                    :value="vehicle.id"
+                                >
+                                    {{ vehicle.name }} - {{ vehicle.plate_no }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group mb-0">
                             <label>Plate No:</label>
-                            <input type="text" class="form-control" disabled />
+                            <input
+                                type="text"
+                                class="form-control"
+                                :value="
+                                    form_fields.vehicle_id
+                                        ? vehicles.filter(
+                                              i =>
+                                                  i.id == form_fields.vehicle_id
+                                          )[0].plate_no
+                                        : null
+                                "
+                                disabled
+                            />
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group mb-0">
-                            <label>Date:</label>
-                            <input type="date" class="form-control" />
-                        </div>
                         <div class="form-group mb-0">
                             <label>PO Number:</label>
                             <select
                                 class="form-control select2"
                                 id="kt_select_po"
+                                name="po_id"
                             >
                                 <option label="Label"></option>
-                                <option>Test</option>
+                                <option
+                                    v-for="po in pos.filter(i => i.type == 1)"
+                                    :key="po.id"
+                                    :value="po.id"
+                                >
+                                    {{ po.po_no }} - ₱
+                                    {{
+                                        po.totalBalance
+                                            ? $toParseNum(po.totalBalance)
+                                            : $toParseNum(po.po_amount)
+                                    }}
+                                </option>
                             </select>
                         </div>
                         <div class="form-group mb-0">
                             <label>PO Balance:</label>
-                            <input type="text" class="form-control" disabled />
+                            <input
+                                type="text"
+                                class="form-control"
+                                :value="
+                                    form_fields.po_id
+                                        ? pos.filter(
+                                              i => i.id == form_fields.po_id
+                                          )[0].totalBalance
+                                        : null
+                                "
+                                disabled
+                            />
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group mb-0">
                             <label>Purpose:</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                v-model="form_fields.purpose"
+                                name="purpose"
+                            ></textarea>
                         </div>
                     </div>
                 </form>
@@ -148,7 +202,7 @@
                     </button>
                     <button
                         class="btn btn-primary btn-sm mx-1"
-                        @click="fuel_request = false"
+                        @click="saveEntry"
                     >
                         Submit
                     </button>
@@ -161,7 +215,81 @@
 export default {
     data() {
         return {
-            fuel_request: false
+            fuel_request: false,
+            form_fields: {
+                driver_id: "",
+                vehicle_id: "",
+                po_id: "",
+                purpose: ""
+            },
+            drivers: [
+                {
+                    birthdate: "1998-03-08",
+                    contact: "09489571604",
+                    created_at: "2021-07-05T06:16:20.000000Z",
+                    deleted_at: null,
+                    fullname: "Marwen ASPE Valeroso",
+                    id: 10,
+                    sex: "Male",
+                    status: "Active",
+                    type: "1",
+                    updated_at: "2021-07-05T06:16:20.00,0000Z"
+                },
+                {
+                    birthdate: "1998-03-08",
+                    contact: "09489571604",
+                    created_at: "2021-07-16T02:43:16.000000Z",
+                    deleted_at: null,
+                    fullname: "Marwen ASPE Valeroso",
+                    id: 12,
+                    sex: "Male",
+                    status: "Active",
+                    type: "1",
+                    updated_at: "2021-07-16T02:43:16.000000Z"
+                },
+                {
+                    birthdate: "1993-01-29",
+                    contact: "09469151992",
+                    created_at: "2021-07-16T02:43:27.000000Z",
+                    deleted_at: null,
+                    fullname: "Scott Owen SANCHEZ Amadeo",
+                    id: 13,
+                    sex: "Male",
+                    status: "Active",
+                    type: "1",
+                    updated_at: "2021-07-16T02:43:27.000000Z"
+                }
+            ],
+            vehicles: [
+                {
+                    capacity: 7,
+                    created_at: "2021-07-05T06:16:11.000000Z",
+                    deleted_at: null,
+                    description: null,
+                    id: 10,
+                    image: null,
+                    name: "UV Express",
+                    plate_no: "ZKR 250",
+                    remarks: null,
+                    status: 1,
+                    type: "1",
+                    updated_at: "2021-07-05T06:16:11.000000Z"
+                }
+            ],
+            pos: [
+                {
+                    created_at: "2021-07-05T00:53:57.000000Z",
+                    deleted_at: null,
+                    id: 1,
+                    po_amount: 25454621,
+                    po_no: "20-01-0001",
+                    status: 1,
+                    totalBalance: 25441885,
+                    type: 1,
+                    updated_at: "2021-07-05T00:53:57.000000Z"
+                }
+            ],
+            names: ["driver_id", "vehicle_id", "po_id", "purpose"]
         };
     },
     mounted() {
@@ -170,11 +298,11 @@ export default {
     methods: {
         ini() {
             $(() => {
+                this.fuelRequest();
                 this.tdatatable();
             });
         },
         tdatatable() {
-            var vm = this;
             var initTable = () => {
                 var table = $("#fuel-charges-tbl");
                 table.DataTable({
@@ -233,7 +361,9 @@ export default {
             };
         },
         fuelRequest() {
+            let vm = this;
             this.fuel_request = true;
+            this.reset();
             setTimeout(() => {
                 $("#kt_select_driver").select2({
                     placeholder: "Select a Driver",
@@ -247,7 +377,118 @@ export default {
                     placeholder: "Select a PO",
                     allowClear: true
                 });
+
+                $("#kt_select_driver").on("select2:select", function() {
+                    vm.form_fields.driver_id = $(this).val();
+                });
+                $("#kt_select_vehicle").on("select2:select", function() {
+                    vm.form_fields.vehicle_id = $(this).val();
+                });
+                $("#kt_select_po").on("select2:select", function() {
+                    vm.form_fields.po_id = $(this).val();
+                });
             }, 100);
+        },
+        saveEntry() {
+            let formD = new FormData();
+            formD.append("vehicle_id", this.form_fields.vehicle_id);
+            formD.append("driver_id", this.form_fields.driver_id);
+            formD.append("po_id", this.form_fields.po_id);
+            formD.append("purpose", this.form_fields.purpose);
+
+            axios
+                .post(BASE_URL + "/tracking/fuelcharges", formD)
+                .then(response => {
+                    $(".invalid-feedback").remove();
+                    $(".is-invalid").removeClass("is-invalid");
+                    Swal.fire("Good job!", response.data.message, "success");
+                    this.$showToast(response.data.message, "success");
+                    setTimeout(() => {
+                        this.fuel_request = false;
+                    }, 1000);
+                })
+                .catch(error => {
+                    let data = error.response.data.errors;
+                    let keys = [];
+                    let values = [];
+                    for (const [key, value] of Object.entries(data)) {
+                        keys.push(`${key}`);
+                        values.push(`${value}`);
+
+                        if (
+                            `${key}` == "vehicle_id" ||
+                            `${key}` == "driver_id" ||
+                            `${key}` == "po_id"
+                        ) {
+                            if (
+                                $("[name=" + `${key}` + "]")
+                                    .next()
+                                    .next().length == 0
+                            ) {
+                                $("[name=" + `${key}` + "]")
+                                    .next()
+                                    .after(
+                                        '<div class="invalid-feedback d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
+                            }
+                        } else {
+                            if (
+                                $('[name="' + `${key}` + '"]').next().length ==
+                                0
+                            ) {
+                                $('[name="' + `${key}` + '"]').addClass(
+                                    "is-invalid"
+                                );
+                                $('[name="' + `${key}` + '"]').after(
+                                    '<div class="invalid-feedback">' +
+                                        `${value}` +
+                                        "</div>"
+                                );
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.names.length; i++) {
+                        if (
+                            this.names[i] == "vehicle_id" ||
+                            this.names[i] == "driver_id" ||
+                            this.names[i] == "po_id"
+                        ) {
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                if (
+                                    $("[name=" + this.names[i] + "]")
+                                        .next()
+                                        .next().length == 1
+                                ) {
+                                    $("[name=" + this.names[i] + "]")
+                                        .next()
+                                        .next(".invalid-feedback")
+                                        .remove();
+                                }
+                            }
+                        } else {
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                $('[name="' + this.names[i] + '"]').removeClass(
+                                    "is-invalid"
+                                );
+                                $('[name="' + this.names[i] + '"]')
+                                    .next(".invalid-feedback")
+                                    .remove();
+                            }
+                        }
+                    }
+                    this.$showToast(
+                        values.toString().replace(/,/g, "</br>"),
+                        "error"
+                    );
+                });
+        },
+        reset() {
+            this.form_fields.vehicle_id = "";
+            this.form_fields.driver_id = "";
+            this.form_fields.po_id = "";
+            this.form_fields.purpose = "";
         }
     }
 };

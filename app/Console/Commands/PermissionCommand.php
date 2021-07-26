@@ -45,6 +45,7 @@ class PermissionCommand extends Command
         'listuser',
         'printrequest',
         'travelsstatus',
+        'fuelcharges'
     ];
 
     /**
@@ -104,7 +105,7 @@ class PermissionCommand extends Command
                 'guard_name' => 'users',
                 'slug' => $slug,
                 'description' =>
-                'Access '.$name .' Module'
+                'Access ' . $name . ' Module'
             ];
             // get base id after insert
             $id = DB::table('permissions')->insertGetId($base, 'id');
@@ -117,7 +118,7 @@ class PermissionCommand extends Command
                     'name' => $name . '-' . str_replace(' ', '.', $action),
                     'guard_name' => $base['guard_name'],
                     'slug' => $slug . '.' . str_replace(' ', '.', $action),
-                    'description' => 'Access ' . ucwords($module . ' '. $action) . ' Module'
+                    'description' => 'Access ' . ucwords($module . ' ' . $action) . ' Module'
                 ];
             }
             $this->create($permissions);

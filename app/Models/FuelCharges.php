@@ -7,14 +7,14 @@ use App\Traits\WithPaginate;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class FuelCharge extends Model
+class FuelCharges extends Model
 {
     use ExtendedEloquentTrait;
     use WithPaginate;
     use SoftDeletes;
 
 
-    protected $table = 'drivers';
+    protected $table = 'fuel_charges';
 
     /**
      * The attributes that are mass assignable.
@@ -22,12 +22,15 @@ class FuelCharge extends Model
      * @var array
      */
     protected $fillable = [
-        'type',
-        'fullname',
-        'birthdate',
-        'sex',
-        'contact',
+        'code',
+        'drivers_id',
+        'vehicles_id',
+        'procurements_id',
+        'particulars',
+        'num_liters',
+        'unit_price',
+        'amount',
+        'purpose',
         'status',
-        'updated_at'
     ];
 }
