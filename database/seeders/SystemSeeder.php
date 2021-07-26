@@ -12,7 +12,7 @@ class SystemSeeder extends Seeder
     private $system = [
         [
             'handler' => 'NAME',
-            'value' => 'GSTracking'           
+            'value' => 'GSTracking'
         ],
         [
             'handler' => 'DESCRIPTION',
@@ -45,6 +45,10 @@ class SystemSeeder extends Seeder
         [
             'handler' => 'PORTAL_TOKEN',
             'value' => 'Token 7a8203defd27f14ca23dacd19ed898dd3ff38ef6'
+        ],
+        [
+            'handler' => 'FR_CODE',
+            'value' => 'FR-21-06-0001'
         ]
     ];
     /**

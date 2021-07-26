@@ -137,18 +137,6 @@ Route::group(['prefix' => 'transportation', 'namespace' => 'Main'], function () 
         ]
     ]);
 
-    Route::resource('serviceprovider', 'TransportationServiceProviderController', [
-        'names' => [
-            'index' => 'main.serviceprovider.index',
-            'create' => 'main.serviceprovider.create',
-            'store' => 'main.serviceprovider.store',
-            'show' => 'main.serviceprovider.show',
-            'edit' => 'main.serviceprovider.edit',
-            'update' => 'main.serviceprovider.update',
-            'destroy' => 'main.serviceprovider.destroy',
-        ]
-    ]);
-
     Route::post('driver/autoComplete', 'TransportationDriverController@typehead');
 });
 Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
@@ -211,6 +199,18 @@ Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
             'edit' => 'main.travelcalendar.edit',
             'update' => 'main.travelcalendar.update',
             'destroy' => 'main.travelcalendar.destroy',
+        ]
+    ]);
+
+    Route::resource('fuelcharges', 'FuelChargesController', [
+        'names' => [
+            'index' => 'main.fuelcharges.index',
+            'create' => 'main.fuelcharges.create',
+            'store' => 'main.fuelcharges.store',
+            'show' => 'main.fuelcharges.show',
+            'edit' => 'main.fuelcharges.edit',
+            'update' => 'main.fuelcharges.update',
+            'destroy' => 'main.fuelcharges.destroy',
         ]
     ]);
     Route::put('vehicletravels/undo/{id}', 'VehicleTravelsController@undo');
