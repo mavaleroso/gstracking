@@ -31,15 +31,11 @@ class TravelStoreRequest extends FormRequest
             'division' => 'required',
             'section' => 'required',
             'pur_travel' => 'required',
-            'region' => 'required',
-            'province' => 'required',
-            'city' => 'required',
-            'brgy' => 'nullable',
             'date_travel' => 'required|after_or_equal:today',
             'date_return' => 'required|after_or_equal:today',
             'time_depart' => 'required',
             'pax_total' => 'required',
-            'destination_place' => 'nullable'
+            'destination_place' => 'required'
             
         ];
 
@@ -65,10 +61,6 @@ class TravelStoreRequest extends FormRequest
             'division' => 'Division',
             'section' => 'Section',
             'pur_travel' => 'Purpose',
-            'region' => 'Region',
-            'province' => 'Province',
-            'city' => 'City',
-            'brgy' => 'Barangay',
             'date_travel' => 'Travel Date',
             'date_return' => 'Return Date',
             'time_depart' => 'Time',
@@ -97,10 +89,6 @@ class TravelStoreRequest extends FormRequest
             'section' => __('main/validations.required'),
             'division' => __('main/validations.required'),
             'pur_travel' => __('main/validations.required'),
-            'region' => __('main/validations.required'),
-            'province' => __('main/validations.required'),
-            'city' => __('main/validations.required'),
-            'brgy' => __('main/validations.required'),
             'date_travel' => __('main/validations.required'),
             'date_return' => __('main/validations.required'),
             'time_depart' => __('main/validations.required')

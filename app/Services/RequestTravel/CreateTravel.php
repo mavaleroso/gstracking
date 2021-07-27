@@ -34,8 +34,6 @@ class CreateTravel
 
         $arr = array('luser' => auth()->user()->id, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
         createLogs($arr);
-
-
         $request = Request::create([
             'user_id' => auth()->user()->id,
             'division_id' => $fields['division'],
@@ -46,17 +44,9 @@ class CreateTravel
             'depart_time' => $fields['time_depart']
 
         ]);
-
-        $check = (isset($fields['brgy']))? 1:0;
-        for ($i=0; $i < count($fields['city']); $i++) { 
-            $request->destinations()->create([
-                'region_id' => $fields['region'],
-                'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
-                'city_id' => $fields['city'][$i],
-                'brgy_id' => ($check == 0)? NULL:((isset($fields['brgy'][$i]))? $fields['brgy'][$i]:NULL),
-                'others' => $fields['destination_place']
-            ]);    
-        }      
+        $request->destinations()->create([
+            'others' => $fields['destination_place']
+        ]);        
         for ($i=1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
                 'type' => 1,
