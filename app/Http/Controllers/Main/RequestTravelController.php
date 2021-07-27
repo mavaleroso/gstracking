@@ -6,6 +6,7 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RequestTravel\TravelStoreRequest;
 use App\Services\RequestTravel\CreateTravel;
+use App\Services\RequestTravel\GetDestination;
 use Illuminate\Support\Facades\DB;
 
 class RequestTravelController extends Controller
@@ -28,8 +29,13 @@ class RequestTravelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetDestination $getdestination)
     {
+
+        $result = $getdestination->execute();
+        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+        // return response()->json(Request::select('destination')->get());
+        // dd("alright");
         //
     }
 
