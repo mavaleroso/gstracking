@@ -59,10 +59,9 @@
                                             v-for="division in divisions"
                                             :key="division.id"
                                             :value="division.id"
-                                            >{{
-                                                division.division_name
-                                            }}</option
                                         >
+                                            {{ division.division_name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -83,8 +82,9 @@
                                             )"
                                             :key="section.id"
                                             :value="section.id"
-                                            >{{ section.section_name }}</option
                                         >
+                                            {{ section.section_name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -256,12 +256,11 @@
                                                                 ' ' +
                                                                 result.last_name
                                                         "
-                                                        >{{ result.first_name }}
-                                                        {{ result.middle_name }}
-                                                        {{
-                                                            result.last_name
-                                                        }}</option
                                                     >
+                                                        {{ result.first_name }}
+                                                        {{ result.middle_name }}
+                                                        {{ result.last_name }}
+                                                    </option>
                                                 </select>
                                                 <select
                                                     v-else
@@ -287,19 +286,18 @@
                                                                 ' ' +
                                                                 result.last_name
                                                         "
-                                                        >{{ result.first_name }}
-                                                        {{ result.middle_name }}
-                                                        {{
-                                                            result.last_name
-                                                        }}</option
                                                     >
+                                                        {{ result.first_name }}
+                                                        {{ result.middle_name }}
+                                                        {{ result.last_name }}
+                                                    </option>
                                                 </select>
                                             </td>
                                             <td>
                                                 <input
                                                     :name="'pax_des_' + index"
                                                     :id="'pax_des_' + index"
-                                                    class="details-input data-entry form-control "
+                                                    class="details-input data-entry form-control"
                                                     type="text"
                                                     v-model="pax_des[index - 1]"
                                                     disabled
@@ -309,7 +307,7 @@
                                                 <input
                                                     :name="'pax_gen_' + index"
                                                     :id="'pax_gen_' + index"
-                                                    class="details-input data-entry form-control "
+                                                    class="details-input data-entry form-control"
                                                     type="text"
                                                     v-model="pax_gen[index - 1]"
                                                     disabled
@@ -347,7 +345,6 @@ export default {
             divisions: [],
             sections: [],
             activeSections: [],
-            activeCities: [],
             names: [
                 "region",
                 "province",
@@ -440,10 +437,6 @@ export default {
                     let id = $("#kt_select_section").val();
                     this.section = id;
                 });
-
-                $("#kt_select_region").on("change", function() {
-                    vm.activeRegion = $(this).val();
-                });
             });
         },
         getData(id, index) {
@@ -454,9 +447,6 @@ export default {
             $(`[name="pax_des_${index}"]`).val(vm.results[id].position);
         },
         clearData() {
-            $(".details-input")
-                .val(null)
-                .trigger("change");
             let vm = this;
             vm.total = 1;
             vm.pax_des.length = 0;
@@ -481,9 +471,12 @@ export default {
                     placeholder: "Select a fullname",
                     allowClear: true
                 });
-                $(`#passenger-select-${count}`).on("select2:select", function(e) {
-                    let paxVal = $(this).find(":selected").data("id");
-                    console.log("paxval" + paxVal + " count" + count);
+                $(`#passenger-select-${count}`).on("select2:select", function(
+                    e
+                ) {
+                    let paxVal = $(this)
+                        .find(":selected")
+                        .data("id");
                     vm.getData(paxVal, count);
                 });
 
@@ -539,6 +532,9 @@ export default {
                         keys.push(`${key}`);
                         values.push(`${value}`);
                         if (
+                            `${key}` == "region" ||
+                            `${key}` == "province" ||
+                            `${key}` == "city" ||
                             `${key}` == "division" ||
                             `${key}` == "section"
                         ) {
@@ -582,6 +578,9 @@ export default {
                     }
                     for (let i = 0; i < this.names.length; i++) {
                         if (
+                            this.names[i] == "region" ||
+                            this.names[i] == "province" ||
+                            this.names[i] == "city" ||
                             this.names[i] == "division" ||
                             this.names[i] == "section"
                         ) {
@@ -622,19 +621,34 @@ export default {
             this.sections = JSON.parse(localStorage.getItem("section"));
         },
         newRequest() {
-            this.clearData();
+            $(".details-input")
+                .val(null)
+                .trigger("change");
             setTimeout(() => {
                 $(".data-entry").attr("disabled", true);
             }, 500);
-            $(".data-entry").attr("disabled", true);
+            this.clearData();
             for (let i = 0; i < this.names.length; i++) {
-                 if (
+                if (
+                    this.names[i] == "section" ||
+                    this.names[i] == "province" ||
+                    this.names[i] == "city" ||
+                    this.names[i] == "brgy"
+                ) {
+                    $("#kt_select_" + this.names[i]).empty();
+                } else if (
                     this.names[i] == "division" ||
                     this.names[i] == "region"
                 ) {
+                    $("#kt_select_region")
+                        .val(null)
+                        .trigger("change");
                 } else {
                     $('[name="' + this.names[i] + '"]').val(null);
                 }
+                $("#kt_select_division")
+                    .val(null)
+                    .trigger("change");
             }
             $(".details-input").attr("disabled", false);
             this.complete = false;

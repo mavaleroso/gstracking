@@ -79,8 +79,9 @@
                     <input name="request_id" type="hidden" v-model="current_id"/>
                     <div class="card-body row">
                         <h5 class="col-lg-12 text-dark font-weight-bold mb-10">Requestor Details:</h5>
+                        <div class="col-lg-12"><h5>Info:</h5></div>
                         <div class="col-lg-6">
-                            <h5>Info:</h5>
+                         
                             <input type="hidden" name="division" v-model="division">
                             <input type="hidden" name="section" v-model="section">
                             <div class="form-group">
@@ -88,16 +89,8 @@
                                 <input name="prog_div_sec" type="text" class="form-control" disabled="disabled" v-model="request_dept"/>
                             </div>
                             <div class="form-group mt-n7">
-                                <label>Purpose of Travel</label>
-                                <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
-                            </div>
-                            <div class="form-group mt-n7">
                                 <label>Date of Travel</label>
                                 <input id="date-travel" type="date" name="date_travel" class="form-control details-input date-limit" disabled="disabled" :min="maxDate" v-model="request_travelDate"/>
-                            </div>
-                            <div class="form-group mt-n7">
-                                <label>Date of Return</label>
-                                <input id="date-return" type="date" name="date_return" class="form-control details-input date-limit" disabled="disabled" :min="maxDate" v-model="request_returnDate"/>
                             </div>
                             <div class="form-group mt-n7">
                                 <label>Time of Departure</label>
@@ -106,32 +99,15 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <h5>Destination:</h5>
+                               
 
-                                <label>Region</label>
-                                <select class="form-control select2 details-input" id="kt_select_region" name="region" disabled="disabled">
-                                    <option v-for="region in regions" :key="region.id" :value="region.id">{{ region.region_name }}</option>
-                                </select>
+                               <label>Purpose of Travel</label>
+                                <input type="text" name="pur_travel" class="form-control details-input" disabled="disabled" v-model="request_travelPurpose"/>
 
-                                <label class="mt-4">Province</label>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_province" name="province[]" multiple="multiple" disabled="disabled">
-                                    <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.province_name }}</option>
-                                </select>
+                                <label>Date of Return</label>
+                                <input id="date-return" type="date" name="date_return" class="form-control details-input date-limit" disabled="disabled" :min="maxDate" v-model="request_returnDate"/>
 
-                                <label class="mt-4">City</label>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_city" name="city[]" multiple="multiple" disabled="disabled">
-                                    <optgroup v-for="activeProv in activeProvinces" :key="activeProv.id" :label="activeProv.province_name">
-                                        <option v-for="city in cities.filter(i=>i.province_id == activeProv.id)" :key="city.id" :value="city.id">{{ city.city_name }}</option>
-                                    </optgroup>
-                                </select>
-
-                                <label class="mt-4">Barangay</label>
-                                <select class="form-control select2 kt_select2_3 details-input" id="kt_select_brgy" name="brgy[]" multiple="multiple" disabled="disabled">
-                                    <optgroup v-for="activeCity in activeCities" :key="activeCity.id" :label="activeCity.city_name">
-                                        <option v-for="brgy in brgys.filter(i=>i.city_id == activeCity.id)" :key="brgy.id" :value="brgy.id">{{ brgy.brgy_name }}</option>
-                                    </optgroup>
-                                </select>
-
+                               
                                 <label>Place</label>
                                 <input type="text" name="destination_place" class="form-control details-input" disabled="disabled" v-model="place"/>
                             </div>
@@ -354,13 +330,8 @@ export default {
             request_dept: null,
             division: null,
             section: null,
-            regions: [],
-            provinces: [],
-            cities: [],
             brgys: [],
             place: null,
-            activeProvinces: [],
-            activeCities: [],
             destinations: [],
             passengers: [],
             request_edit: 0,
@@ -381,7 +352,7 @@ export default {
                     data: []
                 }
             },
-            names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+            names: ['travel_radio', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
             defaultNames: [],
             rpNames: ['vehicle_1', 'driver_1'],
             hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1','driver_name_1','driver_contact_1'],
@@ -395,7 +366,6 @@ export default {
         Modal
     },
     created() {
-        this.getRegion();
         this.getVehicle();
         this.getPo();
         this.getDriver();
@@ -413,64 +383,6 @@ export default {
 
                 $('.menu-item').removeClass('menu-item-active');
                 $('.router-link-active').parent().addClass('menu-item-active');
-
-                $('#kt_select_province').select2({
-                    placeholder: "Select a Province",
-                });
-
-                $('#kt_select_city').select2({
-                    placeholder: "Select a City",
-                });
-
-                $('#kt_select_brgy').select2({
-                });
-
-                $('#kt_select_region').select2({
-                    placeholder: "Select a Region",
-                    allowClear: true
-                });
-                
-                $('#kt_select_region').on('change', () => {
-                    let id  = $('#kt_select_region').val();
-                    this.getProvince(id);
-                    this.provinces= [];
-                    this.cities = [];
-                    this.brgys = [];
-                    this.activeProvinces = [];
-                    this.activeCities = [];
-                });
-
-                $('#kt_select_province').on('change', () => {
-                    let id  = $('#kt_select_province').val();
-                    id = id.map(i=>Number(i));
-                    this.provinces.map(i=> {
-                        if (id.indexOf(i.id) != -1) {
-                            i.active="true";
-                        } else {
-                            i.active="false";
-                        }
-                    });
-                    if(id.length != 0) {
-                        this.getCity(id);
-                        this.currentProv();             
-                    }
-                });
-
-                $('#kt_select_city').on('change', () => {
-                    let id  = $('#kt_select_city').val();
-                    id = id.map(i=>Number(i));
-                    this.cities.map(i=> {
-                        if (id.indexOf(i.id) != -1) {
-                            i.active="true";
-                        } else {
-                            i.active="false";
-                        }
-                    });
-                    if(id.length != 0) {
-                        this.getBrgy(id);
-                        this.currentCity();
-                    }
-                });
 
                 $('#kt_datatable_modal').on('hidden.bs.modal', function (e) {
                     $('.details-input').attr('disabled',true);
@@ -668,34 +580,7 @@ export default {
 
             });
         },
-        getRegion() {
-            axios.get(BASE_URL + "/api/v1/region").then(response => {
-                this.regions = response.data;
-            });
-        },
-        getProvince(id) {
-            axios.get(BASE_URL + "/api/v1/province/" + id).then(response => {
-                this.provinces = response.data;
-                this.provinces.map(i=>i.active="false")
-            });
-        },
-        getCity(id) {
-            axios.get(BASE_URL + "/api/v1/city/" + id).then(response => {
-                this.cities = response.data;
-                this.cities.map(i=>i.active="false")
-            });
-        },
-        getBrgy(id) {
-            axios.get(BASE_URL + "/api/v1/brgy/" + id).then(response => {
-                this.brgys = response.data;
-            });
-        },
-        currentProv() {
-            this.activeProvinces = this.provinces.filter(i => i.active === 'true');
-        },
-        currentCity() {
-            this.activeCities = this.cities.filter(i => i.active === 'true');
-        },
+
         EmployeeList(){
             this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
         },
@@ -703,38 +588,9 @@ export default {
             
             $('.details-input').attr('disabled',true);
             this.request_edit = 0;
-            $('#kt_select_region').val();
             axios.get(BASE_URL + "/api/v1/destination/" + id).then(response => {
-                let destination = response.data;
                 this.place = response.data[0].others;
 
-                let data = [];
-
-                const distinct = (value, index, self) => {
-                    return self.indexOf(value) === index;
-                }
-
-                data['region'] = (destination.map(function(d) { return d['region_id']; })).filter(distinct);
-                data['province'] = (destination.map(function(d) { return d['province_id']; })).filter(distinct);
-                data['city'] = (destination.map(function(d) { return d['city_id']; })).filter(distinct);
-                data['brgy'] = (destination.map(function(d) { return d['brgy_id']; })).filter(distinct);
-
-                $('#kt_select_region').val(data.region);
-                $('#kt_select_region').trigger('change');
-
-                setTimeout(() => {
-                    $('#kt_select_province').val(data.province);
-                    $('#kt_select_province').trigger('change');
-                }, 500);
-                setTimeout(() => {
-                    $('#kt_select_city').val(data.city);
-                    $('#kt_select_city').trigger('change');
-                }, 1000);
-                setTimeout(() => {
-                    $('#kt_select_brgy').val(data.brgy);
-                    $('#kt_select_brgy').trigger('change');
-                }, 1500);
-                
                 setTimeout(() => {
                     for (let i = 0; i < this.passengers.length + 1; i++) {
                         $('#passenger-select-'+i).select2({
@@ -799,41 +655,15 @@ export default {
                 for (const [key, value] of Object.entries(data)) {
                     keys.push(`${key}`);
                     values.push(`${value}`);
-                    if (`${key}` == 'region' || `${key}` == 'province' || `${key}` == 'city'){
-                        if (`${key}` == 'brgy') {
-                            if ($('#kt_select_'+`${key}`).next().next().length == 0 || $('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                            }
-                        } else {
-                            if ($('#kt_select_'+`${key}`).next().next().attr('class').search('invalid-feedback') == -1) {
-                                $('#kt_select_'+`${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
-                            }
-                        }
-                    } else {
-                        if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                            $('input[name="'+`${key}`+'"]').addClass('is-invalid');
-                            $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                        }
+                    if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
+                        $('input[name="'+`${key}`+'"]').addClass('is-invalid');
+                        $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
                     }
                 }
                 for (let i = 0; i < this.names.length; i++) {
-                    if (this.names[i] == 'region' || this.names[i] == 'province' || this.names[i] == 'city' || this.names[i] == 'brgy') {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            if (this.names[i] == 'brgy') {
-                                if ($('#kt_select_'+this.names[i]).next().next().length != 0) {
-                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                                }
-                            } else {
-                                if ($('#kt_select_'+this.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                                    $('#kt_select_'+this.names[i]).next().next('.invalid-feedback').remove();
-                                }
-                            }
-                        }
-                    } else {
-                        if (keys.indexOf(''+this.names[i]+'') == -1) {
-                            $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
-                            $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
-                        }
+                    if (keys.indexOf(''+this.names[i]+'') == -1) {
+                        $('input[name="'+this.names[i]+'"]').removeClass('is-invalid');
+                        $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
                     }
                 }
                 this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');

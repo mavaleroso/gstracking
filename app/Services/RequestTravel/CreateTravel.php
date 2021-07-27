@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\RequestTravel;
 
 use App\Models\Request;
@@ -32,9 +33,8 @@ class CreateTravel
     public function execute($fields, $url)
     {
 
-        $arr = array('luser' => auth()->user()->id, 'lpage' => 'Request_travel' , 'lurl' => $url, 'laction' => 'create');
+        $arr = array('luser' => auth()->user()->id, 'lpage' => 'Request_travel', 'lurl' => $url, 'laction' => 'create');
         createLogs($arr);
-        
         $request = Request::create([
             'user_id' => auth()->user()->id,
             'division_id' => $fields['division'],
@@ -45,15 +45,15 @@ class CreateTravel
             'depart_time' => $fields['time_depart']
 
         ]);
-            $request->destinations()->create([
-                'others' => $fields['destination_place']
-            ]);    
-        for ($i=1; $i <= $fields['pax_total']; $i++) {
+        $request->destinations()->create([
+            'others' => $fields['destination_place']
+        ]);
+        for ($i = 1; $i <= $fields['pax_total']; $i++) {
             $request->passengers()->create([
                 'type' => 1,
-                'name' => $fields['pax_name_'.$i],
-                'designation' => $fields['pax_des_'.$i],
-                'gender' => $fields['pax_gen_'.$i]
+                'name' => $fields['pax_name_' . $i],
+                'designation' => $fields['pax_des_' . $i],
+                'gender' => $fields['pax_gen_' . $i]
             ]);
         }
 
