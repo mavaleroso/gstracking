@@ -8891,22 +8891,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     getDestination: function getDestination() {
       axios.get(BASE_URL + "/travel/request/").then(function (response) {
-        // this.place = response.data[0].others;
-        var hello = response.data.result; // let arr = JSON.parse(JSON.stringify(hello));
-        // $.each(arr, function (key, value) {
-        //   alert(value);
-        // });
-
-        var result = hello.map(function (a) {
+        var res = response.data.result;
+        var result = res.map(function (a) {
           return a.destination;
         });
         var availableTags = result;
         $("#destination_place").autocomplete({
           source: availableTags
-        }); // let availableTags = [array];
-        // $("#destination_place").autocomplete({
-        //   source: availableTags,
-        // });
+        });
       });
     },
     newRequest: function newRequest() {

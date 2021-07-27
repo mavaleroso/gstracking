@@ -554,27 +554,12 @@ export default {
     },
     getDestination() {
       axios.get(BASE_URL + "/travel/request/").then((response) => {
-        // this.place = response.data[0].others;
-
-        let hello = response.data.result;
-
-        // let arr = JSON.parse(JSON.stringify(hello));
-
-        // $.each(arr, function (key, value) {
-        //   alert(value);
-        // });
-
-        let result = hello.map((a) => a.destination);
-
+        let res = response.data.result;
+        let result = res.map((a) => a.destination);
         var availableTags = result;
         $("#destination_place").autocomplete({
           source: availableTags,
         });
-
-        // let availableTags = [array];
-        // $("#destination_place").autocomplete({
-        //   source: availableTags,
-        // });
       });
     },
     newRequest() {
