@@ -6,7 +6,6 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\TransportationDriver\DriverRequest;
 use App\Services\TransportationDriver\CreateDriver;
-use App\Services\TransportationDriver\UpdateDriver;
 use App\Services\TransportationDriver\GetListingDriver;
 use App\Services\TransportationDriver\GetListingDriverApi;
 use App\Models\Driver;
@@ -25,7 +24,7 @@ class TransportationDriverController extends Controller
         $this->middleware('permission:driver-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:driver-delete', ['only' => ['destroy']]);
         $this->middleware('permission:driver-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +44,6 @@ class TransportationDriverController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -58,7 +56,7 @@ class TransportationDriverController extends Controller
     {
         $url = $driverRequest->url();
         $result = $createDriver->execute($driverRequest->validated(), $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.driver_created_successfully'), 'result' => $result]);
     }
 
     /**
@@ -81,7 +79,6 @@ class TransportationDriverController extends Controller
      */
     public function edit()
     {
-        
     }
 
     /**
@@ -93,12 +90,12 @@ class TransportationDriverController extends Controller
      */
     public function update($id)
     {
-        
     }
 
-    public function typehead(GetListingDriverApi $getlist){
+    public function typehead(GetListingDriverApi $getlist)
+    {
         $result = $getlist->execute();
-        
+
         return response()->json($result);
     }
 
@@ -112,11 +109,11 @@ class TransportationDriverController extends Controller
     {
         $url = $request->url();
         $user = auth()->user()->id;
-        $arr = array('luser' => $user, 'lpage' => 'Office_driver' , 'lurl' => $url, 'laction' => 'delete');
+        $arr = array('luser' => $user, 'lpage' => 'Office_driver', 'lurl' => $url, 'laction' => 'delete');
         $createLogs = createLogs($arr);
 
         $url = $request->url();
         $result = Driver::destroy($id);
-        return json_encode(['type' => 'success','message' => __('main/notifications.driver_deleted_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.driver_deleted_successfully'), 'result' => $result]);
     }
 }

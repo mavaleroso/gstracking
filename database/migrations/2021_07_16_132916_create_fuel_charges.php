@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateFuelCharges extends Migration
 {
@@ -19,7 +20,6 @@ class CreateFuelCharges extends Migration
             $table->bigInteger('drivers_id');
             $table->bigInteger('vehicles_id');
             $table->bigInteger('procurements_id');
-            $table->date('request_date');
             $table->mediumText('particulars');
             $table->double('num_liters');
             $table->double('unit_price');

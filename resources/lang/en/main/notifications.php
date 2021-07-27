@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
     // Login Page
@@ -50,6 +50,10 @@ return [
     'passenger_created_successfully' => 'Passenger created succesfully',
     'passenger_updated_successfully' => 'Passenger updated succesfully',
     'passenger_deleted_successfully' => 'Passenger deleted succesfully',
+
+    // Fuel Charges Page
+    'fuelCharges_created_successfully' => 'Fuel Charges created succesfully',
+    'fuelCharges_deleted_successfully' => 'Fuel Charges deleted succesfully',
 
     'requestTransaction_created_successfully' => 'Request Transactions created successfully'
 ];

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TravelStoreRequest extends FormRequest
 {
-     /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -24,7 +24,7 @@ class TravelStoreRequest extends FormRequest
      */
     public function rules()
     {
-        
+
         $rules = [
             'request_id' => 'nullable',
             'travel_radio' => 'nullable',
@@ -36,18 +36,18 @@ class TravelStoreRequest extends FormRequest
             'time_depart' => 'required',
             'pax_total' => 'required',
             'destination_place' => 'required'
-            
+
         ];
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $rules['pax_name_'.$i] = 'required';
-            $rules['pax_des_'.$i] = 'required';
-            $rules['pax_gen_'.$i] = 'required';
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $rules['pax_name_' . $i] = 'required';
+            $rules['pax_des_' . $i] = 'required';
+            $rules['pax_gen_' . $i] = 'required';
         }
 
 
-        
-        return $rules;        
+
+        return $rules;
     }
 
     /**
@@ -66,14 +66,13 @@ class TravelStoreRequest extends FormRequest
             'time_depart' => 'Time',
         ];
 
-        // dd($this->request->get('pax_total'));
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $attributes['pax_name_'.$i] = 'Passenger Name';
-            $attributes['pax_des_'.$i] = 'Passenger Designation';
-            $attributes['pax_gen_'.$i] = 'Passenger Gender';
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $attributes['pax_name_' . $i] = 'Passenger Name';
+            $attributes['pax_des_' . $i] = 'Passenger Designation';
+            $attributes['pax_gen_' . $i] = 'Passenger Gender';
         }
-        
+
 
         return $attributes;
     }
@@ -90,14 +89,15 @@ class TravelStoreRequest extends FormRequest
             'division' => __('main/validations.required'),
             'pur_travel' => __('main/validations.required'),
             'date_travel' => __('main/validations.required'),
+            'destination_place' => __('main/validations.required'),
             'date_return' => __('main/validations.required'),
             'time_depart' => __('main/validations.required')
         ];
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $messages['pax_name_'.$i] = __('main/validations.required');
-            $messages['pax_des_'.$i] = __('main/validations.required');
-            $messages['pax_gen_'.$i] = __('main/validations.required');
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $messages['pax_name_' . $i] = __('main/validations.required');
+            $messages['pax_des_' . $i] = __('main/validations.required');
+            $messages['pax_gen_' . $i] = __('main/validations.required');
         }
 
         return $messages;
