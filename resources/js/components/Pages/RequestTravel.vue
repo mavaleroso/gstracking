@@ -427,6 +427,7 @@ export default {
         });
 
         $(`#passenger-select-${count}`).on("select2:clear", function (e) {
+          console.log("counttt " + count);
           $("#pax_des_" + `${count}`).val(null);
           $("#pax_gen_" + `${count}`).val(null);
           vm.pax_gen[count - 1] = "";
