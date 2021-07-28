@@ -29,6 +29,7 @@ class Request extends Model
         'type_vehicle',
         'department',
         'purpose',
+        'destination',
         'travel_date',
         'return_date',
         'depart_time',
