@@ -6,6 +6,7 @@ use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\FuelCharges\FuelChargesStoreRequest;
 use App\Services\FuelCharges\CreateFuelCharges;
+use App\Services\FuelCharges\GetListingFuelCharges;
 
 class FuelChargesController extends Controller
 {
@@ -27,9 +28,10 @@ class FuelChargesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetListingFuelCharges $getListingFuelCharges)
     {
-        //
+        $records = $getListingFuelCharges->execute();
+        return response()->json($records);
     }
 
     /**

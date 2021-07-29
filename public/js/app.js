@@ -4452,9 +4452,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4535,12 +4532,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
-        _this.fuelRequest();
-
-        _this.tdatatable();
+        _this.tdatatable().init();
       });
     },
     tdatatable: function tdatatable() {
+      var _this2 = this;
+
       var initTable = function initTable() {
         var table = $("#fuel-charges-tbl");
         table.DataTable({
@@ -4549,34 +4546,119 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           scrollCollapse: true,
           processing: true,
           serverSide: true,
-          // ajax: {
-          //     url: BASE_URL + "/transportation/driver",
-          //     type: "GET"
-          // },
+          ajax: {
+            url: BASE_URL + "/tracking/fuelcharges",
+            type: "GET"
+          },
           columns: [{
             data: "id"
           }, {
-            data: "fullname"
+            data: "code"
           }, {
-            data: "birthdate"
+            data: "name"
           }, {
-            data: "sex"
+            data: "plate_no"
           }, {
-            data: "contact"
+            data: "gasoline_liters"
+          }, {
+            data: "diesel_liters"
+          }, {
+            data: "created_at"
+          }, {
+            data: "po_no"
+          }, {
+            data: "totalBalance"
           }, {
             data: "status"
-          }, {
-            data: "updated_at"
           }, {
             data: "id"
           }],
           columnDefs: [{
+            targets: 1,
+            render: function render(data) {
+              return _this2.$label(data);
+            }
+          }, {
+            targets: 6,
+            render: function render(data) {
+              return _this2.$dateEng(data);
+            }
+          }, {
+            targets: 8,
+            render: function render(data) {
+              return _this2.$toParseNum(data);
+            }
+          }, {
+            targets: 9,
+            render: function render(data) {
+              var status = {
+                0: {
+                  title: "On-going",
+                  "class": " label-light-warning"
+                },
+                1: {
+                  title: "Approved",
+                  "class": " label-light-primary"
+                },
+                2: {
+                  title: "Completed",
+                  "class": " label-light-primary"
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
+            }
+          }, {
             targets: -1,
             title: "Action",
             orderable: false,
             width: "125px",
             render: function render(data) {
               return '\
+                                    <a\
+                                        href="javascript:;"\
+                                        class="btn-edit btn btn-sm btn-clean btn-icon"\
+                                        title="Edit details"\
+                                    >\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg\
+                                                xmlns="http://www.w3.org/2000/svg"\
+                                                xmlns:xlink="http://www.w3.org/1999/xlink"\
+                                                width="24px"\
+                                                height="24px"\
+                                                viewBox="0 0 24 24"\
+                                                version="1.1"\
+                                            >\
+                                                <g\
+                                                    stroke="none"\
+                                                    stroke-width="1"\
+                                                    fill="none"\
+                                                    fill-rule="evenodd"\
+                                                >\
+                                                    <rect\
+                                                        x="0"\
+                                                        y="0"\
+                                                        width="24"\
+                                                        height="24"\
+                                                    />\
+                                                    <path\
+                                                        d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"\
+                                                        fill="#000000"\
+                                                        fill-rule="nonzero"\
+                                                        transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "\
+                                                    />\
+                                                    <rect\
+                                                        fill="#000000"\
+                                                        opacity="0.3"\
+                                                        x="5"\
+                                                        y="20"\
+                                                        width="15"\
+                                                        height="2"\
+                                                        rx="1"\
+                                                    />\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
@@ -4629,7 +4711,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 100);
     },
     saveEntry: function saveEntry() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formD = new FormData();
       formD.append("vehicle_id", this.form_fields.vehicle_id);
@@ -4641,10 +4723,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, "success");
+        _this3.$showToast(response.data.message, "success");
 
         setTimeout(function () {
-          _this2.fuel_request = false;
+          _this3.ini();
+
+          _this3.fuel_request = false;
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4671,22 +4755,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "vehicle_id" || _this2.names[i] == "driver_id" || _this2.names[i] == "po_id") {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              if ($("[name=" + _this2.names[i] + "]").next().next().length == 1) {
-                $("[name=" + _this2.names[i] + "]").next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (_this3.names[i] == "vehicle_id" || _this3.names[i] == "driver_id" || _this3.names[i] == "po_id") {
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              if ($("[name=" + _this3.names[i] + "]").next().next().length == 1) {
+                $("[name=" + _this3.names[i] + "]").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              $('[name="' + _this3.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this3.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     reset: function reset() {
@@ -6052,19 +6136,107 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       create: false,
       edit: false,
       formFields: {
-        id: '',
-        po_no: '',
-        po_amount: '',
-        status: '',
-        type: ''
+        id: "",
+        po_no: "",
+        po_amount: "",
+        status: "",
+        type: ""
       },
-      names: ['po_no', 'po_amount', 'status', 'type']
+      names: ["po_no", "po_amount", "status", "type"]
     };
   },
   mounted: function mounted() {
@@ -6084,21 +6256,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var _select_ini = function select_ini(lbl) {
         $(function () {
-          $('#status').select2({
+          $("#status").select2({
             placeholder: "Select status",
             minimumResultsForSearch: Infinity
           });
-          $('#status').change(function () {
+          $("#status").change(function () {
             vm.formFields.status = $(this).val();
           });
-          $('#type').select2({
+          $("#type").select2({
             placeholder: "Select type",
             minimumResultsForSearch: Infinity
           });
-          $('#type').change(function () {
+          $("#type").change(function () {
             vm.formFields.type = $(this).val();
           });
-          $('.card-label span').text(lbl);
+          $(".card-label span").text(lbl);
         });
       };
 
@@ -6114,14 +6286,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newEntry: function newEntry() {
       this.create = true;
       var vm = this;
-      vm.ini().select_ini('Create PO');
+      vm.ini().select_ini("Create PO");
     },
     cancelEntry: function cancelEntry() {
-      this.formFields.id = '';
-      this.formFields.po_no = '';
-      this.formFields.po_amount = '';
-      this.formFields.status = '';
-      this.formFields.type = '';
+      this.formFields.id = "";
+      this.formFields.po_no = "";
+      this.formFields.po_amount = "";
+      this.formFields.status = "";
+      this.formFields.type = "";
       this.create = false;
       this.edit = false;
       this.ini().init();
@@ -6132,25 +6304,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var formD = new FormData();
       var method = null;
       var putParams = null;
-      formD.append('po_no', this.formFields.po_no);
-      formD.append('po_amount', this.formFields.po_amount);
-      formD.append('status', this.formFields.status);
-      formD.append('type', this.formFields.type);
-      method = this.create ? 'POST' : 'PUT';
-      putParams = this.create ? '' : '/' + this.formFields.id;
+      formD.append("po_no", this.formFields.po_no);
+      formD.append("po_amount", this.formFields.po_amount);
+      formD.append("status", this.formFields.status);
+      formD.append("type", this.formFields.type);
+      method = this.create ? "POST" : "PUT";
+      putParams = this.create ? "" : "/" + this.formFields.id;
       axios({
         method: method,
-        url: BASE_URL + '/tracking/po' + putParams,
+        url: BASE_URL + "/tracking/po" + putParams,
         data: formD,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, 'success');
+        _this2.$showToast(response.data.message, "success");
 
         setTimeout(function () {
           _this2.cancelEntry();
@@ -6159,8 +6331,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
           var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
@@ -6170,40 +6342,40 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(_key));
           values.push("".concat(value));
 
-          if (_key == 'status' || _key == 'type') {
-            if ($('#' + "".concat(_key)).next().next().length == 0) {
-              $('#' + "".concat(_key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if (_key == "status" || _key == "type") {
+            if ($("#" + "".concat(_key)).next().next().length == 0) {
+              $("#" + "".concat(_key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
           } else {
-            if ($('[name="' + "".concat(_key) + '"]').next().length == 0 || $('[name="' + "".concat(_key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(_key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(_key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="' + "".concat(_key) + '"]').next().length == 0 || $('[name="' + "".concat(_key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="' + "".concat(_key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(_key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
             }
           }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'status' || _this2.names[i] == 'type') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#' + "".concat(key)).next().next().length != 0) {
-                $('#' + "".concat(key)).next().next('.invalid-feedback').remove();
+          if (_this2.names[i] == "status" || _this2.names[i] == "type") {
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              if ($("#" + "".concat(key)).next().next().length != 0) {
+                $("#" + "".concat(key)).next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     show: function show(id) {
       var vm = this;
       vm.edit = true;
-      vm.ini().select_ini('Edit PO');
+      vm.ini().select_ini("Edit PO");
       axios.get(BASE_URL + "/tracking/po/" + id).then(function (response) {
         vm.formFields.id = response.data[0].id;
         vm.formFields.po_no = response.data[0].po_no;
@@ -6211,24 +6383,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.status = response.data[0].status;
         vm.formFields.type = response.data[0].type;
         setTimeout(function () {
-          $('#status').val(vm.formFields.status);
-          $('#status').trigger('change');
-          $('#type').val(vm.formFields.type);
-          $('#type').trigger('change');
+          $("#status").val(vm.formFields.status);
+          $("#status").trigger("change");
+          $("#type").val(vm.formFields.type);
+          $("#type").trigger("change");
         }, 500);
       });
     },
     "delete": function _delete(id) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: 'You won"t be able to revert this!',
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"](BASE_URL + '/tracking/po/' + id).then(function (response) {
-            Swal.fire('Deleted!', response.data.message, 'success');
+          axios["delete"](BASE_URL + "/tracking/po/" + id).then(function (response) {
+            Swal.fire("Deleted!", response.data.message, "success");
             $("#po-list-tbl").DataTable().ajax.reload();
           });
         }
@@ -6240,49 +6412,49 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#po-list-tbl');
+        var table = $("#po-list-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           responsive: true,
           ajax: {
-            url: BASE_URL + '/tracking/po',
-            type: 'GET'
+            url: BASE_URL + "/tracking/po",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "type"
+            data: "type"
           }, {
-            "data": "po_no"
+            data: "po_no"
           }, {
-            "data": "po_amount"
+            data: "po_amount"
           }, {
-            "data": "totalBalance"
+            data: "totalBalance"
           }, {
-            "data": "status"
+            data: "status"
           }, {
-            "data": "created_at"
+            data: "created_at"
           }, {
-            "data": "id"
+            data: "id"
           }],
           columnDefs: [{
             targets: 1,
             render: function render(data) {
               var type = {
                 1: {
-                  'title': 'Travel',
-                  'class': ' label-light-primary'
+                  title: "Travel",
+                  "class": " label-light-primary"
                 },
                 2: {
-                  'title': 'Fuel',
-                  'class': ' label-light-primary'
+                  title: "Fuel",
+                  "class": " label-light-primary"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + type[data]["class"] + ' label-inline">' + type[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + type[data]["class"] + ' label-inline">' + type[data].title + "</span>";
             }
           }, {
             targets: 3,
@@ -6299,23 +6471,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               var status = {
                 0: {
-                  'title': 'Pending',
-                  'class': ' label-light-warning'
+                  title: "Pending",
+                  "class": " label-light-warning"
                 },
                 1: {
-                  'title': 'Approved',
-                  'class': ' label-light-primary'
+                  title: "Approved",
+                  "class": " label-light-primary"
                 },
                 2: {
-                  'title': 'Completed',
-                  'class': ' label-light-success'
+                  title: "Completed",
+                  "class": " label-light-success"
                 },
                 3: {
-                  'title': 'Declined',
-                  'class': ' label-light-danger'
+                  title: "Declined",
+                  "class": " label-light-danger"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: 6,
@@ -6324,9 +6496,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }, {
             targets: -1,
-            title: 'Actions',
+            title: "Actions",
             orderable: false,
-            width: '125px',
+            width: "125px",
             render: function render(data) {
               return '\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
@@ -6355,12 +6527,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }],
           drawCallback: function drawCallback() {
-            $('.btn-edit').off().on('click', function () {
-              var id = $(this).data('id');
+            $(".btn-edit").off().on("click", function () {
+              var id = $(this).data("id");
               vm.show(id);
             });
-            $('.btn-delete').off().on('click', function () {
-              var id = $(this).data('id');
+            $(".btn-delete").off().on("click", function () {
+              var id = $(this).data("id");
               vm["delete"](id);
             });
           }
@@ -12277,6 +12449,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       return matchingStrings;
+    },
+    $label: function $label(lbl) {
+      return '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline">' + lbl + "</span>";
     }
   }
 });
@@ -56212,10 +56387,6 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Diesel Liters")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Total KM travelled")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("KM/Liters")]),
-              _vm._v(" "),
               _c("th", [_vm._v("Date Requested")]),
               _vm._v(" "),
               _c("th", [_vm._v("PO No.")]),
@@ -56223,8 +56394,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("PO Balance")]),
               _vm._v(" "),
               _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Remarks")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])
@@ -58371,7 +58540,11 @@ var render = function() {
                             staticClass: "btn btn-primary mr-2",
                             attrs: { type: "submit" }
                           },
-                          [_vm._v("Save")]
+                          [
+                            _vm._v(
+                              "\n                                Save\n                            "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c(
@@ -58381,7 +58554,11 @@ var render = function() {
                             attrs: { type: "reset" },
                             on: { click: _vm.cancelEntry }
                           },
-                          [_vm._v("Cancel")]
+                          [
+                            _vm._v(
+                              "\n                                Cancel\n                            "
+                            )
+                          ]
                         )
                       ])
                     ])

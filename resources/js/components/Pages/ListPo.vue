@@ -1,11 +1,16 @@
 <template>
     <div id="list-po-page">
-        <div v-if="create == true || edit == true" class="card card-custom gutter-b animate__animated animate__fadeInRight">
+        <div
+            v-if="create == true || edit == true"
+            class="card card-custom gutter-b animate__animated animate__fadeInRight"
+        >
             <div class="card-header flex-wrap">
                 <div class="card-title">
-                    <h3 class="card-label"><span></span>
-                    <i class="mr-2"></i>
-                    <small class="">Form</small></h3>
+                    <h3 class="card-label">
+                        <span></span>
+                        <i class="mr-2"></i>
+                        <small class="">Form</small>
+                    </h3>
                 </div>
             </div>
             <div class="card-body">
@@ -15,12 +20,25 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Type:</label>
-                                    <select v-if="create == true" class="form-control select2" id="type" name="type" v-model="formFields.type" >
+                                    <select
+                                        v-if="create == true"
+                                        class="form-control select2"
+                                        id="type"
+                                        name="type"
+                                        v-model="formFields.type"
+                                    >
                                         <option label="Label"></option>
                                         <option value="1">Travel</option>
                                         <option value="2">Fuel</option>
                                     </select>
-                                    <select v-else class="form-control disabled bg-gray-400 select2" id="type" name="type" v-model="formFields.type" disabled>
+                                    <select
+                                        v-else
+                                        class="form-control disabled bg-gray-400 select2"
+                                        id="type"
+                                        name="type"
+                                        v-model="formFields.type"
+                                        disabled
+                                    >
                                         <option label="Label"></option>
                                         <option value="1">Travel</option>
                                         <option value="2">Fuel</option>
@@ -30,20 +48,48 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>PO #:</label>
-                                    <input v-if="create == true" type="text" class="form-control required-field" name="po_no" placeholder="PO number" v-model="formFields.po_no"/>
-                                    <input v-else type="text" class="form-control disabled bg-gray-400" name="po_no" placeholder="PO number" v-model="formFields.po_no" disabled/>
+                                    <input
+                                        v-if="create == true"
+                                        type="text"
+                                        class="form-control required-field"
+                                        name="po_no"
+                                        placeholder="PO number"
+                                        v-model="formFields.po_no"
+                                    />
+                                    <input
+                                        v-else
+                                        type="text"
+                                        class="form-control disabled bg-gray-400"
+                                        name="po_no"
+                                        placeholder="PO number"
+                                        v-model="formFields.po_no"
+                                        disabled
+                                    />
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Amount :</label>
-                                     <input type="number" min="0" step="any" class="form-control required-field" name="po_amount" placeholder="Amount" v-model="formFields.po_amount"/>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="any"
+                                        class="form-control required-field"
+                                        name="po_amount"
+                                        placeholder="Amount"
+                                        v-model="formFields.po_amount"
+                                    />
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Status:</label>
-                                    <select class="form-control select2" id="status" name="status" v-model="formFields.status">
+                                    <select
+                                        class="form-control select2"
+                                        id="status"
+                                        name="status"
+                                        v-model="formFields.status"
+                                    >
                                         <option label="Label"></option>
                                         <option value="0">Ongoing</option>
                                         <option value="1">Approved</option>
@@ -56,37 +102,79 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-lg-6">
-                                <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                <button @click="cancelEntry" type="reset" class="btn btn-secondary">Cancel</button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary mr-2"
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    @click="cancelEntry"
+                                    type="reset"
+                                    class="btn btn-secondary"
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div v-else class="card card-custom gutter-b animate__animated animate__fadeIn" >
+        <div
+            v-else
+            class="card card-custom gutter-b animate__animated animate__fadeIn"
+        >
             <div class="card-header flex-wrap">
                 <div class="card-title"></div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a class="btn btn-primary font-weight-bolder" @click="newEntry">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <circle fill="#000000" cx="9" cy="15" r="6" />
-                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>New Entry</a>
+                    <a
+                        class="btn btn-primary font-weight-bolder"
+                        @click="newEntry"
+                    >
+                        <span class="svg-icon svg-icon-md">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px"
+                                height="24px"
+                                viewBox="0 0 24 24"
+                                version="1.1"
+                            >
+                                <g
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                >
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <circle
+                                        fill="#000000"
+                                        cx="9"
+                                        cy="15"
+                                        r="6"
+                                    />
+                                    <path
+                                        d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                        fill="#000000"
+                                        opacity="0.3"
+                                    />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon--> </span
+                        >New Entry</a
+                    >
                     <!--end::Button-->
                 </div>
             </div>
             <div class="card-body">
                 <!--begin: Datatable-->
-                <table class="table table-separate table-head-custom table-checkable" id="po-list-tbl">
+                <table
+                    class="table table-separate table-head-custom table-checkable"
+                    id="po-list-tbl"
+                >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -113,14 +201,14 @@ export default {
             create: false,
             edit: false,
             formFields: {
-                id: '',
-                po_no: '',
-                po_amount: '',
-                status: '',
-                type: '',
+                id: "",
+                po_no: "",
+                po_amount: "",
+                status: "",
+                type: ""
             },
-            names: ['po_no', 'po_amount', 'status', 'type']
-        }
+            names: ["po_no", "po_amount", "status", "type"]
+        };
     },
     mounted() {
         this.ini().init();
@@ -129,56 +217,55 @@ export default {
         ini() {
             let vm = this;
             var datatbl = () => {
-                $(()=>{
+                $(() => {
                     this.tdatatable().init();
                 });
-            }
+            };
 
-            var select_ini = (lbl) => {
+            var select_ini = lbl => {
                 $(() => {
-                    $('#status').select2({
+                    $("#status").select2({
                         placeholder: "Select status",
                         minimumResultsForSearch: Infinity
                     });
 
-                    $('#status').change(function() {
+                    $("#status").change(function() {
                         vm.formFields.status = $(this).val();
                     });
 
-                    $('#type').select2({
+                    $("#type").select2({
                         placeholder: "Select type",
                         minimumResultsForSearch: Infinity
                     });
 
-                    $('#type').change(function() {
+                    $("#type").change(function() {
                         vm.formFields.type = $(this).val();
                     });
 
-                    $('.card-label span').text(lbl);
+                    $(".card-label span").text(lbl);
                 });
-            }
+            };
 
             return {
                 init: () => {
                     datatbl();
                 },
-                select_ini: (lbl) => {
+                select_ini: lbl => {
                     select_ini(lbl);
-                } 
+                }
             };
         },
         newEntry() {
             this.create = true;
             let vm = this;
-            vm.ini().select_ini('Create PO');
+            vm.ini().select_ini("Create PO");
         },
         cancelEntry() {
-
-            this.formFields.id = '';
-            this.formFields.po_no = '';
-            this.formFields.po_amount =  '';
-            this.formFields.status =  '';
-            this.formFields.type =  '';
+            this.formFields.id = "";
+            this.formFields.po_no = "";
+            this.formFields.po_amount = "";
+            this.formFields.status = "";
+            this.formFields.type = "";
             this.create = false;
             this.edit = false;
             this.ini().init();
@@ -188,68 +275,114 @@ export default {
             let method = null;
             let putParams = null;
 
-            formD.append('po_no', this.formFields.po_no);
-            formD.append('po_amount', this.formFields.po_amount);
-            formD.append('status', this.formFields.status);
-            formD.append('type', this.formFields.type);
+            formD.append("po_no", this.formFields.po_no);
+            formD.append("po_amount", this.formFields.po_amount);
+            formD.append("status", this.formFields.status);
+            formD.append("type", this.formFields.type);
 
-            method = (this.create)? 'POST':'PUT';
-            putParams = (this.create)? '':'/' + this.formFields.id;
+            method = this.create ? "POST" : "PUT";
+            putParams = this.create ? "" : "/" + this.formFields.id;
 
-            axios({method: method, url: BASE_URL + '/tracking/po' + putParams, data: formD, headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(response => {
-                    $('.invalid-feedback').remove();
-                    $('.is-invalid').removeClass('is-invalid');
+            axios({
+                method: method,
+                url: BASE_URL + "/tracking/po" + putParams,
+                data: formD,
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+                .then(response => {
+                    $(".invalid-feedback").remove();
+                    $(".is-invalid").removeClass("is-invalid");
                     Swal.fire("Good job!", response.data.message, "success");
-                    this.$showToast(response.data.message, 'success');
+                    this.$showToast(response.data.message, "success");
                     setTimeout(() => {
                         this.cancelEntry();
                     }, 1000);
                 })
-                .catch((error) => {
+                .catch(error => {
                     let data = error.response.data.errors;
                     let keys = [];
                     let values = [];
 
-                    $('.invalid-feedback').remove();
-                    $('.is-invalid').removeClass('is-invalid');
+                    $(".invalid-feedback").remove();
+                    $(".is-invalid").removeClass("is-invalid");
 
                     for (const [key, value] of Object.entries(data)) {
                         keys.push(`${key}`);
                         values.push(`${value}`);
-                        if(key == 'status' || key == 'type'){
-                            if ($('#' + `${key}`).next().next().length == 0) {
-                                $('#' + `${key}`).next().after('<div class="invalid-feedback d-block">'+`${value}`+'</div>');
+                        if (key == "status" || key == "type") {
+                            if (
+                                $("#" + `${key}`)
+                                    .next()
+                                    .next().length == 0
+                            ) {
+                                $("#" + `${key}`)
+                                    .next()
+                                    .after(
+                                        '<div class="invalid-feedback d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
                             }
                         } else {
-                            if ($('[name="'+`${key}`+'"]').next().length == 0 || $('[name="'+`${key}`+'"]').next().attr('class').search('invalid-feedback') == -1) {
-                                $('[name="'+`${key}`+'"]').addClass('is-invalid');
-                                $('[name="'+`${key}`+'"]').after('<div class="invalid-feedback">'+`${value}`+'</div>');
-                            }
-                        }
-                    }
-                    
-                    for (let i = 0; i < this.names.length; i++) {
-                        if (this.names[i] == 'status' || this.names[i] == 'type') {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                if ($('#' + `${key}`).next().next().length != 0) {
-                                    $('#' + `${key}`).next().next('.invalid-feedback').remove();
-                                }
-                            }
-                        } else {
-                            if (keys.indexOf(''+this.names[i]+'') == -1) {
-                                $('[name="'+this.names[i]+'"]').removeClass('is-invalid');
-                                $('[name="'+this.names[i]+'"]').next('.invalid-feedback').remove();
+                            if (
+                                $('[name="' + `${key}` + '"]').next().length ==
+                                    0 ||
+                                $('[name="' + `${key}` + '"]')
+                                    .next()
+                                    .attr("class")
+                                    .search("invalid-feedback") == -1
+                            ) {
+                                $('[name="' + `${key}` + '"]').addClass(
+                                    "is-invalid"
+                                );
+                                $('[name="' + `${key}` + '"]').after(
+                                    '<div class="invalid-feedback">' +
+                                        `${value}` +
+                                        "</div>"
+                                );
                             }
                         }
                     }
 
-                    this.$showToast(values.toString().replace(/,/g,'</br>'), 'error');
-            });
+                    for (let i = 0; i < this.names.length; i++) {
+                        if (
+                            this.names[i] == "status" ||
+                            this.names[i] == "type"
+                        ) {
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                if (
+                                    $("#" + `${key}`)
+                                        .next()
+                                        .next().length != 0
+                                ) {
+                                    $("#" + `${key}`)
+                                        .next()
+                                        .next(".invalid-feedback")
+                                        .remove();
+                                }
+                            }
+                        } else {
+                            if (keys.indexOf("" + this.names[i] + "") == -1) {
+                                $('[name="' + this.names[i] + '"]').removeClass(
+                                    "is-invalid"
+                                );
+                                $('[name="' + this.names[i] + '"]')
+                                    .next(".invalid-feedback")
+                                    .remove();
+                            }
+                        }
+                    }
+
+                    this.$showToast(
+                        values.toString().replace(/,/g, "</br>"),
+                        "error"
+                    );
+                });
         },
         show(id) {
             let vm = this;
             vm.edit = true;
-            vm.ini().select_ini('Edit PO');
+            vm.ini().select_ini("Edit PO");
 
             axios.get(BASE_URL + "/tracking/po/" + id).then(response => {
                 vm.formFields.id = response.data[0].id;
@@ -257,61 +390,64 @@ export default {
                 vm.formFields.po_amount = response.data[0].po_amount;
                 vm.formFields.status = response.data[0].status;
                 vm.formFields.type = response.data[0].type;
-                
-                setTimeout(() => {
-                    $('#status').val(vm.formFields.status);
-                    $('#status').trigger('change');
-                    $('#type').val(vm.formFields.type);
-                    $('#type').trigger('change');
-                }, 500);
 
+                setTimeout(() => {
+                    $("#status").val(vm.formFields.status);
+                    $("#status").trigger("change");
+                    $("#type").val(vm.formFields.type);
+                    $("#type").trigger("change");
+                }, 500);
             });
         },
         delete(id) {
             Swal.fire({
-                title: 'Are you sure?',
+                title: "Are you sure?",
                 text: 'You won"t be able to revert this!',
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: "Yes, delete it!"
             }).then(result => {
                 if (result.value) {
-                    axios.delete(BASE_URL + '/tracking/po/'+id).then(response => {
-                        Swal.fire(
-                            'Deleted!',
-                            response.data.message,
-                            'success'
-                        );
-                        
-                        $("#po-list-tbl").DataTable().ajax.reload();
-                    });
+                    axios
+                        .delete(BASE_URL + "/tracking/po/" + id)
+                        .then(response => {
+                            Swal.fire(
+                                "Deleted!",
+                                response.data.message,
+                                "success"
+                            );
+
+                            $("#po-list-tbl")
+                                .DataTable()
+                                .ajax.reload();
+                        });
                 }
             });
         },
         tdatatable() {
             var vm = this;
             var initTable = () => {
-            var table = $('#po-list-tbl');
+                var table = $("#po-list-tbl");
                 table.DataTable({
-                    scrollY: '50vh',
+                    scrollY: "50vh",
                     scrollX: true,
                     scrollCollapse: true,
                     processing: true,
                     serverSide: true,
                     responsive: true,
                     ajax: {
-                        url: BASE_URL + '/tracking/po',
-                        type: 'GET'
+                        url: BASE_URL + "/tracking/po",
+                        type: "GET"
                     },
                     columns: [
-                        { "data": "id" },
-                        { "data": "type" },
-                        { "data": "po_no" },
-                        { "data": "po_amount" },
-                        { "data": "totalBalance" },
-                        { "data": "status" },
-                        { "data": "created_at" },
-                        { "data": "id" },
+                        { data: "id" },
+                        { data: "type" },
+                        { data: "po_no" },
+                        { data: "po_amount" },
+                        { data: "totalBalance" },
+                        { data: "status" },
+                        { data: "created_at" },
+                        { data: "id" }
                     ],
                     columnDefs: [
                         {
@@ -319,18 +455,24 @@ export default {
                             render: data => {
                                 var type = {
                                     1: {
-                                        'title' : 'Travel',
-                                        'class': ' label-light-primary'
+                                        title: "Travel",
+                                        class: " label-light-primary"
                                     },
                                     2: {
-                                        'title' : 'Fuel',
-                                        'class': ' label-light-primary'
-                                    },
-                                }
+                                        title: "Fuel",
+                                        class: " label-light-primary"
+                                    }
+                                };
 
-                                return '<span class="btn-details label label-lg font-weight-bold ' + type[data].class + ' label-inline">' + type[data].title + '</span>';
+                                return (
+                                    '<span class="btn-details label label-lg font-weight-bold ' +
+                                    type[data].class +
+                                    ' label-inline">' +
+                                    type[data].title +
+                                    "</span>"
+                                );
                             }
-                        },  
+                        },
                         {
                             targets: 3,
                             render: data => {
@@ -348,23 +490,29 @@ export default {
                             render: data => {
                                 var status = {
                                     0: {
-                                        'title': 'Pending',
-                                        'class': ' label-light-warning'
+                                        title: "Pending",
+                                        class: " label-light-warning"
                                     },
                                     1: {
-                                        'title': 'Approved',
-                                        'class': ' label-light-primary'
+                                        title: "Approved",
+                                        class: " label-light-primary"
                                     },
                                     2: {
-                                        'title': 'Completed',
-                                        'class': ' label-light-success'
+                                        title: "Completed",
+                                        class: " label-light-success"
                                     },
                                     3: {
-                                        'title': 'Declined',
-                                        'class': ' label-light-danger'
+                                        title: "Declined",
+                                        class: " label-light-danger"
                                     }
                                 };
-                                return '<span class="btn-details label label-lg font-weight-bold ' + status[data].class + ' label-inline">' + status[data].title + '</span>';
+                                return (
+                                    '<span class="btn-details label label-lg font-weight-bold ' +
+                                    status[data].class +
+                                    ' label-inline">' +
+                                    status[data].title +
+                                    "</span>"
+                                );
                             }
                         },
                         {
@@ -375,12 +523,15 @@ export default {
                         },
                         {
                             targets: -1,
-                            title: 'Actions',
+                            title: "Actions",
                             orderable: false,
-                            width: '125px',
+                            width: "125px",
                             render: data => {
-                                return '\
-                                    <a href="javascript:;" data-id="'+ data +'" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                return (
+                                    '\
+                                    <a href="javascript:;" data-id="' +
+                                    data +
+                                    '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -391,7 +542,9 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" data-id="'+ data +'" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" data-id="' +
+                                    data +
+                                    '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -402,30 +555,34 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                ';
-                            },
-                        },
+                                '
+                                );
+                            }
+                        }
                     ],
                     drawCallback: () => {
-                        $('.btn-edit').off().on('click', function() {
-                            let id = $(this).data('id');
-                            vm.show(id);
-                        });
+                        $(".btn-edit")
+                            .off()
+                            .on("click", function() {
+                                let id = $(this).data("id");
+                                vm.show(id);
+                            });
 
-                        $('.btn-delete').off().on('click', function() {
-                            let id = $(this).data('id');
-                            vm.delete(id);
-                        });
+                        $(".btn-delete")
+                            .off()
+                            .on("click", function() {
+                                let id = $(this).data("id");
+                                vm.delete(id);
+                            });
                     }
-                    
                 });
             };
             return {
                 init: function() {
                     initTable();
-                },
+                }
             };
-        },
-    },
-}
+        }
+    }
+};
 </script>
