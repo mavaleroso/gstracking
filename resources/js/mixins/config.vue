@@ -145,6 +145,13 @@ export default {
             });
 
             return matchingStrings;
+        },
+        $label(lbl) {
+            return (
+                '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline">' +
+                lbl +
+                "</span>"
+            );
         }
     }
 };

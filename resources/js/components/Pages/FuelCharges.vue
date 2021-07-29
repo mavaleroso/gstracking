@@ -57,13 +57,10 @@
                             <th>Plate No.</th>
                             <th>Gasoline Liters</th>
                             <th>Diesel Liters</th>
-                            <th>Total KM travelled</th>
-                            <th>KM/Liters</th>
                             <th>Date Requested</th>
                             <th>PO No.</th>
                             <th>PO Balance</th>
                             <th>Status</th>
-                            <th>Remarks</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -298,8 +295,7 @@ export default {
     methods: {
         ini() {
             $(() => {
-                this.fuelRequest();
-                this.tdatatable();
+                this.tdatatable().init();
             });
         },
         tdatatable() {
@@ -311,21 +307,68 @@ export default {
                     scrollCollapse: true,
                     processing: true,
                     serverSide: true,
-                    // ajax: {
-                    //     url: BASE_URL + "/transportation/driver",
-                    //     type: "GET"
-                    // },
+                    ajax: {
+                        url: BASE_URL + "/tracking/fuelcharges",
+                        type: "GET"
+                    },
                     columns: [
                         { data: "id" },
-                        { data: "fullname" },
-                        { data: "birthdate" },
-                        { data: "sex" },
-                        { data: "contact" },
+                        { data: "code" },
+                        { data: "name" },
+                        { data: "plate_no" },
+                        { data: "gasoline_liters" },
+                        { data: "diesel_liters" },
+                        { data: "created_at" },
+                        { data: "po_no" },
+                        { data: "totalBalance" },
                         { data: "status" },
-                        { data: "updated_at" },
                         { data: "id" }
                     ],
                     columnDefs: [
+                        {
+                            targets: 1,
+                            render: data => {
+                                return this.$label(data);
+                            }
+                        },
+                        {
+                            targets: 6,
+                            render: data => {
+                                return this.$dateEng(data);
+                            }
+                        },
+                        {
+                            targets: 8,
+                            render: data => {
+                                return this.$toParseNum(data);
+                            }
+                        },
+                        {
+                            targets: 9,
+                            render: data => {
+                                var status = {
+                                    0: {
+                                        title: "On-going",
+                                        class: " label-light-warning"
+                                    },
+                                    1: {
+                                        title: "Approved",
+                                        class: " label-light-primary"
+                                    },
+                                    2: {
+                                        title: "Completed",
+                                        class: " label-light-primary"
+                                    }
+                                };
+                                return (
+                                    '<span class="btn-details label label-lg font-weight-bold ' +
+                                    status[data].class +
+                                    ' label-inline">' +
+                                    status[data].title +
+                                    "</span>"
+                                );
+                            }
+                        },
                         {
                             targets: -1,
                             title: "Action",
@@ -334,6 +377,51 @@ export default {
                             render: data => {
                                 return (
                                     '\
+                                    <a\
+                                        href="javascript:;"\
+                                        class="btn-edit btn btn-sm btn-clean btn-icon"\
+                                        title="Edit details"\
+                                    >\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg\
+                                                xmlns="http://www.w3.org/2000/svg"\
+                                                xmlns:xlink="http://www.w3.org/1999/xlink"\
+                                                width="24px"\
+                                                height="24px"\
+                                                viewBox="0 0 24 24"\
+                                                version="1.1"\
+                                            >\
+                                                <g\
+                                                    stroke="none"\
+                                                    stroke-width="1"\
+                                                    fill="none"\
+                                                    fill-rule="evenodd"\
+                                                >\
+                                                    <rect\
+                                                        x="0"\
+                                                        y="0"\
+                                                        width="24"\
+                                                        height="24"\
+                                                    />\
+                                                    <path\
+                                                        d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"\
+                                                        fill="#000000"\
+                                                        fill-rule="nonzero"\
+                                                        transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "\
+                                                    />\
+                                                    <rect\
+                                                        fill="#000000"\
+                                                        opacity="0.3"\
+                                                        x="5"\
+                                                        y="20"\
+                                                        width="15"\
+                                                        height="2"\
+                                                        rx="1"\
+                                                    />\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
                                     <a href="javascript:;" data-id="' +
                                     data +
                                     '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
@@ -404,6 +492,7 @@ export default {
                     Swal.fire("Good job!", response.data.message, "success");
                     this.$showToast(response.data.message, "success");
                     setTimeout(() => {
+                        this.ini();
                         this.fuel_request = false;
                     }, 1000);
                 })
