@@ -5144,6 +5144,299 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5163,13 +5456,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       request_dept: null,
       division: null,
       section: null,
-      regions: [],
-      provinces: [],
-      cities: [],
       brgys: [],
       place: null,
-      activeProvinces: [],
-      activeCities: [],
       destinations: [],
       passengers: [],
       request_edit: 0,
@@ -5190,10 +5478,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           data: []
         }
       },
-      names: ['travel_radio', 'region', 'province', 'city', 'brgy', 'date_travel', 'pax_des_1', 'pax_name_1', 'pax_gen_1', 'prog_div_sec', 'pur_travel', 'time_depart'],
+      names: ["travel_radio", "date_travel", "pax_des_1", "pax_name_1", "pax_gen_1", "prog_div_sec", "pur_travel", "time_depart"],
       defaultNames: [],
-      rpNames: ['vehicle_1', 'driver_1'],
-      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      rpNames: ["vehicle_1", "driver_1"],
+      hiredNames: ["travel_po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"],
       remarks: null,
       employee_results: [],
       pax_des: [],
@@ -5204,7 +5492,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
   created: function created() {
-    this.getRegion();
     this.getVehicle();
     this.getPo();
     this.getDriver();
@@ -5222,74 +5509,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $(function () {
         _this.tdatatable().init();
 
-        $('.menu-item').removeClass('menu-item-active');
-        $('.router-link-active').parent().addClass('menu-item-active');
-        $('#kt_select_province').select2({
-          placeholder: "Select a Province"
-        });
-        $('#kt_select_city').select2({
-          placeholder: "Select a City"
-        });
-        $('#kt_select_brgy').select2({});
-        $('#kt_select_region').select2({
-          placeholder: "Select a Region",
-          allowClear: true
-        });
-        $('#kt_select_region').on('change', function () {
-          var id = $('#kt_select_region').val();
-
-          _this.getProvince(id);
-
-          _this.provinces = [];
-          _this.cities = [];
-          _this.brgys = [];
-          _this.activeProvinces = [];
-          _this.activeCities = [];
-        });
-        $('#kt_select_province').on('change', function () {
-          var id = $('#kt_select_province').val();
-          id = id.map(function (i) {
-            return Number(i);
-          });
-
-          _this.provinces.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
-          });
-
-          if (id.length != 0) {
-            _this.getCity(id);
-
-            _this.currentProv();
-          }
-        });
-        $('#kt_select_city').on('change', function () {
-          var id = $('#kt_select_city').val();
-          id = id.map(function (i) {
-            return Number(i);
-          });
-
-          _this.cities.map(function (i) {
-            if (id.indexOf(i.id) != -1) {
-              i.active = "true";
-            } else {
-              i.active = "false";
-            }
-          });
-
-          if (id.length != 0) {
-            _this.getBrgy(id);
-
-            _this.currentCity();
-          }
-        });
-        $('#kt_datatable_modal').on('hidden.bs.modal', function (e) {
-          $('.details-input').attr('disabled', true);
+        $(".menu-item").removeClass("menu-item-active");
+        $(".router-link-active").parent().addClass("menu-item-active");
+        $("#kt_datatable_modal").on("hidden.bs.modal", function (e) {
+          $(".details-input").attr("disabled", true);
           vm.request_edit = 0;
-          $('.btn-edit span').text('Edit');
+          $(".btn-edit span").text("Edit");
         });
       });
     },
@@ -5299,37 +5524,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#request-tbl');
+        var table = $("#request-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/travel/localrequest',
-            type: 'GET'
+            url: BASE_URL + "/travel/localrequest",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "department"
+            data: "department"
           }, {
-            "data": "purpose"
+            data: "purpose"
           }, {
-            "data": "travel_date"
+            data: "travel_date"
           }, {
-            "data": "depart_time"
+            data: "depart_time"
           }, {
-            "data": "is_status"
+            data: "is_status"
           }, {
-            "data": "created_at"
+            data: "created_at"
           }, {
-            "data": "fullname"
+            data: "fullname"
           }, {
-            "data": "remarks"
+            data: "remarks"
           }, {
-            "data": "id"
+            data: "id"
           }],
           columnDefs: [{
             targets: 3,
@@ -5346,23 +5571,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               var status = {
                 1: {
-                  'title': 'Pending',
-                  'class': ' label-light-warning'
+                  title: "Pending",
+                  "class": " label-light-warning"
                 },
                 2: {
-                  'title': 'Approved',
-                  'class': ' label-light-primary'
+                  title: "Approved",
+                  "class": " label-light-primary"
                 },
                 3: {
-                  'title': 'Completed',
-                  'class': ' label-light-success'
+                  title: "Completed",
+                  "class": " label-light-success"
                 },
                 4: {
-                  'title': 'Declined',
-                  'class': ' label-light-danger'
+                  title: "Declined",
+                  "class": " label-light-danger"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: 6,
@@ -5379,8 +5604,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }],
           drawCallback: function drawCallback() {
-            $('.btn-details').off().on('click', function () {
-              var id = $(this).data('record-id');
+            $(".btn-details").off().on("click", function () {
+              var id = $(this).data("record-id");
               vm.current_id = id;
               vm.staff.id = id;
               vm.show(id);
@@ -5400,26 +5625,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var app = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var vm = this;
-      axios.get(BASE_URL + '/travel/localrequest/' + id).then(function (response) {
+      axios.get(BASE_URL + "/travel/localrequest/" + id).then(function (response) {
         switch (response.data[0].is_status) {
           case 1:
-            vm.request_status = 'Pending';
-            vm.request_status_lbl = 'modal-status label label-warning label-inline mr-5';
+            vm.request_status = "Pending";
+            vm.request_status_lbl = "modal-status label label-warning label-inline mr-5";
             break;
 
           case 2:
-            vm.request_status = 'Approved';
-            vm.request_status_lbl = 'modal-status label label-primary label-inline mr-5';
+            vm.request_status = "Approved";
+            vm.request_status_lbl = "modal-status label label-primary label-inline mr-5";
             break;
 
           case 3:
-            vm.request_status = 'Completed';
-            vm.request_status_lbl = 'modal-status label label-success label-inline mr-5';
+            vm.request_status = "Completed";
+            vm.request_status_lbl = "modal-status label label-success label-inline mr-5";
             break;
 
           case 4:
-            vm.request_status = 'Declined';
-            vm.request_status_lbl = 'modal-status label label-danger label-inline mr-5';
+            vm.request_status = "Declined";
+            vm.request_status_lbl = "modal-status label label-danger label-inline mr-5";
             break;
         }
 
@@ -5427,6 +5652,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.request_createdAt = response.data[0].created_at;
         vm.request_vehicle = response.data[0].type_vehicle;
         vm.request_travelPurpose = response.data[0].purpose;
+        vm.place = response.data[0].destination;
         vm.request_travelDate = response.data[0].travel_date;
         vm.request_returnDate = response.data[0].return_date;
         vm.request_departTime = response.data[0].depart_time;
@@ -5435,42 +5661,41 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
         vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
-        vm.getDetails(vm.current_id);
         vm.getPassengers(vm.current_id);
-        !app ? $('#kt_datatable_modal').modal('show') : NULL;
+        !app ? $("#kt_datatable_modal").modal("show") : NULL;
         setTimeout(function () {
           var count = _this3.passengers.length;
-          $('.radio-vehicle').change(function () {
+          $(".radio-vehicle").change(function () {
             vm.staff.office.total = vm.staff.rental.total = 1;
 
             if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
-              $('#vehicle-select-1').select2({
+              $("#vehicle-select-1").select2({
                 placeholder: "Select a vehicle"
               });
-              $('#driver-select-1').select2({
+              $("#driver-select-1").select2({
                 placeholder: "Select a driver"
               });
             } else {
-              vm.rpNames = ['vehicle_1', 'driver_1'];
+              vm.rpNames = ["vehicle_1", "driver_1"];
             }
 
             if (vm.vehicle_type == 4) {
-              $('#travel_po-select').select2({
+              $("#travel_po-select").select2({
                 placeholder: "Select a Travel PO"
               });
-              $('.select-remove').siblings('.select2').remove();
-              $('.select-remove').siblings('.select2').remove();
+              $(".select-remove").siblings(".select2").remove();
+              $(".select-remove").siblings(".select2").remove();
             } else {
-              vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
+              vm.hiredNames = ["po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"];
             }
           });
-          $('.radio-vehicle').on('change', function () {
-            $('.invalid-feedback-admin').remove();
-            $('.invalid-admin').removeClass('is-invalid');
+          $(".radio-vehicle").on("change", function () {
+            $(".invalid-feedback-admin").remove();
+            $(".invalid-admin").removeClass("is-invalid");
           });
 
           var _loop = function _loop(i) {
-            $("#passenger-select-" + i).on('select2:select', function (e) {
+            $("#passenger-select-" + i).on("select2:select", function (e) {
               var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
               paxVal = paxVal - 1;
               vm.getData(paxVal, i);
@@ -5481,7 +5706,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             _loop(i);
           }
 
-          $("#passenger-select-1").on('select2:clear', function (e) {
+          $("#passenger-select-1").on("select2:clear", function (e) {
             $("#pax_des_1").val(null);
             $("#pax_gen_1").val(null);
             vm.pax_gen[0] = "";
@@ -5490,106 +5715,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, 500);
       });
     },
-    getRegion: function getRegion() {
-      var _this4 = this;
-
-      axios.get(BASE_URL + "/api/v1/region").then(function (response) {
-        _this4.regions = response.data;
-      });
-    },
-    getProvince: function getProvince(id) {
-      var _this5 = this;
-
-      axios.get(BASE_URL + "/api/v1/province/" + id).then(function (response) {
-        _this5.provinces = response.data;
-
-        _this5.provinces.map(function (i) {
-          return i.active = "false";
-        });
-      });
-    },
-    getCity: function getCity(id) {
-      var _this6 = this;
-
-      axios.get(BASE_URL + "/api/v1/city/" + id).then(function (response) {
-        _this6.cities = response.data;
-
-        _this6.cities.map(function (i) {
-          return i.active = "false";
-        });
-      });
-    },
-    getBrgy: function getBrgy(id) {
-      var _this7 = this;
-
-      axios.get(BASE_URL + "/api/v1/brgy/" + id).then(function (response) {
-        _this7.brgys = response.data;
-      });
-    },
-    currentProv: function currentProv() {
-      this.activeProvinces = this.provinces.filter(function (i) {
-        return i.active === 'true';
-      });
-    },
-    currentCity: function currentCity() {
-      this.activeCities = this.cities.filter(function (i) {
-        return i.active === 'true';
-      });
-    },
     EmployeeList: function EmployeeList() {
-      this.employee_results = JSON.parse(localStorage.getItem('ListEmployee'));
-    },
-    getDetails: function getDetails(id) {
-      var _this8 = this;
-
-      $('.details-input').attr('disabled', true);
-      this.request_edit = 0;
-      $('#kt_select_region').val();
-      axios.get(BASE_URL + "/api/v1/destination/" + id).then(function (response) {
-        var destination = response.data;
-        _this8.place = response.data[0].others;
-        var data = [];
-
-        var distinct = function distinct(value, index, self) {
-          return self.indexOf(value) === index;
-        };
-
-        data['region'] = destination.map(function (d) {
-          return d['region_id'];
-        }).filter(distinct);
-        data['province'] = destination.map(function (d) {
-          return d['province_id'];
-        }).filter(distinct);
-        data['city'] = destination.map(function (d) {
-          return d['city_id'];
-        }).filter(distinct);
-        data['brgy'] = destination.map(function (d) {
-          return d['brgy_id'];
-        }).filter(distinct);
-        $('#kt_select_region').val(data.region);
-        $('#kt_select_region').trigger('change');
-        setTimeout(function () {
-          $('#kt_select_province').val(data.province);
-          $('#kt_select_province').trigger('change');
-        }, 500);
-        setTimeout(function () {
-          $('#kt_select_city').val(data.city);
-          $('#kt_select_city').trigger('change');
-        }, 1000);
-        setTimeout(function () {
-          $('#kt_select_brgy').val(data.brgy);
-          $('#kt_select_brgy').trigger('change');
-        }, 1500);
-        setTimeout(function () {
-          for (var i = 0; i < _this8.passengers.length + 1; i++) {
-            $('#passenger-select-' + i).select2({
-              placeholder: "Select fullname",
-              allowClear: true
-            });
-          }
-        }, 500);
-      });
-      this.dateConf();
+      this.employee_results = JSON.parse(localStorage.getItem("ListEmployee"));
     },
     getData: function getData(id, index) {
       var vm = this;
@@ -5599,50 +5726,59 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.employee_results[id].position);
     },
     getPassengers: function getPassengers(id) {
-      var _this9 = this;
+      var _this4 = this;
 
       axios.get(BASE_URL + "/api/v1/passenger/" + id).then(function (response) {
-        _this9.passengers = response.data;
+        _this4.passengers = response.data;
       });
     },
     paxIndex: function paxIndex(index) {
       return index + 1;
     },
     edit: function edit() {
-      var btn_edit = $('.btn-edit span');
+      var count = this.passengers.length;
 
-      if (btn_edit.text() == 'Edit') {
-        btn_edit.text('Cancel');
-        $('.details-input').attr('disabled', false);
+      for (var i = 0; i <= count; i++) {
+        $("#passenger-select-".concat(i)).select2({
+          placeholder: "Select a fullname",
+          allowClear: true
+        });
+      }
+
+      var btn_edit = $(".btn-edit span");
+
+      if (btn_edit.text() == "Edit") {
+        btn_edit.text("Cancel");
+        $(".details-input").attr("disabled", false);
         this.request_edit = 1;
-        this.$showToast('Can edit request now!', 'info');
+        this.$showToast("Can edit request now!", "info");
       } else {
-        btn_edit.text('Edit');
-        $('.details-input').attr('disabled', true);
+        btn_edit.text("Edit");
+        $(".details-input").attr("disabled", true);
         this.request_edit = 0;
-        this.$showToast('Canceled edit request now!', 'info');
+        this.$showToast("Canceled edit request now!", "info");
       }
     },
     save: function save(id) {
-      var _this10 = this;
+      var _this5 = this;
 
       $(".data-entry").attr("disabled", false);
-      var requestform = $('#request-form').serialize();
+      var requestform = $("#request-form").serialize();
       axios.put(BASE_URL + "/travel/localrequest/" + id, requestform).then(function (response) {
-        $('.new-row').remove();
-        $('.details-input').attr('disabled', true);
+        $(".new-row").remove();
+        $(".details-input").attr("disabled", true);
         $(".data-entry").attr("disabled", true);
-        _this10.request_edit = 0;
-        $('.btn-edit span').text('Edit');
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        _this5.request_edit = 0;
+        $(".btn-edit span").text("Edit");
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this10.$showToast(response.data.message, 'success');
+        _this5.$showToast(response.data.message, "success");
 
-        $('#request-tbl').DataTable().ajax.reload();
+        $("#request-tbl").DataTable().ajax.reload();
 
-        _this10.getPassengers(_this10.current_id);
+        _this5.getPassengers(_this5.current_id);
       })["catch"](function (error) {
         $(".data-entry").attr("disabled", true);
         var data = error.response.data.errors;
@@ -5657,62 +5793,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == 'region' || "".concat(key) == 'province' || "".concat(key) == 'city') {
-            if ("".concat(key) == 'brgy') {
-              if ($('#kt_select_' + "".concat(key)).next().next().length == 0 || $('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              }
-            } else {
-              if ($('#kt_select_' + "".concat(key)).next().next().attr('class').search('invalid-feedback') == -1) {
-                $('#kt_select_' + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
-              }
-            }
-          } else {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('input[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
-            }
+          if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+            $('input[name="' + "".concat(key) + '"]').addClass("is-invalid");
+            $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
           }
         }
 
-        for (var i = 0; i < _this10.names.length; i++) {
-          if (_this10.names[i] == 'region' || _this10.names[i] == 'province' || _this10.names[i] == 'city' || _this10.names[i] == 'brgy') {
-            if (keys.indexOf('' + _this10.names[i] + '') == -1) {
-              if (_this10.names[i] == 'brgy') {
-                if ($('#kt_select_' + _this10.names[i]).next().next().length != 0) {
-                  $('#kt_select_' + _this10.names[i]).next().next('.invalid-feedback').remove();
-                }
-              } else {
-                if ($('#kt_select_' + _this10.names[i]).next().next().attr('class').search('invalid-feedback') != -1) {
-                  $('#kt_select_' + _this10.names[i]).next().next('.invalid-feedback').remove();
-                }
-              }
-            }
-          } else {
-            if (keys.indexOf('' + _this10.names[i] + '') == -1) {
-              $('input[name="' + _this10.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this10.names[i] + '"]').next('.invalid-feedback').remove();
-            }
+        for (var i = 0; i < _this5.names.length; i++) {
+          if (keys.indexOf("" + _this5.names[i] + "") == -1) {
+            $('input[name="' + _this5.names[i] + '"]').removeClass("is-invalid");
+            $('[name="' + _this5.names[i] + '"]').next(".invalid-feedback").remove();
           }
         }
 
-        _this10.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this5.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     approved: function approved() {
-      var _this11 = this;
+      var _this6 = this;
 
-      var adminForm = $('#administrative-form').serialize();
-      axios.post(BASE_URL + '/travel/listrequeststaff', adminForm).then(function (response) {
-        $('.invalid-feedback-admin').remove();
-        $('.invalid-admin').removeClass('is-invalid');
+      var adminForm = $("#administrative-form").serialize();
+      axios.post(BASE_URL + "/travel/listrequeststaff", adminForm).then(function (response) {
+        $(".invalid-feedback-admin").remove();
+        $(".invalid-admin").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this11.$showToast(response.data.message, 'success');
+        _this6.$showToast(response.data.message, "success");
 
-        $('#request-tbl').DataTable().ajax.reload();
+        $("#request-tbl").DataTable().ajax.reload();
         setTimeout(function () {
-          _this11.show(_this11.current_id, 1);
+          _this6.show(_this6.current_id, 1);
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -5727,64 +5837,62 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          var _keys = "".concat(key).replace(/[0-9]/g, '');
+          var _keys = "".concat(key).replace(/[0-9]/g, "");
 
-          if ("".concat(key) == 'radio_vehicle') {
-            if ($('.checkbox-inline').next().length == 0 || $('.checkbox-inline').next().attr('class').search('invalid-feedback') == -1) {
-              $('.checkbox-inline').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == "radio_vehicle") {
+            if ($(".checkbox-inline").next().length == 0 || $(".checkbox-inline").next().attr("class").search("invalid-feedback") == -1) {
+              $(".checkbox-inline").after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
             }
-          } else if ("".concat(key) == 'travel_po') {
-            if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
-              $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+          } else if ("".concat(key) == "travel_po") {
+            if ($("#" + "".concat(key) + "-select").next().next().length == 0) {
+              $("#" + "".concat(key) + "-select").next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin">' + "".concat(value) + '</div>');
+          } else if (_keys == "driver_name_" || _keys == "driver_contact_" || _keys == "vehicle_name_" || _keys == "vehicle_plate_" || "".concat(key) == "remarks") {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin">' + "".concat(value) + "</div>");
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().next().length == 0) {
-              $('[name="' + "".concat(key) + '"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+              $('[name="' + "".concat(key) + '"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
             }
           }
         }
 
-        ;
-
-        for (var i = 0; i < _this11.defaultNames.length; i++) {
-          if (_this11.defaultNames[i] == 'vehicle_office' || _this11.defaultNames[i] == 'vehicle_rental') {
-            if (keys.indexOf('' + _this11.defaultNames[i] + '') == -1) {
-              if ($('.radio-inline').next().length != 0) {
-                $('.radio-inline').next('.invalid-feedback').remove();
+        for (var i = 0; i < _this6.defaultNames.length; i++) {
+          if (_this6.defaultNames[i] == "vehicle_office" || _this6.defaultNames[i] == "vehicle_rental") {
+            if (keys.indexOf("" + _this6.defaultNames[i] + "") == -1) {
+              if ($(".radio-inline").next().length != 0) {
+                $(".radio-inline").next(".invalid-feedback").remove();
               }
             }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this11.hiredNames.length; _i3++) {
-          if (_this11.hiredNames[_i3] == 'travel_po') {
-            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
-              if ($('#' + _this11.hiredNames[_i3] + '-select').next().next().length != 0) {
-                $('#' + _this11.hiredNames[_i3] + '-select').next().next('.invalid-feedback').remove();
+        for (var _i3 = 0; _i3 < _this6.hiredNames.length; _i3++) {
+          if (_this6.hiredNames[_i3] == "travel_po") {
+            if (keys.indexOf("" + _this6.hiredNames[_i3] + "") == -1) {
+              if ($("#" + _this6.hiredNames[_i3] + "-select").next().next().length != 0) {
+                $("#" + _this6.hiredNames[_i3] + "-select").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this11.hiredNames[_i3] + '') == -1) {
-              $('[name="' + _this11.hiredNames[_i3] + '"]').removeClass('is-invalid');
-              $('[name="' + _this11.hiredNames[_i3] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this6.hiredNames[_i3] + "") == -1) {
+              $('[name="' + _this6.hiredNames[_i3] + '"]').removeClass("is-invalid");
+              $('[name="' + _this6.hiredNames[_i3] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        for (var _i4 = 0; _i4 < _this11.rpNames.length; _i4++) {
-          if (keys.indexOf('' + _this11.rpNames[_i4] + '') == -1) {
-            if ($('[name="' + _this11.rpNames[_i4] + '"]').next().next().length != 0) {
-              $('[name="' + _this11.rpNames[_i4] + '"]').next().next('.invalid-feedback').remove();
+        for (var _i4 = 0; _i4 < _this6.rpNames.length; _i4++) {
+          if (keys.indexOf("" + _this6.rpNames[_i4] + "") == -1) {
+            if ($('[name="' + _this6.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this6.rpNames[_i4] + '"]').next().next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this11.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this6.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     addPassengerRow: function addPassengerRow(event) {
@@ -5808,7 +5916,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
 
         var _loop2 = function _loop2(i) {
-          $("#passenger-select-" + i).on('select2:select', function (e) {
+          $("#passenger-select-" + i).on("select2:select", function (e) {
             var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
             paxVal = paxVal - 1;
             vm.getData(paxVal, i);
@@ -5824,7 +5932,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             };
             vm.passengers[count - 1] = data;
           });
-          $("#passenger-select-".concat(i)).on('select2:clear', function (e) {
+          $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
             var data = {
               created_at: null,
               designation: null,
@@ -5847,14 +5955,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     removePassengerRow: function removePassengerRow(event) {
       event.preventDefault();
-      var lastTr = $('#passenger-tbl tbody tr:eq(-1)');
+      var lastTr = $("#passenger-tbl tbody tr:eq(-1)");
       var count = this.passengers.length;
 
-      if (lastTr.find('td:eq(0)').text() != '1') {
+      if (lastTr.find("td:eq(0)").text() != "1") {
         var aliasNames = this.names;
-        var paxName = aliasNames.indexOf('pax_name_' + lastTr.find('td:eq(0)').text());
-        var paxDes = aliasNames.indexOf('pax_des_' + lastTr.find('td:eq(0)').text());
-        var paxSex = aliasNames.indexOf('pax_gen_' + lastTr.find('td:eq(0)').text());
+        var paxName = aliasNames.indexOf("pax_name_" + lastTr.find("td:eq(0)").text());
+        var paxDes = aliasNames.indexOf("pax_des_" + lastTr.find("td:eq(0)").text());
+        var paxSex = aliasNames.indexOf("pax_gen_" + lastTr.find("td:eq(0)").text());
 
         if (paxName > -1) {
           aliasNames.splice(paxName, 1);
@@ -5875,7 +5983,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         this.passengers = parsedobj_passenger;
       }
 
-      $('#pax-total').val(parseInt($('#passenger-tbl tbody tr:eq(-1) td:eq(0)').text()));
+      $("#pax-total").val(parseInt($("#passenger-tbl tbody tr:eq(-1) td:eq(0)").text()));
     },
     incrementOfficeVehicle: function incrementOfficeVehicle(event) {
       event.preventDefault();
@@ -5904,10 +6012,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     incrementRentalVehicle: function incrementRentalVehicle(event) {
       event.preventDefault();
       var count = this.staff.rental.total += 1;
-      this.hiredNames.push('vehicle_name_' + count);
-      this.hiredNames.push('vehicle_plate_' + count);
-      this.hiredNames.push('driver_name_' + count);
-      this.hiredNames.push('driver_contact_' + count);
+      this.hiredNames.push("vehicle_name_" + count);
+      this.hiredNames.push("vehicle_plate_" + count);
+      this.hiredNames.push("driver_name_" + count);
+      this.hiredNames.push("driver_contact_" + count);
     },
     decrementRentalVehicle: function decrementRentalVehicle(event) {
       event.preventDefault();
@@ -5921,48 +6029,48 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getVehicle: function getVehicle() {
-      var _this12 = this;
+      var _this7 = this;
 
-      axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
-        _this12.vehicles = response.data;
+      axios.get(BASE_URL + "/api/v1/vehicle").then(function (response) {
+        _this7.vehicles = response.data;
       });
     },
     getPo: function getPo() {
-      var _this13 = this;
+      var _this8 = this;
 
-      axios.get(BASE_URL + '/api/v1/po').then(function (response) {
-        _this13.procurements = response.data;
+      axios.get(BASE_URL + "/api/v1/po").then(function (response) {
+        _this8.procurements = response.data;
       });
     },
     getDriver: function getDriver() {
-      var _this14 = this;
+      var _this9 = this;
 
-      axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
-        _this14.drivers = response.data;
+      axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
+        _this9.drivers = response.data;
       });
     },
     declined: function declined() {
-      this.remarks = '';
-      $('.invalid-feedback').remove();
-      $('.is-invalid').removeClass('is-invalid');
-      $('#kt_datatable_modal').modal('toggle');
-      $('#rejectRemarks').modal('show');
+      this.remarks = "";
+      $(".invalid-feedback").remove();
+      $(".is-invalid").removeClass("is-invalid");
+      $("#kt_datatable_modal").modal("toggle");
+      $("#rejectRemarks").modal("show");
     },
     declinedRequest: function declinedRequest() {
-      var _this15 = this;
+      var _this10 = this;
 
-      axios.post(BASE_URL + '/travel/listrequeststaff/declined', {
+      axios.post(BASE_URL + "/travel/listrequeststaff/declined", {
         id: this.current_id,
         remarks: this.remarks
       }).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this15.$showToast(response.data.message, 'success');
+        _this10.$showToast(response.data.message, "success");
 
-        $('#rejectRemarks').modal('toggle');
-        $('#request-tbl').DataTable().ajax.reload();
+        $("#rejectRemarks").modal("toggle");
+        $("#request-tbl").DataTable().ajax.reload();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
@@ -5976,9 +6084,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ($('[name="declined_' + "".concat(key) + '"]').next().length == 0 || $('[name="remarks_' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-            $('[name="declined_' + "".concat(key) + '"]').addClass('is-invalid');
-            $('[name="declined_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+          if ($('[name="declined_' + "".concat(key) + '"]').next().length == 0 || $('[name="remarks_' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+            $('[name="declined_' + "".concat(key) + '"]').addClass("is-invalid");
+            $('[name="declined_' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
           }
         }
       });
@@ -5988,16 +6096,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var month = dtToday.getMonth() + 1;
       var day = dtToday.getDate();
       var year = dtToday.getFullYear();
-      if (month < 10) month = '0' + month.toString();
-      if (day < 10) day = '0' + day.toString();
-      var maxDate = year + '-' + month + '-' + day;
+      if (month < 10) month = "0" + month.toString();
+      if (day < 10) day = "0" + day.toString();
+      var maxDate = year + "-" + month + "-" + day;
       this.maxDate = maxDate;
     },
     getVehiclemode: function getVehiclemode() {
-      var _this16 = this;
+      var _this11 = this;
 
-      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
-        _this16.vehiclemodes = res.data.results;
+      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
+        _this11.vehiclemodes = res.data.results;
       });
     }
   }
@@ -9053,62 +9161,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       divisions: [],
       sections: [],
       activeSections: [],
-      activeCities: [],
       names: ["region", "province", "city", "brgy", "date_travel", "pax_des_1", "pax_name_1", "pax_gen_1", "division", "section", "pur_travel", "time_depart", "date_return", "destination_place"],
       complete: false,
       createdAt: null,
@@ -9129,6 +9187,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     this.getDivision();
     this.getSection();
     this.EmployeeList();
+    this.getDestination();
   },
   computed: {
     loadingStats: function loadingStats() {
@@ -9182,9 +9241,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           var id = $("#kt_select_section").val();
           _this.section = id;
         });
-        $("#kt_select_region").on("change", function () {
-          vm.activeRegion = $(this).val();
-        });
       });
     },
     getData: function getData(id, index) {
@@ -9195,7 +9251,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
     },
     clearData: function clearData() {
-      $(".details-input").val(null).trigger("change");
       var vm = this;
       vm.total = 1;
       vm.pax_des.length = 0;
@@ -9221,7 +9276,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         $("#passenger-select-".concat(count)).on("select2:select", function (e) {
           var paxVal = $(this).find(":selected").data("id");
-          console.log("paxval" + paxVal + " count" + count);
           vm.getData(paxVal, count);
         });
         $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
@@ -9277,7 +9331,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          if ("".concat(key) == "division" || "".concat(key) == "section") {
+          if ("".concat(key) == "region" || "".concat(key) == "province" || "".concat(key) == "city" || "".concat(key) == "division" || "".concat(key) == "section") {
             if ($("#kt_select_" + "".concat(key)).next().next().length == 0 || $("#kt_select_" + "".concat(key)).next().next().attr("class").search("invalid-feedback") == -1) {
               $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
@@ -9290,7 +9344,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "division" || _this2.names[i] == "section") {
+          if (_this2.names[i] == "region" || _this2.names[i] == "province" || _this2.names[i] == "city" || _this2.names[i] == "division" || _this2.names[i] == "section") {
             if (keys.indexOf("" + _this2.names[i] + "") == -1) {
               if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
                 $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
@@ -9313,17 +9367,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getSection: function getSection() {
       this.sections = JSON.parse(localStorage.getItem("section"));
     },
+    getDestination: function getDestination() {
+      axios.get(BASE_URL + "/travel/request/").then(function (response) {
+        var res = response.data.result;
+        var result = res.map(function (a) {
+          return a.destination;
+        });
+        var availableTags = result;
+        $("#destination_place").autocomplete({
+          source: availableTags
+        });
+      });
+    },
     newRequest: function newRequest() {
-      this.clearData();
+      $(".details-input").val(null).trigger("change");
       setTimeout(function () {
         $(".data-entry").attr("disabled", true);
       }, 500);
-      $(".data-entry").attr("disabled", true);
+      this.clearData();
 
       for (var i = 0; i < this.names.length; i++) {
-        if (this.names[i] == "division" || this.names[i] == "region") {} else {
+        if (this.names[i] == "section" || this.names[i] == "province" || this.names[i] == "city" || this.names[i] == "brgy") {
+          $("#kt_select_" + this.names[i]).empty();
+        } else if (this.names[i] == "division" || this.names[i] == "region") {
+          $("#kt_select_region").val(null).trigger("change");
+        } else {
           $('[name="' + this.names[i] + '"]').val(null);
         }
+
+        $("#kt_select_division").val(null).trigger("change");
       }
 
       $(".details-input").attr("disabled", false);
@@ -56697,12 +56769,18 @@ var render = function() {
                             staticClass:
                               "col-lg-12 text-dark font-weight-bold mb-10"
                           },
-                          [_vm._v("Requestor Details:")]
+                          [
+                            _vm._v(
+                              "\n            Requestor Details:\n          "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-12" }, [
+                          _c("h5", [_vm._v("Info:")])
+                        ]),
+                        _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
-                          _c("h5", [_vm._v("Info:")]),
-                          _vm._v(" "),
                           _c("input", {
                             directives: [
                               {
@@ -56776,37 +56854,6 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "form-group mt-n7" }, [
-                            _c("label", [_vm._v("Purpose of Travel")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.request_travelPurpose,
-                                  expression: "request_travelPurpose"
-                                }
-                              ],
-                              staticClass: "form-control details-input",
-                              attrs: {
-                                type: "text",
-                                name: "pur_travel",
-                                disabled: "disabled"
-                              },
-                              domProps: { value: _vm.request_travelPurpose },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.request_travelPurpose =
-                                    $event.target.value
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group mt-n7" }, [
                             _c("label", [_vm._v("Date of Travel")]),
                             _vm._v(" "),
                             _c("input", {
@@ -56834,39 +56881,6 @@ var render = function() {
                                     return
                                   }
                                   _vm.request_travelDate = $event.target.value
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group mt-n7" }, [
-                            _c("label", [_vm._v("Date of Return")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.request_returnDate,
-                                  expression: "request_returnDate"
-                                }
-                              ],
-                              staticClass:
-                                "form-control details-input date-limit",
-                              attrs: {
-                                id: "date-return",
-                                type: "date",
-                                name: "date_return",
-                                disabled: "disabled",
-                                min: _vm.maxDate
-                              },
-                              domProps: { value: _vm.request_returnDate },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.request_returnDate = $event.target.value
                                 }
                               }
                             })
@@ -56905,150 +56919,65 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-6" }, [
                           _c("div", { staticClass: "form-group" }, [
-                            _c("h5", [_vm._v("Destination:")]),
+                            _c("label", [_vm._v("Purpose of Travel")]),
                             _vm._v(" "),
-                            _c("label", [_vm._v("Region")]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                staticClass:
-                                  "form-control select2 details-input",
-                                attrs: {
-                                  id: "kt_select_region",
-                                  name: "region",
-                                  disabled: "disabled"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.request_travelPurpose,
+                                  expression: "request_travelPurpose"
                                 }
+                              ],
+                              staticClass: "form-control details-input",
+                              attrs: {
+                                type: "text",
+                                name: "pur_travel",
+                                disabled: "disabled"
                               },
-                              _vm._l(_vm.regions, function(region) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: region.id,
-                                    domProps: { value: region.id }
-                                  },
-                                  [_vm._v(_vm._s(region.region_name))]
-                                )
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "mt-4" }, [
-                              _vm._v("Province")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
-                                attrs: {
-                                  id: "kt_select_province",
-                                  name: "province[]",
-                                  multiple: "multiple",
-                                  disabled: "disabled"
+                              domProps: { value: _vm.request_travelPurpose },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.request_travelPurpose =
+                                    $event.target.value
                                 }
-                              },
-                              _vm._l(_vm.provinces, function(province) {
-                                return _c(
-                                  "option",
-                                  {
-                                    key: province.id,
-                                    domProps: { value: province.id }
-                                  },
-                                  [_vm._v(_vm._s(province.province_name))]
-                                )
-                              }),
-                              0
-                            ),
+                              }
+                            }),
                             _vm._v(" "),
-                            _c("label", { staticClass: "mt-4" }, [
-                              _vm._v("City")
-                            ]),
+                            _c("label", [_vm._v("Date of Return")]),
                             _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
-                                attrs: {
-                                  id: "kt_select_city",
-                                  name: "city[]",
-                                  multiple: "multiple",
-                                  disabled: "disabled"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.request_returnDate,
+                                  expression: "request_returnDate"
                                 }
+                              ],
+                              staticClass:
+                                "form-control details-input date-limit",
+                              attrs: {
+                                id: "date-return",
+                                type: "date",
+                                name: "date_return",
+                                disabled: "disabled",
+                                min: _vm.maxDate
                               },
-                              _vm._l(_vm.activeProvinces, function(activeProv) {
-                                return _c(
-                                  "optgroup",
-                                  {
-                                    key: activeProv.id,
-                                    attrs: { label: activeProv.province_name }
-                                  },
-                                  _vm._l(
-                                    _vm.cities.filter(function(i) {
-                                      return i.province_id == activeProv.id
-                                    }),
-                                    function(city) {
-                                      return _c(
-                                        "option",
-                                        {
-                                          key: city.id,
-                                          domProps: { value: city.id }
-                                        },
-                                        [_vm._v(_vm._s(city.city_name))]
-                                      )
-                                    }
-                                  ),
-                                  0
-                                )
-                              }),
-                              0
-                            ),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "mt-4" }, [
-                              _vm._v("Barangay")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                staticClass:
-                                  "form-control select2 kt_select2_3 details-input",
-                                attrs: {
-                                  id: "kt_select_brgy",
-                                  name: "brgy[]",
-                                  multiple: "multiple",
-                                  disabled: "disabled"
+                              domProps: { value: _vm.request_returnDate },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.request_returnDate = $event.target.value
                                 }
-                              },
-                              _vm._l(_vm.activeCities, function(activeCity) {
-                                return _c(
-                                  "optgroup",
-                                  {
-                                    key: activeCity.id,
-                                    attrs: { label: activeCity.city_name }
-                                  },
-                                  _vm._l(
-                                    _vm.brgys.filter(function(i) {
-                                      return i.city_id == activeCity.id
-                                    }),
-                                    function(brgy) {
-                                      return _c(
-                                        "option",
-                                        {
-                                          key: brgy.id,
-                                          domProps: { value: brgy.id }
-                                        },
-                                        [_vm._v(_vm._s(brgy.brgy_name))]
-                                      )
-                                    }
-                                  ),
-                                  0
-                                )
-                              }),
-                              0
-                            ),
+                              }
+                            }),
                             _vm._v(" "),
                             _c("label", [_vm._v("Place")]),
                             _vm._v(" "),
@@ -57122,7 +57051,11 @@ var render = function() {
                                   staticClass:
                                     "text-dark font-weight-bold mb-10"
                                 },
-                                [_vm._v("Passenger Details:")]
+                                [
+                                  _vm._v(
+                                    "\n                  Passenger Details:\n                "
+                                  )
+                                ]
                               ),
                               _vm._v(" "),
                               _vm.request_edit
@@ -57182,7 +57115,11 @@ var render = function() {
                                         staticClass: "text-center",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("Name of Passenger/s")]
+                                      [
+                                        _vm._v(
+                                          "\n                      Name of Passenger/s\n                    "
+                                        )
+                                      ]
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -57191,7 +57128,11 @@ var render = function() {
                                         staticClass: "text-center",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("Position/Designation")]
+                                      [
+                                        _vm._v(
+                                          "\n                      Position/Designation\n                    "
+                                        )
+                                      ]
                                     ),
                                     _vm._v(" "),
                                     _c(
@@ -57215,7 +57156,13 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "row" }
                                         },
-                                        [_vm._v(_vm._s(_vm.paxIndex(index)))]
+                                        [
+                                          _vm._v(
+                                            "\n                      " +
+                                              _vm._s(_vm.paxIndex(index)) +
+                                              "\n                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c("td", [
@@ -57260,15 +57207,19 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      _vm._s(
-                                                        result.first_name
-                                                      ) +
+                                                      "\n                          " +
+                                                        _vm._s(
+                                                          result.first_name
+                                                        ) +
                                                         " " +
                                                         _vm._s(
                                                           result.middle_name
                                                         ) +
-                                                        " " +
-                                                        _vm._s(result.last_name)
+                                                        "\n                          " +
+                                                        _vm._s(
+                                                          result.last_name
+                                                        ) +
+                                                        "\n                        "
                                                     )
                                                   ]
                                                 )
@@ -57282,7 +57233,7 @@ var render = function() {
                                       _c("td", [
                                         _c("input", {
                                           staticClass:
-                                            "data-entry form-control ",
+                                            "data-entry form-control",
                                           attrs: {
                                             name:
                                               "pax_des_" + _vm.paxIndex(index),
@@ -57353,7 +57304,7 @@ var render = function() {
                             "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("Close")]
+                        [_vm._v("\n        Close\n      ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -57368,7 +57319,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Save")]
+                        [_vm._v("\n        Save\n      ")]
                       )
                     ]
                   },
@@ -57393,7 +57344,11 @@ var render = function() {
                             staticClass:
                               "col-lg-12 text-dark font-weight-bold mb-10"
                           },
-                          [_vm._v("Administrative Fill-in:")]
+                          [
+                            _vm._v(
+                              "\n            Administrative Fill-in:\n          "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-lg-12 row" }, [
@@ -57469,9 +57424,9 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(
-                                        " " +
+                                        "\n                    " +
                                           _vm._s(v.name) +
-                                          "\n                                        "
+                                          "\n                    "
                                       ),
                                       _c("span")
                                     ]
@@ -57515,8 +57470,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                _vm._s(po.po_no) +
-                                                  " - ₱ " +
+                                                "\n                    " +
+                                                  _vm._s(po.po_no) +
+                                                  " - ₱\n                    " +
                                                   _vm._s(
                                                     po.totalBalance
                                                       ? _vm.$toParseNum(
@@ -57525,7 +57481,8 @@ var render = function() {
                                                       : _vm.$toParseNum(
                                                           po.po_amount
                                                         )
-                                                  )
+                                                  ) +
+                                                  "\n                  "
                                               )
                                             ]
                                           )
@@ -57728,11 +57685,13 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        _vm._s(vehicle.name) +
+                                                        "\n                          " +
+                                                          _vm._s(vehicle.name) +
                                                           " - " +
                                                           _vm._s(
                                                             vehicle.plate_no
-                                                          )
+                                                          ) +
+                                                          "\n                        "
                                                       )
                                                     ]
                                                   )
@@ -57771,7 +57730,11 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        _vm._s(driver.fullname)
+                                                        "\n                          " +
+                                                          _vm._s(
+                                                            driver.fullname
+                                                          ) +
+                                                          "\n                        "
                                                       )
                                                     ]
                                                   )
@@ -58013,7 +57976,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declined }
                     },
-                    [_vm._v("Decline")]
+                    [_vm._v("\n        Decline\n      ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58023,7 +57986,7 @@ var render = function() {
                         "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("Close")]
+                    [_vm._v("\n        Close\n      ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58034,7 +57997,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.approved }
                     },
-                    [_vm._v("Approved")]
+                    [_vm._v("\n        Approved\n      ")]
                   )
                 ]
               },
@@ -58105,7 +58068,7 @@ var render = function() {
                       staticClass: "btn btn-light-primary font-weight-bold",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("Close")]
+                    [_vm._v("\n            Close\n          ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58115,7 +58078,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declinedRequest }
                     },
-                    [_vm._v("Save changes")]
+                    [_vm._v("\n            Save changes\n          ")]
                   )
                 ])
               ])
@@ -58185,7 +58148,10 @@ var staticRenderFns = [
       _c(
         "h3",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Remarks "), _c("small", {}, [_vm._v("Declined request")])]
+        [
+          _vm._v("\n            Remarks "),
+          _c("small", {}, [_vm._v("Declined request")])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -62011,9 +61977,7 @@ var render = function() {
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
                     _c("p", { staticClass: "lead" }, [
-                      _vm._v(
-                        "\n                            Your request has successfully completed!\n                        "
-                      )
+                      _vm._v("Your request has successfully completed!")
                     ]),
                     _vm._v(" "),
                     _c("hr", { staticClass: "my-4" }),
@@ -62058,9 +62022,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
-                  _vm._v(
-                    "\n                            Requestor Info:\n                        "
-                  )
+                  _vm._v("Requestor Info:")
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
@@ -62085,7 +62047,13 @@ var render = function() {
                               key: division.id,
                               domProps: { value: division.id }
                             },
-                            [_vm._v(_vm._s(division.division_name))]
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(division.division_name) +
+                                  "\n                  "
+                              )
+                            ]
                           )
                         })
                       ],
@@ -62120,7 +62088,13 @@ var render = function() {
                                 key: section.id,
                                 domProps: { value: section.id }
                               },
-                              [_vm._v(_vm._s(section.section_name))]
+                              [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(section.section_name) +
+                                    "\n                  "
+                                )
+                              ]
                             )
                           }
                         )
@@ -62196,7 +62170,7 @@ var render = function() {
                         { staticClass: "text-dark font-weight-bold mb-10" },
                         [
                           _vm._v(
-                            "\n                                    Passenger Details:\n                                "
+                            "\n                  Passenger Details:\n                "
                           )
                         ]
                       ),
@@ -62278,9 +62252,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                            " +
+                                    "\n                      " +
                                       _vm._s(index) +
-                                      "\n                                        "
+                                      "\n                    "
                                   )
                                 ]
                               ),
@@ -62323,11 +62297,13 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                _vm._s(result.first_name) +
-                                                  "\n                                                    " +
+                                                "\n                          " +
+                                                  _vm._s(result.first_name) +
+                                                  "\n                          " +
                                                   _vm._s(result.middle_name) +
-                                                  "\n                                                    " +
-                                                  _vm._s(result.last_name)
+                                                  "\n                          " +
+                                                  _vm._s(result.last_name) +
+                                                  "\n                        "
                                               )
                                             ]
                                           )
@@ -62370,11 +62346,13 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                _vm._s(result.first_name) +
-                                                  "\n                                                    " +
+                                                "\n                          " +
+                                                  _vm._s(result.first_name) +
+                                                  "\n                          " +
                                                   _vm._s(result.middle_name) +
-                                                  "\n                                                    " +
-                                                  _vm._s(result.last_name)
+                                                  "\n                          " +
+                                                  _vm._s(result.last_name) +
+                                                  "\n                        "
                                               )
                                             ]
                                           )
@@ -62395,7 +62373,7 @@ var render = function() {
                                     }
                                   ],
                                   staticClass:
-                                    "details-input data-entry form-control ",
+                                    "details-input data-entry form-control",
                                   attrs: {
                                     name: "pax_des_" + index,
                                     id: "pax_des_" + index,
@@ -62429,7 +62407,7 @@ var render = function() {
                                     }
                                   ],
                                   staticClass:
-                                    "details-input data-entry form-control ",
+                                    "details-input data-entry form-control",
                                   attrs: {
                                     name: "pax_gen_" + index,
                                     id: "pax_gen_" + index,
@@ -62479,7 +62457,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "ki ki-check icon-sm" }),
-                  _vm._v("Save Form\n            ")
+                  _vm._v("Save Form\n      ")
                 ]
               )
             ])
@@ -62496,7 +62474,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
-          _vm._v("\n                Motor Vehicle\n                "),
+          _vm._v("\n        Motor Vehicle\n        "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),
           _c("small", {}, [_vm._v("Request Form")])
@@ -62566,27 +62544,23 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("#")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
           _vm._v(
-            "\n                                            #\n                                        "
+            "\n                      Name of Passenger/s\n                    "
           )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
           _vm._v(
-            "\n                                            Name of Passenger/s\n                                        "
-          )
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-          _vm._v(
-            "\n                                            Position/Designation\n                                        "
+            "\n                      Position/Designation\n                    "
           )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center w-15", attrs: { scope: "col" } }, [
-          _vm._v(
-            "\n                                            Gender\n                                        "
-          )
+          _vm._v("Gender")
         ])
       ])
     ])

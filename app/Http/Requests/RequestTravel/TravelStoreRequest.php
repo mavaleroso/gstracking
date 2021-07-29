@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TravelStoreRequest extends FormRequest
 {
-     /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -24,30 +24,30 @@ class TravelStoreRequest extends FormRequest
      */
     public function rules()
     {
-        
+
         $rules = [
             'request_id' => 'nullable',
             'travel_radio' => 'nullable',
             'division' => 'required',
             'section' => 'required',
             'pur_travel' => 'required',
-            'destination_place' => 'required',
             'date_travel' => 'required|after_or_equal:today',
             'date_return' => 'required|after_or_equal:today',
             'time_depart' => 'required',
-            'pax_total' => 'required'
-            
+            'pax_total' => 'required',
+            'destination_place' => 'required'
+
         ];
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $rules['pax_name_'.$i] = 'required';
-            $rules['pax_des_'.$i] = 'required';
-            $rules['pax_gen_'.$i] = 'required';
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $rules['pax_name_' . $i] = 'required';
+            $rules['pax_des_' . $i] = 'required';
+            $rules['pax_gen_' . $i] = 'required';
         }
 
 
-        
-        return $rules;        
+
+        return $rules;
     }
 
     /**
@@ -61,19 +61,18 @@ class TravelStoreRequest extends FormRequest
             'division' => 'Division',
             'section' => 'Section',
             'pur_travel' => 'Purpose',
-            'destination_place' => 'Destination Place',
             'date_travel' => 'Travel Date',
             'date_return' => 'Return Date',
             'time_depart' => 'Time',
         ];
 
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $attributes['pax_name_'.$i] = 'Passenger Name';
-            $attributes['pax_des_'.$i] = 'Passenger Designation';
-            $attributes['pax_gen_'.$i] = 'Passenger Gender';
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $attributes['pax_name_' . $i] = 'Passenger Name';
+            $attributes['pax_des_' . $i] = 'Passenger Designation';
+            $attributes['pax_gen_' . $i] = 'Passenger Gender';
         }
-        
+
 
         return $attributes;
     }
@@ -95,10 +94,10 @@ class TravelStoreRequest extends FormRequest
             'time_depart' => __('main/validations.required')
         ];
 
-        for ($i=1; $i <= $this->request->get('pax_total'); $i++) { 
-            $messages['pax_name_'.$i] = __('main/validations.required');
-            $messages['pax_des_'.$i] = __('main/validations.required');
-            $messages['pax_gen_'.$i] = __('main/validations.required');
+        for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
+            $messages['pax_name_' . $i] = __('main/validations.required');
+            $messages['pax_des_' . $i] = __('main/validations.required');
+            $messages['pax_gen_' . $i] = __('main/validations.required');
         }
 
         return $messages;

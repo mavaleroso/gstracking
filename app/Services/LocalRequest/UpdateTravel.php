@@ -41,48 +41,11 @@ class UpdateTravel
         $request->update([
             'user_id' => auth()->user()->id,
             'purpose' => $fields['pur_travel'],
+            'destination' => $fields['destination_place'],
             'travel_date' => $fields['date_travel'],
             'return_date' => $fields['date_return'],
             'depart_time' => $fields['time_depart']
         ]);
-
-        $check = (isset($fields['brgy']))? 1:0;
-        $dest = Destination::select('id')->where('request_id', $id)->get();
-        $destDiff = (count($dest) - count($fields['city']));
-        if ($destDiff > 0) {
-            for ($i=$destDiff-1; $i >= 0 ; $i--) { 
-                Destination::where('id', $dest[(count($dest) - 1) - $i]->id)->delete();
-            }
-        }
-        for ($i=0; $i < count($fields['city']); $i++) { 
-            try {
-                if ($id) {
-                    $request->destinations()->where('id', $dest[$i]->id)->update([
-                        'region_id' => $fields['region'],
-                        'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
-                        'city_id' => $fields['city'][$i],
-                        'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
-                        'others' => $fields['destination_place']
-                    ]);
-                } else {
-                    $request->destinations()->where('id', $dest[$i]->id)->update([
-                        'region_id' => $fields['region'],
-                        'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
-                        'city_id' => $fields['city'][$i],
-                        'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
-                        'others' => $fields['destination_place']
-                    ]);
-                }
-            } catch (\Throwable $th) {
-                $request->destinations()->create([
-                    'region_id' => $fields['region'],
-                    'province_id' => $this->getCity->execute($fields['city'][$i])->province_id,
-                    'city_id' => $fields['city'][$i],
-                    'brgy_id' => ($check == 0)? NULL:$fields['brgy'][$i],
-                    'others' => $fields['destination_place']
-                ]);
-            }
-        }
         
         $pax = Passenger::select('id')->where('request_id', $id)->get();
         $paxDiff = count($pax) - $fields['pax_total'];
