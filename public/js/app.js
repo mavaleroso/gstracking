@@ -5617,19 +5617,38 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
               paxVal = paxVal - 1;
               vm.getData(paxVal, i);
+              var fullname = vm.employee_results[paxVal].first_name + " " + vm.employee_results[paxVal].middle_name + " " + vm.employee_results[paxVal].last_name;
+              var data = {
+                created_at: null,
+                designation: vm.employee_results[paxVal].position,
+                gender: vm.employee_results[paxVal].gender,
+                id: 1,
+                name: fullname,
+                request_id: 1,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+            });
+            $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
+              alert(i);
+              var data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+              $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
+              $("[name=\"pax_des_".concat(i, "\"]")).val(null);
             });
           };
 
-          for (var i = 0; i <= count; i++) {
+          for (var i = 1; i <= count; i++) {
             _loop(i);
           }
-
-          $("#passenger-select-1").on("select2:clear", function (e) {
-            $("#pax_des_1").val(null);
-            $("#pax_gen_1").val(null);
-            vm.pax_gen[0] = "";
-            vm.pax_des[0] = "";
-          });
         }, 500);
       });
     },
@@ -5847,6 +5866,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addPassengerRow: function addPassengerRow(event) {
       event.preventDefault();
+      var vm = this;
       var ndata = {
         created_at: null,
         designation: null,
@@ -5856,9 +5876,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         request_id: null,
         updated_at: null
       };
-      this.passengers.push(ndata);
-      var count = this.passengers.length;
-      var vm = this;
+      vm.passengers.push(ndata);
+      var count = vm.passengers.length;
       setTimeout(function () {
         $("#passenger-select-".concat(count)).select2({
           placeholder: "Select a fullname",
@@ -5881,24 +5900,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               updated_at: null
             };
             vm.passengers[count - 1] = data;
-          });
-          $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
-            var data = {
-              created_at: null,
-              designation: null,
-              gender: null,
-              id: null,
-              name: null,
-              request_id: null,
-              updated_at: null
-            };
-            vm.passengers[count - 1] = data;
-            $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
-            $("[name=\"pax_des_".concat(i, "\"]")).val(null);
+            $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
+              alert(i);
+              var data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+              $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
+              $("[name=\"pax_des_".concat(i, "\"]")).val(null);
+            });
           });
         };
 
-        for (var i = 0; i <= count; i++) {
+        for (var i = 1; i <= count; i++) {
           _loop2(i);
         }
       }, 100);

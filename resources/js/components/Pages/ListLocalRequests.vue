@@ -915,19 +915,45 @@ export default {
             $(".invalid-admin").removeClass("is-invalid");
           });
 
-          for (let i = 0; i <= count; i++) {
+          for (let i = 1; i <= count; i++) {
             $("#passenger-select-" + i).on("select2:select", function (e) {
               let paxVal = $(`#passenger-select-${i} option:selected`).index();
               paxVal = paxVal - 1;
               vm.getData(paxVal, i);
+              let fullname =
+                vm.employee_results[paxVal].first_name +
+                " " +
+                vm.employee_results[paxVal].middle_name +
+                " " +
+                vm.employee_results[paxVal].last_name;
+              let data = {
+                created_at: null,
+                designation: vm.employee_results[paxVal].position,
+                gender: vm.employee_results[paxVal].gender,
+                id: 1,
+                name: fullname,
+                request_id: 1,
+                updated_at: null,
+              };
+              vm.passengers[i - 1] = data;
+            });
+
+            $(`#passenger-select-${i}`).on("select2:clear", function (e) {
+              alert(i);
+              let data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null,
+              };
+              vm.passengers[i - 1] = data;
+              $(`[name="pax_gen_${i}"]`).val(null);
+              $(`[name="pax_des_${i}"]`).val(null);
             });
           }
-          $(`#passenger-select-1`).on("select2:clear", function (e) {
-            $("#pax_des_1").val(null);
-            $("#pax_gen_1").val(null);
-            vm.pax_gen[0] = "";
-            vm.pax_des[0] = "";
-          });
         }, 500);
       });
     },
@@ -1203,6 +1229,7 @@ export default {
     },
     addPassengerRow(event) {
       event.preventDefault();
+      let vm = this;
       let ndata = {
         created_at: null,
         designation: null,
@@ -1212,16 +1239,15 @@ export default {
         request_id: null,
         updated_at: null,
       };
-      this.passengers.push(ndata);
-      let count = this.passengers.length;
-      let vm = this;
+      vm.passengers.push(ndata);
+      let count = vm.passengers.length;
 
       setTimeout(() => {
         $(`#passenger-select-${count}`).select2({
           placeholder: "Select a fullname",
           allowClear: true,
         });
-        for (let i = 0; i <= count; i++) {
+        for (let i = 1; i <= count; i++) {
           $("#passenger-select-" + i).on("select2:select", function (e) {
             let paxVal = $(`#passenger-select-${i} option:selected`).index();
             paxVal = paxVal - 1;
@@ -1242,20 +1268,22 @@ export default {
               updated_at: null,
             };
             vm.passengers[count - 1] = data;
-          });
-          $(`#passenger-select-${i}`).on("select2:clear", function (e) {
-            let data = {
-              created_at: null,
-              designation: null,
-              gender: null,
-              id: null,
-              name: null,
-              request_id: null,
-              updated_at: null,
-            };
-            vm.passengers[count - 1] = data;
-            $(`[name="pax_gen_${i}"]`).val(null);
-            $(`[name="pax_des_${i}"]`).val(null);
+
+            $(`#passenger-select-${i}`).on("select2:clear", function (e) {
+              alert(i);
+              let data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null,
+              };
+              vm.passengers[i - 1] = data;
+              $(`[name="pax_gen_${i}"]`).val(null);
+              $(`[name="pax_des_${i}"]`).val(null);
+            });
           });
         }
       }, 100);
