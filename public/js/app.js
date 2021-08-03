@@ -4452,10 +4452,68 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       fuel_request: false,
+      fuel_request_update: false,
       form_fields: {
         driver_id: "",
         vehicle_id: "",
@@ -4521,7 +4579,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         type: 1,
         updated_at: "2021-07-05T00:53:57.000000Z"
       }],
-      names: ["driver_id", "vehicle_id", "po_id", "purpose"]
+      names: ["driver_id", "vehicle_id", "po_id", "purpose"],
+      update_names: ["particulars", "rate_per_liters"]
     };
   },
   mounted: function mounted() {
@@ -4532,11 +4591,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
+        _this.fuel_request = false;
+
         _this.tdatatable().init();
       });
     },
     tdatatable: function tdatatable() {
       var _this2 = this;
+
+      var vm = this;
 
       var initTable = function initTable() {
         var table = $("#fuel-charges-tbl");
@@ -4614,52 +4677,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             width: "125px",
             render: function render(data) {
               return '\
-                                    <a\
-                                        href="javascript:;"\
-                                        class="btn-edit btn btn-sm btn-clean btn-icon"\
-                                        title="Edit details"\
-                                    >\
+                                    <a href="javascript:;" data-id="' + data + '"class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
-                                            <svg\
-                                                xmlns="http://www.w3.org/2000/svg"\
-                                                xmlns:xlink="http://www.w3.org/1999/xlink"\
-                                                width="24px"\
-                                                height="24px"\
-                                                viewBox="0 0 24 24"\
-                                                version="1.1"\
-                                            >\
-                                                <g\
-                                                    stroke="none"\
-                                                    stroke-width="1"\
-                                                    fill="none"\
-                                                    fill-rule="evenodd"\
-                                                >\
-                                                    <rect\
-                                                        x="0"\
-                                                        y="0"\
-                                                        width="24"\
-                                                        height="24"\
-                                                    />\
-                                                    <path\
-                                                        d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"\
-                                                        fill="#000000"\
-                                                        fill-rule="nonzero"\
-                                                        transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "\
-                                                    />\
-                                                    <rect\
-                                                        fill="#000000"\
-                                                        opacity="0.3"\
-                                                        x="5"\
-                                                        y="20"\
-                                                        width="15"\
-                                                        height="2"\
-                                                        rx="1"\
-                                                    />\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" >\
+                                                    <rect x="0" y="0" width="24" height="24" />\
+                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) " />\
+                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1" />\
                                                 </g>\
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/>\
+                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                    <a href="javascript:;" data-id="" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4672,7 +4712,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                     </a>\
                                 ';
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $(".btn-edit").click(function () {
+              var id = $(this).data("id");
+              vm.showEntry(id);
+            });
+            $(".btn-delete").click(function () {});
+          }
         });
       };
 
@@ -4772,6 +4819,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
+    },
+    showEntry: function showEntry(id) {
+      this.fuel_request_update = true;
+      setTimeout(function () {
+        $("#kt_select_particulars").select2({
+          placeholder: "Select a particulars",
+          allowClear: true
+        });
+        $("#kt_select_particulars").on("select2:select", function () {});
+      }, 100);
+    },
+    cancelEntry: function cancelEntry() {
+      this.fuel_request = false;
+      this.fuel_request_update = false;
+      this.reset();
+      this.ini();
     },
     reset: function reset() {
       this.form_fields.vehicle_id = "";
@@ -56125,7 +56188,7 @@ var render = function() {
     "div",
     { staticClass: "w-100 h-100", attrs: { id: "fuel-charge-page" } },
     [
-      !_vm.fuel_request
+      !_vm.fuel_request && !_vm.fuel_request_update
         ? _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("div", { staticClass: "card-title" }),
@@ -56202,11 +56265,14 @@ var render = function() {
             _vm._v(" "),
             _vm._m(0)
           ])
-        : _c(
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.fuel_request
+        ? _c(
             "div",
             {
               staticClass:
-                "\n    card card-custom card-stretch\n    gutter-b\n    animate__animated animate__fadeInRight\n  "
+                "\n            card card-custom card-stretch\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
             },
             [
               _vm._m(1),
@@ -56408,11 +56474,7 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-light-primary btn-sm mx-1",
-                      on: {
-                        click: function($event) {
-                          _vm.fuel_request = false
-                        }
-                      }
+                      on: { click: _vm.cancelEntry }
                     },
                     [_vm._v("\n                    Cancel\n                ")]
                   ),
@@ -56429,6 +56491,39 @@ var render = function() {
               ])
             ]
           )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.fuel_request_update == true
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "\n            card card-custom\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
+            },
+            [
+              _vm._m(2),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-footer" }, [
+                _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-light-primary btn-sm mx-1",
+                      on: { click: _vm.cancelEntry }
+                    },
+                    [_vm._v("\n                    Cancel\n                ")]
+                  ),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "btn btn-primary btn-sm mx-1" }, [
+                    _vm._v("\n                    Submit\n                ")
+                  ])
+                ])
+              ])
+            ]
+          )
+        : _vm._e()
     ]
   )
 }
@@ -56486,6 +56581,74 @@ var staticRenderFns = [
           _c("small", [_vm._v("Form")])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _c("span", [_vm._v("Fuel Request Update")]),
+          _vm._v(" "),
+          _c("small", [_vm._v("Form")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body p-20" }, [
+      _c(
+        "form",
+        { staticClass: "form row", attrs: { id: "fuel-request-form" } },
+        [
+          _c("div", { staticClass: "col-lg-12 alert alert-secondary p-5" }, [
+            _c("h4", { staticClass: "m-0 p-0 font-weight-bold" }, [
+              _vm._v("Total Cost:")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Particulars:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control select2",
+                  attrs: { id: "kt_select_particulars", name: "particulars" }
+                },
+                [
+                  _c("option", { attrs: { label: "Label" } }),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Gasoline" } }, [
+                    _vm._v("Gasoline")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Diesel" } }, [
+                    _vm._v("Diesel")
+                  ])
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Rate per liters:")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "number" }
+              })
+            ])
+          ])
+        ]
+      )
     ])
   }
 ]
