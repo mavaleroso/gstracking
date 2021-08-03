@@ -1,7 +1,7 @@
 <template>
     <div id="fuel-charge-page" class="w-100 h-100">
         <div
-            v-if="!fuel_request"
+            v-if="!fuel_request && !fuel_request_update"
             class="card card-custom card-stretch gutter-b"
         >
             <div class="card-header">
@@ -68,12 +68,12 @@
             </div>
         </div>
         <div
-            v-else
+            v-if="fuel_request"
             class="
-        card card-custom card-stretch
-        gutter-b
-        animate__animated animate__fadeInRight
-      "
+                card card-custom card-stretch
+                gutter-b
+                animate__animated animate__fadeInRight
+            "
         >
             <div class="card-header flex-wrap">
                 <div class="card-title">
@@ -206,6 +206,63 @@
                 </div>
             </div>
         </div>
+        <div
+            v-if="fuel_request_update == true"
+            class="
+                card card-custom
+                gutter-b
+                animate__animated animate__fadeInRight
+            "
+        >
+            <div class="card-header flex-wrap">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        <span>Fuel Request Update</span>
+                        <small>Form</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body p-20">
+                <form class="form row" id="fuel-request-form">
+                    <div class="col-lg-12 alert alert-secondary p-5">
+                        <h4 class="m-0 p-0 font-weight-bold">Total Cost:</h4>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group mb-0">
+                            <label>Particulars:</label>
+                            <select
+                                class="form-control select2"
+                                id="kt_select_particulars"
+                                name="particulars"
+                            >
+                                <option label="Label"></option>
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Diesel">Diesel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group mb-0">
+                            <label>Rate per liters:</label>
+                            <input type="number" class="form-control" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div>
+                    <button
+                        class="btn btn-light-primary btn-sm mx-1"
+                        @click="cancelEntry"
+                    >
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary btn-sm mx-1">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -213,6 +270,7 @@ export default {
     data() {
         return {
             fuel_request: false,
+            fuel_request_update: false,
             form_fields: {
                 driver_id: "",
                 vehicle_id: "",
@@ -286,7 +344,8 @@ export default {
                     updated_at: "2021-07-05T00:53:57.000000Z"
                 }
             ],
-            names: ["driver_id", "vehicle_id", "po_id", "purpose"]
+            names: ["driver_id", "vehicle_id", "po_id", "purpose"],
+            update_names: ["particulars", "rate_per_liters"]
         };
     },
     mounted() {
@@ -300,6 +359,7 @@ export default {
             });
         },
         tdatatable() {
+            let vm = this;
             var initTable = () => {
                 var table = $("#fuel-charges-tbl");
                 table.DataTable({
@@ -376,8 +436,11 @@ export default {
                             orderable: false,
                             width: "125px",
                             render: data => {
-                                return '\
-                                    <a href="javascript:;" class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                return (
+                                    '\
+                                    <a href="javascript:;" data-id="' +
+                                    data +
+                                    '"class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" >\
@@ -388,7 +451,7 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn-edit btn btn-sm btn-clean btn-icon" title="Print request">\
+                                    <a href="javascript:;" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -410,10 +473,19 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                ';
+                                '
+                                );
                             }
                         }
-                    ]
+                    ],
+                    drawCallback: () => {
+                        $(".btn-edit").click(function() {
+                            let id = $(this).data("id");
+                            vm.showEntry(id);
+                        });
+
+                        $(".btn-delete").click(function() {});
+                    }
                 });
             };
             return {
@@ -547,7 +619,22 @@ export default {
                     );
                 });
         },
-        cancelEntry() {},
+        showEntry(id) {
+            this.fuel_request_update = true;
+            setTimeout(() => {
+                $("#kt_select_particulars").select2({
+                    placeholder: "Select a particulars",
+                    allowClear: true
+                });
+                $("#kt_select_particulars").on("select2:select", function() {});
+            }, 100);
+        },
+        cancelEntry() {
+            this.fuel_request = false;
+            this.fuel_request_update = false;
+            this.reset();
+            this.ini();
+        },
         reset() {
             this.form_fields.vehicle_id = "";
             this.form_fields.driver_id = "";
