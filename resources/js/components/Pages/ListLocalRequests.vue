@@ -857,7 +857,6 @@ export default {
               "modal-status label label-danger label-inline mr-5";
             break;
         }
-
         vm.request_title = response.data[0].serial_code;
         vm.request_createdAt = response.data[0].created_at;
         vm.request_vehicle = response.data[0].type_vehicle;
@@ -869,11 +868,9 @@ export default {
         vm.status = response.data[0].is_status;
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
-
+        vm.place = response.data[0].destination;
         vm.dateTimeEng = this.$dateTimeEng(response.data[0].created_at);
-        // vm.getDetails(vm.current_id);
         vm.getPassengers(vm.current_id);
-
         !app ? $("#kt_datatable_modal").modal("show") : NULL;
 
         setTimeout(() => {
@@ -939,7 +936,6 @@ export default {
             });
 
             $(`#passenger-select-${i}`).on("select2:clear", function (e) {
-              alert(i);
               let data = {
                 created_at: null,
                 designation: null,
@@ -960,23 +956,6 @@ export default {
 
     EmployeeList() {
       this.employee_results = JSON.parse(localStorage.getItem("ListEmployee"));
-    },
-    getDetails(id) {
-      $(".details-input").attr("disabled", true);
-      this.request_edit = 0;
-      axios.get(BASE_URL + "/api/v1/destination/" + id).then((response) => {
-        this.place = response.data[0].others;
-
-        setTimeout(() => {
-          for (let i = 0; i < this.passengers.length + 1; i++) {
-            $("#passenger-select-" + i).select2({
-              placeholder: "Select fullname",
-              allowClear: true,
-            });
-          }
-        }, 500);
-      });
-      this.dateConf();
     },
     getData(id, index) {
       let vm = this;
@@ -1001,24 +980,6 @@ export default {
           allowClear: true,
         });
       }
-
-      setTimeout(() => {
-        $(`#passenger-select-${count}`).on("select2:clear", function (e) {
-          console.log("countttaa " + count);
-          $("#pax_des_" + `${count}`).val(null);
-          $("#pax_gen_" + `${count}`).val(null);
-          //   this.pax_gen[count - 1] = "";
-          //   this.pax_des[count - 1] = "";
-        });
-      }, 100);
-
-      //       $(`#passenger-select-${count}`).on("select2:clear", function (e) {
-      //   $("#pax_des_" + `${count}`).val(null);
-      //   $("#pax_gen_" + `${count}`).val(null);
-      //   vm.pax_gen[count - 1] = "";
-      //   vm.pax_des[count - 1] = "";
-      // });
-
       let btn_edit = $(".btn-edit span");
       if (btn_edit.text() == "Edit") {
         btn_edit.text("Cancel");
@@ -1267,10 +1228,9 @@ export default {
               request_id: 1,
               updated_at: null,
             };
-            vm.passengers[count - 1] = data;
+            vm.passengers[i - 1] = data;
 
             $(`#passenger-select-${i}`).on("select2:clear", function (e) {
-              alert(i);
               let data = {
                 created_at: null,
                 designation: null,

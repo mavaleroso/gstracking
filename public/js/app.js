@@ -5577,8 +5577,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.status = response.data[0].is_status;
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
-        vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at); // vm.getDetails(vm.current_id);
-
+        vm.place = response.data[0].destination;
+        vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
         vm.getPassengers(vm.current_id);
         !app ? $("#kt_datatable_modal").modal("show") : NULL;
         setTimeout(function () {
@@ -5630,7 +5630,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               vm.passengers[i - 1] = data;
             });
             $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
-              alert(i);
               var data = {
                 created_at: null,
                 designation: null,
@@ -5655,24 +5654,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     EmployeeList: function EmployeeList() {
       this.employee_results = JSON.parse(localStorage.getItem("ListEmployee"));
     },
-    getDetails: function getDetails(id) {
-      var _this4 = this;
-
-      $(".details-input").attr("disabled", true);
-      this.request_edit = 0;
-      axios.get(BASE_URL + "/api/v1/destination/" + id).then(function (response) {
-        _this4.place = response.data[0].others;
-        setTimeout(function () {
-          for (var i = 0; i < _this4.passengers.length + 1; i++) {
-            $("#passenger-select-" + i).select2({
-              placeholder: "Select fullname",
-              allowClear: true
-            });
-          }
-        }, 500);
-      });
-      this.dateConf();
-    },
     getData: function getData(id, index) {
       var vm = this;
       this.pax_des[index - 1] = vm.employee_results[id].position;
@@ -5681,10 +5662,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $("[name=\"pax_des_".concat(index, "\"]")).val(vm.employee_results[id].position);
     },
     getPassengers: function getPassengers(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get(BASE_URL + "/api/v1/passenger/" + id).then(function (response) {
-        _this5.passengers = response.data;
+        _this4.passengers = response.data;
       });
     },
     paxIndex: function paxIndex(index) {
@@ -5699,20 +5680,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           allowClear: true
         });
       }
-
-      setTimeout(function () {
-        $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
-          console.log("countttaa " + count);
-          $("#pax_des_" + "".concat(count)).val(null);
-          $("#pax_gen_" + "".concat(count)).val(null); //   this.pax_gen[count - 1] = "";
-          //   this.pax_des[count - 1] = "";
-        });
-      }, 100); //       $(`#passenger-select-${count}`).on("select2:clear", function (e) {
-      //   $("#pax_des_" + `${count}`).val(null);
-      //   $("#pax_gen_" + `${count}`).val(null);
-      //   vm.pax_gen[count - 1] = "";
-      //   vm.pax_des[count - 1] = "";
-      // });
 
       var btn_edit = $(".btn-edit span");
 
@@ -5729,7 +5696,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     save: function save(id) {
-      var _this6 = this;
+      var _this5 = this;
 
       $(".data-entry").attr("disabled", false);
       var requestform = $("#request-form").serialize();
@@ -5737,17 +5704,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".new-row").remove();
         $(".details-input").attr("disabled", true);
         $(".data-entry").attr("disabled", true);
-        _this6.request_edit = 0;
+        _this5.request_edit = 0;
         $(".btn-edit span").text("Edit");
         $(".invalid-feedback").remove();
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this6.$showToast(response.data.message, "success");
+        _this5.$showToast(response.data.message, "success");
 
         $("#request-tbl").DataTable().ajax.reload();
 
-        _this6.getPassengers(_this6.current_id);
+        _this5.getPassengers(_this5.current_id);
       })["catch"](function (error) {
         $(".data-entry").attr("disabled", true);
         var data = error.response.data.errors;
@@ -5768,18 +5735,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this6.names.length; i++) {
-          if (keys.indexOf("" + _this6.names[i] + "") == -1) {
-            $('input[name="' + _this6.names[i] + '"]').removeClass("is-invalid");
-            $('[name="' + _this6.names[i] + '"]').next(".invalid-feedback").remove();
+        for (var i = 0; i < _this5.names.length; i++) {
+          if (keys.indexOf("" + _this5.names[i] + "") == -1) {
+            $('input[name="' + _this5.names[i] + '"]').removeClass("is-invalid");
+            $('[name="' + _this5.names[i] + '"]').next(".invalid-feedback").remove();
           }
         }
 
-        _this6.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this5.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     approved: function approved() {
-      var _this7 = this;
+      var _this6 = this;
 
       var adminForm = $("#administrative-form").serialize();
       axios.post(BASE_URL + "/travel/listrequeststaff", adminForm).then(function (response) {
@@ -5787,11 +5754,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".invalid-admin").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this7.$showToast(response.data.message, "success");
+        _this6.$showToast(response.data.message, "success");
 
         $("#request-tbl").DataTable().ajax.reload();
         setTimeout(function () {
-          _this7.show(_this7.current_id, 1);
+          _this6.show(_this6.current_id, 1);
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -5828,9 +5795,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this7.defaultNames.length; i++) {
-          if (_this7.defaultNames[i] == "vehicle_office" || _this7.defaultNames[i] == "vehicle_rental") {
-            if (keys.indexOf("" + _this7.defaultNames[i] + "") == -1) {
+        for (var i = 0; i < _this6.defaultNames.length; i++) {
+          if (_this6.defaultNames[i] == "vehicle_office" || _this6.defaultNames[i] == "vehicle_rental") {
+            if (keys.indexOf("" + _this6.defaultNames[i] + "") == -1) {
               if ($(".radio-inline").next().length != 0) {
                 $(".radio-inline").next(".invalid-feedback").remove();
               }
@@ -5838,30 +5805,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var _i3 = 0; _i3 < _this7.hiredNames.length; _i3++) {
-          if (_this7.hiredNames[_i3] == "travel_po") {
-            if (keys.indexOf("" + _this7.hiredNames[_i3] + "") == -1) {
-              if ($("#" + _this7.hiredNames[_i3] + "-select").next().next().length != 0) {
-                $("#" + _this7.hiredNames[_i3] + "-select").next().next(".invalid-feedback").remove();
+        for (var _i3 = 0; _i3 < _this6.hiredNames.length; _i3++) {
+          if (_this6.hiredNames[_i3] == "travel_po") {
+            if (keys.indexOf("" + _this6.hiredNames[_i3] + "") == -1) {
+              if ($("#" + _this6.hiredNames[_i3] + "-select").next().next().length != 0) {
+                $("#" + _this6.hiredNames[_i3] + "-select").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this7.hiredNames[_i3] + "") == -1) {
-              $('[name="' + _this7.hiredNames[_i3] + '"]').removeClass("is-invalid");
-              $('[name="' + _this7.hiredNames[_i3] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this6.hiredNames[_i3] + "") == -1) {
+              $('[name="' + _this6.hiredNames[_i3] + '"]').removeClass("is-invalid");
+              $('[name="' + _this6.hiredNames[_i3] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        for (var _i4 = 0; _i4 < _this7.rpNames.length; _i4++) {
-          if (keys.indexOf("" + _this7.rpNames[_i4] + "") == -1) {
-            if ($('[name="' + _this7.rpNames[_i4] + '"]').next().next().length != 0) {
-              $('[name="' + _this7.rpNames[_i4] + '"]').next().next(".invalid-feedback").remove();
+        for (var _i4 = 0; _i4 < _this6.rpNames.length; _i4++) {
+          if (keys.indexOf("" + _this6.rpNames[_i4] + "") == -1) {
+            if ($('[name="' + _this6.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this6.rpNames[_i4] + '"]').next().next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this7.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this6.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     addPassengerRow: function addPassengerRow(event) {
@@ -5899,9 +5866,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               request_id: 1,
               updated_at: null
             };
-            vm.passengers[count - 1] = data;
+            vm.passengers[i - 1] = data;
             $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
-              alert(i);
               var data = {
                 created_at: null,
                 designation: null,
@@ -5999,24 +5965,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getVehicle: function getVehicle() {
-      var _this8 = this;
+      var _this7 = this;
 
       axios.get(BASE_URL + "/api/v1/vehicle").then(function (response) {
-        _this8.vehicles = response.data;
+        _this7.vehicles = response.data;
       });
     },
     getPo: function getPo() {
-      var _this9 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/po").then(function (response) {
-        _this9.procurements = response.data;
+        _this8.procurements = response.data;
       });
     },
     getDriver: function getDriver() {
-      var _this10 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
-        _this10.drivers = response.data;
+        _this9.drivers = response.data;
       });
     },
     declined: function declined() {
@@ -6027,7 +5993,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       $("#rejectRemarks").modal("show");
     },
     declinedRequest: function declinedRequest() {
-      var _this11 = this;
+      var _this10 = this;
 
       axios.post(BASE_URL + "/travel/listrequeststaff/declined", {
         id: this.current_id,
@@ -6037,7 +6003,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this11.$showToast(response.data.message, "success");
+        _this10.$showToast(response.data.message, "success");
 
         $("#rejectRemarks").modal("toggle");
         $("#request-tbl").DataTable().ajax.reload();
@@ -6072,10 +6038,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.maxDate = maxDate;
     },
     getVehiclemode: function getVehiclemode() {
-      var _this12 = this;
+      var _this11 = this;
 
       axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this12.vehiclemodes = res.data.results;
+        _this11.vehiclemodes = res.data.results;
       });
     }
   }
