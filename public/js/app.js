@@ -5500,6 +5500,149 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5715,7 +5858,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.request_createdAt = response.data[0].created_at;
         vm.request_vehicle = response.data[0].type_vehicle;
         vm.request_travelPurpose = response.data[0].purpose;
-        vm.place = response.data[0].destination;
         vm.request_travelDate = response.data[0].travel_date;
         vm.request_returnDate = response.data[0].return_date;
         vm.request_departTime = response.data[0].depart_time;
@@ -5723,6 +5865,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.status = response.data[0].is_status;
         vm.division = response.data[0].division_code;
         vm.section = response.data[0].section_code;
+        vm.place = response.data[0].destination;
         vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
         vm.getPassengers(vm.current_id);
         !app ? $("#kt_datatable_modal").modal("show") : NULL;
@@ -5762,19 +5905,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               var paxVal = $("#passenger-select-".concat(i, " option:selected")).index();
               paxVal = paxVal - 1;
               vm.getData(paxVal, i);
+              var fullname = vm.employee_results[paxVal].first_name + " " + vm.employee_results[paxVal].middle_name + " " + vm.employee_results[paxVal].last_name;
+              var data = {
+                created_at: null,
+                designation: vm.employee_results[paxVal].position,
+                gender: vm.employee_results[paxVal].gender,
+                id: 1,
+                name: fullname,
+                request_id: 1,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+            });
+            $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
+              var data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+              $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
+              $("[name=\"pax_des_".concat(i, "\"]")).val(null);
             });
           };
 
-          for (var i = 0; i <= count; i++) {
+          for (var i = 1; i <= count; i++) {
             _loop(i);
           }
-
-          $("#passenger-select-1").on("select2:clear", function (e) {
-            $("#pax_des_1").val(null);
-            $("#pax_gen_1").val(null);
-            vm.pax_gen[0] = "";
-            vm.pax_des[0] = "";
-          });
         }, 500);
       });
     },
@@ -5960,6 +6121,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addPassengerRow: function addPassengerRow(event) {
       event.preventDefault();
+      var vm = this;
       var ndata = {
         created_at: null,
         designation: null,
@@ -5969,9 +6131,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         request_id: null,
         updated_at: null
       };
-      this.passengers.push(ndata);
-      var count = this.passengers.length;
-      var vm = this;
+      vm.passengers.push(ndata);
+      var count = vm.passengers.length;
       setTimeout(function () {
         $("#passenger-select-".concat(count)).select2({
           placeholder: "Select a fullname",
@@ -5993,25 +6154,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               request_id: 1,
               updated_at: null
             };
-            vm.passengers[count - 1] = data;
-          });
-          $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
-            var data = {
-              created_at: null,
-              designation: null,
-              gender: null,
-              id: null,
-              name: null,
-              request_id: null,
-              updated_at: null
-            };
-            vm.passengers[count - 1] = data;
-            $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
-            $("[name=\"pax_des_".concat(i, "\"]")).val(null);
+            vm.passengers[i - 1] = data;
+            $("#passenger-select-".concat(i)).on("select2:clear", function (e) {
+              var data = {
+                created_at: null,
+                designation: null,
+                gender: null,
+                id: null,
+                name: null,
+                request_id: null,
+                updated_at: null
+              };
+              vm.passengers[i - 1] = data;
+              $("[name=\"pax_gen_".concat(i, "\"]")).val(null);
+              $("[name=\"pax_des_".concat(i, "\"]")).val(null);
+            });
           });
         };
 
-        for (var i = 0; i <= count; i++) {
+        for (var i = 1; i <= count; i++) {
           _loop2(i);
         }
       }, 100);
@@ -9342,6 +9503,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.getData(paxVal, count);
         });
         $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
+          console.log("counttt " + count);
           $("#pax_des_" + "".concat(count)).val(null);
           $("#pax_gen_" + "".concat(count)).val(null);
           vm.pax_gen[count - 1] = "";
@@ -56934,7 +57096,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Requestor Details:\n          "
+                              "\n                        Requestor Details:\n                    "
                             )
                           ]
                         ),
@@ -57216,7 +57378,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                  Passenger Details:\n                "
+                                    "\n                                    Passenger Details:\n                                "
                                   )
                                 ]
                               ),
@@ -57269,18 +57431,9 @@ var render = function() {
                                         staticClass: "text-center",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("#")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "th",
-                                      {
-                                        staticClass: "text-center",
-                                        attrs: { scope: "col" }
-                                      },
                                       [
                                         _vm._v(
-                                          "\n                      Name of Passenger/s\n                    "
+                                          "\n                                            #\n                                        "
                                         )
                                       ]
                                     ),
@@ -57293,7 +57446,20 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                      Position/Designation\n                    "
+                                          "\n                                            Name of Passenger/s\n                                        "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "th",
+                                      {
+                                        staticClass: "text-center",
+                                        attrs: { scope: "col" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                            Position/Designation\n                                        "
                                         )
                                       ]
                                     ),
@@ -57304,7 +57470,11 @@ var render = function() {
                                         staticClass: "text-center w-15",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("Sex")]
+                                      [
+                                        _vm._v(
+                                          "\n                                            Sex\n                                        "
+                                        )
+                                      ]
                                     )
                                   ])
                                 ]),
@@ -57321,9 +57491,9 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                      " +
+                                            "\n                                            " +
                                               _vm._s(_vm.paxIndex(index)) +
-                                              "\n                    "
+                                              "\n                                        "
                                           )
                                         ]
                                       ),
@@ -57370,19 +57540,19 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                          " +
+                                                      "\n                                                    " +
                                                         _vm._s(
                                                           result.first_name
                                                         ) +
-                                                        " " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.middle_name
                                                         ) +
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.last_name
                                                         ) +
-                                                        "\n                        "
+                                                        "\n                                                "
                                                     )
                                                   ]
                                                 )
@@ -57400,6 +57570,8 @@ var render = function() {
                                           attrs: {
                                             name:
                                               "pax_des_" + _vm.paxIndex(index),
+                                            id:
+                                              "pax_des_" + _vm.paxIndex(index),
                                             type: "text",
                                             disabled: "disabled"
                                           },
@@ -57415,6 +57587,9 @@ var render = function() {
                                               "data-entry form-control",
                                             attrs: {
                                               name:
+                                                "pax_gen_" +
+                                                _vm.paxIndex(index),
+                                              id:
                                                 "pax_gen_" +
                                                 _vm.paxIndex(index),
                                               disabled: "disabled"
@@ -57467,7 +57642,7 @@ var render = function() {
                             "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("\n        Close\n      ")]
+                        [_vm._v("\n                Close\n            ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -57482,7 +57657,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("\n        Save\n      ")]
+                        [_vm._v("\n                Save\n            ")]
                       )
                     ]
                   },
@@ -57509,7 +57684,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Administrative Fill-in:\n          "
+                              "\n                        Administrative Fill-in:\n                    "
                             )
                           ]
                         ),
@@ -57587,9 +57762,9 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(
-                                        "\n                    " +
+                                        "\n                                        " +
                                           _vm._s(v.name) +
-                                          "\n                    "
+                                          "\n                                        "
                                       ),
                                       _c("span")
                                     ]
@@ -57633,9 +57808,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                    " +
+                                                "\n                                        " +
                                                   _vm._s(po.po_no) +
-                                                  " - ₱\n                    " +
+                                                  " - ₱\n                                        " +
                                                   _vm._s(
                                                     po.totalBalance
                                                       ? _vm.$toParseNum(
@@ -57645,7 +57820,7 @@ var render = function() {
                                                           po.po_amount
                                                         )
                                                   ) +
-                                                  "\n                  "
+                                                  "\n                                    "
                                               )
                                             ]
                                           )
@@ -57781,7 +57956,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57790,7 +57969,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57799,7 +57982,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -57816,7 +58003,13 @@ var render = function() {
                                               staticClass: "text-center",
                                               attrs: { scope: "row" }
                                             },
-                                            [_vm._v(_vm._s(index))]
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(index) +
+                                                  "\n                                        "
+                                              )
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c("td", [
@@ -57848,13 +58041,13 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(vehicle.name) +
-                                                          " - " +
+                                                          " -\n                                                    " +
                                                           _vm._s(
                                                             vehicle.plate_no
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -57893,11 +58086,11 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(
                                                             driver.fullname
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -58005,7 +58198,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -58014,7 +58211,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Plate #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Plate #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -58023,7 +58224,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -58032,7 +58237,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -58041,7 +58250,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Contact #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Contact #\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -58058,7 +58271,13 @@ var render = function() {
                                               staticClass: "text-center",
                                               attrs: { scope: "row" }
                                             },
-                                            [_vm._v(_vm._s(index))]
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(index) +
+                                                  "\n                                        "
+                                              )
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c("td", [
@@ -58139,7 +58358,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declined }
                     },
-                    [_vm._v("\n        Decline\n      ")]
+                    [_vm._v("\n                Decline\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58149,7 +58368,7 @@ var render = function() {
                         "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n        Close\n      ")]
+                    [_vm._v("\n                Close\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58160,7 +58379,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.approved }
                     },
-                    [_vm._v("\n        Approved\n      ")]
+                    [_vm._v("\n                Approved\n            ")]
                   )
                 ]
               },
@@ -58231,7 +58450,11 @@ var render = function() {
                       staticClass: "btn btn-light-primary font-weight-bold",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n            Close\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Close\n                    "
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
@@ -58241,7 +58464,11 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declinedRequest }
                     },
-                    [_vm._v("\n            Save changes\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Save changes\n                    "
+                      )
+                    ]
                   )
                 ])
               ])
@@ -58312,7 +58539,7 @@ var staticRenderFns = [
         "h3",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
         [
-          _vm._v("\n            Remarks "),
+          _vm._v("\n                        Remarks "),
           _c("small", {}, [_vm._v("Declined request")])
         ]
       ),
