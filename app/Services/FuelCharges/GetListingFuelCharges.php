@@ -4,6 +4,7 @@ namespace App\Services\FuelCharges;
 
 use Ccore\Core\Datatable;
 use App\Models\FuelCharges;
+use Illuminate\Support\Facades\DB;
 
 class GetListingFuelCharges
 {
@@ -14,10 +15,11 @@ class GetListingFuelCharges
      */
     public function execute()
     {
-        $query = FuelCharges::select(['fuel_charges.id', 'fuel_charges.code', 'drivers.fullname', 'drivers.contact', 'vehicles.name', 'vehicles.plate_no', 'procurements.po_no', 'fuel_charges.particulars', 'fuel_charges.num_liters', 'fuel_charges.unit_price', 'fuel_charges.amount', 'fuel_charges.purpose', 'fuel_charges.status', 'fuel_charges.created_at'])
+        $query = FuelCharges::select(['fuel_charges.id', 'fuel_charges.code', 'drivers.fullname', 'drivers.contact', 'vehicles.name', 'vehicles.plate_no', 'procurements.po_no', 'fuel_charges.gasoline_liters', 'fuel_charges.diesel_liters', 'fuel_charges.unit_price', 'fuel_charges.amount', 'fuel_charges.purpose', 'fuel_charges.status', 'fuel_charges.created_at', DB::raw('IF((procurements.po_amount - SUM(transaction_vehicles.total_cost)) > 0, (procurements.po_amount - SUM(transaction_vehicles.total_cost)), procurements.po_amount) as totalBalance')])
             ->leftJoin('drivers', 'fuel_charges.drivers_id', '=', 'drivers.id')
             ->leftJoin('vehicles', 'fuel_charges.vehicles_id', '=', 'vehicles.id')
-            ->leftJoin('procurements', 'fuel_charges.procurements_id', 'procurements.id');
+            ->leftJoin('procurements', 'fuel_charges.procurements_id', 'procurements.id')
+            ->leftJoin('transaction_vehicles', 'procurements.id', '=', 'transaction_vehicles.procurement_id');
 
 
         $result = Datatable::of($query, request(), [
@@ -28,28 +30,29 @@ class GetListingFuelCharges
                 'name',
                 'plate_no',
                 'po_no',
-                'particulars',
-                'num_liters',
+                'gasoline_liters',
+                'diesel_liters',
                 'unit_price',
                 'amount',
                 'purpose',
                 'status',
+                'totalBalance',
                 'created_at'
             ],
             'orderable' => [
-                'id',
                 'code',
                 'fullname',
                 'contact',
                 'name',
                 'plate_no',
                 'po_no',
-                'particulars',
-                'num_liters',
+                'gasoline_liters',
+                'diesel_liters',
                 'unit_price',
                 'amount',
                 'purpose',
                 'status',
+                'totalBalance',
                 'created_at'
             ]
         ]);

@@ -20,13 +20,14 @@ class CreateFuelCharges extends Migration
             $table->bigInteger('drivers_id');
             $table->bigInteger('vehicles_id');
             $table->bigInteger('procurements_id');
-            $table->mediumText('particulars');
-            $table->double('num_liters');
+            $table->mediumText('purpose');
+            $table->double('gasoline_liters');
+            $table->double('diesel_liters');
             $table->double('unit_price');
             $table->double('amount');
-            $table->mediumText('purpose');
             $table->smallInteger('status')->default(0);
             $table->timestamps();
+            $table->SoftDeletes();
         });
     }
 

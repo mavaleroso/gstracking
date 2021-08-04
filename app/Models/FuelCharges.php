@@ -26,11 +26,11 @@ class FuelCharges extends Model
         'drivers_id',
         'vehicles_id',
         'procurements_id',
-        'particulars',
-        'num_liters',
+        'purpose',
+        'gasoline_liters',
+        'diesel_liters',
         'unit_price',
         'amount',
-        'purpose',
         'status',
     ];
 }

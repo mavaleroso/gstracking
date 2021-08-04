@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\LocalRequest;
 
 use App\Models\Request;
@@ -33,10 +34,10 @@ class UpdateTravel
     {
 
         $user = auth()->user()->id;
-        $arr = array('luser' => $user, 'lpage' => 'Local_requests' , 'lurl' => $url, 'laction' => 'edit');
+        $arr = array('luser' => $user, 'lpage' => 'Local_requests', 'lurl' => $url, 'laction' => 'edit');
         $createLogs = createLogs($arr);
         $request = Request::find($id);
-        
+
         $request->update([
             'user_id' => auth()->user()->id,
             'purpose' => $fields['pur_travel'],
@@ -45,37 +46,36 @@ class UpdateTravel
             'return_date' => $fields['date_return'],
             'depart_time' => $fields['time_depart']
         ]);
-
         $pax = Passenger::select('id')->where('request_id', $id)->get();
         $paxDiff = count($pax) - $fields['pax_total'];
         if ($paxDiff > 0) {
-            for ($i=$paxDiff-1; $i >= 0 ; $i--) { 
-                Passenger::where('id', $pax[(count($pax)-1) - $i]->id)->delete();
+            for ($i = $paxDiff - 1; $i >= 0; $i--) {
+                Passenger::where('id', $pax[(count($pax) - 1) - $i]->id)->delete();
             }
         }
-        for ($i=1; $i <= $fields['pax_total']; $i++) {
+        for ($i = 1; $i <= $fields['pax_total']; $i++) {
             try {
                 if ($id) {
-                    $request->passengers()->where('id', $pax[$i-1]->id)->update([
+                    $request->passengers()->where('id', $pax[$i - 1]->id)->update([
                         'type' => 1,
-                        'name' => $fields['pax_name_'.$i],
-                        'designation' => $fields['pax_des_'.$i],
-                        'gender' => $fields['pax_gen_'.$i]
+                        'name' => $fields['pax_name_' . $i],
+                        'designation' => $fields['pax_des_' . $i],
+                        'gender' => $fields['pax_gen_' . $i]
                     ]);
                 } else {
                     $request->passengers()->create([
                         'type' => 1,
-                        'name' => $fields['pax_name_'.$i],
-                        'designation' => $fields['pax_des_'.$i],
-                        'gender' => $fields['pax_gen_'.$i]
+                        'name' => $fields['pax_name_' . $i],
+                        'designation' => $fields['pax_des_' . $i],
+                        'gender' => $fields['pax_gen_' . $i]
                     ]);
                 }
             } catch (\Throwable $th) {
                 $request->passengers()->create([
                     'type' => 1,
-                    'name' => $fields['pax_name_'.$i],
-                    'designation' => $fields['pax_des_'.$i],
-                    'gender' => $fields['pax_gen_'.$i]
+                    'name' => $fields['pax_name_' . $i],
+                    'designation' => $fields['pax_des_' . $i],
+                    'gender' => $fields['pax_gen_' . $i]
                 ]);
             }
         }

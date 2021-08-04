@@ -4455,10 +4455,65 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       fuel_request: false,
+      fuel_request_update: false,
       form_fields: {
         driver_id: "",
         vehicle_id: "",
@@ -4524,7 +4579,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         type: 1,
         updated_at: "2021-07-05T00:53:57.000000Z"
       }],
-      names: ["driver_id", "vehicle_id", "po_id", "purpose"]
+      names: ["driver_id", "vehicle_id", "po_id", "purpose"],
+      update_names: ["particulars", "rate_per_liters"]
     };
   },
   mounted: function mounted() {
@@ -4535,12 +4591,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this = this;
 
       $(function () {
-        _this.fuelRequest();
+        _this.fuel_request = false;
 
-        _this.tdatatable();
+        _this.tdatatable().init();
       });
     },
     tdatatable: function tdatatable() {
+      var _this2 = this;
+
+      var vm = this;
+
       var initTable = function initTable() {
         var table = $("#fuel-charges-tbl");
         table.DataTable({
@@ -4549,35 +4609,97 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           scrollCollapse: true,
           processing: true,
           serverSide: true,
-          // ajax: {
-          //     url: BASE_URL + "/transportation/driver",
-          //     type: "GET"
-          // },
+          ajax: {
+            url: BASE_URL + "/tracking/fuelcharges",
+            type: "GET"
+          },
           columns: [{
             data: "id"
           }, {
-            data: "fullname"
+            data: "code"
           }, {
-            data: "birthdate"
+            data: "name"
           }, {
-            data: "sex"
+            data: "plate_no"
           }, {
-            data: "contact"
+            data: "gasoline_liters"
+          }, {
+            data: "diesel_liters"
+          }, {
+            data: "created_at"
+          }, {
+            data: "po_no"
+          }, {
+            data: "totalBalance"
           }, {
             data: "status"
-          }, {
-            data: "updated_at"
           }, {
             data: "id"
           }],
           columnDefs: [{
+            targets: 1,
+            render: function render(data) {
+              return _this2.$label(data);
+            }
+          }, {
+            targets: 6,
+            render: function render(data) {
+              return _this2.$dateEng(data);
+            }
+          }, {
+            targets: 8,
+            render: function render(data) {
+              return _this2.$toParseNum(data);
+            }
+          }, {
+            targets: 9,
+            render: function render(data) {
+              var status = {
+                0: {
+                  title: "On-going",
+                  "class": " label-light-warning"
+                },
+                1: {
+                  title: "Approved",
+                  "class": " label-light-primary"
+                },
+                2: {
+                  title: "Completed",
+                  "class": " label-light-primary"
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
+            }
+          }, {
             targets: -1,
             title: "Action",
             orderable: false,
             width: "125px",
             render: function render(data) {
               return '\
-                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
+                                    <a href="javascript:;" data-id="' + data + '"class="btn-edit btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" >\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" >\
+                                                    <rect x="0" y="0" width="24" height="24" />\
+                                                    <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) " />\
+                                                    <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1" />\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                    <a href="javascript:;" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
+                                        <span class="svg-icon svg-icon-md">\
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                    <rect x="0" y="0" width="24" height="24"/>\
+                                                    <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/>\
+                                                    <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/>\
+                                                </g>\
+                                            </svg>\
+                                        </span>\
+                                    </a>\
+                                    <a href="javascript:;" data-id="" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -4590,7 +4712,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                     </a>\
                                 ';
             }
-          }]
+          }],
+          drawCallback: function drawCallback() {
+            $(".btn-edit").click(function () {
+              var id = $(this).data("id");
+              vm.showEntry(id);
+            });
+            $(".btn-delete").click(function () {});
+          }
         });
       };
 
@@ -4629,7 +4758,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 100);
     },
     saveEntry: function saveEntry() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formD = new FormData();
       formD.append("vehicle_id", this.form_fields.vehicle_id);
@@ -4641,10 +4770,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, "success");
+        _this3.$showToast(response.data.message, "success");
 
         setTimeout(function () {
-          _this2.fuel_request = false;
+          _this3.ini();
+
+          _this3.fuel_request = false;
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4671,23 +4802,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "vehicle_id" || _this2.names[i] == "driver_id" || _this2.names[i] == "po_id") {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              if ($("[name=" + _this2.names[i] + "]").next().next().length == 1) {
-                $("[name=" + _this2.names[i] + "]").next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (_this3.names[i] == "vehicle_id" || _this3.names[i] == "driver_id" || _this3.names[i] == "po_id") {
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              if ($("[name=" + _this3.names[i] + "]").next().next().length == 1) {
+                $("[name=" + _this3.names[i] + "]").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              $('[name="' + _this3.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this3.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
+    },
+    showEntry: function showEntry(id) {
+      this.fuel_request_update = true;
+      setTimeout(function () {
+        $("#kt_select_particulars").select2({
+          placeholder: "Select a particulars",
+          allowClear: true
+        });
+        $("#kt_select_particulars").on("select2:select", function () {});
+      }, 100);
+    },
+    cancelEntry: function cancelEntry() {
+      this.fuel_request = false;
+      this.fuel_request_update = false;
+      this.reset();
+      this.ini();
     },
     reset: function reset() {
       this.form_fields.vehicle_id = "";
@@ -4724,6 +4871,147 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6180,19 +6468,107 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       create: false,
       edit: false,
       formFields: {
-        id: '',
-        po_no: '',
-        po_amount: '',
-        status: '',
-        type: ''
+        id: "",
+        po_no: "",
+        po_amount: "",
+        status: "",
+        type: ""
       },
-      names: ['po_no', 'po_amount', 'status', 'type']
+      names: ["po_no", "po_amount", "status", "type"]
     };
   },
   mounted: function mounted() {
@@ -6212,21 +6588,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var _select_ini = function select_ini(lbl) {
         $(function () {
-          $('#status').select2({
+          $("#status").select2({
             placeholder: "Select status",
             minimumResultsForSearch: Infinity
           });
-          $('#status').change(function () {
+          $("#status").change(function () {
             vm.formFields.status = $(this).val();
           });
-          $('#type').select2({
+          $("#type").select2({
             placeholder: "Select type",
             minimumResultsForSearch: Infinity
           });
-          $('#type').change(function () {
+          $("#type").change(function () {
             vm.formFields.type = $(this).val();
           });
-          $('.card-label span').text(lbl);
+          $(".card-label span").text(lbl);
         });
       };
 
@@ -6242,14 +6618,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newEntry: function newEntry() {
       this.create = true;
       var vm = this;
-      vm.ini().select_ini('Create PO');
+      vm.ini().select_ini("Create PO");
     },
     cancelEntry: function cancelEntry() {
-      this.formFields.id = '';
-      this.formFields.po_no = '';
-      this.formFields.po_amount = '';
-      this.formFields.status = '';
-      this.formFields.type = '';
+      this.formFields.id = "";
+      this.formFields.po_no = "";
+      this.formFields.po_amount = "";
+      this.formFields.status = "";
+      this.formFields.type = "";
       this.create = false;
       this.edit = false;
       this.ini().init();
@@ -6260,25 +6636,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var formD = new FormData();
       var method = null;
       var putParams = null;
-      formD.append('po_no', this.formFields.po_no);
-      formD.append('po_amount', this.formFields.po_amount);
-      formD.append('status', this.formFields.status);
-      formD.append('type', this.formFields.type);
-      method = this.create ? 'POST' : 'PUT';
-      putParams = this.create ? '' : '/' + this.formFields.id;
+      formD.append("po_no", this.formFields.po_no);
+      formD.append("po_amount", this.formFields.po_amount);
+      formD.append("status", this.formFields.status);
+      formD.append("type", this.formFields.type);
+      method = this.create ? "POST" : "PUT";
+      putParams = this.create ? "" : "/" + this.formFields.id;
       axios({
         method: method,
-        url: BASE_URL + '/tracking/po' + putParams,
+        url: BASE_URL + "/tracking/po" + putParams,
         data: formD,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, 'success');
+        _this2.$showToast(response.data.message, "success");
 
         setTimeout(function () {
           _this2.cancelEntry();
@@ -6287,8 +6663,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
-        $('.invalid-feedback').remove();
-        $('.is-invalid').removeClass('is-invalid');
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
 
         for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
           var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
@@ -6298,40 +6674,40 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           keys.push("".concat(_key));
           values.push("".concat(value));
 
-          if (_key == 'status' || _key == 'type') {
-            if ($('#' + "".concat(_key)).next().next().length == 0) {
-              $('#' + "".concat(_key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + '</div>');
+          if (_key == "status" || _key == "type") {
+            if ($("#" + "".concat(_key)).next().next().length == 0) {
+              $("#" + "".concat(_key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
             }
           } else {
-            if ($('[name="' + "".concat(_key) + '"]').next().length == 0 || $('[name="' + "".concat(_key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(_key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(_key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+            if ($('[name="' + "".concat(_key) + '"]').next().length == 0 || $('[name="' + "".concat(_key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="' + "".concat(_key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(_key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
             }
           }
         }
 
         for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == 'status' || _this2.names[i] == 'type') {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              if ($('#' + "".concat(key)).next().next().length != 0) {
-                $('#' + "".concat(key)).next().next('.invalid-feedback').remove();
+          if (_this2.names[i] == "status" || _this2.names[i] == "type") {
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              if ($("#" + "".concat(key)).next().next().length != 0) {
+                $("#" + "".concat(key)).next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this2.names[i] + '') == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this2.names[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     show: function show(id) {
       var vm = this;
       vm.edit = true;
-      vm.ini().select_ini('Edit PO');
+      vm.ini().select_ini("Edit PO");
       axios.get(BASE_URL + "/tracking/po/" + id).then(function (response) {
         vm.formFields.id = response.data[0].id;
         vm.formFields.po_no = response.data[0].po_no;
@@ -6339,24 +6715,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.formFields.status = response.data[0].status;
         vm.formFields.type = response.data[0].type;
         setTimeout(function () {
-          $('#status').val(vm.formFields.status);
-          $('#status').trigger('change');
-          $('#type').val(vm.formFields.type);
-          $('#type').trigger('change');
+          $("#status").val(vm.formFields.status);
+          $("#status").trigger("change");
+          $("#type").val(vm.formFields.type);
+          $("#type").trigger("change");
         }, 500);
       });
     },
     "delete": function _delete(id) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: 'You won"t be able to revert this!',
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"](BASE_URL + '/tracking/po/' + id).then(function (response) {
-            Swal.fire('Deleted!', response.data.message, 'success');
+          axios["delete"](BASE_URL + "/tracking/po/" + id).then(function (response) {
+            Swal.fire("Deleted!", response.data.message, "success");
             $("#po-list-tbl").DataTable().ajax.reload();
           });
         }
@@ -6368,49 +6744,49 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $('#po-list-tbl');
+        var table = $("#po-list-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           responsive: true,
           ajax: {
-            url: BASE_URL + '/tracking/po',
-            type: 'GET'
+            url: BASE_URL + "/tracking/po",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "type"
+            data: "type"
           }, {
-            "data": "po_no"
+            data: "po_no"
           }, {
-            "data": "po_amount"
+            data: "po_amount"
           }, {
-            "data": "totalBalance"
+            data: "totalBalance"
           }, {
-            "data": "status"
+            data: "status"
           }, {
-            "data": "created_at"
+            data: "created_at"
           }, {
-            "data": "id"
+            data: "id"
           }],
           columnDefs: [{
             targets: 1,
             render: function render(data) {
               var type = {
                 1: {
-                  'title': 'Travel',
-                  'class': ' label-light-primary'
+                  title: "Travel",
+                  "class": " label-light-primary"
                 },
                 2: {
-                  'title': 'Fuel',
-                  'class': ' label-light-primary'
+                  title: "Fuel",
+                  "class": " label-light-primary"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + type[data]["class"] + ' label-inline">' + type[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + type[data]["class"] + ' label-inline">' + type[data].title + "</span>";
             }
           }, {
             targets: 3,
@@ -6427,23 +6803,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               var status = {
                 0: {
-                  'title': 'Pending',
-                  'class': ' label-light-warning'
+                  title: "Pending",
+                  "class": " label-light-warning"
                 },
                 1: {
-                  'title': 'Approved',
-                  'class': ' label-light-primary'
+                  title: "Approved",
+                  "class": " label-light-primary"
                 },
                 2: {
-                  'title': 'Completed',
-                  'class': ' label-light-success'
+                  title: "Completed",
+                  "class": " label-light-success"
                 },
                 3: {
-                  'title': 'Declined',
-                  'class': ' label-light-danger'
+                  title: "Declined",
+                  "class": " label-light-danger"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + '</span>';
+              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: 6,
@@ -6452,9 +6828,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }, {
             targets: -1,
-            title: 'Actions',
+            title: "Actions",
             orderable: false,
-            width: '125px',
+            width: "125px",
             render: function render(data) {
               return '\
                                     <a href="javascript:;" data-id="' + data + '" class="btn-edit btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
@@ -6483,12 +6859,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             }
           }],
           drawCallback: function drawCallback() {
-            $('.btn-edit').off().on('click', function () {
-              var id = $(this).data('id');
+            $(".btn-edit").off().on("click", function () {
+              var id = $(this).data("id");
               vm.show(id);
             });
-            $('.btn-delete').off().on('click', function () {
-              var id = $(this).data('id');
+            $(".btn-delete").off().on("click", function () {
+              var id = $(this).data("id");
               vm["delete"](id);
             });
           }
@@ -12370,6 +12746,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       return matchingStrings;
+    },
+    $label: function $label(lbl) {
+      return '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline">' + lbl + "</span>";
     }
   }
 });
@@ -55971,7 +56350,7 @@ var render = function() {
     "div",
     { staticClass: "w-100 h-100", attrs: { id: "fuel-charge-page" } },
     [
-      !_vm.fuel_request
+      !_vm.fuel_request && !_vm.fuel_request_update
         ? _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("div", { staticClass: "card-title" }),
@@ -56048,11 +56427,14 @@ var render = function() {
             _vm._v(" "),
             _vm._m(0)
           ])
-        : _c(
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.fuel_request
+        ? _c(
             "div",
             {
               staticClass:
-                "\n    card card-custom card-stretch\n    gutter-b\n    animate__animated animate__fadeInRight\n  "
+                "\n            card card-custom card-stretch\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
             },
             [
               _vm._m(1),
@@ -56254,11 +56636,7 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-light-primary btn-sm mx-1",
-                      on: {
-                        click: function($event) {
-                          _vm.fuel_request = false
-                        }
-                      }
+                      on: { click: _vm.cancelEntry }
                     },
                     [_vm._v("\n                    Cancel\n                ")]
                   ),
@@ -56275,6 +56653,39 @@ var render = function() {
               ])
             ]
           )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.fuel_request_update == true
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "\n            card card-custom\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
+            },
+            [
+              _vm._m(2),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-footer" }, [
+                _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-light-primary btn-sm mx-1",
+                      on: { click: _vm.cancelEntry }
+                    },
+                    [_vm._v("\n                    Cancel\n                ")]
+                  ),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "btn btn-primary btn-sm mx-1" }, [
+                    _vm._v("\n                    Submit\n                ")
+                  ])
+                ])
+              ])
+            ]
+          )
+        : _vm._e()
     ]
   )
 }
@@ -56305,10 +56716,6 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Diesel Liters")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Total KM travelled")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("KM/Liters")]),
-              _vm._v(" "),
               _c("th", [_vm._v("Date Requested")]),
               _vm._v(" "),
               _c("th", [_vm._v("PO No.")]),
@@ -56316,8 +56723,6 @@ var staticRenderFns = [
               _c("th", [_vm._v("PO Balance")]),
               _vm._v(" "),
               _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Remarks")]),
               _vm._v(" "),
               _c("th", [_vm._v("Action")])
             ])
@@ -56338,6 +56743,74 @@ var staticRenderFns = [
           _c("small", [_vm._v("Form")])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header flex-wrap" }, [
+      _c("div", { staticClass: "card-title" }, [
+        _c("h3", { staticClass: "card-label" }, [
+          _c("span", [_vm._v("Fuel Request Update")]),
+          _vm._v(" "),
+          _c("small", [_vm._v("Form")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body p-20" }, [
+      _c(
+        "form",
+        { staticClass: "form row", attrs: { id: "fuel-request-form" } },
+        [
+          _c("div", { staticClass: "col-lg-12 alert alert-secondary p-5" }, [
+            _c("h4", { staticClass: "m-0 p-0 font-weight-bold" }, [
+              _vm._v("Total Cost:")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Particulars:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control select2",
+                  attrs: { id: "kt_select_particulars", name: "particulars" }
+                },
+                [
+                  _c("option", { attrs: { label: "Label" } }),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Gasoline" } }, [
+                    _vm._v("Gasoline")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "Diesel" } }, [
+                    _vm._v("Diesel")
+                  ])
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "form-group mb-0" }, [
+              _c("label", [_vm._v("Rate per liters:")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "number" }
+              })
+            ])
+          ])
+        ]
+      )
     ])
   }
 ]
@@ -56623,7 +57096,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Requestor Details:\n          "
+                              "\n                        Requestor Details:\n                    "
                             )
                           ]
                         ),
@@ -56905,7 +57378,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                  Passenger Details:\n                "
+                                    "\n                                    Passenger Details:\n                                "
                                   )
                                 ]
                               ),
@@ -56958,18 +57431,9 @@ var render = function() {
                                         staticClass: "text-center",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("#")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "th",
-                                      {
-                                        staticClass: "text-center",
-                                        attrs: { scope: "col" }
-                                      },
                                       [
                                         _vm._v(
-                                          "\n                      Name of Passenger/s\n                    "
+                                          "\n                                            #\n                                        "
                                         )
                                       ]
                                     ),
@@ -56982,7 +57446,20 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                      Position/Designation\n                    "
+                                          "\n                                            Name of Passenger/s\n                                        "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "th",
+                                      {
+                                        staticClass: "text-center",
+                                        attrs: { scope: "col" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                            Position/Designation\n                                        "
                                         )
                                       ]
                                     ),
@@ -56993,7 +57470,11 @@ var render = function() {
                                         staticClass: "text-center w-15",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("Sex")]
+                                      [
+                                        _vm._v(
+                                          "\n                                            Sex\n                                        "
+                                        )
+                                      ]
                                     )
                                   ])
                                 ]),
@@ -57010,9 +57491,9 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                      " +
+                                            "\n                                            " +
                                               _vm._s(_vm.paxIndex(index)) +
-                                              "\n                    "
+                                              "\n                                        "
                                           )
                                         ]
                                       ),
@@ -57059,19 +57540,19 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                          " +
+                                                      "\n                                                    " +
                                                         _vm._s(
                                                           result.first_name
                                                         ) +
-                                                        " " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.middle_name
                                                         ) +
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.last_name
                                                         ) +
-                                                        "\n                        "
+                                                        "\n                                                "
                                                     )
                                                   ]
                                                 )
@@ -57161,7 +57642,7 @@ var render = function() {
                             "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("\n        Close\n      ")]
+                        [_vm._v("\n                Close\n            ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -57176,7 +57657,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("\n        Save\n      ")]
+                        [_vm._v("\n                Save\n            ")]
                       )
                     ]
                   },
@@ -57203,7 +57684,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Administrative Fill-in:\n          "
+                              "\n                        Administrative Fill-in:\n                    "
                             )
                           ]
                         ),
@@ -57281,9 +57762,9 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(
-                                        "\n                    " +
+                                        "\n                                        " +
                                           _vm._s(v.name) +
-                                          "\n                    "
+                                          "\n                                        "
                                       ),
                                       _c("span")
                                     ]
@@ -57327,9 +57808,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                    " +
+                                                "\n                                        " +
                                                   _vm._s(po.po_no) +
-                                                  " - ₱\n                    " +
+                                                  " - ₱\n                                        " +
                                                   _vm._s(
                                                     po.totalBalance
                                                       ? _vm.$toParseNum(
@@ -57339,7 +57820,7 @@ var render = function() {
                                                           po.po_amount
                                                         )
                                                   ) +
-                                                  "\n                  "
+                                                  "\n                                    "
                                               )
                                             ]
                                           )
@@ -57475,7 +57956,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57484,7 +57969,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57493,7 +57982,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -57510,7 +58003,13 @@ var render = function() {
                                               staticClass: "text-center",
                                               attrs: { scope: "row" }
                                             },
-                                            [_vm._v(_vm._s(index))]
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(index) +
+                                                  "\n                                        "
+                                              )
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c("td", [
@@ -57542,13 +58041,13 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(vehicle.name) +
-                                                          " - " +
+                                                          " -\n                                                    " +
                                                           _vm._s(
                                                             vehicle.plate_no
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -57587,11 +58086,11 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(
                                                             driver.fullname
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -57699,7 +58198,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57708,7 +58211,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Plate #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Plate #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57717,7 +58224,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57726,7 +58237,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -57735,7 +58250,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Contact #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Contact #\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -57752,7 +58271,13 @@ var render = function() {
                                               staticClass: "text-center",
                                               attrs: { scope: "row" }
                                             },
-                                            [_vm._v(_vm._s(index))]
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(index) +
+                                                  "\n                                        "
+                                              )
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c("td", [
@@ -57833,7 +58358,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declined }
                     },
-                    [_vm._v("\n        Decline\n      ")]
+                    [_vm._v("\n                Decline\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -57843,7 +58368,7 @@ var render = function() {
                         "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n        Close\n      ")]
+                    [_vm._v("\n                Close\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -57854,7 +58379,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.approved }
                     },
-                    [_vm._v("\n        Approved\n      ")]
+                    [_vm._v("\n                Approved\n            ")]
                   )
                 ]
               },
@@ -57925,7 +58450,11 @@ var render = function() {
                       staticClass: "btn btn-light-primary font-weight-bold",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n            Close\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Close\n                    "
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
@@ -57935,7 +58464,11 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declinedRequest }
                     },
-                    [_vm._v("\n            Save changes\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Save changes\n                    "
+                      )
+                    ]
                   )
                 ])
               ])
@@ -58006,7 +58539,7 @@ var staticRenderFns = [
         "h3",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
         [
-          _vm._v("\n            Remarks "),
+          _vm._v("\n                        Remarks "),
           _c("small", {}, [_vm._v("Declined request")])
         ]
       ),
@@ -58363,7 +58896,11 @@ var render = function() {
                             staticClass: "btn btn-primary mr-2",
                             attrs: { type: "submit" }
                           },
-                          [_vm._v("Save")]
+                          [
+                            _vm._v(
+                              "\n                                Save\n                            "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
                         _c(
@@ -58373,7 +58910,11 @@ var render = function() {
                             attrs: { type: "reset" },
                             on: { click: _vm.cancelEntry }
                           },
-                          [_vm._v("Cancel")]
+                          [
+                            _vm._v(
+                              "\n                                Cancel\n                            "
+                            )
+                          ]
                         )
                       ])
                     ])
