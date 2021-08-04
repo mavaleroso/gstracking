@@ -31,6 +31,6 @@ class FuelCharges extends Model
         'diesel_liters',
         'unit_price',
         'amount',
-        'status',
+        'status'
     ];
 }

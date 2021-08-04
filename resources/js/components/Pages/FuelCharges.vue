@@ -57,6 +57,9 @@
                             <th>Plate No.</th>
                             <th>Gasoline Liters</th>
                             <th>Diesel Liters</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                            <th>Purpose</th>
                             <th>Date Requested</th>
                             <th>PO No.</th>
                             <th>PO Balance</th>
@@ -224,10 +227,13 @@
             </div>
             <div class="card-body p-20">
                 <form class="form row" id="fuel-request-form">
-                    <div class="col-lg-12 alert alert-secondary p-5">
+                    <div class="col-lg-12 alert alert-secondary p-5 d-flex">
                         <h4 class="m-0 p-0 font-weight-bold">Total Cost:</h4>
+                        <h4 class="m-0 p-0 font-weight-bold ml-auto">
+                            {{ $toParseNum(cost) }}
+                        </h4>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="form-group mb-0">
                             <label>Particulars:</label>
                             <select
@@ -241,10 +247,26 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         <div class="form-group mb-0">
-                            <label>Rate per liters:</label>
-                            <input type="number" class="form-control" />
+                            <label>No. of Liters:</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="no_liters"
+                                v-model="form_fields_update.no_liters"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group mb-0">
+                            <label>Unit Price:</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="unit_price"
+                                v-model="form_fields_update.unit_price"
+                            />
                         </div>
                     </div>
                 </form>
@@ -257,7 +279,10 @@
                     >
                         Cancel
                     </button>
-                    <button class="btn btn-primary btn-sm mx-1">
+                    <button
+                        class="btn btn-primary btn-sm mx-1"
+                        @click="updateEntry"
+                    >
                         Submit
                     </button>
                 </div>
@@ -276,6 +301,13 @@ export default {
                 vehicle_id: "",
                 po_id: "",
                 purpose: ""
+            },
+            form_fields_update: {
+                id: null,
+                particulars: null,
+                amount: 0,
+                no_liters: 0,
+                unit_price: 0
             },
             drivers: [
                 {
@@ -345,11 +377,20 @@ export default {
                 }
             ],
             names: ["driver_id", "vehicle_id", "po_id", "purpose"],
-            update_names: ["particulars", "rate_per_liters"]
+            update_names: ["particulars", "no_liters", "unit_price"]
         };
     },
     mounted() {
         this.ini();
+    },
+    computed: {
+        cost() {
+            let result =
+                this.form_fields_update.no_liters *
+                this.form_fields_update.unit_price;
+            this.form_fields_update.amount = result;
+            return result;
+        }
     },
     methods: {
         ini() {
@@ -379,6 +420,9 @@ export default {
                         { data: "plate_no" },
                         { data: "gasoline_liters" },
                         { data: "diesel_liters" },
+                        { data: "unit_price" },
+                        { data: "amount" },
+                        { data: "purpose" },
                         { data: "created_at" },
                         { data: "po_no" },
                         { data: "totalBalance" },
@@ -393,19 +437,19 @@ export default {
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 9,
                             render: data => {
                                 return this.$dateEng(data);
                             }
                         },
                         {
-                            targets: 8,
+                            targets: 11,
                             render: data => {
                                 return this.$toParseNum(data);
                             }
                         },
                         {
-                            targets: 9,
+                            targets: 12,
                             render: data => {
                                 var status = {
                                     0: {
@@ -422,7 +466,7 @@ export default {
                                     }
                                 };
                                 return (
-                                    '<span class="btn-details label label-lg font-weight-bold ' +
+                                    '<span class="btn-details label label-lg font-weight-bold text-nowrap' +
                                     status[data].class +
                                     ' label-inline">' +
                                     status[data].title +
@@ -481,7 +525,8 @@ export default {
                     drawCallback: () => {
                         $(".btn-edit").click(function() {
                             let id = $(this).data("id");
-                            vm.showEntry(id);
+                            vm.form_fields_update.id = id;
+                            vm.showEntry();
                         });
 
                         $(".btn-delete").click(function() {});
@@ -619,15 +664,110 @@ export default {
                     );
                 });
         },
-        showEntry(id) {
+        showEntry() {
             this.fuel_request_update = true;
+            let vm = this;
             setTimeout(() => {
                 $("#kt_select_particulars").select2({
                     placeholder: "Select a particulars",
                     allowClear: true
                 });
-                $("#kt_select_particulars").on("select2:select", function() {});
+                $("#kt_select_particulars").on("select2:select", function() {
+                    vm.form_fields_update.particulars = $(this).val();
+                });
             }, 100);
+        },
+        updateEntry() {
+            axios
+                .put(
+                    BASE_URL +
+                        "/tracking/fuelcharges/" +
+                        this.form_fields_update.id,
+                    this.form_fields_update
+                )
+                .then(res => {
+                    $(".invalid-feedback").remove();
+                    $(".is-invalid").removeClass("is-invalid");
+                    Swal.fire("Good job!", res.data.message, "success");
+                    this.$showToast(res.data.message, "success");
+                    setTimeout(() => {
+                        this.ini();
+                        this.fuel_request_update = false;
+                    }, 1000);
+                })
+                .catch(err => {
+                    let data = err.response.data.errors;
+                    let keys = [];
+                    let values = [];
+                    for (const [key, value] of Object.entries(data)) {
+                        keys.push(`${key}`);
+                        values.push(`${value}`);
+                        if (`${key}` == "particulars") {
+                            if (
+                                $("[name=" + `${key}` + "]")
+                                    .next()
+                                    .next().length == 0
+                            ) {
+                                $("[name=" + `${key}` + "]")
+                                    .next()
+                                    .after(
+                                        '<div class="invalid-feedback d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
+                            }
+                        } else {
+                            if (
+                                $('[name="' + `${key}` + '"]').next().length ==
+                                0
+                            ) {
+                                $('[name="' + `${key}` + '"]').addClass(
+                                    "is-invalid"
+                                );
+                                $('[name="' + `${key}` + '"]').after(
+                                    '<div class="invalid-feedback">' +
+                                        `${value}` +
+                                        "</div>"
+                                );
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.update_names.length; i++) {
+                        if (this.update_names[i] == "particulars") {
+                            if (
+                                keys.indexOf("" + this.update_names[i] + "") ==
+                                -1
+                            ) {
+                                if (
+                                    $("[name=" + this.update_names[i] + "]")
+                                        .next()
+                                        .next().length == 1
+                                ) {
+                                    $("[name=" + this.update_names[i] + "]")
+                                        .next()
+                                        .next(".invalid-feedback")
+                                        .remove();
+                                }
+                            }
+                        } else {
+                            if (
+                                keys.indexOf("" + this.update_names[i] + "") ==
+                                -1
+                            ) {
+                                $(
+                                    '[name="' + this.update_names[i] + '"]'
+                                ).removeClass("is-invalid");
+                                $('[name="' + this.update_names[i] + '"]')
+                                    .next(".invalid-feedback")
+                                    .remove();
+                            }
+                        }
+                    }
+                    this.$showToast(
+                        values.toString().replace(/,/g, "</br>"),
+                        "error"
+                    );
+                });
         },
         cancelEntry() {
             this.fuel_request = false;
