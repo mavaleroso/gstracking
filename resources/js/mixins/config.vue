@@ -148,7 +148,7 @@ export default {
         },
         $label(lbl) {
             return (
-                '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline">' +
+                '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline text-nowrap">' +
                 lbl +
                 "</span>"
             );

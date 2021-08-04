@@ -53,6 +53,7 @@ return [
 
     // Fuel Charges Page
     'fuelCharges_created_successfully' => 'Fuel Charges created succesfully',
+    'fuelCharges_updated_successfully' => 'Fuel Charges updated succesfully',
     'fuelCharges_deleted_successfully' => 'Fuel Charges deleted succesfully',
 
     'requestTransaction_created_successfully' => 'Request Transactions created successfully'

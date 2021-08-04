@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\FuelCharges\FuelChargesStoreRequest;
+use App\Http\Requests\FuelCharges\FuelChargesUpdateRequest;
 use App\Services\FuelCharges\CreateFuelCharges;
 use App\Services\FuelCharges\GetListingFuelCharges;
+use App\Services\FuelCharges\UpdateFuelCharges;
 
 class FuelChargesController extends Controller
 {
@@ -86,9 +88,11 @@ class FuelChargesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FuelChargesUpdateRequest $fuelChargesUpdateRequest, UpdateFuelCharges $updateFuelCharges, $id)
     {
-        //
+        $url = $fuelChargesUpdateRequest->url();
+        $result = $updateFuelCharges->execute($fuelChargesUpdateRequest->validated(), $url);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.fuelCharges_updated_successfully'), 'result' => $result]);
     }
 
     /**

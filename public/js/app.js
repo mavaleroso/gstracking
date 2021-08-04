@@ -4509,6 +4509,31 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4519,6 +4544,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vehicle_id: "",
         po_id: "",
         purpose: ""
+      },
+      form_fields_update: {
+        id: null,
+        particulars: null,
+        amount: 0,
+        no_liters: 0,
+        unit_price: 0
       },
       drivers: [{
         birthdate: "1998-03-08",
@@ -4580,11 +4612,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         updated_at: "2021-07-05T00:53:57.000000Z"
       }],
       names: ["driver_id", "vehicle_id", "po_id", "purpose"],
-      update_names: ["particulars", "rate_per_liters"]
+      update_names: ["particulars", "no_liters", "unit_price"]
     };
   },
   mounted: function mounted() {
     this.ini();
+  },
+  computed: {
+    cost: function cost() {
+      var result = this.form_fields_update.no_liters * this.form_fields_update.unit_price;
+      this.form_fields_update.amount = result;
+      return result;
+    }
   },
   methods: {
     ini: function ini() {
@@ -4626,6 +4665,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }, {
             data: "diesel_liters"
           }, {
+            data: "unit_price"
+          }, {
+            data: "amount"
+          }, {
+            data: "purpose"
+          }, {
             data: "created_at"
           }, {
             data: "po_no"
@@ -4642,17 +4687,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return _this2.$label(data);
             }
           }, {
-            targets: 6,
+            targets: 9,
             render: function render(data) {
               return _this2.$dateEng(data);
             }
           }, {
-            targets: 8,
+            targets: 11,
             render: function render(data) {
               return _this2.$toParseNum(data);
             }
           }, {
-            targets: 9,
+            targets: 12,
             render: function render(data) {
               var status = {
                 0: {
@@ -4668,7 +4713,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   "class": " label-light-primary"
                 }
               };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
+              return '<span class="btn-details label label-lg font-weight-bold text-nowrap' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
             targets: -1,
@@ -4716,7 +4761,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           drawCallback: function drawCallback() {
             $(".btn-edit").click(function () {
               var id = $(this).data("id");
-              vm.showEntry(id);
+              vm.form_fields_update.id = id;
+              vm.showEntry();
             });
             $(".btn-delete").click(function () {});
           }
@@ -4820,15 +4866,76 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
-    showEntry: function showEntry(id) {
+    showEntry: function showEntry() {
       this.fuel_request_update = true;
+      var vm = this;
       setTimeout(function () {
         $("#kt_select_particulars").select2({
           placeholder: "Select a particulars",
           allowClear: true
         });
-        $("#kt_select_particulars").on("select2:select", function () {});
+        $("#kt_select_particulars").on("select2:select", function () {
+          vm.form_fields_update.particulars = $(this).val();
+        });
       }, 100);
+    },
+    updateEntry: function updateEntry() {
+      var _this4 = this;
+
+      axios.put(BASE_URL + "/tracking/fuelcharges/" + this.form_fields_update.id, this.form_fields_update).then(function (res) {
+        $(".invalid-feedback").remove();
+        $(".is-invalid").removeClass("is-invalid");
+        Swal.fire("Good job!", res.data.message, "success");
+
+        _this4.$showToast(res.data.message, "success");
+
+        setTimeout(function () {
+          _this4.ini();
+
+          _this4.fuel_request_update = false;
+        }, 1000);
+      })["catch"](function (err) {
+        var data = err.response.data.errors;
+        var keys = [];
+        var values = [];
+
+        for (var _i2 = 0, _Object$entries2 = Object.entries(data); _i2 < _Object$entries2.length; _i2++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
+
+          keys.push("".concat(key));
+          values.push("".concat(value));
+
+          if ("".concat(key) == "particulars") {
+            if ($("[name=" + "".concat(key) + "]").next().next().length == 0) {
+              $("[name=" + "".concat(key) + "]").next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
+            }
+          } else {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0) {
+              $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
+            }
+          }
+        }
+
+        for (var i = 0; i < _this4.update_names.length; i++) {
+          if (_this4.update_names[i] == "particulars") {
+            if (keys.indexOf("" + _this4.update_names[i] + "") == -1) {
+              if ($("[name=" + _this4.update_names[i] + "]").next().next().length == 1) {
+                $("[name=" + _this4.update_names[i] + "]").next().next(".invalid-feedback").remove();
+              }
+            }
+          } else {
+            if (keys.indexOf("" + _this4.update_names[i] + "") == -1) {
+              $('[name="' + _this4.update_names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this4.update_names[i] + '"]').next(".invalid-feedback").remove();
+            }
+          }
+        }
+
+        _this4.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+      });
     },
     cancelEntry: function cancelEntry() {
       this.fuel_request = false;
@@ -12748,7 +12855,7 @@ __webpack_require__.r(__webpack_exports__);
       return matchingStrings;
     },
     $label: function $label(lbl) {
-      return '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline">' + lbl + "</span>";
+      return '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline text-nowrap">' + lbl + "</span>";
     }
   }
 });
@@ -56665,7 +56772,109 @@ var render = function() {
             [
               _vm._m(2),
               _vm._v(" "),
-              _vm._m(3),
+              _c("div", { staticClass: "card-body p-20" }, [
+                _c(
+                  "form",
+                  {
+                    staticClass: "form row",
+                    attrs: { id: "fuel-request-form" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-lg-12 alert alert-secondary p-5 d-flex"
+                      },
+                      [
+                        _c("h4", { staticClass: "m-0 p-0 font-weight-bold" }, [
+                          _vm._v("Total Cost:")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "h4",
+                          { staticClass: "m-0 p-0 font-weight-bold ml-auto" },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.$toParseNum(_vm.cost)) +
+                                "\n                    "
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "form-group mb-0" }, [
+                        _c("label", [_vm._v("No. of Liters:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form_fields_update.no_liters,
+                              expression: "form_fields_update.no_liters"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", name: "no_liters" },
+                          domProps: { value: _vm.form_fields_update.no_liters },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form_fields_update,
+                                "no_liters",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-lg-4" }, [
+                      _c("div", { staticClass: "form-group mb-0" }, [
+                        _c("label", [_vm._v("Unit Price:")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form_fields_update.unit_price,
+                              expression: "form_fields_update.unit_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", name: "unit_price" },
+                          domProps: {
+                            value: _vm.form_fields_update.unit_price
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form_fields_update,
+                                "unit_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-footer" }, [
                 _c("div", [
@@ -56678,9 +56887,14 @@ var render = function() {
                     [_vm._v("\n                    Cancel\n                ")]
                   ),
                   _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-primary btn-sm mx-1" }, [
-                    _vm._v("\n                    Submit\n                ")
-                  ])
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-sm mx-1",
+                      on: { click: _vm.updateEntry }
+                    },
+                    [_vm._v("\n                    Submit\n                ")]
+                  )
                 ])
               ])
             ]
@@ -56715,6 +56929,12 @@ var staticRenderFns = [
               _c("th", [_vm._v("Gasoline Liters")]),
               _vm._v(" "),
               _c("th", [_vm._v("Diesel Liters")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Unit Price")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Amount")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Purpose")]),
               _vm._v(" "),
               _c("th", [_vm._v("Date Requested")]),
               _vm._v(" "),
@@ -56763,54 +56983,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body p-20" }, [
-      _c(
-        "form",
-        { staticClass: "form row", attrs: { id: "fuel-request-form" } },
-        [
-          _c("div", { staticClass: "col-lg-12 alert alert-secondary p-5" }, [
-            _c("h4", { staticClass: "m-0 p-0 font-weight-bold" }, [
-              _vm._v("Total Cost:")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-6" }, [
-            _c("div", { staticClass: "form-group mb-0" }, [
-              _c("label", [_vm._v("Particulars:")]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  staticClass: "form-control select2",
-                  attrs: { id: "kt_select_particulars", name: "particulars" }
-                },
-                [
-                  _c("option", { attrs: { label: "Label" } }),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "Gasoline" } }, [
-                    _vm._v("Gasoline")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "Diesel" } }, [
-                    _vm._v("Diesel")
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-lg-6" }, [
-            _c("div", { staticClass: "form-group mb-0" }, [
-              _c("label", [_vm._v("Rate per liters:")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: { type: "number" }
-              })
-            ])
-          ])
-        ]
-      )
+    return _c("div", { staticClass: "col-lg-4" }, [
+      _c("div", { staticClass: "form-group mb-0" }, [
+        _c("label", [_vm._v("Particulars:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            staticClass: "form-control select2",
+            attrs: { id: "kt_select_particulars", name: "particulars" }
+          },
+          [
+            _c("option", { attrs: { label: "Label" } }),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Gasoline" } }, [
+              _vm._v("Gasoline")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Diesel" } }, [_vm._v("Diesel")])
+          ]
+        )
+      ])
     ])
   }
 ]
