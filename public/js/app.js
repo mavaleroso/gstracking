@@ -4534,6 +4534,72 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4616,7 +4682,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   mounted: function mounted() {
-    this.ini();
+    this.ini().init();
+    this.ini().fuel_charges_tbl();
   },
   computed: {
     cost: function cost() {
@@ -4629,11 +4696,43 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     ini: function ini() {
       var _this = this;
 
-      $(function () {
+      var _init = function init() {
         _this.fuel_request = false;
+        var vm = _this;
+        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+          var target = $(e.target).attr("href");
 
-        _this.tdatatable().init();
-      });
+          if (target == "#kt_tab_pane_5_2") {
+            vm.ini().fuel_charges_approval_tbl();
+          } else {
+            vm.ini().fuel_charges_tbl();
+          }
+        });
+      };
+
+      var _fuel_charges_tbl = function fuel_charges_tbl() {
+        $(function () {
+          _this.tdatatable().init();
+        });
+      };
+
+      var _fuel_charges_approval_tbl = function fuel_charges_approval_tbl() {
+        $(function () {
+          _this.tdatatable2().init();
+        });
+      };
+
+      return {
+        init: function init() {
+          _init();
+        },
+        fuel_charges_tbl: function fuel_charges_tbl() {
+          _fuel_charges_tbl();
+        },
+        fuel_charges_approval_tbl: function fuel_charges_approval_tbl() {
+          _fuel_charges_approval_tbl();
+        }
+      };
     },
     tdatatable: function tdatatable() {
       var _this2 = this;
@@ -4643,6 +4742,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var initTable = function initTable() {
         var table = $("#fuel-charges-tbl");
         table.DataTable({
+          destroy: true,
           scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
@@ -4775,6 +4875,127 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       };
     },
+    tdatatable2: function tdatatable2() {
+      var _this3 = this;
+
+      var vm = this;
+
+      var initTable = function initTable() {
+        var table = $("#fuel-charges-approval-tbl");
+        table.DataTable({
+          destroy: true,
+          scrollY: "50vh",
+          scrollX: true,
+          scrollCollapse: true,
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: BASE_URL + "/tracking/fuelcharges",
+            type: "GET"
+          },
+          columns: [{
+            data: "id"
+          }, {
+            data: "code"
+          }, {
+            data: "name"
+          }, {
+            data: "plate_no"
+          }, {
+            data: "gasoline_liters"
+          }, {
+            data: "diesel_liters"
+          }, {
+            data: "unit_price"
+          }, {
+            data: "amount"
+          }, {
+            data: "purpose"
+          }, {
+            data: "created_at"
+          }, {
+            data: "po_no"
+          }, {
+            data: "totalBalance"
+          }, {
+            data: "status"
+          }, {
+            data: "id"
+          }],
+          columnDefs: [{
+            targets: 1,
+            render: function render(data) {
+              return _this3.$label(data);
+            }
+          }, {
+            targets: 9,
+            render: function render(data) {
+              return _this3.$dateEng(data);
+            }
+          }, {
+            targets: 11,
+            render: function render(data) {
+              return _this3.$toParseNum(data);
+            }
+          }, {
+            targets: 12,
+            render: function render(data) {
+              var status = {
+                0: {
+                  title: "On-going",
+                  "class": " label-light-warning"
+                },
+                1: {
+                  title: "Approved",
+                  "class": " label-light-primary"
+                },
+                2: {
+                  title: "Completed",
+                  "class": " label-light-primary"
+                }
+              };
+              return '<span class="btn-details label label-lg font-weight-bold text-nowrap' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
+            }
+          }, {
+            targets: -1,
+            title: "Action",
+            orderable: false,
+            width: "125px",
+            render: function render(data) {
+              return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-approve" title="Approve Request">\
+                                            <i class="flaticon2-checkmark"></i> Approve\
+                                        </button>';
+            }
+          }],
+          drawCallback: function drawCallback() {
+            $(".btn-approve").click(function () {
+              var id = $(this).data("id");
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, approve it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+              }).then(function (result) {
+                if (result.value) {
+                  Swal.fire("Approved!", "The request has been approved.", "success"); // vm.approveEntry(id);
+                } else if (result.dismiss === "cancel") {
+                  Swal.fire("Cancelled!", "The request has been cancelled.", "error");
+                }
+              });
+            });
+          }
+        });
+      };
+
+      return {
+        init: function init() {
+          initTable();
+        }
+      };
+    },
     fuelRequest: function fuelRequest() {
       var vm = this;
       this.fuel_request = true;
@@ -4804,7 +5025,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 100);
     },
     saveEntry: function saveEntry() {
-      var _this3 = this;
+      var _this4 = this;
 
       var formD = new FormData();
       formD.append("vehicle_id", this.form_fields.vehicle_id);
@@ -4816,12 +5037,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this3.$showToast(response.data.message, "success");
+        _this4.$showToast(response.data.message, "success");
 
         setTimeout(function () {
-          _this3.ini();
+          _this4.ini().init();
 
-          _this3.fuel_request = false;
+          _this4.fuel_request = false;
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -4848,22 +5069,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this3.names.length; i++) {
-          if (_this3.names[i] == "vehicle_id" || _this3.names[i] == "driver_id" || _this3.names[i] == "po_id") {
-            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
-              if ($("[name=" + _this3.names[i] + "]").next().next().length == 1) {
-                $("[name=" + _this3.names[i] + "]").next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this4.names.length; i++) {
+          if (_this4.names[i] == "vehicle_id" || _this4.names[i] == "driver_id" || _this4.names[i] == "po_id") {
+            if (keys.indexOf("" + _this4.names[i] + "") == -1) {
+              if ($("[name=" + _this4.names[i] + "]").next().next().length == 1) {
+                $("[name=" + _this4.names[i] + "]").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
-              $('[name="' + _this3.names[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this3.names[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this4.names[i] + "") == -1) {
+              $('[name="' + _this4.names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this4.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this4.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     showEntry: function showEntry() {
@@ -4880,19 +5101,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, 100);
     },
     updateEntry: function updateEntry() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.put(BASE_URL + "/tracking/fuelcharges/" + this.form_fields_update.id, this.form_fields_update).then(function (res) {
         $(".invalid-feedback").remove();
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", res.data.message, "success");
 
-        _this4.$showToast(res.data.message, "success");
+        _this5.$showToast(res.data.message, "success");
 
         setTimeout(function () {
-          _this4.ini();
+          _this5.ini().init();
 
-          _this4.fuel_request_update = false;
+          _this5.fuel_request_update = false;
         }, 1000);
       })["catch"](function (err) {
         var data = err.response.data.errors;
@@ -4919,29 +5140,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this4.update_names.length; i++) {
-          if (_this4.update_names[i] == "particulars") {
-            if (keys.indexOf("" + _this4.update_names[i] + "") == -1) {
-              if ($("[name=" + _this4.update_names[i] + "]").next().next().length == 1) {
-                $("[name=" + _this4.update_names[i] + "]").next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this5.update_names.length; i++) {
+          if (_this5.update_names[i] == "particulars") {
+            if (keys.indexOf("" + _this5.update_names[i] + "") == -1) {
+              if ($("[name=" + _this5.update_names[i] + "]").next().next().length == 1) {
+                $("[name=" + _this5.update_names[i] + "]").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this4.update_names[i] + "") == -1) {
-              $('[name="' + _this4.update_names[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this4.update_names[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this5.update_names[i] + "") == -1) {
+              $('[name="' + _this5.update_names[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this5.update_names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this4.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this5.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     cancelEntry: function cancelEntry() {
       this.fuel_request = false;
       this.fuel_request_update = false;
       this.reset();
-      this.ini();
+      this.ini().init();
     },
     reset: function reset() {
       this.form_fields.vehicle_id = "";
@@ -56460,7 +56681,7 @@ var render = function() {
       !_vm.fuel_request && !_vm.fuel_request_update
         ? _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
             _c("div", { staticClass: "card-header" }, [
-              _c("div", { staticClass: "card-title" }),
+              _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "card-toolbar" }, [
                 _c(
@@ -56532,7 +56753,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0)
+            _vm._m(1)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -56544,7 +56765,7 @@ var render = function() {
                 "\n            card card-custom card-stretch\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
             },
             [
-              _vm._m(1),
+              _vm._m(2),
               _vm._v(" "),
               _c("div", { staticClass: "card-body p-20" }, [
                 _c(
@@ -56770,7 +56991,7 @@ var render = function() {
                 "\n            card card-custom\n            gutter-b\n            animate__animated animate__fadeInRight\n        "
             },
             [
-              _vm._m(2),
+              _vm._m(3),
               _vm._v(" "),
               _c("div", { staticClass: "card-body p-20" }, [
                 _c(
@@ -56805,7 +57026,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(3),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-lg-4" }, [
                       _c("div", { staticClass: "form-group mb-0" }, [
@@ -56908,47 +57129,158 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-toolbar" }, [
+      _c("ul", { staticClass: "nav nav-light-success nav-bold nav-pills" }, [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: { "data-toggle": "tab", href: "#kt_tab_pane_5_1" }
+            },
+            [
+              _c("span", { staticClass: "nav-icon" }, [
+                _c("i", { staticClass: "flaticon-interface-11" })
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "nav-text" }, [_vm._v("Request")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: { "data-toggle": "tab", href: "#kt_tab_pane_5_2" }
+            },
+            [
+              _c("span", { staticClass: "nav-icon" }, [
+                _c("i", { staticClass: "flaticon-user" })
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "nav-text" }, [_vm._v("Approval")])
+            ]
+          )
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-separate table-head-custom",
-          attrs: { id: "fuel-charges-tbl" }
-        },
-        [
-          _c("thead", [
-            _c("tr", [
-              _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Code")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Vehicle Description")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Plate No.")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Gasoline Liters")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Diesel Liters")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Unit Price")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Amount")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Purpose")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Date Requested")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("PO No.")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("PO Balance")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
-            ])
-          ])
-        ]
-      )
+      _c("div", { staticClass: "tab-content" }, [
+        _c(
+          "div",
+          {
+            staticClass: "tab-pane fade show active",
+            attrs: {
+              id: "kt_tab_pane_5_1",
+              role: "tabpanel",
+              "aria-labelledby": "kt_tab_pane_5_1"
+            }
+          },
+          [
+            _c(
+              "table",
+              {
+                staticClass: "table table-separate table-head-custom",
+                attrs: { id: "fuel-charges-tbl" }
+              },
+              [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("ID")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Code")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Vehicle Description")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Plate No.")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Gasoline Liters")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Diesel Liters")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Unit Price")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Amount")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Purpose")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Date Requested")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("PO No.")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("PO Balance")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Status")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Action")])
+                  ])
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "tab-pane fade",
+            attrs: {
+              id: "kt_tab_pane_5_2",
+              role: "tabpanel",
+              "aria-labelledby": "kt_tab_pane_5_2"
+            }
+          },
+          [
+            _c(
+              "table",
+              {
+                staticClass: "table table-separate table-head-custom",
+                attrs: { id: "fuel-charges-approval-tbl" }
+              },
+              [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("ID")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Code")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Vehicle Description")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Plate No.")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Gasoline Liters")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Diesel Liters")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Unit Price")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Amount")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Purpose")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Date Requested")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("PO No.")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("PO Balance")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Status")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Action")])
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      ])
     ])
   },
   function() {

@@ -5,7 +5,34 @@
             class="card card-custom card-stretch gutter-b"
         >
             <div class="card-header">
-                <div class="card-title"></div>
+                <div class="card-toolbar">
+                    <ul class="nav nav-light-success nav-bold nav-pills">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active"
+                                data-toggle="tab"
+                                href="#kt_tab_pane_5_1"
+                            >
+                                <span class="nav-icon"
+                                    ><i class="flaticon-interface-11"></i
+                                ></span>
+                                <span class="nav-text">Request</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#kt_tab_pane_5_2"
+                            >
+                                <span class="nav-icon"
+                                    ><i class="flaticon-user"></i
+                                ></span>
+                                <span class="nav-text">Approval</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="card-toolbar">
                     <a
                         class="btn btn-primary font-weight-bolder"
@@ -45,29 +72,68 @@
                 </div>
             </div>
             <div class="card-body">
-                <table
-                    class="table table-separate table-head-custom"
-                    id="fuel-charges-tbl"
-                >
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Code</th>
-                            <th>Vehicle Description</th>
-                            <th>Plate No.</th>
-                            <th>Gasoline Liters</th>
-                            <th>Diesel Liters</th>
-                            <th>Unit Price</th>
-                            <th>Amount</th>
-                            <th>Purpose</th>
-                            <th>Date Requested</th>
-                            <th>PO No.</th>
-                            <th>PO Balance</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="tab-content">
+                    <div
+                        class="tab-pane fade show active"
+                        id="kt_tab_pane_5_1"
+                        role="tabpanel"
+                        aria-labelledby="kt_tab_pane_5_1"
+                    >
+                        <table
+                            class="table table-separate table-head-custom"
+                            id="fuel-charges-tbl"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Vehicle Description</th>
+                                    <th>Plate No.</th>
+                                    <th>Gasoline Liters</th>
+                                    <th>Diesel Liters</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
+                                    <th>Purpose</th>
+                                    <th>Date Requested</th>
+                                    <th>PO No.</th>
+                                    <th>PO Balance</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div
+                        class="tab-pane fade"
+                        id="kt_tab_pane_5_2"
+                        role="tabpanel"
+                        aria-labelledby="kt_tab_pane_5_2"
+                    >
+                        <table
+                            class="table table-separate table-head-custom"
+                            id="fuel-charges-approval-tbl"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Vehicle Description</th>
+                                    <th>Plate No.</th>
+                                    <th>Gasoline Liters</th>
+                                    <th>Diesel Liters</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
+                                    <th>Purpose</th>
+                                    <th>Date Requested</th>
+                                    <th>PO No.</th>
+                                    <th>PO Balance</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div
@@ -381,7 +447,8 @@ export default {
         };
     },
     mounted() {
-        this.ini();
+        this.ini().init();
+        this.ini().fuel_charges_tbl();
     },
     computed: {
         cost() {
@@ -394,16 +461,46 @@ export default {
     },
     methods: {
         ini() {
-            $(() => {
+            let init = () => {
                 this.fuel_request = false;
-                this.tdatatable().init();
-            });
+                let vm = this;
+                $('a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
+                    var target = $(e.target).attr("href");
+                    if (target == "#kt_tab_pane_5_2") {
+                        vm.ini().fuel_charges_approval_tbl();
+                    } else {
+                        vm.ini().fuel_charges_tbl();
+                    }
+                });
+            };
+            let fuel_charges_tbl = () => {
+                $(() => {
+                    this.tdatatable().init();
+                });
+            };
+            let fuel_charges_approval_tbl = () => {
+                $(() => {
+                    this.tdatatable2().init();
+                });
+            };
+            return {
+                init: () => {
+                    init();
+                },
+                fuel_charges_tbl: () => {
+                    fuel_charges_tbl();
+                },
+                fuel_charges_approval_tbl: () => {
+                    fuel_charges_approval_tbl();
+                }
+            };
         },
         tdatatable() {
             let vm = this;
             var initTable = () => {
                 var table = $("#fuel-charges-tbl");
                 table.DataTable({
+                    destroy: true,
                     scrollY: "50vh",
                     scrollX: true,
                     scrollCollapse: true,
@@ -539,6 +636,136 @@ export default {
                 }
             };
         },
+        tdatatable2() {
+            let vm = this;
+            var initTable = () => {
+                var table = $("#fuel-charges-approval-tbl");
+                table.DataTable({
+                    destroy: true,
+                    scrollY: "50vh",
+                    scrollX: true,
+                    scrollCollapse: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: BASE_URL + "/tracking/fuelcharges",
+                        type: "GET"
+                    },
+                    columns: [
+                        { data: "id" },
+                        { data: "code" },
+                        { data: "name" },
+                        { data: "plate_no" },
+                        { data: "gasoline_liters" },
+                        { data: "diesel_liters" },
+                        { data: "unit_price" },
+                        { data: "amount" },
+                        { data: "purpose" },
+                        { data: "created_at" },
+                        { data: "po_no" },
+                        { data: "totalBalance" },
+                        { data: "status" },
+                        { data: "id" }
+                    ],
+                    columnDefs: [
+                        {
+                            targets: 1,
+                            render: data => {
+                                return this.$label(data);
+                            }
+                        },
+                        {
+                            targets: 9,
+                            render: data => {
+                                return this.$dateEng(data);
+                            }
+                        },
+                        {
+                            targets: 11,
+                            render: data => {
+                                return this.$toParseNum(data);
+                            }
+                        },
+                        {
+                            targets: 12,
+                            render: data => {
+                                var status = {
+                                    0: {
+                                        title: "On-going",
+                                        class: " label-light-warning"
+                                    },
+                                    1: {
+                                        title: "Approved",
+                                        class: " label-light-primary"
+                                    },
+                                    2: {
+                                        title: "Completed",
+                                        class: " label-light-primary"
+                                    }
+                                };
+                                return (
+                                    '<span class="btn-details label label-lg font-weight-bold text-nowrap' +
+                                    status[data].class +
+                                    ' label-inline">' +
+                                    status[data].title +
+                                    "</span>"
+                                );
+                            }
+                        },
+                        {
+                            targets: -1,
+                            title: "Action",
+                            orderable: false,
+                            width: "125px",
+                            render: data => {
+                                return (
+                                    '<button data-record-id="' +
+                                    data +
+                                    '" class="btn btn-sm btn-clean btn-approve" title="Approve Request">\
+                                            <i class="flaticon2-checkmark"></i> Approve\
+                                        </button>'
+                                );
+                            }
+                        }
+                    ],
+                    drawCallback: () => {
+                        $(".btn-approve").click(function() {
+                            let id = $(this).data("id");
+                            Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "Yes, approve it!",
+                                cancelButtonText: "No, cancel!",
+                                reverseButtons: true
+                            }).then(function(result) {
+                                if (result.value) {
+                                    Swal.fire(
+                                        "Approved!",
+                                        "The request has been approved.",
+                                        "success"
+                                    );
+
+                                    // vm.approveEntry(id);
+                                } else if (result.dismiss === "cancel") {
+                                    Swal.fire(
+                                        "Cancelled!",
+                                        "The request has been cancelled.",
+                                        "error"
+                                    );
+                                }
+                            });
+                        });
+                    }
+                });
+            };
+            return {
+                init: function() {
+                    initTable();
+                }
+            };
+        },
         fuelRequest() {
             let vm = this;
             this.fuel_request = true;
@@ -583,7 +810,7 @@ export default {
                     Swal.fire("Good job!", response.data.message, "success");
                     this.$showToast(response.data.message, "success");
                     setTimeout(() => {
-                        this.ini();
+                        this.ini().init();
                         this.fuel_request = false;
                     }, 1000);
                 })
@@ -691,7 +918,7 @@ export default {
                     Swal.fire("Good job!", res.data.message, "success");
                     this.$showToast(res.data.message, "success");
                     setTimeout(() => {
-                        this.ini();
+                        this.ini().init();
                         this.fuel_request_update = false;
                     }, 1000);
                 })
@@ -773,7 +1000,7 @@ export default {
             this.fuel_request = false;
             this.fuel_request_update = false;
             this.reset();
-            this.ini();
+            this.ini().init();
         },
         reset() {
             this.form_fields.vehicle_id = "";
