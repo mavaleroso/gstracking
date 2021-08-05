@@ -91,7 +91,7 @@ class FuelChargesController extends Controller
     public function update(FuelChargesUpdateRequest $fuelChargesUpdateRequest, UpdateFuelCharges $updateFuelCharges, $id)
     {
         $url = $fuelChargesUpdateRequest->url();
-        $result = $updateFuelCharges->execute($fuelChargesUpdateRequest->validated(), $url);
+        $result = $updateFuelCharges->execute($fuelChargesUpdateRequest->validated(), $url, $id);
         return json_encode(['type' => 'success', 'message' => __('main/notifications.fuelCharges_updated_successfully'), 'result' => $result]);
     }
 

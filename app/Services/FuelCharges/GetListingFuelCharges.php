@@ -19,7 +19,9 @@ class GetListingFuelCharges
             ->leftJoin('drivers', 'fuel_charges.drivers_id', '=', 'drivers.id')
             ->leftJoin('vehicles', 'fuel_charges.vehicles_id', '=', 'vehicles.id')
             ->leftJoin('procurements', 'fuel_charges.procurements_id', 'procurements.id')
-            ->leftJoin('transaction_vehicles', 'procurements.id', '=', 'transaction_vehicles.procurement_id');
+            ->leftJoin('transaction_vehicles', 'procurements.id', '=', 'transaction_vehicles.procurement_id')
+            ->where('fuel_charges.status', intval(request()->type))
+            ->groupBy('fuel_charges.code');
 
 
         $result = Datatable::of($query, request(), [
