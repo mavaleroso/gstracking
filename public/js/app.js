@@ -4613,6 +4613,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       },
       form_fields_update: {
         id: null,
+        type: "update",
         particulars: null,
         amount: 0,
         no_liters: 0,
@@ -4749,7 +4750,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + "/tracking/fuelcharges",
+            url: BASE_URL + "/tracking/fuelcharges?type=1",
             type: "GET"
           },
           columns: [{
@@ -4890,7 +4891,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + "/tracking/fuelcharges",
+            url: BASE_URL + "/tracking/fuelcharges?type=0",
             type: "GET"
           },
           columns: [{
@@ -4962,7 +4963,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             orderable: false,
             width: "125px",
             render: function render(data) {
-              return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-approve" title="Approve Request">\
+              return '<button data-id="' + data + '" class="btn btn-sm btn-clean btn-approve" title="Approve Request">\
                                             <i class="flaticon2-checkmark"></i> Approve\
                                         </button>';
             }
@@ -4975,12 +4976,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Yes, approve it!",
-                cancelButtonText: "No, cancel!",
-                reverseButtons: true
+                confirmButtonText: "Approve",
+                cancelButtonText: "Cancel",
+                reverseButtons: false
               }).then(function (result) {
                 if (result.value) {
-                  Swal.fire("Approved!", "The request has been approved.", "success"); // vm.approveEntry(id);
+                  Swal.fire("Approved!", "The request has been approved.", "success");
+                  vm.approveEntry(id);
                 } else if (result.dismiss === "cancel") {
                   Swal.fire("Cancelled!", "The request has been cancelled.", "error");
                 }
@@ -5040,7 +5042,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this4.$showToast(response.data.message, "success");
 
         setTimeout(function () {
-          _this4.ini().init();
+          _this4.ini().fuel_charges_tbl();
 
           _this4.fuel_request = false;
         }, 1000);
@@ -5111,7 +5113,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this5.$showToast(res.data.message, "success");
 
         setTimeout(function () {
-          _this5.ini().init();
+          _this5.ini().fuel_charges_tbl();
 
           _this5.fuel_request_update = false;
         }, 1000);
@@ -5158,11 +5160,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this5.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
+    approveEntry: function approveEntry(id) {
+      var _this6 = this;
+
+      axios.put(BASE_URL + "/tracking/fuelcharges/" + id).then(function (res) {
+        Swal.fire("Good job!", res.data.message, "success");
+
+        _this6.$showToast(res.data.message, "success");
+
+        setTimeout(function () {
+          _this6.ini().fuel_charges_approval_tbl();
+        }, 1000);
+      });
+    },
     cancelEntry: function cancelEntry() {
       this.fuel_request = false;
       this.fuel_request_update = false;
       this.reset();
-      this.ini().init();
+      this.ini().fuel_charges_tbl();
     },
     reset: function reset() {
       this.form_fields.vehicle_id = "";

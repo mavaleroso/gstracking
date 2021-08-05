@@ -370,6 +370,7 @@ export default {
             },
             form_fields_update: {
                 id: null,
+                type: "update",
                 particulars: null,
                 amount: 0,
                 no_liters: 0,
@@ -507,7 +508,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + "/tracking/fuelcharges",
+                        url: BASE_URL + "/tracking/fuelcharges?type=1",
                         type: "GET"
                     },
                     columns: [
@@ -648,7 +649,7 @@ export default {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: BASE_URL + "/tracking/fuelcharges",
+                        url: BASE_URL + "/tracking/fuelcharges?type=0",
                         type: "GET"
                     },
                     columns: [
@@ -719,7 +720,7 @@ export default {
                             width: "125px",
                             render: data => {
                                 return (
-                                    '<button data-record-id="' +
+                                    '<button data-id="' +
                                     data +
                                     '" class="btn btn-sm btn-clean btn-approve" title="Approve Request">\
                                             <i class="flaticon2-checkmark"></i> Approve\
@@ -736,9 +737,9 @@ export default {
                                 text: "You won't be able to revert this!",
                                 icon: "warning",
                                 showCancelButton: true,
-                                confirmButtonText: "Yes, approve it!",
-                                cancelButtonText: "No, cancel!",
-                                reverseButtons: true
+                                confirmButtonText: "Approve",
+                                cancelButtonText: "Cancel",
+                                reverseButtons: false
                             }).then(function(result) {
                                 if (result.value) {
                                     Swal.fire(
@@ -747,7 +748,7 @@ export default {
                                         "success"
                                     );
 
-                                    // vm.approveEntry(id);
+                                    vm.approveEntry(id);
                                 } else if (result.dismiss === "cancel") {
                                     Swal.fire(
                                         "Cancelled!",
@@ -810,7 +811,7 @@ export default {
                     Swal.fire("Good job!", response.data.message, "success");
                     this.$showToast(response.data.message, "success");
                     setTimeout(() => {
-                        this.ini().init();
+                        this.ini().fuel_charges_tbl();
                         this.fuel_request = false;
                     }, 1000);
                 })
@@ -918,7 +919,7 @@ export default {
                     Swal.fire("Good job!", res.data.message, "success");
                     this.$showToast(res.data.message, "success");
                     setTimeout(() => {
-                        this.ini().init();
+                        this.ini().fuel_charges_tbl();
                         this.fuel_request_update = false;
                     }, 1000);
                 })
@@ -996,11 +997,20 @@ export default {
                     );
                 });
         },
+        approveEntry(id) {
+            axios.put(BASE_URL + "/tracking/fuelcharges/" + id).then(res => {
+                Swal.fire("Good job!", res.data.message, "success");
+                this.$showToast(res.data.message, "success");
+                setTimeout(() => {
+                    this.ini().fuel_charges_approval_tbl();
+                }, 1000);
+            });
+        },
         cancelEntry() {
             this.fuel_request = false;
             this.fuel_request_update = false;
             this.reset();
-            this.ini().init();
+            this.ini().fuel_charges_tbl();
         },
         reset() {
             this.form_fields.vehicle_id = "";

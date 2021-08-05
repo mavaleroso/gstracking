@@ -18,34 +18,47 @@ class FuelChargesUpdateRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'id' => 'required',
-            'particulars' => 'required',
-            'no_liters' => 'required',
-            'unit_price' => 'required',
-            'amount' => 'required'
-        ];
+        $rules = [];
+
+        if ($this->request->has('type')) {
+            $rules['id'] = 'required';
+            $rules['type'] = 'nullable';
+            $rules['particulars'] = 'required';
+            $rules['no_liters'] = 'required';
+            $rules['unit_price'] = 'required';
+            $rules['amount'] = 'required';
+        }
+
+        return $rules;
     }
 
     public function attributes()
     {
-        return [
-            'id' => 'ID',
-            'particulars' => 'Particulars',
-            'no_liters' => 'No. of Liters',
-            'unit_price' => 'Unit Price',
-            'amount' => 'Amount'
-        ];
+        $attr = [];
+
+        if ($this->request->has('type')) {
+            $attr['id'] = 'ID';
+            $attr['particulars'] = 'Particulars';
+            $attr['no_liters'] = 'No. of Liters';
+            $attr['unit_price'] = 'Unit Price';
+            $attr['amount'] = 'Amount';
+        }
+
+        return $attr;
     }
 
     public function messages()
     {
-        return [
-            'id.required' => __('main/validations.required'),
-            'particulars.required' => __('main/validations.required'),
-            'no_liters.required' => __('main/validations.required'),
-            'unit_price.required' => __('main/validations.required'),
-            'amount.required' => __('main/validations.required'),
-        ];
+        return [];
+
+        if ($this->request->has('type')) {
+            $msgs['id.required'] = __('main/validations.required');
+            $msgs['particulars.required'] = __('main/validations.required');
+            $msgs['no_liters.required'] = __('main/validations.required');
+            $msgs['unit_price.required'] = __('main/validations.required');
+            $msgs['amount.required'] = __('main/validations.required');
+        }
+
+        return $msgs;
     }
 }
