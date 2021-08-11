@@ -1905,6 +1905,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1913,7 +1927,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['sessionData'],
+  props: ["sessionData"],
   components: {
     Navbar: _components_Layouts_Navbar__WEBPACK_IMPORTED_MODULE_0__.default,
     Mobile: _components_Layouts_Mobile__WEBPACK_IMPORTED_MODULE_2__.default,
@@ -1946,9 +1960,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     vuexStore: function vuexStore() {
       if (localStorage.getItem("ListEmployee") === null) {
-        this.$store.dispatch('currentUser/loadEmployee');
+        this.$store.dispatch("currentUser/loadEmployee");
       } else {
-        this.$store.dispatch('currentUser/setLocalData', JSON.parse(localStorage.getItem('ListEmployee')));
+        this.$store.dispatch("currentUser/setLocalData", JSON.parse(localStorage.getItem("ListEmployee")));
       }
     },
     destination: function destination() {
@@ -1960,21 +1974,21 @@ __webpack_require__.r(__webpack_exports__);
       var barangay = localStorage.getItem("barangay");
 
       if (division === null || region === null || section === null || province === null || city === null || barangay === null) {
-        this.$store.dispatch('destination/loadDivision');
-        this.$store.dispatch('destination/loadRegion');
-        this.$store.dispatch('destination/loadSection');
-        this.$store.dispatch('destination/loadProvince');
-        this.$store.dispatch('destination/loadCity');
-        this.$store.dispatch('destination/loadBarangay');
+        this.$store.dispatch("destination/loadDivision");
+        this.$store.dispatch("destination/loadRegion");
+        this.$store.dispatch("destination/loadSection");
+        this.$store.dispatch("destination/loadProvince");
+        this.$store.dispatch("destination/loadCity");
+        this.$store.dispatch("destination/loadBarangay");
       } else {
-        this.$store.dispatch('destination/setLocalDivision', JSON.parse(localStorage.getItem('division')));
-        this.$store.dispatch('destination/setLocalRegion', JSON.parse(localStorage.getItem('region')));
-        this.$store.dispatch('destination/setLocalSection', JSON.parse(localStorage.getItem('section')));
-        this.$store.dispatch('destination/setLocalProvince', JSON.parse(localStorage.getItem('province]')));
-        this.$store.dispatch('destination/setLocalCity', JSON.parse(localStorage.getItem('city]')));
-        this.$store.dispatch('destination/setLocalBarangay', JSON.parse(localStorage.getItem('barangay]')));
+        this.$store.dispatch("destination/setLocalDivision", JSON.parse(localStorage.getItem("division")));
+        this.$store.dispatch("destination/setLocalRegion", JSON.parse(localStorage.getItem("region")));
+        this.$store.dispatch("destination/setLocalSection", JSON.parse(localStorage.getItem("section")));
+        this.$store.dispatch("destination/setLocalProvince", JSON.parse(localStorage.getItem("province]")));
+        this.$store.dispatch("destination/setLocalCity", JSON.parse(localStorage.getItem("city]")));
+        this.$store.dispatch("destination/setLocalBarangay", JSON.parse(localStorage.getItem("barangay]")));
       } // if (localStorage.getItem("ListEmployee") === null) {
-      // } 
+      // }
       // else {
       // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
       // }
@@ -4793,7 +4807,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return _this2.$dateEng(data);
             }
           }, {
-            targets: 11,
+            targets: [6, 7, 11],
             render: function render(data) {
               return _this2.$toParseNum(data);
             }
@@ -4934,7 +4948,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return _this3.$dateEng(data);
             }
           }, {
-            targets: 11,
+            targets: [6, 7, 11],
             render: function render(data) {
               return _this3.$toParseNum(data);
             }

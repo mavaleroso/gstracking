@@ -541,7 +541,7 @@ export default {
                             }
                         },
                         {
-                            targets: 11,
+                            targets: [6, 7, 11],
                             render: data => {
                                 return this.$toParseNum(data);
                             }
@@ -682,7 +682,7 @@ export default {
                             }
                         },
                         {
-                            targets: 11,
+                            targets: [6, 7, 11],
                             render: data => {
                                 return this.$toParseNum(data);
                             }
