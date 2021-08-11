@@ -8118,6 +8118,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8139,30 +8142,29 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var initTable = function initTable() {
-        var table = $('#logs-tbl'); // begin first table
-
+        var table = $("#logs-tbl");
         table.DataTable({
-          scrollY: '50vh',
+          scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
           processing: true,
           serverSide: true,
           ajax: {
-            url: BASE_URL + '/history/log',
-            type: 'GET'
+            url: BASE_URL + "/history/log",
+            type: "GET"
           },
           columns: [{
-            "data": "id"
+            data: "id"
           }, {
-            "data": "user_id"
+            data: "name"
           }, {
-            "data": "page"
+            data: "page"
           }, {
-            "data": "url"
+            data: "url"
           }, {
-            "data": "action"
+            data: "action"
           }, {
-            "data": "created_at"
+            data: "created_at"
           }],
           columnDefs: [{
             targets: 5,
@@ -61335,7 +61337,7 @@ var staticRenderFns = [
                   _c("tr", [
                     _c("th", [_vm._v("ID")]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("User Id")]),
+                    _c("th", [_vm._v("User")]),
                     _vm._v(" "),
                     _c("th", [_vm._v("Page")]),
                     _vm._v(" "),

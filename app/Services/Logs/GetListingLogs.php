@@ -15,17 +15,19 @@ class GetListingLogs
      */
     public function execute()
     {
-        $query = Log::select(['*']);
-        
-        
+        $query = Log::leftJoin('users', 'users.id', '=', 'logs.user_id')
+                    ->select(['logs.*','users.name']);
+
         $result = Datatable::of($query, request(), [
             'searchable' => [
+                'name',
                 'page',
                 'url',
                 'action'
             ],
             'orderable' => [
                 'id',
+                'name',
                 'page',
                 'url',
                 'action'
@@ -43,6 +45,4 @@ class GetListingLogs
 
         return $query;
     }
-
-
 }   
