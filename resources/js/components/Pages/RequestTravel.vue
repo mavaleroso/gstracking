@@ -250,20 +250,20 @@
                         <input
                           :name="'pax_des_' + index"
                           :id="'pax_des_' + index"
-                          class="details-input data-entry form-control"
+                          class="details-input form-control"
                           type="text"
                           v-model="pax_des[index - 1]"
-                          disabled
+                          readonly
                         />
                       </td>
                       <td>
                         <input
                           :name="'pax_gen_' + index"
                           :id="'pax_gen_' + index"
-                          class="details-input data-entry form-control"
+                          class="details-input form-control"
                           type="text"
                           v-model="pax_gen[index - 1]"
-                          disabled
+                          readonly
                         />
                       </td>
                     </tr>
@@ -452,7 +452,6 @@ export default {
       );
     },
     saveForm() {
-      $(".data-entry").attr("disabled", false);
       let requestform = $("#kt_form").serialize();
 
       axios
@@ -467,7 +466,6 @@ export default {
           this.createdAt = this.$dateTimeEng(response.data.result.created_at);
         })
         .catch((error) => {
-          $(".data-entry").attr("disabled", true);
           let data = error.response.data.errors;
           let keys = [];
           let values = [];
@@ -565,9 +563,7 @@ export default {
     },
     newRequest() {
       $(".details-input").val(null).trigger("change");
-      setTimeout(() => {
-        $(".data-entry").attr("disabled", true);
-      }, 500);
+      setTimeout(() => {}, 500);
       this.clearData();
       for (let i = 0; i < this.names.length; i++) {
         if (
