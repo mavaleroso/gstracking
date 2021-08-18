@@ -1937,10 +1937,14 @@ __webpack_require__.r(__webpack_exports__);
     Navfooter: _components_Layouts_Footer__WEBPACK_IMPORTED_MODULE_5__.default,
     Rightpanel: _components_Layouts_Rightpanel__WEBPACK_IMPORTED_MODULE_6__.default
   },
+  created: function created() {
+    this.storeEmployees();
+    this.storeDrivers();
+    this.storePo();
+    this.storeVehicles();
+  },
   mounted: function mounted() {
     this.ini();
-    this.vuexStore();
-    this.destination();
   },
   methods: {
     ini: function ini() {
@@ -1958,14 +1962,14 @@ __webpack_require__.r(__webpack_exports__);
         document.getElementById("kt_body").appendChild(tag);
       });
     },
-    vuexStore: function vuexStore() {
+    storeEmployees: function storeEmployees() {
       if (localStorage.getItem("ListEmployee") === null) {
-        this.$store.dispatch("currentUser/loadEmployee");
+        this.$store.dispatch("employees/loadEmployee");
       } else {
-        this.$store.dispatch("currentUser/setLocalData", JSON.parse(localStorage.getItem("ListEmployee")));
+        this.$store.dispatch("employees/setLocalData", JSON.parse(localStorage.getItem("ListEmployee")));
       }
     },
-    destination: function destination() {
+    storeDestination: function storeDestination() {
       var division = localStorage.getItem("division");
       var region = localStorage.getItem("region");
       var section = localStorage.getItem("section");
@@ -1993,6 +1997,27 @@ __webpack_require__.r(__webpack_exports__);
       // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
       // }
 
+    },
+    storeDrivers: function storeDrivers() {
+      if (localStorage.getItem("ListDrivers") === null) {
+        this.$store.dispatch("drivers/loadDrivers");
+      } else {
+        this.$store.dispatch("drivers/setLocalData", JSON.parse(localStorage.getItem("ListDrivers")));
+      }
+    },
+    storePo: function storePo() {
+      if (localStorage.getItem("ListPos") === null) {
+        this.$store.dispatch("po/loadPos");
+      } else {
+        this.$store.dispatch("po/setLocalData", JSON.parse(localStorage.getItem("ListPos")));
+      }
+    },
+    storeVehicles: function storeVehicles() {
+      if (localStorage.getItem("ListVehicles") === null) {
+        this.$store.dispatch("vehicles/loadVehicles");
+      } else {
+        this.$store.dispatch("vehicles/setLocalData", JSON.parse(localStorage.getItem("ListVehicles")));
+      }
     }
   }
 });
@@ -4614,6 +4639,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4633,71 +4667,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         no_liters: 0,
         unit_price: 0
       },
-      drivers: [{
-        birthdate: "1998-03-08",
-        contact: "09489571604",
-        created_at: "2021-07-05T06:16:20.000000Z",
-        deleted_at: null,
-        fullname: "Marwen ASPE Valeroso",
-        id: 10,
-        sex: "Male",
-        status: "Active",
-        type: "1",
-        updated_at: "2021-07-05T06:16:20.00,0000Z"
-      }, {
-        birthdate: "1998-03-08",
-        contact: "09489571604",
-        created_at: "2021-07-16T02:43:16.000000Z",
-        deleted_at: null,
-        fullname: "Marwen ASPE Valeroso",
-        id: 12,
-        sex: "Male",
-        status: "Active",
-        type: "1",
-        updated_at: "2021-07-16T02:43:16.000000Z"
-      }, {
-        birthdate: "1993-01-29",
-        contact: "09469151992",
-        created_at: "2021-07-16T02:43:27.000000Z",
-        deleted_at: null,
-        fullname: "Scott Owen SANCHEZ Amadeo",
-        id: 13,
-        sex: "Male",
-        status: "Active",
-        type: "1",
-        updated_at: "2021-07-16T02:43:27.000000Z"
-      }],
-      vehicles: [{
-        capacity: 7,
-        created_at: "2021-07-05T06:16:11.000000Z",
-        deleted_at: null,
-        description: null,
-        id: 10,
-        image: null,
-        name: "UV Express",
-        plate_no: "ZKR 250",
-        remarks: null,
-        status: 1,
-        type: "1",
-        updated_at: "2021-07-05T06:16:11.000000Z"
-      }],
-      pos: [{
-        created_at: "2021-07-05T00:53:57.000000Z",
-        deleted_at: null,
-        id: 1,
-        po_amount: 25454621,
-        po_no: "20-01-0001",
-        status: 1,
-        totalBalance: 25441885,
-        type: 1,
-        updated_at: "2021-07-05T00:53:57.000000Z"
-      }],
+      drivers: [],
+      vehicles: [],
+      pos: [],
       names: ["driver_id", "vehicle_id", "po_id", "purpose"],
       update_names: ["particulars", "no_liters", "unit_price"]
     };
   },
   mounted: function mounted() {
     this.ini().init();
+    this.ini().set_data();
     this.ini().fuel_charges_tbl();
   },
   computed: {
@@ -4705,6 +4684,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var result = this.form_fields_update.no_liters * this.form_fields_update.unit_price;
       this.form_fields_update.amount = result;
       return result;
+    },
+    loadingStats: function loadingStats() {
+      var driverStats = this.$store.getters["drivers/loadingStats"];
+      var vehicleStats = this.$store.getters["vehicles/loadingStats"];
+      var poStats = this.$store.getters["po/loadingStats"];
+
+      if (!driverStats) {
+        this.drivers = JSON.parse(localStorage.getItem("ListDrivers"));
+      }
+
+      if (!vehicleStats) {
+        this.vehicles = JSON.parse(localStorage.getItem("ListVehicles"));
+      }
+
+      if (!poStats) {
+        this.pos = JSON.parse(localStorage.getItem("ListPos"));
+      }
+
+      return driverStats, vehicleStats, poStats;
     }
   },
   methods: {
@@ -4737,6 +4735,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       };
 
+      var _set_data = function set_data() {};
+
       return {
         init: function init() {
           _init();
@@ -4746,6 +4746,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         },
         fuel_charges_approval_tbl: function fuel_charges_approval_tbl() {
           _fuel_charges_approval_tbl();
+        },
+        set_data: function set_data() {
+          _set_data();
         }
       };
     },
@@ -5038,7 +5041,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $("#kt_select_po").on("select2:select", function () {
           vm.form_fields.po_id = $(this).val();
         });
-      }, 100);
+      }, 300);
     },
     saveEntry: function saveEntry() {
       var _this4 = this;
@@ -13379,80 +13382,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/currentUser */ "./resources/js/store/modules/currentUser.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_employees__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/employees */ "./resources/js/store/modules/employees.js");
 /* harmony import */ var _modules_destination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/destination */ "./resources/js/store/modules/destination.js");
+/* harmony import */ var _modules_drivers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/drivers */ "./resources/js/store/modules/drivers.js");
+/* harmony import */ var _modules_vehicles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/vehicles */ "./resources/js/store/modules/vehicles.js");
+/* harmony import */ var _modules_po__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/po */ "./resources/js/store/modules/po.js");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_5__.default.use(vuex__WEBPACK_IMPORTED_MODULE_6__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_6__.default.Store({
   modules: {
-    currentUser: _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__.default,
-    destination: _modules_destination__WEBPACK_IMPORTED_MODULE_1__.default
+    employees: _modules_employees__WEBPACK_IMPORTED_MODULE_0__.default,
+    destination: _modules_destination__WEBPACK_IMPORTED_MODULE_1__.default,
+    drivers: _modules_drivers__WEBPACK_IMPORTED_MODULE_2__.default,
+    vehicles: _modules_vehicles__WEBPACK_IMPORTED_MODULE_3__.default,
+    po: _modules_po__WEBPACK_IMPORTED_MODULE_4__.default
   }
 }));
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/currentUser.js":
-/*!***************************************************!*\
-  !*** ./resources/js/store/modules/currentUser.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-var state = {
-  employee: [],
-  loadingStats: false
-};
-var getters = {
-  employee: function employee(state) {
-    return state.employee;
-  },
-  loadingStats: function loadingStats(state) {
-    return state.loadingStats;
-  }
-};
-var actions = {
-  loadEmployee: function loadEmployee(_ref) {
-    var commit = _ref.commit;
-    commit('setLoadingStats', true);
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().post(BASE_URL + '/transportation/driver/autoComplete').then(function (response) {
-      commit('setEmployee', response.data);
-      commit('setLoadingStats', false);
-      localStorage.setItem('ListEmployee', JSON.stringify(response.data));
-    });
-  },
-  setLocalData: function setLocalData(_ref2, payload) {
-    var commit = _ref2.commit;
-    commit('setEmployee', payload);
-  }
-};
-var mutations = {
-  setEmployee: function setEmployee(state, drivers) {
-    state.employee = drivers;
-  },
-  setLoadingStats: function setLoadingStats(state, value) {
-    state.loadingStats = value;
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  namespaced: true,
-  state: state,
-  getters: getters,
-  actions: actions,
-  mutations: mutations
-});
 
 /***/ }),
 
@@ -13505,69 +13458,69 @@ var getters = {
 var actions = {
   loadDivision: function loadDivision(_ref) {
     var commit = _ref.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/division').then(function (response) {
-      commit('setDivision', response.data);
-      localStorage.setItem('division', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/division").then(function (response) {
+      commit("setDivision", response.data);
+      localStorage.setItem("division", JSON.stringify(response.data));
     });
   },
   loadRegion: function loadRegion(_ref2) {
     var commit = _ref2.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/region').then(function (response) {
-      commit('setRegion', response.data);
-      localStorage.setItem('region', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/region").then(function (response) {
+      commit("setRegion", response.data);
+      localStorage.setItem("region", JSON.stringify(response.data));
     });
   },
   loadSection: function loadSection(_ref3) {
     var commit = _ref3.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/section').then(function (response) {
-      commit('setRegion', response.data);
-      localStorage.setItem('section', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/section").then(function (response) {
+      commit("setRegion", response.data);
+      localStorage.setItem("section", JSON.stringify(response.data));
     });
   },
   loadProvince: function loadProvince(_ref4) {
     var commit = _ref4.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/province').then(function (response) {
-      commit('setProvince', response.data);
-      localStorage.setItem('province', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/province").then(function (response) {
+      commit("setProvince", response.data);
+      localStorage.setItem("province", JSON.stringify(response.data));
     });
   },
   loadCity: function loadCity(_ref5) {
     var commit = _ref5.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/city').then(function (response) {
-      commit('setCity', response.data);
-      localStorage.setItem('city', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/city").then(function (response) {
+      commit("setCity", response.data);
+      localStorage.setItem("city", JSON.stringify(response.data));
     });
   },
   loadBarangay: function loadBarangay(_ref6) {
     var commit = _ref6.commit;
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + '/api/v1/brgy').then(function (response) {
-      commit('setBarangay', response.data);
-      localStorage.setItem('barangay', JSON.stringify(response.data));
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/brgy").then(function (response) {
+      commit("setBarangay", response.data);
+      localStorage.setItem("barangay", JSON.stringify(response.data));
     });
   },
   setLocalDivision: function setLocalDivision(_ref7, data) {
     var commit = _ref7.commit;
-    commit('setDivision', data);
+    commit("setDivision", data);
   },
   setLocalRegion: function setLocalRegion(_ref8, data) {
     var commit = _ref8.commit;
-    commit('setRegion', data);
+    commit("setRegion", data);
   },
   setLocalSection: function setLocalSection(_ref9, data) {
     var commit = _ref9.commit;
-    commit('setSection', data);
+    commit("setSection", data);
   },
   setLocalProvince: function setLocalProvince(_ref10, data) {
     var commit = _ref10.commit;
-    commit('setProvince', data);
+    commit("setProvince", data);
   },
   setLocalCity: function setLocalCity(_ref11, data) {
     var commit = _ref11.commit;
-    commit('setCity', data);
+    commit("setCity", data);
   },
   setLocalBarangay: function setLocalBarangay(_ref12, data) {
     var commit = _ref12.commit;
-    commit('setBarangay', data);
+    commit("setBarangay", data);
   }
 };
 var mutations = {
@@ -13591,6 +13544,242 @@ var mutations = {
   },
   setBarangay: function setBarangay(state, barangay) {
     state.Barangay = barangay;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/drivers.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/drivers.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  drivers: [],
+  loadingStats: false
+};
+var getters = {
+  drivers: function drivers(state) {
+    return state.drivers;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  }
+};
+var actions = {
+  loadDrivers: function loadDrivers(_ref) {
+    var commit = _ref.commit;
+    commit("setLoadingStats", true);
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/drivers").then(function (response) {
+      commit("setDrivers", response.data);
+      commit("setLoadingStats", false);
+      localStorage.setItem("ListDrivers", JSON.stringify(response.data));
+    });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit("setDrivers", payload);
+  }
+};
+var mutations = {
+  setDrivers: function setDrivers(state, drivers) {
+    state.drivers = drivers;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/employees.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/employees.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  employee: [],
+  loadingStats: false
+};
+var getters = {
+  employee: function employee(state) {
+    return state.employee;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  }
+};
+var actions = {
+  loadEmployee: function loadEmployee(_ref) {
+    var commit = _ref.commit;
+    commit("setLoadingStats", true);
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/employees").then(function (response) {
+      commit("setEmployee", response.data);
+      commit("setLoadingStats", false);
+      localStorage.setItem("ListEmployee", JSON.stringify(response.data));
+    });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit("setEmployee", payload);
+  }
+};
+var mutations = {
+  setEmployee: function setEmployee(state, drivers) {
+    state.employee = drivers;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/po.js":
+/*!******************************************!*\
+  !*** ./resources/js/store/modules/po.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  pos: [],
+  loadingStats: false
+};
+var getters = {
+  pos: function pos(state) {
+    return state.pos;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  }
+};
+var actions = {
+  loadPos: function loadPos(_ref) {
+    var commit = _ref.commit;
+    commit("setLoadingStats", true);
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/pos").then(function (response) {
+      commit("setPos", response.data);
+      commit("setLoadingStats", false);
+      localStorage.setItem("ListPos", JSON.stringify(response.data));
+    });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit("setPos", payload);
+  }
+};
+var mutations = {
+  setPos: function setPos(state, pos) {
+    state.pos = pos;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/vehicles.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/vehicles.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  vehicles: [],
+  loadingStats: false
+};
+var getters = {
+  vehicles: function vehicles(state) {
+    return state.vehicles;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  }
+};
+var actions = {
+  loadVehicles: function loadVehicles(_ref) {
+    var commit = _ref.commit;
+    commit("setLoadingStats", true);
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/vehicles").then(function (response) {
+      commit("setVehicles", response.data);
+      commit("setLoadingStats", false);
+      localStorage.setItem("ListVehicles", JSON.stringify(response.data));
+    });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit("setVehicles", payload);
+  }
+};
+var mutations = {
+  setVehicles: function setVehicles(state, vehicles) {
+    state.vehicles = vehicles;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -56796,196 +56985,213 @@ var render = function() {
             [
               _vm._m(2),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body p-20" }, [
-                _c(
-                  "form",
-                  {
-                    staticClass: "form row",
-                    attrs: { id: "fuel-request-form" }
-                  },
-                  [
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("Driver:")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2",
-                            attrs: { id: "kt_select_driver", name: "driver_id" }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.drivers, function(driver) {
-                              return _c(
-                                "option",
-                                {
-                                  key: driver.id,
-                                  domProps: { value: driver.id }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(driver.fullname) +
-                                      "\n                            "
-                                  )
-                                ]
-                              )
-                            })
-                          ],
-                          2
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("Vehicle:")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2",
-                            attrs: {
-                              id: "kt_select_vehicle",
-                              name: "vehicle_id"
-                            }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(_vm.vehicles, function(vehicle) {
-                              return _c(
-                                "option",
-                                {
-                                  key: vehicle.id,
-                                  domProps: { value: vehicle.id }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(vehicle.name) +
-                                      " - " +
-                                      _vm._s(vehicle.plate_no) +
-                                      "\n                            "
-                                  )
-                                ]
-                              )
-                            })
-                          ],
-                          2
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("Plate No:")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: {
-                            value: _vm.form_fields.vehicle_id
-                              ? _vm.vehicles.filter(function(i) {
-                                  return i.id == _vm.form_fields.vehicle_id
-                                })[0].plate_no
-                              : null
-                          }
-                        })
+              _c(
+                "div",
+                {
+                  class: _vm.loadingStats
+                    ? "card-body p-20 overlay overlay-block"
+                    : "card-body p-20"
+                },
+                [
+                  _vm.loadingStats
+                    ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                        _c("div", { staticClass: "spinner spinner-primary" })
                       ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("PO Number:")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            staticClass: "form-control select2",
-                            attrs: { id: "kt_select_po", name: "po_id" }
-                          },
-                          [
-                            _c("option", { attrs: { label: "Label" } }),
-                            _vm._v(" "),
-                            _vm._l(
-                              _vm.pos.filter(function(i) {
-                                return i.type == 1
-                              }),
-                              function(po) {
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "form",
+                    {
+                      staticClass: "form row",
+                      attrs: { id: "fuel-request-form" }
+                    },
+                    [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("Driver:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select_driver",
+                                name: "driver_id"
+                              }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.drivers, function(driver) {
                                 return _c(
                                   "option",
-                                  { key: po.id, domProps: { value: po.id } },
+                                  {
+                                    key: driver.id,
+                                    domProps: { value: driver.id }
+                                  },
                                   [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(po.po_no) +
-                                        " - ₱\n                                " +
-                                        _vm._s(
-                                          po.totalBalance
-                                            ? _vm.$toParseNum(po.totalBalance)
-                                            : _vm.$toParseNum(po.po_amount)
-                                        ) +
+                                        _vm._s(driver.fullname) +
                                         "\n                            "
                                     )
                                   ]
                                 )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("Vehicle:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              staticClass: "form-control select2",
+                              attrs: {
+                                id: "kt_select_vehicle",
+                                name: "vehicle_id"
                               }
-                            )
-                          ],
-                          2
-                        )
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _vm._l(_vm.vehicles, function(vehicle) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: vehicle.id,
+                                    domProps: { value: vehicle.id }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(vehicle.name) +
+                                        " - " +
+                                        _vm._s(vehicle.plate_no) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("Plate No:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", disabled: "" },
+                            domProps: {
+                              value: _vm.form_fields.vehicle_id
+                                ? _vm.vehicles.filter(function(i) {
+                                    return i.id == _vm.form_fields.vehicle_id
+                                  })[0].plate_no
+                                : null
+                            }
+                          })
+                        ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("PO Balance:")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: {
-                            value: _vm.form_fields.po_id
-                              ? _vm.pos.filter(function(i) {
-                                  return i.id == _vm.form_fields.po_id
-                                })[0].totalBalance
-                              : null
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-12" }, [
-                      _c("div", { staticClass: "form-group mb-0" }, [
-                        _c("label", [_vm._v("Purpose:")]),
-                        _vm._v(" "),
-                        _c("textarea", {
-                          directives: [
+                      _c("div", { staticClass: "col-lg-6" }, [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("PO Number:")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form_fields.purpose,
-                              expression: "form_fields.purpose"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { rows: "3", name: "purpose" },
-                          domProps: { value: _vm.form_fields.purpose },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form_fields,
-                                "purpose",
-                                $event.target.value
+                              staticClass: "form-control select2",
+                              attrs: { id: "kt_select_po", name: "po_id" }
+                            },
+                            [
+                              _c("option", { attrs: { label: "Label" } }),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.pos.filter(function(i) {
+                                  return i.type == 1
+                                }),
+                                function(po) {
+                                  return _c(
+                                    "option",
+                                    { key: po.id, domProps: { value: po.id } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(po.po_no) +
+                                          " - ₱\n                                " +
+                                          _vm._s(
+                                            po.totalBalance
+                                              ? _vm.$toParseNum(po.totalBalance)
+                                              : _vm.$toParseNum(po.po_amount)
+                                          ) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                }
                               )
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("PO Balance:")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", disabled: "" },
+                            domProps: {
+                              value: _vm.form_fields.po_id
+                                ? _vm.pos.filter(function(i) {
+                                    return i.id == _vm.form_fields.po_id
+                                  })[0].totalBalance
+                                : null
                             }
-                          }
-                        })
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-lg-12" }, [
+                        _c("div", { staticClass: "form-group mb-0" }, [
+                          _c("label", [_vm._v("Purpose:")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form_fields.purpose,
+                                expression: "form_fields.purpose"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { rows: "3", name: "purpose" },
+                            domProps: { value: _vm.form_fields.purpose },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form_fields,
+                                  "purpose",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
                       ])
-                    ])
-                  ]
-                )
-              ]),
+                    ]
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "card-footer" }, [
                 _c("div", [

@@ -73,10 +73,14 @@ export default {
         Navfooter,
         Rightpanel
     },
+    created() {
+        this.storeEmployees();
+        this.storeDrivers();
+        this.storePo();
+        this.storeVehicles();
+    },
     mounted() {
         this.ini();
-        this.vuexStore();
-        this.destination();
     },
     methods: {
         ini() {
@@ -95,17 +99,17 @@ export default {
                 document.getElementById("kt_body").appendChild(tag);
             });
         },
-        vuexStore() {
+        storeEmployees() {
             if (localStorage.getItem("ListEmployee") === null) {
-                this.$store.dispatch("currentUser/loadEmployee");
+                this.$store.dispatch("employees/loadEmployee");
             } else {
                 this.$store.dispatch(
-                    "currentUser/setLocalData",
+                    "employees/setLocalData",
                     JSON.parse(localStorage.getItem("ListEmployee"))
                 );
             }
         },
-        destination() {
+        storeDestination() {
             let division = localStorage.getItem("division");
             let region = localStorage.getItem("region");
             let section = localStorage.getItem("section");
@@ -159,6 +163,36 @@ export default {
             // else {
             // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
             // }
+        },
+        storeDrivers() {
+            if (localStorage.getItem("ListDrivers") === null) {
+                this.$store.dispatch("drivers/loadDrivers");
+            } else {
+                this.$store.dispatch(
+                    "drivers/setLocalData",
+                    JSON.parse(localStorage.getItem("ListDrivers"))
+                );
+            }
+        },
+        storePo() {
+            if (localStorage.getItem("ListPos") === null) {
+                this.$store.dispatch("po/loadPos");
+            } else {
+                this.$store.dispatch(
+                    "po/setLocalData",
+                    JSON.parse(localStorage.getItem("ListPos"))
+                );
+            }
+        },
+        storeVehicles() {
+            if (localStorage.getItem("ListVehicles") === null) {
+                this.$store.dispatch("vehicles/loadVehicles");
+            } else {
+                this.$store.dispatch(
+                    "vehicles/setLocalData",
+                    JSON.parse(localStorage.getItem("ListVehicles"))
+                );
+            }
         }
     }
 };

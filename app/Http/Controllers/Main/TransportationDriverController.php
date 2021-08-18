@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TransportationDriver\DriverRequest;
 use App\Services\TransportationDriver\CreateDriver;
 use App\Services\TransportationDriver\GetListingDriver;
-use App\Services\TransportationDriver\GetListingDriverApi;
 use App\Models\Driver;
 
 class TransportationDriverController extends Controller
@@ -91,14 +90,6 @@ class TransportationDriverController extends Controller
     public function update($id)
     {
     }
-
-    public function typehead(GetListingDriverApi $getlist)
-    {
-        $result = $getlist->execute();
-
-        return response()->json($result);
-    }
-
     /**
      * Remove the specified resource from storage.
      *

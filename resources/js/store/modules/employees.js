@@ -1,32 +1,32 @@
 import axios from "axios";
 const state = {
-    vehicles: [],
+    employee: [],
     loadingStats: false
 };
 const getters = {
-    vehicles(state) {
-        return state.vehicles;
+    employee(state) {
+        return state.employee;
     },
     loadingStats(state) {
         return state.loadingStats;
     }
 };
 const actions = {
-    loadVehicles({ commit }) {
+    loadEmployee({ commit }) {
         commit("setLoadingStats", true);
-        return axios.get(BASE_URL + "/store/vehicles").then(response => {
-            commit("setVehicles", response.data);
+        return axios.get(BASE_URL + "/store/employees").then(response => {
+            commit("setEmployee", response.data);
             commit("setLoadingStats", false);
-            localStorage.setItem("ListVehicles", JSON.stringify(response.data));
+            localStorage.setItem("ListEmployee", JSON.stringify(response.data));
         });
     },
     setLocalData({ commit }, payload) {
-        commit("setVehicles", payload);
+        commit("setEmployee", payload);
     }
 };
 const mutations = {
-    setVehicles: (state, vehicles) => {
-        state.vehicles = vehicles;
+    setEmployee: (state, drivers) => {
+        state.employee = drivers;
     },
     setLoadingStats: (state, value) => {
         state.loadingStats = value;
