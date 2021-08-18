@@ -1,21 +1,21 @@
-require('./bootstrap');
+require("./bootstrap");
 
-import router from './routes';
-import VueRouter from 'vue-router';
-import Index from './Index.vue';
-import Login from './Login.vue';
-import Print from './Print.vue';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import router from "./routes";
+import VueRouter from "vue-router";
+import Index from "./Index.vue";
+import Login from "./Login.vue";
+import Print from "./Print.vue";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 import Vue from "vue";
 import Vuex from "vuex";
 import ConfigMixin from "./mixins/config.vue";
 
 Vue.mixin(ConfigMixin);
-Vue.use (Vuex);
-window.Vue = require('vue').default;
+Vue.use(Vuex);
+window.Vue = require("vue").default;
 
-import store from "./store"
+import store from "./store";
 
 Vue.use(VueRouter);
 
@@ -31,10 +31,9 @@ router.afterEach(() => {
     NProgress.done();
 });
 
-
 const app = new Vue({
-    el: '#app',
+    el: "#app",
     components: { Index, Login, Print },
     router,
-    store,
+    store
 });

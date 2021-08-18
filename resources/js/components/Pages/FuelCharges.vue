@@ -229,12 +229,7 @@
                                     :key="po.id"
                                     :value="po.id"
                                 >
-                                    {{ po.po_no }} - ₱
-                                    {{
-                                        po.totalBalance
-                                            ? $toParseNum(po.totalBalance)
-                                            : $toParseNum(po.po_amount)
-                                    }}
+                                    {{ po.po_no }}
                                 </option>
                             </select>
                         </div>
@@ -244,11 +239,13 @@
                                 type="text"
                                 class="form-control"
                                 :value="
-                                    form_fields.po_id
-                                        ? pos.filter(
-                                              i => i.id == form_fields.po_id
-                                          )[0].totalBalance
-                                        : null
+                                    $toParseNum(
+                                        form_fields.po_id
+                                            ? pos.filter(
+                                                  i => i.id == form_fields.po_id
+                                              )[0].totalBalance
+                                            : 0
+                                    )
                                 "
                                 disabled
                             />
@@ -366,6 +363,7 @@
     </div>
 </template>
 <script>
+import secureStorage from "../../store/secureStorage";
 export default {
     data() {
         return {
@@ -411,15 +409,15 @@ export default {
             let poStats = this.$store.getters["po/loadingStats"];
 
             if (!driverStats) {
-                this.drivers = JSON.parse(localStorage.getItem("ListDrivers"));
+                this.drivers = JSON.parse(secureStorage.getItem("ListDrivers"));
             }
             if (!vehicleStats) {
                 this.vehicles = JSON.parse(
-                    localStorage.getItem("ListVehicles")
+                    secureStorage.getItem("ListVehicles")
                 );
             }
             if (!poStats) {
-                this.pos = JSON.parse(localStorage.getItem("ListPos"));
+                this.pos = JSON.parse(secureStorage.getItem("ListPos"));
             }
 
             return driverStats, vehicleStats, poStats;

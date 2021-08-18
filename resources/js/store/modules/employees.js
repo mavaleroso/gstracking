@@ -1,4 +1,5 @@
 import axios from "axios";
+import secureStorage from "../secureStorage";
 const state = {
     employee: [],
     loadingStats: false
@@ -17,7 +18,10 @@ const actions = {
         return axios.get(BASE_URL + "/store/employees").then(response => {
             commit("setEmployee", response.data);
             commit("setLoadingStats", false);
-            localStorage.setItem("ListEmployee", JSON.stringify(response.data));
+            secureStorage.setItem(
+                "ListEmployee",
+                JSON.stringify(response.data)
+            );
         });
     },
     setLocalData({ commit }, payload) {

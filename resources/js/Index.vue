@@ -62,6 +62,7 @@ import Topheader from "./components/Layouts/Header";
 import Subheader from "./components/Layouts/Subheader";
 import Navfooter from "./components/Layouts/Footer";
 import Rightpanel from "./components/Layouts/Rightpanel";
+import secureStorage from "./store/secureStorage";
 export default {
     props: ["sessionData"],
     components: {
@@ -100,12 +101,12 @@ export default {
             });
         },
         storeEmployees() {
-            if (localStorage.getItem("ListEmployee") === null) {
+            if (secureStorage.getItem("ListEmployee") === null) {
                 this.$store.dispatch("employees/loadEmployee");
             } else {
                 this.$store.dispatch(
                     "employees/setLocalData",
-                    JSON.parse(localStorage.getItem("ListEmployee"))
+                    JSON.parse(secureStorage.getItem("ListEmployee"))
                 );
             }
         },
@@ -165,32 +166,32 @@ export default {
             // }
         },
         storeDrivers() {
-            if (localStorage.getItem("ListDrivers") === null) {
+            if (secureStorage.getItem("ListDrivers") === null) {
                 this.$store.dispatch("drivers/loadDrivers");
             } else {
                 this.$store.dispatch(
                     "drivers/setLocalData",
-                    JSON.parse(localStorage.getItem("ListDrivers"))
+                    JSON.parse(secureStorage.getItem("ListDrivers"))
                 );
             }
         },
         storePo() {
-            if (localStorage.getItem("ListPos") === null) {
+            if (secureStorage.getItem("ListPos") === null) {
                 this.$store.dispatch("po/loadPos");
             } else {
                 this.$store.dispatch(
                     "po/setLocalData",
-                    JSON.parse(localStorage.getItem("ListPos"))
+                    JSON.parse(secureStorage.getItem("ListPos"))
                 );
             }
         },
         storeVehicles() {
-            if (localStorage.getItem("ListVehicles") === null) {
+            if (secureStorage.getItem("ListVehicles") === null) {
                 this.$store.dispatch("vehicles/loadVehicles");
             } else {
                 this.$store.dispatch(
                     "vehicles/setLocalData",
-                    JSON.parse(localStorage.getItem("ListVehicles"))
+                    JSON.parse(secureStorage.getItem("ListVehicles"))
                 );
             }
         }

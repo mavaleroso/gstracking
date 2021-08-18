@@ -1,4 +1,5 @@
 import axios from "axios";
+import secureStorage from "../secureStorage";
 const state = {
     drivers: [],
     loadingStats: false
@@ -17,7 +18,7 @@ const actions = {
         return axios.get(BASE_URL + "/store/drivers").then(response => {
             commit("setDrivers", response.data);
             commit("setLoadingStats", false);
-            localStorage.setItem("ListDrivers", JSON.stringify(response.data));
+            secureStorage.setItem("ListDrivers", JSON.stringify(response.data));
         });
     },
     setLocalData({ commit }, payload) {
