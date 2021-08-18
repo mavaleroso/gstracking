@@ -25,7 +25,6 @@ Route::get('/local_requests', 'base\DashboardController@index');
 Route::get('/rito_requests', 'base\DashboardController@index');
 Route::get('/travels_status', 'base\DashboardController@index');
 Route::get('/vehicle_travels', 'base\DashboardController@index');
-Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/transaction_logs', 'base\DashboardController@index');
 Route::get('/list_transportation', 'base\DashboardController@index');
 Route::get('/list_vehicle', 'base\DashboardController@index');
@@ -226,6 +225,32 @@ Route::group(['prefix' => 'users', 'namespace' => 'Main'], function () {
             'edit' => 'main.listUsers.edit',
             'update' => 'main.listUsers.update',
             'destroy' => 'main.listUsers.destroy',
+        ]
+    ]);
+});
+
+Route::group(['prefix' => 'store', 'namespace' => 'Store'], function () {
+    Route::resource('employees', 'EmployeeStoreController', [
+        'names' => [
+            'index' => 'store.employees.index',
+        ]
+    ]);
+
+    Route::resource('drivers', 'DriversStoreController', [
+        'names' => [
+            'index' => 'store.drivers.index',
+        ]
+    ]);
+
+    Route::resource('pos', 'PoStoreController', [
+        'names' => [
+            'index' => 'store.pos.index',
+        ]
+    ]);
+
+    Route::resource('vehicles', 'VehiclesStoreController', [
+        'names' => [
+            'index' => 'store.vehicles.index',
         ]
     ]);
 });

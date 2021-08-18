@@ -152,7 +152,16 @@
                     </h3>
                 </div>
             </div>
-            <div class="card-body p-20">
+            <div
+                :class="
+                    loadingStats
+                        ? 'card-body p-20 overlay overlay-block'
+                        : 'card-body p-20'
+                "
+            >
+                <div v-if="loadingStats" class="overlay-layer bg-dark-o-10">
+                    <div class="spinner spinner-primary"></div>
+                </div>
                 <form class="form row" id="fuel-request-form">
                     <div class="col-lg-6">
                         <div class="form-group mb-0">
@@ -376,79 +385,16 @@ export default {
                 no_liters: 0,
                 unit_price: 0
             },
-            drivers: [
-                {
-                    birthdate: "1998-03-08",
-                    contact: "09489571604",
-                    created_at: "2021-07-05T06:16:20.000000Z",
-                    deleted_at: null,
-                    fullname: "Marwen ASPE Valeroso",
-                    id: 10,
-                    sex: "Male",
-                    status: "Active",
-                    type: "1",
-                    updated_at: "2021-07-05T06:16:20.00,0000Z"
-                },
-                {
-                    birthdate: "1998-03-08",
-                    contact: "09489571604",
-                    created_at: "2021-07-16T02:43:16.000000Z",
-                    deleted_at: null,
-                    fullname: "Marwen ASPE Valeroso",
-                    id: 12,
-                    sex: "Male",
-                    status: "Active",
-                    type: "1",
-                    updated_at: "2021-07-16T02:43:16.000000Z"
-                },
-                {
-                    birthdate: "1993-01-29",
-                    contact: "09469151992",
-                    created_at: "2021-07-16T02:43:27.000000Z",
-                    deleted_at: null,
-                    fullname: "Scott Owen SANCHEZ Amadeo",
-                    id: 13,
-                    sex: "Male",
-                    status: "Active",
-                    type: "1",
-                    updated_at: "2021-07-16T02:43:27.000000Z"
-                }
-            ],
-            vehicles: [
-                {
-                    capacity: 7,
-                    created_at: "2021-07-05T06:16:11.000000Z",
-                    deleted_at: null,
-                    description: null,
-                    id: 10,
-                    image: null,
-                    name: "UV Express",
-                    plate_no: "ZKR 250",
-                    remarks: null,
-                    status: 1,
-                    type: "1",
-                    updated_at: "2021-07-05T06:16:11.000000Z"
-                }
-            ],
-            pos: [
-                {
-                    created_at: "2021-07-05T00:53:57.000000Z",
-                    deleted_at: null,
-                    id: 1,
-                    po_amount: 25454621,
-                    po_no: "20-01-0001",
-                    status: 1,
-                    totalBalance: 25441885,
-                    type: 1,
-                    updated_at: "2021-07-05T00:53:57.000000Z"
-                }
-            ],
+            drivers: [],
+            vehicles: [],
+            pos: [],
             names: ["driver_id", "vehicle_id", "po_id", "purpose"],
             update_names: ["particulars", "no_liters", "unit_price"]
         };
     },
     mounted() {
         this.ini().init();
+        this.ini().set_data();
         this.ini().fuel_charges_tbl();
     },
     computed: {
@@ -458,6 +404,25 @@ export default {
                 this.form_fields_update.unit_price;
             this.form_fields_update.amount = result;
             return result;
+        },
+        loadingStats() {
+            let driverStats = this.$store.getters["drivers/loadingStats"];
+            let vehicleStats = this.$store.getters["vehicles/loadingStats"];
+            let poStats = this.$store.getters["po/loadingStats"];
+
+            if (!driverStats) {
+                this.drivers = JSON.parse(localStorage.getItem("ListDrivers"));
+            }
+            if (!vehicleStats) {
+                this.vehicles = JSON.parse(
+                    localStorage.getItem("ListVehicles")
+                );
+            }
+            if (!poStats) {
+                this.pos = JSON.parse(localStorage.getItem("ListPos"));
+            }
+
+            return driverStats, vehicleStats, poStats;
         }
     },
     methods: {
@@ -484,6 +449,7 @@ export default {
                     this.tdatatable2().init();
                 });
             };
+            let set_data = () => {};
             return {
                 init: () => {
                     init();
@@ -493,6 +459,9 @@ export default {
                 },
                 fuel_charges_approval_tbl: () => {
                     fuel_charges_approval_tbl();
+                },
+                set_data: () => {
+                    set_data();
                 }
             };
         },
@@ -541,7 +510,7 @@ export default {
                             }
                         },
                         {
-                            targets: 11,
+                            targets: [6, 7, 11],
                             render: data => {
                                 return this.$toParseNum(data);
                             }
@@ -682,7 +651,7 @@ export default {
                             }
                         },
                         {
-                            targets: 11,
+                            targets: [6, 7, 11],
                             render: data => {
                                 return this.$toParseNum(data);
                             }
@@ -794,7 +763,7 @@ export default {
                 $("#kt_select_po").on("select2:select", function() {
                     vm.form_fields.po_id = $(this).val();
                 });
-            }, 100);
+            }, 300);
         },
         saveEntry() {
             let formD = new FormData();
