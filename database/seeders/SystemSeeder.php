@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\System;
-use Carbon\Carbon;
 
 class SystemSeeder extends Seeder
 {
@@ -49,6 +48,10 @@ class SystemSeeder extends Seeder
         [
             'handler' => 'FR_CODE',
             'value' => 'FR-21-06-0001'
+        ],
+        [
+            'handler' => 'SECURITY_TOKEN',
+            'value' => 'Tv0bzK5uAtdYJQAzosAfn1ZiKcOt56mN'
         ]
     ];
     /**

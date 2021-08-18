@@ -240,6 +240,7 @@
 </template>
 <script>
 import Dialog from "../../Layouts/Dialog.vue";
+import secureStorage from "../../../store/secureStorage";
 export default {
     components: { Dialog },
     data() {
@@ -274,10 +275,10 @@ export default {
     },
     computed: {
         loadingStats() {
-            let res = this.$store.getters["currentUser/loadingStats"];
+            let res = this.$store.getters["employees/loadingStats"];
             if (!res) {
                 this.formFields.results = JSON.parse(
-                    localStorage.getItem("ListEmployee")
+                    secureStorage.getItem("ListEmployee")
                 );
             }
             return res;
@@ -291,11 +292,9 @@ export default {
         },
         EmployeeList() {
             this.formFields.results = JSON.parse(
-                localStorage.getItem("ListEmployee")
+                secureStorage.getItem("ListEmployee")
             );
-            this.loadingStatus = this.$store.getters[
-                "currentUser/loadingStats"
-            ];
+            this.loadingStatus = this.$store.getters["employees/loadingStats"];
         },
         newEntry() {
             this.create = true;
