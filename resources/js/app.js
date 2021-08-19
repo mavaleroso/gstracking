@@ -10,9 +10,12 @@ import "nprogress/nprogress.css";
 import Vue from "vue";
 import Vuex from "vuex";
 import ConfigMixin from "./mixins/config.vue";
+import VueSession from "vue-session";
 
 Vue.mixin(ConfigMixin);
 Vue.use(Vuex);
+Vue.use(VueSession);
+
 window.Vue = require("vue").default;
 
 import store from "./store";

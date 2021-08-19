@@ -8,7 +8,6 @@ use App\Traits\ThrottlesRequests;
 use App\Services\Users\LoginUser;
 use App\Services\Users\LogoutUser;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller for admin authentication
@@ -68,15 +67,12 @@ class AuthController extends Controller
             return response()->json([
                 ['type' => 'error', 'message' => $message]
             ]);
-
-            // return redirect()->back()->with('notification', [
-            //     ['type' => 'error', 'message' => $message]
-            // ]);
-
+        } else {
+            return response()->json([
+                ['type' => 'success', 'message' => 'Login successfully!', 'user' => auth()->user()]
+            ]);
         }
-        return response()->json([
-            ['type' => 'success', 'message' => 'Login successfully!']
-        ]);
+
         // return redirect()->route('main.login');
     }
 
@@ -89,6 +85,5 @@ class AuthController extends Controller
     {
         $this->logoutUser->execute();
         return redirect()->route('main.login');
-        
     }
 }

@@ -363,7 +363,6 @@
     </div>
 </template>
 <script>
-import secureStorage from "../../store/secureStorage";
 export default {
     data() {
         return {
@@ -409,15 +408,13 @@ export default {
             let poStats = this.$store.getters["po/loadingStats"];
 
             if (!driverStats) {
-                this.drivers = JSON.parse(secureStorage.getItem("ListDrivers"));
+                this.drivers = this.$store.getters["drivers/drivers"];
             }
             if (!vehicleStats) {
-                this.vehicles = JSON.parse(
-                    secureStorage.getItem("ListVehicles")
-                );
+                this.vehicles = this.$store.getters["vehicles/vehicles"];
             }
             if (!poStats) {
-                this.pos = JSON.parse(secureStorage.getItem("ListPos"));
+                this.pos = this.$store.getters["po/pos"];
             }
 
             return driverStats, vehicleStats, poStats;

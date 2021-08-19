@@ -1,5 +1,4 @@
 import axios from "axios";
-import secureStorage from "../secureStorage";
 const state = {
     employee: [],
     loadingStats: false
@@ -18,10 +17,6 @@ const actions = {
         return axios.get(BASE_URL + "/store/employees").then(response => {
             commit("setEmployee", response.data);
             commit("setLoadingStats", false);
-            secureStorage.setItem(
-                "ListEmployee",
-                JSON.stringify(response.data)
-            );
         });
     },
     setLocalData({ commit }, payload) {
@@ -29,8 +24,8 @@ const actions = {
     }
 };
 const mutations = {
-    setEmployee: (state, drivers) => {
-        state.employee = drivers;
+    setEmployee: (state, employee) => {
+        state.employee = employee;
     },
     setLoadingStats: (state, value) => {
         state.loadingStats = value;

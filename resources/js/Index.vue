@@ -16,7 +16,7 @@
                     id="kt_wrapper"
                 >
                     <!--begin::Header-->
-                    <topheader :session-name="sessionData.name"></topheader>
+                    <topheader></topheader>
                     <!--end::Header-->
                     <!--begin::Content-->
                     <div
@@ -48,9 +48,7 @@
             </div>
             <!--end::Page-->
         </div>
-        <rightpanel
-            :session-data="{ name: sessionData.name, email: sessionData.email }"
-        ></rightpanel>
+        <rightpanel></rightpanel>
     </div>
 </template>
 
@@ -62,9 +60,7 @@ import Topheader from "./components/Layouts/Header";
 import Subheader from "./components/Layouts/Subheader";
 import Navfooter from "./components/Layouts/Footer";
 import Rightpanel from "./components/Layouts/Rightpanel";
-import secureStorage from "./store/secureStorage";
 export default {
-    props: ["sessionData"],
     components: {
         Navbar,
         Mobile,
@@ -75,10 +71,7 @@ export default {
         Rightpanel
     },
     created() {
-        this.storeEmployees();
-        this.storeDrivers();
-        this.storePo();
-        this.storeVehicles();
+        this.vuexStore();
     },
     mounted() {
         this.ini();
@@ -100,101 +93,72 @@ export default {
                 document.getElementById("kt_body").appendChild(tag);
             });
         },
-        storeEmployees() {
-            if (secureStorage.getItem("ListEmployee") === null) {
-                this.$store.dispatch("employees/loadEmployee");
-            } else {
-                this.$store.dispatch(
-                    "employees/setLocalData",
-                    JSON.parse(secureStorage.getItem("ListEmployee"))
-                );
-            }
-        },
-        storeDestination() {
-            let division = localStorage.getItem("division");
-            let region = localStorage.getItem("region");
-            let section = localStorage.getItem("section");
-            let province = localStorage.getItem("province");
-            let city = localStorage.getItem("city");
-            let barangay = localStorage.getItem("barangay");
-
-            if (
-                division === null ||
-                region === null ||
-                section === null ||
-                province === null ||
-                city === null ||
-                barangay === null
-            ) {
-                this.$store.dispatch("destination/loadDivision");
-                this.$store.dispatch("destination/loadRegion");
-                this.$store.dispatch("destination/loadSection");
-                this.$store.dispatch("destination/loadProvince");
-                this.$store.dispatch("destination/loadCity");
-                this.$store.dispatch("destination/loadBarangay");
-            } else {
-                this.$store.dispatch(
-                    "destination/setLocalDivision",
-                    JSON.parse(localStorage.getItem("division"))
-                );
-                this.$store.dispatch(
-                    "destination/setLocalRegion",
-                    JSON.parse(localStorage.getItem("region"))
-                );
-                this.$store.dispatch(
-                    "destination/setLocalSection",
-                    JSON.parse(localStorage.getItem("section"))
-                );
-                this.$store.dispatch(
-                    "destination/setLocalProvince",
-                    JSON.parse(localStorage.getItem("province]"))
-                );
-                this.$store.dispatch(
-                    "destination/setLocalCity",
-                    JSON.parse(localStorage.getItem("city]"))
-                );
-                this.$store.dispatch(
-                    "destination/setLocalBarangay",
-                    JSON.parse(localStorage.getItem("barangay]"))
-                );
-            }
-
-            // if (localStorage.getItem("ListEmployee") === null) {
-            // }
-            // else {
-            // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
-            // }
-        },
-        storeDrivers() {
-            if (secureStorage.getItem("ListDrivers") === null) {
-                this.$store.dispatch("drivers/loadDrivers");
-            } else {
-                this.$store.dispatch(
-                    "drivers/setLocalData",
-                    JSON.parse(secureStorage.getItem("ListDrivers"))
-                );
-            }
-        },
-        storePo() {
-            if (secureStorage.getItem("ListPos") === null) {
-                this.$store.dispatch("po/loadPos");
-            } else {
-                this.$store.dispatch(
-                    "po/setLocalData",
-                    JSON.parse(secureStorage.getItem("ListPos"))
-                );
-            }
-        },
-        storeVehicles() {
-            if (secureStorage.getItem("ListVehicles") === null) {
-                this.$store.dispatch("vehicles/loadVehicles");
-            } else {
-                this.$store.dispatch(
-                    "vehicles/setLocalData",
-                    JSON.parse(secureStorage.getItem("ListVehicles"))
-                );
-            }
+        vuexStore() {
+            this.$store.dispatch(
+                "sessionStore/setLocalData",
+                this.$session.getAll()
+            );
+            this.$store.dispatch("employees/loadEmployee");
+            this.$store.dispatch("drivers/loadDrivers");
+            this.$store.dispatch("po/loadPos");
+            this.$store.dispatch("vehicles/loadVehicles");
         }
+
+        // storeDestination() {
+        //     let division = localStorage.getItem("division");
+        //     let region = localStorage.getItem("region");
+        //     let section = localStorage.getItem("section");
+        //     let province = localStorage.getItem("province");
+        //     let city = localStorage.getItem("city");
+        //     let barangay = localStorage.getItem("barangay");
+
+        //     if (
+        //         division === null ||
+        //         region === null ||
+        //         section === null ||
+        //         province === null ||
+        //         city === null ||
+        //         barangay === null
+        //     ) {
+        //         this.$store.dispatch("destination/loadDivision");
+        //         this.$store.dispatch("destination/loadRegion");
+        //         this.$store.dispatch("destination/loadSection");
+        //         this.$store.dispatch("destination/loadProvince");
+        //         this.$store.dispatch("destination/loadCity");
+        //         this.$store.dispatch("destination/loadBarangay");
+        //     } else {
+        //         this.$store.dispatch(
+        //             "destination/setLocalDivision",
+        //             JSON.parse(localStorage.getItem("division"))
+        //         );
+        //         this.$store.dispatch(
+        //             "destination/setLocalRegion",
+        //             JSON.parse(localStorage.getItem("region"))
+        //         );
+        //         this.$store.dispatch(
+        //             "destination/setLocalSection",
+        //             JSON.parse(localStorage.getItem("section"))
+        //         );
+        //         this.$store.dispatch(
+        //             "destination/setLocalProvince",
+        //             JSON.parse(localStorage.getItem("province]"))
+        //         );
+        //         this.$store.dispatch(
+        //             "destination/setLocalCity",
+        //             JSON.parse(localStorage.getItem("city]"))
+        //         );
+        //         this.$store.dispatch(
+        //             "destination/setLocalBarangay",
+        //             JSON.parse(localStorage.getItem("barangay]"))
+        //         );
+        //     }
+
+        //     // if (localStorage.getItem("ListEmployee") === null) {
+        //     // }
+        //     // else {
+        //     // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
+        //     // }
+        // },
     }
 };
 </script>

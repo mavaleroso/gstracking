@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Services\Users;
 
-use Illuminate\Support\Arr;
 use App\Services\Users\GetUserByEmail;
 use App\Models\User;
 
-class LoginUser 
+
+class LoginUser
 {
     /**
      * @var GetUserByEmail $getUserByEmail
