@@ -10,6 +10,6 @@ class System extends Model
 
     protected $fillable = [
         'handler',
-        'value'               
-    ];  
+        'value'
+    ];
 }

@@ -240,7 +240,6 @@
 </template>
 <script>
 import Dialog from "../../Layouts/Dialog.vue";
-import secureStorage from "../../../store/secureStorage";
 export default {
     components: { Dialog },
     data() {
@@ -271,15 +270,14 @@ export default {
     created() {},
     mounted() {
         this.ini();
-        this.EmployeeList();
     },
     computed: {
         loadingStats() {
             let res = this.$store.getters["employees/loadingStats"];
             if (!res) {
-                this.formFields.results = JSON.parse(
-                    secureStorage.getItem("ListEmployee")
-                );
+                this.formFields.results = this.$store.getters[
+                    "employees/employee"
+                ];
             }
             return res;
         }
@@ -289,12 +287,6 @@ export default {
             $(() => {
                 this.tdatatable().init();
             });
-        },
-        EmployeeList() {
-            this.formFields.results = JSON.parse(
-                secureStorage.getItem("ListEmployee")
-            );
-            this.loadingStatus = this.$store.getters["employees/loadingStats"];
         },
         newEntry() {
             this.create = true;

@@ -1,20 +1,35 @@
 <template>
     <div id="kt_header" class="header header-fixed">
         <!--begin::Container-->
-        <div class="container-fluid d-flex align-items-stretch justify-content-between">
+        <div
+            class="container-fluid d-flex align-items-stretch justify-content-between"
+        >
             <!--begin::Header Menu Wrapper-->
-            <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-            </div>
+            <div
+                class="header-menu-wrapper header-menu-wrapper-left"
+                id="kt_header_menu_wrapper"
+            ></div>
             <!--end::Header Menu Wrapper-->
             <!--begin::Topbar-->
             <div class="topbar">
                 <!--begin::User-->
                 <div class="topbar-item">
-                    <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                        <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
-                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ name }}</span>
+                    <div
+                        class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2"
+                        id="kt_quick_user_toggle"
+                    >
+                        <span
+                            class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1"
+                            >Hi, {{ name }}</span
+                        >
+                        <span
+                            class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"
+                        ></span>
                         <span class="symbol symbol-35 symbol-light-success">
-                            <span class="symbol-label font-size-h5 font-weight-bold">{{ nchar }}</span>
+                            <span
+                                class="symbol-label font-size-h5 font-weight-bold"
+                                >{{ nchar }}</span
+                            >
                         </span>
                     </div>
                 </div>
@@ -27,14 +42,16 @@
 </template>
 <script>
 export default {
-    props: [
-        'sessionName'
-    ],
     data() {
         return {
-            nchar: this.sessionName.charAt(0).toUpperCase(),
-            name: this.sessionName.split(' ').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).join(' ')
-        }
-    },
-}
+            nchar: this.$store.getters["sessionStore/session_data"]["user"].name
+                .charAt(0)
+                .toUpperCase(),
+            name: this.$store.getters["sessionStore/session_data"]["user"].name
+                .split(" ")
+                .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
+                .join(" ")
+        };
+    }
+};
 </script>

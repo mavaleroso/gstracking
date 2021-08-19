@@ -1,5 +1,4 @@
 import axios from "axios";
-import secureStorage from "../secureStorage";
 const state = {
     pos: [],
     loadingStats: false
@@ -18,7 +17,6 @@ const actions = {
         return axios.get(BASE_URL + "/store/pos").then(response => {
             commit("setPos", response.data);
             commit("setLoadingStats", false);
-            secureStorage.setItem("ListPos", JSON.stringify(response.data));
         });
     },
     setLocalData({ commit }, payload) {
