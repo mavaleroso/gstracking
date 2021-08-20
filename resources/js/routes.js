@@ -14,6 +14,7 @@ import printRequest from "./components/Pages/PrintRequest";
 import printTripTicket from "./components/Pages/PrintTripTicket";
 import TravelsStatus from "./components/Pages/TravelsStatus";
 import FuelCharges from "./components/Pages/FuelCharges";
+import printFuelRequestSlip from "./components/Pages/PrintFuelRequestSlip.vue";
 
 const routes = [
     {
@@ -129,6 +130,11 @@ const routes = [
         path: "/print_trip_ticket",
         component: printTripTicket,
         name: "printTripTicket"
+    },
+    {
+        path: "/print_fuel_request_slip",
+        component: printFuelRequestSlip,
+        name: "printFuelRequestSlip"
     }
 ];
 

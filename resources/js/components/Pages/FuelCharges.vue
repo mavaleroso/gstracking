@@ -425,8 +425,8 @@ export default {
             let init = () => {
                 this.fuel_request = false;
                 let vm = this;
-                $('a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
-                    var target = $(e.target).attr("href");
+                $('a[data-toggle="tab"]').click(function() {
+                    var target = $(this).attr("href");
                     if (target == "#kt_tab_pane_5_2") {
                         vm.ini().fuel_charges_approval_tbl();
                     } else {
@@ -557,7 +557,9 @@ export default {
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
+                                    <a href="print_fuel_request_slip/?id=' +
+                                    data +
+                                    '" target="_blank" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\

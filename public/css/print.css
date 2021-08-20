@@ -1,5 +1,5 @@
 body {
-    background: rgb(204,204,204); 
+    background: rgb(204, 204, 204);
 }
 page {
     background: white;
@@ -7,19 +7,19 @@ page {
     margin: 0 auto;
     margin-top: 0.8cm;
     margin-bottom: 1.5cm;
-    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
 }
-page[size="officio"] {  
+page[size="officio"] {
     width: 21.59cm;
-    height: 33.02cm; 
+    height: 33.02cm;
 }
-page[size="A4"] {  
+page[size="A4"] {
     width: 21cm;
-    height: auto; 
+    height: auto;
 }
 page[size="A4"][layout="landscape"] {
     width: 29.7cm;
-    height: 21cm;  
+    height: 21cm;
 }
 page[size="A3"] {
     width: 29.7cm;
@@ -27,7 +27,7 @@ page[size="A3"] {
 }
 page[size="A3"][layout="landscape"] {
     width: 42cm;
-    height: 29.7cm;  
+    height: 29.7cm;
 }
 page[size="A5"] {
     width: 14.8cm;
@@ -35,14 +35,20 @@ page[size="A5"] {
 }
 page[size="A5"][layout="landscape"] {
     width: 21cm;
-    height: 14.8cm;  
+    height: 14.8cm;
 }
 
 .paper-page {
     padding: 3.75rem;
 }
 
-html, body, .main, .tabs, .tabbed-content { float: none; }
+html,
+body,
+.main,
+.tabs,
+.tabbed-content {
+    float: none;
+}
 
 #line-break {
     display: block;
@@ -50,12 +56,12 @@ html, body, .main, .tabs, .tabbed-content { float: none; }
     position: absolute !important;
 }
 
-
 @media print {
-    body, page {
-      margin: 0;
-      box-shadow: 0;
-      font-size: 20px !important;
+    body,
+    page {
+        margin: 0;
+        box-shadow: 0;
+        font-size: 20px !important;
     }
     h5 {
         font-size: 23px !important;
@@ -65,8 +71,12 @@ html, body, .main, .tabs, .tabbed-content { float: none; }
     }
 }
 
-thead {display: table-header-group;}
-tfoot {display: table-header-group;}
+thead {
+    display: table-header-group;
+}
+tfoot {
+    display: table-header-group;
+}
 
 .brand-logo img {
     width: 158px;
@@ -101,15 +111,13 @@ tfoot {display: table-header-group;}
 } */
 
 .table-border {
-    border: 1px solid #AAA;
+    border: 1px solid #aaa;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
 }
-
-
 
 .outline-0 {
     outline: none !important;
@@ -130,7 +138,7 @@ table {
 }
 
 .textarea {
-    border:1px solid #aaa;
+    border: 1px solid #aaa;
     font-size: 14px;
 }
 
@@ -175,11 +183,13 @@ table {
     line-height: 2.5 !important;
 }
 
-.odometer, .odometer td, .odometer th {
+.odometer,
+.odometer td,
+.odometer th {
     border: 1px solid black !important;
 }
-  
+
 .odometer {
-width: 100%;
-border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }

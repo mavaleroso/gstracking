@@ -35,6 +35,7 @@ Route::get('/travel_calendar', 'base\DashboardController@index');
 Route::get('/fuel_charges', 'base\DashboardController@index');
 Route::get('/print_request', 'base\PrintController@index')->name('main.print_request');
 Route::get('/print_trip_ticket', 'base\PrintController@index')->name('main.print_ticket');
+Route::get('/print_fuel_request_slip', 'base\PrintController@index')->name('main.print_fuel_request_slip');
 
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
