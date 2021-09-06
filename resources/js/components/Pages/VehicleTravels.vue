@@ -305,7 +305,7 @@
                                         "
                                         target="_blank"
                                         class="btn btn-sm btn-clean btn-icon"
-                                        title="Edit details"
+                                        title="Print Trip Ticket"
                                     >
                                         <span class="svg-icon svg-icon-md">
                                             <svg

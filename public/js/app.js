@@ -4787,8 +4787,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _init = function init() {
         _this.fuel_request = false;
         var vm = _this;
-        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-          var target = $(e.target).attr("href");
+        $('a[data-toggle="tab"]').click(function () {
+          var target = $(this).attr("href");
 
           if (target == "#kt_tab_pane_5_2") {
             vm.ini().fuel_charges_approval_tbl();
@@ -4926,7 +4926,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                                             </svg>\
                                         </span>\
                                     </a>\
-                                    <a href="javascript:;" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
+                                    <a href="print_fuel_request_slip/?id=' + data + '" target="_blank" class="btn-print btn btn-sm btn-clean btn-icon" title="Print request">\
                                         <span class="svg-icon svg-icon-md">\
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -8129,6 +8129,508 @@ __webpack_require__.r(__webpack_exports__);
           initTable();
         }
       };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      date: null,
+      driver_name: null,
+      plate_no: null,
+      po_no: null,
+      purpose: null,
+      code: null
+    };
+  },
+  computed: {},
+  created: function created() {},
+  mounted: function mounted() {
+    this.ini();
+  },
+  methods: {
+    ini: function ini() {
+      var scripts = ["/js/main.js"];
+      scripts.forEach(function (script) {
+        var tag = document.createElement("script");
+        tag.setAttribute("src", script);
+        $(".print-content").append(tag);
+      });
+
+      document.onkeypress = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.onmousedown = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.onkeydown = function (event) {
+        event = event || window.event;
+
+        if (event.keyCode == 123) {
+          return false;
+        }
+      };
+
+      document.addEventListener("contextmenu", function (e) {// e.preventDefault();
+      });
+      $(".btn-print").click(function () {
+        $("#page-1").printThis({
+          importCSS: true
+        });
+      });
+      var url = window.location.href;
+      var data = this.$parseURLParams(url);
+      this.getData(data.id[0]);
+    },
+    getData: function getData(id) {
+      var _this = this;
+
+      axios.get(BASE_URL + "/tracking/fuelcharges/" + id).then(function (res) {
+        _this.code = res.data.code;
+        _this.driver_name = res.data.fullname;
+        _this.plate_no = res.data.plate_no;
+        _this.po_no = res.data.po_no;
+        _this.date = _this.$dateEng(res.data.created_at);
+        _this.purpose = res.data.purpose;
+      });
     }
   }
 });
@@ -13160,7 +13662,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Pages/Dashboard */ "./resources/js/components/Pages/Dashboard.vue");
 /* harmony import */ var _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Pages/RequestTravel */ "./resources/js/components/Pages/RequestTravel.vue");
 /* harmony import */ var _components_Pages_ListLocalRequests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Pages/ListLocalRequests */ "./resources/js/components/Pages/ListLocalRequests.vue");
@@ -13176,6 +13678,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/Pages/PrintTripTicket */ "./resources/js/components/Pages/PrintTripTicket.vue");
 /* harmony import */ var _components_Pages_TravelsStatus__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/Pages/TravelsStatus */ "./resources/js/components/Pages/TravelsStatus.vue");
 /* harmony import */ var _components_Pages_FuelCharges__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Pages/FuelCharges */ "./resources/js/components/Pages/FuelCharges.vue");
+/* harmony import */ var _components_Pages_PrintFuelRequestSlip_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/Pages/PrintFuelRequestSlip.vue */ "./resources/js/components/Pages/PrintFuelRequestSlip.vue");
+
 
 
 
@@ -13291,8 +13795,12 @@ var routes = [{
   path: "/print_trip_ticket",
   component: _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_12__.default,
   name: "printTripTicket"
+}, {
+  path: "/print_fuel_request_slip",
+  component: _components_Pages_PrintFuelRequestSlip_vue__WEBPACK_IMPORTED_MODULE_15__.default,
+  name: "printFuelRequestSlip"
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_15__.default({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_16__.default({
   routes: routes,
   mode: "history"
 });
@@ -51572,6 +52080,45 @@ component.options.__file = "resources/js/components/Pages/Logs.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/PrintFuelRequestSlip.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/Pages/PrintFuelRequestSlip.vue ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc& */ "./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc&");
+/* harmony import */ var _PrintFuelRequestSlip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrintFuelRequestSlip.vue?vue&type=script&lang=js& */ "./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _PrintFuelRequestSlip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pages/PrintFuelRequestSlip.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/PrintRequest.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/Pages/PrintRequest.vue ***!
@@ -52164,6 +52711,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintFuelRequestSlip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrintFuelRequestSlip.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintFuelRequestSlip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Pages/PrintRequest.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************!*\
   !*** ./resources/js/components/Pages/PrintRequest.vue?vue&type=script&lang=js& ***!
@@ -52623,6 +53186,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Logs_vue_vue_type_template_id_057e54e5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Logs.vue?vue&type=template&id=057e54e5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/Logs.vue?vue&type=template&id=057e54e5&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrintFuelRequestSlip_vue_vue_type_template_id_6334e9bc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc&");
 
 
 /***/ }),
@@ -61476,6 +62056,663 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintFuelRequestSlip.vue?vue&type=template&id=6334e9bc& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
+        _c("div", { attrs: { id: "page-1" } }, [
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("p", { staticClass: "text-left m-0 float-right w-15" }, [
+                    _vm._v(
+                      "\n                                Control #:\n                                "
+                    ),
+                    _c("span", { staticClass: "text-underline text-right" }, [
+                      _vm._v(_vm._s(_vm.code))
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Republic of the Philippines\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Department of Social Welfare and Development\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Field Office Caraga\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Capitol Site, Butuan City\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        "text-center text-underline my-10 font-weight-bold"
+                    },
+                    [
+                      _vm._v(
+                        "\n                                FUEL WITHDRAWAL SLIP\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Name of Driver:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.driver_name))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    PO:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.po_no))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Plate Number:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.plate_no))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Date:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.date))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Particulars:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    No. of Liters:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Unit Price:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Amount:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Purpose of travel:\n                                "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "underline pl-8 font-weight-bold w-100" },
+                    [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.purpose) +
+                          "\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "w-50 float-right" }, [
+                    _c("p", [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "underline mb-1 text-center font-weight-bold"
+                        },
+                        [
+                          _vm._v(
+                            "\n                                        TERESA M. BIDAURE, AO-III\n                                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "\n                                        Gen. Services Section Head\n                                    "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("hr", {}),
+          _vm._v(" "),
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("p", { staticClass: "text-left m-0 float-right w-15" }, [
+                    _vm._v(
+                      "\n                                Control #:\n                                "
+                    ),
+                    _c("span", { staticClass: "text-underline text-right" }, [
+                      _vm._v(_vm._s(_vm.code))
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Republic of the Philippines\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Department of Social Welfare and Development\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Field Office Caraga\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Capitol Site, Butuan City\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        "text-center text-underline my-10 font-weight-bold"
+                    },
+                    [
+                      _vm._v(
+                        "\n                                FUEL WITHDRAWAL SLIP\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Name of Driver:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.driver_name))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    PO:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.po_no))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Plate Number:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.plate_no))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Date:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.date))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Particulars:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    No. of Liters:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Unit Price:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Amount:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Purpose of travel:\n                                "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "underline pl-8 font-weight-bold w-100" },
+                    [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.purpose) +
+                          "\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "w-50 float-right" }, [
+                    _c("p", [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "underline mb-1 text-center font-weight-bold"
+                        },
+                        [
+                          _vm._v(
+                            "\n                                        TERESA M. BIDAURE, AO-III\n                                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "\n                                        Gen. Services Section Head\n                                    "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintRequest.vue?vue&type=template&id=68a58ad8&":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Pages/PrintRequest.vue?vue&type=template&id=68a58ad8& ***!
@@ -66403,7 +67640,7 @@ var render = function() {
                                     href:
                                       "print_trip_ticket?id=" + t.results.id,
                                     target: "_blank",
-                                    title: "Edit details"
+                                    title: "Print Trip Ticket"
                                   }
                                 },
                                 [

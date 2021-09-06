@@ -9,6 +9,7 @@ use App\Http\Requests\FuelCharges\FuelChargesUpdateRequest;
 use App\Services\FuelCharges\CreateFuelCharges;
 use App\Services\FuelCharges\GetListingFuelCharges;
 use App\Services\FuelCharges\UpdateFuelCharges;
+use App\Services\FuelCharges\GetFuelChargesById;
 
 class FuelChargesController extends Controller
 {
@@ -65,9 +66,10 @@ class FuelChargesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, GetFuelChargesById $getFuelChargesById)
     {
-        //
+        $result = $getFuelChargesById->execute($id);
+        return response()->json($result);
     }
 
     /**
