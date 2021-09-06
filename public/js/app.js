@@ -8372,9 +8372,204 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      date: null,
+      driver_name: null,
+      plate_no: null,
+      po_no: null,
+      purpose: null,
+      code: null
+    };
   },
   computed: {},
   created: function created() {},
@@ -8417,10 +8612,25 @@ __webpack_require__.r(__webpack_exports__);
       document.addEventListener("contextmenu", function (e) {// e.preventDefault();
       });
       $(".btn-print").click(function () {
-        $("#page-1").printThis();
+        $("#page-1").printThis({
+          importCSS: true
+        });
       });
       var url = window.location.href;
-      var data = this.$parseURLParams(url); // this.getData(data.id[0]);
+      var data = this.$parseURLParams(url);
+      this.getData(data.id[0]);
+    },
+    getData: function getData(id) {
+      var _this = this;
+
+      axios.get(BASE_URL + "/tracking/fuelcharges/" + id).then(function (res) {
+        _this.code = res.data.code;
+        _this.driver_name = res.data.fullname;
+        _this.plate_no = res.data.plate_no;
+        _this.po_no = res.data.po_no;
+        _this.date = _this.$dateEng(res.data.created_at);
+        _this.purpose = res.data.purpose;
+      });
     }
   }
 });
@@ -61871,11 +62081,13 @@ var render = function() {
             _c("thead", [
               _c("tr", [
                 _c("td", { attrs: { colspan: "4" } }, [
-                  _c("p", { staticClass: "text-left m-0 float-right w-10" }, [
+                  _c("p", { staticClass: "text-left m-0 float-right w-15" }, [
                     _vm._v(
                       "\n                                Control #:\n                                "
                     ),
-                    _c("span", { staticClass: "text-underline text-right" })
+                    _c("span", { staticClass: "text-underline text-right" }, [
+                      _vm._v(_vm._s(_vm.code))
+                    ])
                   ])
                 ])
               ]),
@@ -61956,9 +62168,11 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.driver_name))]
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -61970,9 +62184,11 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.po_no))]
+                    )
                   ])
                 ])
               ]),
@@ -61986,9 +62202,11 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.plate_no))]
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -62000,9 +62218,11 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.date))]
+                    )
                   ])
                 ])
               ]),
@@ -62016,29 +62236,21 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    )
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
                   ])
                 ]),
                 _vm._v(" "),
@@ -62050,29 +62262,21 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    )
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
                   ])
                 ]),
                 _vm._v(" "),
@@ -62084,29 +62288,21 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    )
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
                   ])
                 ]),
                 _vm._v(" "),
@@ -62118,29 +62314,21 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    ),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "d-flex underline font-weight-bold" },
-                      [_vm._v("A")]
-                    )
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
                   ])
                 ])
               ]),
@@ -62152,11 +62340,7 @@ var render = function() {
                       _vm._v(
                         "\n                                    Purpose of travel:\n                                "
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "underline pl-8 font-weight-bold"
-                    })
+                    ])
                   ]),
                   _vm._v(" "),
                   _c(
@@ -62164,7 +62348,322 @@ var render = function() {
                     { staticClass: "underline pl-8 font-weight-bold w-100" },
                     [
                       _vm._v(
-                        "\n                                A\n                            "
+                        "\n                                " +
+                          _vm._s(_vm.purpose) +
+                          "\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "w-50 float-right" }, [
+                    _c("p", [_vm._v("Approved by:")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
+                      _c(
+                        "p",
+                        {
+                          staticClass:
+                            "underline mb-1 text-center font-weight-bold"
+                        },
+                        [
+                          _vm._v(
+                            "\n                                        TERESA M. BIDAURE, AO-III\n                                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "\n                                        Gen. Services Section Head\n                                    "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("hr", {}),
+          _vm._v(" "),
+          _c("table", { staticClass: "w-100" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("p", { staticClass: "text-left m-0 float-right w-15" }, [
+                    _vm._v(
+                      "\n                                Control #:\n                                "
+                    ),
+                    _c("span", { staticClass: "text-underline text-right" }, [
+                      _vm._v(_vm._s(_vm.code))
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Republic of the Philippines\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Department of Social Welfare and Development\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Field Office Caraga\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  { staticClass: "text-center", attrs: { colspan: "4" } },
+                  [
+                    _vm._v(
+                      "\n                            Capitol Site, Butuan City\n                        "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        "text-center text-underline my-10 font-weight-bold"
+                    },
+                    [
+                      _vm._v(
+                        "\n                                FUEL WITHDRAWAL SLIP\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Name of Driver:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.driver_name))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    PO:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.po_no))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Plate Number:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.plate_no))]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 pl-3 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Date:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline pl-8 font-weight-bold" },
+                      [_vm._v(_vm._s(_vm.date))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Particulars:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    No. of Liters:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Unit Price:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { attrs: { colspan: "1" } }, [
+                  _c("div", { staticClass: "mt-5 p-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Amount:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "d-flex underline font-weight-bold py-3"
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "4" } }, [
+                  _c("div", { staticClass: "d-flex mt-3" }, [
+                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                      _vm._v(
+                        "\n                                    Purpose of travel:\n                                "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "underline pl-8 font-weight-bold w-100" },
+                    [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.purpose) +
+                          "\n                            "
                       )
                     ]
                   )

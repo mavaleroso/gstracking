@@ -57,15 +57,20 @@ body,
 }
 
 @media print {
-    body,
-    page {
-        margin: 0;
+    @page {
+        /* margin: 3rem; */
         box-shadow: 0;
+        /* font-size: 90px !important; */
+        /* font-size: 500rem !important; */
+        /* size: auto; */
+        /* padding: 3.75rem; */
+    }
+    table {
         font-size: 20px !important;
     }
-    h5 {
+    /* h5 {
         font-size: 23px !important;
-    }
+    } */
     #line-break {
         page-break-before: always !important;
     }
