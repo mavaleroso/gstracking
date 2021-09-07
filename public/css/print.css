@@ -68,9 +68,24 @@ body,
     table {
         font-size: 20px !important;
     }
-    #tripTicket {
-        font-size: 30px !important;
+    #tripTicket,
+    #tripTicket p {
+        font-size: 17px !important;
     }
+
+    #tripTicket table {
+        font-size: 15px !important;
+    }
+
+    #tripTicket #tbl-passengers thead tr th,
+    #tripTicket #tbl-passengers tbody tr td {
+        height: 45px !important;
+    }
+
+    #tripTicket #tbl-liters tr td {
+        font-size: 15px !important;
+    }
+
     /* h5 {
         font-size: 23px !important;
     } */
