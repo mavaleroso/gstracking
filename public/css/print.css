@@ -68,6 +68,9 @@ body,
     table {
         font-size: 20px !important;
     }
+    #tripTicket {
+        font-size: 30px !important;
+    }
     /* h5 {
         font-size: 23px !important;
     } */
@@ -197,4 +200,90 @@ table {
 .odometer {
     width: 100%;
     border-collapse: collapse;
+}
+
+.fs-11 {
+    font-size: 11px !important;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.fs-10 {
+    font-size: 10px !important;
+}
+
+.h-15 {
+    height: 15px !important;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+#tripTicket p {
+    margin: 0;
+    padding: 0;
+}
+#tripTicket .left-header,
+#tripTicket .right-header {
+    width: 28%;
+}
+#tripTicket img {
+    margin: 0 0 0 17px !important;
+}
+
+#tripTicket .header-title p {
+    margin: 0;
+    text-align: center;
+}
+
+#tripTicket .header-title .main {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#tripTicket .header-title .sub-main {
+    font-size: 9px;
+}
+
+#tripTicket .header-title .sub {
+    font-size: 7px;
+}
+
+#tripTicket .paper-page {
+    padding: 1.75rem;
+}
+
+#tripTicket hr {
+    border: 1px solid black;
+}
+
+#tripTicket .sign {
+    width: 30%;
+    margin: auto;
+}
+
+#tripTicket .signatories {
+    margin-top: 10px;
+}
+
+#tripTicket .signatories hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid black;
+}
+
+#tripTicket #tbl-passengers,
+#tripTicket #tbl-passengers th,
+#tripTicket #tbl-passengers td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#tripTicket #tbl-passengers tbody tr td {
+    padding: 5px;
+    font-size: 10px;
+    height: 25px;
 }
