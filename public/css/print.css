@@ -15,7 +15,7 @@ page[size="officio"] {
 }
 page[size="A4"] {
     width: 21cm;
-    height: auto;
+    height: 29.7cm;
 }
 page[size="A4"][layout="landscape"] {
     width: 29.7cm;
@@ -54,44 +54,6 @@ body,
     display: block;
     page-break-before: always;
     position: absolute !important;
-}
-
-@media print {
-    @page {
-        /* margin: 3rem; */
-        box-shadow: 0;
-        /* font-size: 90px !important; */
-        /* font-size: 500rem !important; */
-        /* size: auto; */
-        /* padding: 3.75rem; */
-    }
-    table {
-        font-size: 20px !important;
-    }
-    #tripTicket,
-    #tripTicket p {
-        font-size: 17px !important;
-    }
-
-    #tripTicket table {
-        font-size: 15px !important;
-    }
-
-    #tripTicket #tbl-passengers thead tr th,
-    #tripTicket #tbl-passengers tbody tr td {
-        height: 45px !important;
-    }
-
-    #tripTicket #tbl-liters tr td {
-        font-size: 15px !important;
-    }
-
-    /* h5 {
-        font-size: 23px !important;
-    } */
-    #line-break {
-        page-break-before: always !important;
-    }
 }
 
 thead {
@@ -217,6 +179,10 @@ table {
     border-collapse: collapse;
 }
 
+.fs-9 {
+    font-size: 9px !important;
+}
+
 .fs-11 {
     font-size: 11px !important;
 }
@@ -271,7 +237,8 @@ table {
     padding: 1.75rem;
 }
 
-#tripTicket hr {
+#tripTicket thead hr,
+#tripTicket tfoot hr {
     border: 1px solid black;
 }
 
@@ -301,4 +268,59 @@ table {
     padding: 5px;
     font-size: 10px;
     height: 25px;
+}
+
+@media print {
+    @page {
+        /* margin: 3rem; */
+        box-shadow: 0;
+        /* font-size: 90px !important; */
+        /* font-size: 500rem !important; */
+        /* size: auto; */
+        /* padding: 3.75rem; */
+    }
+    table {
+        font-size: 20px !important;
+    }
+    #tripTicket thead .main {
+        font-size: 14px !important;
+    }
+    #tripTicket thead .sub-main {
+        font-size: 13px !important;
+    }
+    #tripTicket thead .sub {
+        font-size: 12px !important;
+    }
+    #tripTicket tbody p {
+        font-size: 17px !important;
+    }
+
+    #tripTicket table {
+        font-size: 15px !important;
+    }
+
+    #tripTicket #tbl-passengers thead tr th,
+    #tripTicket #tbl-passengers tbody tr td {
+        height: 45px !important;
+        font-size: 14px !important;
+    }
+
+    #tripTicket #tbl-liters tr td {
+        font-size: 15px !important;
+    }
+
+    #tripTicket .ctrl-no {
+        font-size: 13px !important;
+    }
+
+    #tripTicket .print-logo {
+        height: 60px !important;
+    }
+
+    /* h5 {
+        font-size: 23px !important;
+    } */
+    #line-break {
+        page-break-before: always !important;
+    }
 }

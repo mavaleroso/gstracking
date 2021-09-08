@@ -9608,153 +9608,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  // data() {
-  //     return {
-  //         date: null,
-  //         request: {
-  //             purpose: [],
-  //             destinations: [],
-  //             requested_by: null
-  //         },
-  //         travel: {
-  //             fullname: null,
-  //             vehicle_name: null,
-  //             vehicle_plate_no: null,
-  //             vehicle_type: null,
-  //             starting_odo: null,
-  //             ending_odo: null,
-  //             distance_travelled: null
-  //         },
-  //         destinations: [],
-  //         vehiclemodes: []
-  //     };
-  // },
-  // computed: {
-  //     freeDestinations() {
-  //         let res = 5 - this.request.destinations.length;
-  //         return res;
-  //     }
-  // },
-  // created() {
-  //     this.getVehiclemode();
-  // },
+  data: function data() {
+    return {
+      date: null,
+      type: null,
+      request: {
+        purpose: [],
+        destinations: [],
+        requested_by: null,
+        passenger_count: 0
+      },
+      travel: {
+        trip_ticket: null,
+        fullname: null,
+        vehicle_name: null,
+        vehicle_plate_no: null,
+        vehicle_type: null,
+        starting_odo: null,
+        ending_odo: null,
+        distance_travelled: null
+      },
+      destinations: [],
+      vehiclemodes: [],
+      passengers: []
+    };
+  },
+  computed: {
+    freePax: function freePax() {
+      var pax = 15 - this.passengers.length;
+      return pax;
+    }
+  },
+  created: function created() {
+    this.getVehiclemode();
+  },
   mounted: function mounted() {
     this.ini();
   },
@@ -9799,48 +9687,61 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
       var url = window.location.href;
-      var data = this.$parseURLParams(url); // this.getData(data.id[0]);
-    } //     getData(id) {
-    //         axios.get(BASE_URL + "/travel/printtripticket/" + id).then(res => {
-    //             this.date = res.data.date_now;
-    //             // Travel Data
-    //             this.travel.fullname = res.data.travel.fullname;
-    //             this.travel.starting_odo = res.data.travel.starting_odo;
-    //             this.travel.ending_odo = res.data.travel.ending_odo;
-    //             this.travel.distance_travelled = res.data.travel.travelled;
-    //             this.travel.vehicle_name = res.data.travel.vehicle_name;
-    //             this.travel.vehicle_plate_no = res.data.travel.vehicle_plate_no;
-    //             this.travel.vehicle_type = res.data.travel.mot;
-    //             // Request Data
-    //             this.request.requested_by = res.data.request[0].requested_by;
-    //             for (let i = 0; i < res.data.request.length; i++) {
-    //                 if (
-    //                     this.$searchInArray(
-    //                         res.data.request[i].purpose,
-    //                         this.request.purpose
-    //                     ) == false
-    //                 ) {
-    //                     this.request.purpose.push(res.data.request[i].purpose);
-    //                 }
-    //                 if (
-    //                     this.$searchInArray(
-    //                         res.data.request[i].place,
-    //                         this.request.destinations
-    //                     ) == false
-    //                 ) {
-    //                     this.request.destinations.push(
-    //                         res.data.request[i].place
-    //                     );
-    //                 }
-    //             }
-    //         });
-    //     },
-    //     getVehiclemode() {
-    //         axios.get(BASE_URL + "/api/v1/vehiclemode").then(res => {
-    //             this.vehiclemodes = res.data.results;
-    //         });
-    //     }
+      var data = this.$parseURLParams(url);
+      this.getData(data.id[0]);
+    },
+    getData: function getData(id) {
+      var _this = this;
 
+      axios.get(BASE_URL + "/travel/printtripticket/" + id).then(function (res) {
+        _this.date = res.data.date_now; // Travel Data
+
+        _this.type = res.data.type;
+        _this.travel.fullname = res.data.travel.fullname;
+        _this.travel.starting_odo = res.data.travel.starting_odo;
+        _this.travel.ending_odo = res.data.travel.ending_odo;
+        _this.travel.distance_travelled = res.data.travel.travelled;
+        _this.travel.vehicle_name = res.data.travel.vehicle_name;
+        _this.travel.vehicle_plate_no = res.data.travel.vehicle_plate_no;
+        _this.travel.trip_ticket = res.data.travel.trip_ticket;
+        _this.travel.vehicle_type = res.data.travel.mot;
+        _this.request.passenger_count = res.data.request[0].passenger_count; // Request Data
+
+        _this.request.requested_by = res.data.request[0].requested_by;
+
+        for (var i = 0; i < res.data.request.length; i++) {
+          if (_this.$searchInArray(res.data.request[i].purpose, _this.request.purpose) == false) {
+            _this.request.purpose.push(res.data.request[i].purpose);
+          }
+
+          if (_this.$searchInArray(res.data.request[i].place, _this.request.destinations) == false) {
+            _this.request.destinations.push(res.data.request[i].place);
+          }
+        } // Passengers Data
+
+
+        for (var _i = 0; _i < res.data.passengers.length; _i++) {
+          if (res.data.type == "rito") {
+            _this.passengers.push({
+              name: res.data.passengers[_i].first_name + " " + res.data.passengers[_i].middle_name[0] + ". " + res.data.passengers[_i].last_name,
+              gender: res.data.passengers[_i].gender
+            });
+          } else {
+            _this.passengers.push({
+              name: res.data.passengers[_i].name,
+              gender: res.data.passengers[_i].gender
+            });
+          }
+        }
+      });
+    },
+    getVehiclemode: function getVehiclemode() {
+      var _this2 = this;
+
+      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
+        _this2.vehiclemodes = res.data.results;
+      });
+    }
   }
 });
 
@@ -63486,13 +63387,17 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [
                   _c("div", { staticClass: "d-flex" }, [
-                    _c("p", { staticClass: "fs-11 text-nowrap" }, [
+                    _c("p", { staticClass: "fs-9 text-nowrap ctrl-no" }, [
                       _vm._v(
                         "\n                                    Control No.:\n                                "
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", { staticClass: "underline text-center" })
+                    _c(
+                      "span",
+                      { staticClass: "underline text-center fs-9 ctrl-no" },
+                      [_vm._v(_vm._s(_vm.travel.trip_ticket))]
+                    )
                   ])
                 ])
               ]),
@@ -63517,9 +63422,11 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _c("span", {
-                    staticClass: "underline d-flex w-75 ml-n13 h-15"
-                  })
+                  _c(
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-5" },
+                    [_vm._v(_vm._s(_vm.$dateEng(_vm.date)))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("td", [
@@ -63530,7 +63437,9 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", { staticClass: "underline text-center" })
+                    _c("span", { staticClass: "underline text-center" }, [
+                      _vm._v(_vm._s(_vm.travel.vehicle_plate_no))
+                    ])
                   ])
                 ])
               ]),
@@ -63545,9 +63454,11 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _c("span", {
-                    staticClass: "underline d-flex w-75 ml-n13 h-15"
-                  })
+                  _c(
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-4" },
+                    [_vm._v(_vm._s(_vm.travel.fullname))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("td")
@@ -63563,9 +63474,11 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _c("span", {
-                    staticClass: "underline d-flex w-75 ml-n13 h-15"
-                  })
+                  _c(
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-4" },
+                    [_vm._v(_vm._s(_vm.request.passenger_count))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("td")
@@ -63581,9 +63494,11 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", [
-                  _c("span", {
-                    staticClass: "underline d-flex w-75 ml-n13 h-15"
-                  })
+                  _c(
+                    "span",
+                    { staticClass: "underline w-75 ml-n13 h-15 pl-4" },
+                    [_vm._v(_vm._s(_vm.request.destinations.toString()))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("td")
@@ -63591,7 +63506,7 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _c("div", { staticClass: "d-flex signatories" }, [
+                  _c("div", { staticClass: "d-flex signatories my-5" }, [
                     _c("div", { staticClass: "sign" }, [
                       _c("p", { staticClass: "text-center font-weight-bold" }, [
                         _vm._v(
@@ -63690,337 +63605,59 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("tbody", [
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td"),
-                          _vm._v(" "),
-                          _c("td")
-                        ])
-                      ])
+                      _c(
+                        "tbody",
+                        [
+                          _vm._l(_vm.passengers, function(p, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(p.name))]),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(p.gender))]),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td")
+                            ])
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.freePax, function(index) {
+                            return _c("tr", { key: index }, [
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td")
+                            ])
+                          })
+                        ],
+                        2
+                      )
                     ]
                   )
                 ])
@@ -64289,7 +63926,7 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _c("div", { staticClass: "d-flex m-auto w-50 my-3" }, [
+                  _c("div", { staticClass: "d-flex m-auto w-50 my-4" }, [
                     _c("p", { staticClass: "text-nowrap fs-12" }, [
                       _vm._v(
                         "\n                                    TOTAL DISTANCE TRAVELLED (KM):\n                                "
@@ -64303,7 +63940,7 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _c("p", { staticClass: "text-center fs-12 my-3" }, [
+                  _c("p", { staticClass: "text-center fs-12 my-5" }, [
                     _vm._v(
                       "\n                                CERTIFIED CORRECT:\n                            "
                     )
@@ -64313,8 +63950,10 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", { attrs: { colspan: "3" } }, [
-                  _c("div", { staticClass: "d-flex signatories" }, [
+                  _c("div", { staticClass: "d-flex signatories mb-4" }, [
                     _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }),
+                      _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),
                       _c(
@@ -64329,6 +63968,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(_vm.travel.fullname) +
+                            "\n                                    "
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c("hr"),
                       _vm._v(" "),
                       _c(
@@ -64341,6 +63988,28 @@ var render = function() {
                         ]
                       )
                     ])
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tfoot", [
+              _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("p", { staticClass: "fs-9 text-center" }, [
+                    _vm._v(
+                      "\n                                DSWD Central Office, IBP Road, Batasan\n                                Pambansa Complex, Constitution Hills, Quezon\n                                City, Philippines 1126\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "fs-9 text-center" }, [
+                    _vm._v("\n                                Website: "),
+                    _c("u", [_vm._v("http://wwww.dswd.gov.ph")]),
+                    _vm._v(
+                      " Tel\n                                Nos.: (632) 8 931-8191\n                            "
+                    )
                   ])
                 ])
               ])
