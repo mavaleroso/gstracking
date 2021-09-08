@@ -9608,158 +9608,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       date: null,
+      type: null,
       request: {
         purpose: [],
         destinations: [],
-        requested_by: null
+        requested_by: null,
+        passenger_count: 0
       },
       travel: {
+        trip_ticket: null,
         fullname: null,
         vehicle_name: null,
         vehicle_plate_no: null,
@@ -9769,13 +9630,14 @@ __webpack_require__.r(__webpack_exports__);
         distance_travelled: null
       },
       destinations: [],
-      vehiclemodes: []
+      vehiclemodes: [],
+      passengers: []
     };
   },
   computed: {
-    freeDestinations: function freeDestinations() {
-      var res = 5 - this.request.destinations.length;
-      return res;
+    freePax: function freePax() {
+      var pax = 15 - this.passengers.length;
+      return pax;
     }
   },
   created: function created() {
@@ -9820,7 +9682,9 @@ __webpack_require__.r(__webpack_exports__);
       document.addEventListener("contextmenu", function (e) {// e.preventDefault();
       });
       $(".btn-print").click(function () {
-        $("#page-1").printThis();
+        $("#page-1").printThis({
+          importCSS: true
+        });
       });
       var url = window.location.href;
       var data = this.$parseURLParams(url);
@@ -9832,13 +9696,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(BASE_URL + "/travel/printtripticket/" + id).then(function (res) {
         _this.date = res.data.date_now; // Travel Data
 
+        _this.type = res.data.type;
         _this.travel.fullname = res.data.travel.fullname;
         _this.travel.starting_odo = res.data.travel.starting_odo;
         _this.travel.ending_odo = res.data.travel.ending_odo;
         _this.travel.distance_travelled = res.data.travel.travelled;
         _this.travel.vehicle_name = res.data.travel.vehicle_name;
         _this.travel.vehicle_plate_no = res.data.travel.vehicle_plate_no;
-        _this.travel.vehicle_type = res.data.travel.mot; // Request Data
+        _this.travel.trip_ticket = res.data.travel.trip_ticket;
+        _this.travel.vehicle_type = res.data.travel.mot;
+        _this.request.passenger_count = res.data.request[0].passenger_count; // Request Data
 
         _this.request.requested_by = res.data.request[0].requested_by;
 
@@ -9849,6 +9716,21 @@ __webpack_require__.r(__webpack_exports__);
 
           if (_this.$searchInArray(res.data.request[i].place, _this.request.destinations) == false) {
             _this.request.destinations.push(res.data.request[i].place);
+          }
+        } // Passengers Data
+
+
+        for (var _i = 0; _i < res.data.passengers.length; _i++) {
+          if (res.data.type == "rito") {
+            _this.passengers.push({
+              name: res.data.passengers[_i].first_name + " " + res.data.passengers[_i].middle_name[0] + ". " + res.data.passengers[_i].last_name,
+              gender: res.data.passengers[_i].gender
+            });
+          } else {
+            _this.passengers.push({
+              name: res.data.passengers[_i].name,
+              gender: res.data.passengers[_i].gender
+            });
           }
         }
       });
@@ -63456,13 +63338,75 @@ var render = function() {
     [
       _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
         _c("div", { attrs: { id: "page-1" } }, [
-          _c("table", { staticClass: "w-100" }, [
+          _c("table", { staticClass: "w-100", attrs: { id: "tripTicket" } }, [
             _c("thead", [
               _c("tr", [
+                _c("td", { staticClass: "left-header" }, [
+                  _c("img", {
+                    staticClass: "print-logo d-block m-auto",
+                    attrs: {
+                      alt: "Print Logo",
+                      src: "assets/media/logos/dswd_logo_new.png"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
                 _c("td", [
-                  _c("p", { staticClass: "page-header-right" }, [
+                  _c("div", { staticClass: "header-title" }, [
+                    _c("p", { staticClass: "main" }, [
+                      _vm._v("ADMINISTRATIVE SERVICES")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "sub-main" }, [
+                      _vm._v(
+                        "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    SERVICES GROUP\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "sub" }, [
+                      _vm._v(
+                        "\n                                    DSWD-AS-GF-031 | REV 00/ 11 JAN 2021\n                                "
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "right-header" })
+              ]),
+              _vm._v(" "),
+              _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { attrs: { colspan: "2" } }, [
+                  _c("p", { staticClass: "font-weight-bold" }, [
+                    _vm._v("Form A")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("p", { staticClass: "fs-9 text-nowrap ctrl-no" }, [
+                      _vm._v(
+                        "\n                                    Control No.:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "underline text-center fs-9 ctrl-no" },
+                      [_vm._v(_vm._s(_vm.travel.trip_ticket))]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("p", { staticClass: "font-weight-bold" }, [
                     _vm._v(
-                      "\n                                DSWD-FO-Caraga-F-AD-GS-003\n                            "
+                      "\n                                TO BE FILLED-UP BY PERSON REQUESTING USE OF\n                                THE DEPARTMENT VEHICLE\n                            "
                     )
                   ])
                 ])
@@ -63470,41 +63414,249 @@ var render = function() {
               _vm._v(" "),
               _c("tr", [
                 _c("td", [
-                  _c("div", { staticClass: "page-header mt-2" }, [
-                    _c("img", {
-                      staticClass: "print-logo d-block m-auto",
-                      attrs: {
-                        alt: "Print Logo",
-                        src: "assets/media/logos/dswd_print_logo.png"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "header-text d-block m-auto text-center" },
-                      [
-                        _vm._v(
-                          "Field Office Caraga, Capitol Site,\n                                    Butuan City"
-                        )
-                      ]
+                  _c("p", { staticClass: "text-nowrap fs-12 my-2" }, [
+                    _vm._v(
+                      "\n                                DATE:\n                            "
                     )
                   ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
+                ]),
+                _vm._v(" "),
                 _c("td", [
                   _c(
-                    "h5",
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-5" },
+                    [_vm._v(_vm._s(_vm.$dateEng(_vm.date)))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("p", { staticClass: "text-nowrap fs-12" }, [
+                      _vm._v(
+                        "\n                                    PLATE NO.:\n                                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "underline text-center" }, [
+                      _vm._v(_vm._s(_vm.travel.vehicle_plate_no))
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("p", { staticClass: "text-nowrap fs-12  my-2" }, [
+                    _vm._v(
+                      "\n                                DRIVER'S NAME:\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-4" },
+                    [_vm._v(_vm._s(_vm.travel.fullname))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td")
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("p", { staticClass: "text-nowrap fs-12  my-2" }, [
+                    _vm._v(
+                      "\n                                AUTHORIZED PASSENGERS:\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "span",
+                    { staticClass: "underline d-flex w-75 ml-n13 pl-4" },
+                    [_vm._v(_vm._s(_vm.request.passenger_count))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td")
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [
+                  _c("p", { staticClass: "text-nowrap fs-12  my-2" }, [
+                    _vm._v(
+                      "\n                                DESTINATION:\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "span",
+                    { staticClass: "underline w-75 ml-n13 h-15 pl-4" },
+                    [_vm._v(_vm._s(_vm.request.destinations.toString()))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td")
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex signatories my-5" }, [
+                    _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                        MARLENE D. SINOC\n                                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center fs-12" }, [
+                        _vm._v(
+                          "\n                                        DISPATCHER\n                                    "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                        TERESA M. BIDAURE\n                                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center fs-12" }, [
+                        _vm._v(
+                          "\n                                        HEAD, GENERAL SERVICES SECTION\n                                    "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c(
+                    "table",
                     {
-                      staticClass:
-                        "text-center d-block mr-auto ml-auto mt-5 mb-10"
+                      staticClass: "fs-10 mt-2",
+                      attrs: { id: "tbl-passengers" }
                     },
                     [
-                      _vm._v(
-                        "\n                                VEHICLE TRIP TICKET\n                            "
+                      _c("thead", { staticClass: "text-center" }, [
+                        _c("tr", [
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v(
+                              "\n                                            NAME OF PASSENGER / SIGNATURE\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v("DATE")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v("GENDER")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v(
+                              "\n                                            PLACE OF DEPARTURE\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v("TIME")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v(
+                              "\n                                            PLACE OF ARRIVAL\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v("TIME")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { colspan: "2" } }, [
+                            _vm._v(
+                              "\n                                            ODOMETER READING\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { rowspan: "2" } }, [
+                            _vm._v("FUEL READING")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", [_vm._v("STARTING")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("ENDING")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        [
+                          _vm._l(_vm.passengers, function(p, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(p.name))]),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(p.gender))]),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td")
+                            ])
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.freePax, function(index) {
+                            return _c("tr", { key: index }, [
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td"),
+                              _vm._v(" "),
+                              _c("td")
+                            ])
+                          })
+                        ],
+                        2
                       )
                     ]
                   )
@@ -63512,701 +63664,352 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex w-25 ml-auto" }, [
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Date:")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "underline text-center" }, [
-                      _vm._v(_vm._s(_vm.$dateEng(_vm.date)))
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex mt-3" }, [
-                    _c("span", { staticClass: "box-letter" }, [_vm._v("A")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0" }, [
-                      _vm._v(
-                        "\n                                    To filled-up by the Requesting Party\n                                "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Name of Driver of Vehicle :\n                                "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "underline pl-8 font-weight-bold" },
-                      [_vm._v(_vm._s(_vm.travel.fullname))]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [
+                _c("td", { attrs: { colspan: "3" } }, [
                   _c(
-                    "div",
-                    { staticClass: "d-flex pl-8 mt-3" },
+                    "table",
+                    {
+                      staticClass: "w-90 my-5 mx-auto",
+                      attrs: { id: "tbl-liters" }
+                    },
                     [
-                      _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "m-0 text-nowrap" }, [
-                        _vm._v(
-                          "\n                                    Government Car to be used / Plate Number\n                                    :\n                                "
+                      _c("tr", [
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Gasoline Used:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "100" } }),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Gear oil put in:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._l(
-                        _vm.vehiclemodes.filter(function(i) {
-                          return i.id == _vm.travel.vehicle_type
-                        }),
-                        function(vm) {
-                          return _c(
-                            "span",
-                            {
-                              key: vm.id,
-                              staticClass: "underline pl-8 font-weight-bold"
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(_vm.travel.vehicle_name) +
-                                  " (" +
-                                  _vm._s(vm.name) +
-                                  ") " +
-                                  _vm._s(_vm.travel.vehicle_plate_no)
-                              )
-                            ]
-                          )
-                        }
-                      )
-                    ],
-                    2
+                      _c("tr", [
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Issued from stock:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "100" } }),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Motor oil put in:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Purchased outsied:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "100" } }),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        B. Fluid in:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Bal. in tank:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "100" } }),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "fs-10", attrs: { width: "120" } },
+                          [
+                            _vm._v(
+                              "\n                                        Greased used:\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { attrs: { width: "150" } }, [
+                          _c("p", {
+                            staticClass: "h-15 underline text-center fs-10"
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center fs-10",
+                            attrs: { width: "50" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                        ltrs.\n                                    "
+                            )
+                          ]
+                        )
+                      ])
+                    ]
                   )
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex m-auto w-50 my-4" }, [
+                    _c("p", { staticClass: "text-nowrap fs-12" }, [
                       _vm._v(
-                        "\n                                    Name of Authorized Passenger :\n                                "
+                        "\n                                    TOTAL DISTANCE TRAVELLED (KM):\n                                "
                       )
                     ]),
                     _vm._v(" "),
-                    _c("span", { staticClass: "underline" })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline" })
+                    _c("span", { staticClass: "underline text-center" })
                   ])
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex pl-8 mt-3" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Place to be visited (for Butuan City\n                                    proper, please indicate specific\n                                    location)\n                                "
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "pl-18 div-height mt-2" }, [
-                    _c("span", { staticClass: "underline font-weight-bold" }, [
-                      _vm._v(_vm._s(_vm.request.destinations.toString()) + ".")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "pl-8 mt-3" }, [
-                    _c("div", { staticClass: "d-flex" }, [
-                      _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "m-0 text-nowrap" }, [
-                        _vm._v("Purpose :")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "ml-9 underline font-weight-bold" },
-                      [_vm._v(_vm._s(_vm.request.purpose.toString()) + ".")]
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("p", { staticClass: "text-center fs-12 my-5" }, [
+                    _vm._v(
+                      "\n                                CERTIFIED CORRECT:\n                            "
                     )
                   ])
                 ])
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", [
-                  _c("div", { staticClass: "d-flex mt-10" }, [
-                    _c("div", { staticClass: "w-50" }, [
-                      _c("p", [_vm._v("Requested by:")]),
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("div", { staticClass: "d-flex signatories mb-4" }, [
+                    _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }),
                       _vm._v(" "),
-                      _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
-                        _c(
-                          "p",
-                          {
-                            staticClass:
-                              "underline mb-1 text-center font-weight-bold"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            " +
-                                _vm._s(_vm.request.requested_by) +
-                                "\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        { staticClass: "text-center fs-12 font-weight-bold" },
+                        [
                           _vm._v(
-                            "\n                                            Division / Project / Unit /\n                                            Section Head\n                                        "
+                            "\n                                        OFFICIAL\n                                    "
                           )
-                        ])
-                      ])
+                        ]
+                      )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-50" }, [
-                      _c("p", [_vm._v("Approved by:")]),
+                    _c("div", { staticClass: "sign" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(_vm.travel.fullname) +
+                            "\n                                    "
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "ml-15 w-75 mt-8" }, [
-                        _c(
-                          "p",
-                          {
-                            staticClass:
-                              "underline mb-1 text-center font-weight-bold"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            TERESA M. BIDAURE, AO-III\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        { staticClass: "text-center fs-12 font-weight-bold" },
+                        [
                           _vm._v(
-                            "\n                                            Head General Services\n                                        "
+                            "\n                                        DRIVER\n                                    "
                           )
-                        ])
-                      ])
+                        ]
+                      )
                     ])
                   ])
                 ])
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "w-100" }, [
-            _c("tbody", [
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex mt-3" }, [
-                    _c("span", { staticClass: "box-letter" }, [_vm._v("B")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0" }, [
-                      _vm._v(
-                        "\n                                    To filled-up by the Driver\n                                "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
+            ]),
+            _vm._v(" "),
+            _c("tfoot", [
+              _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
               _vm._v(" "),
               _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Time of Departure from Station / Office\n                                    :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("AM / PM")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Time of Arrival per # 4 above :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("AM / PM")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("3")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Time of Departure per # 4 above :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("AM / PM")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Time of Arrival at the Station / Office\n                                    :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("AM / PM")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("p", { staticClass: "m-0" }, [
-                      _vm._v("Petroleum Oil Lubricant")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("5")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Fuel issued, purchased and used\n                                "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("a")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Balance in Tank :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("b")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Issued on Office from Stock :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17 " }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("c")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Additional purchase during trip :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("d")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Total :")
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17 " }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("e")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Used during trip (to and from) :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25 "
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-17 " }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("f")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Balance in tank at the end trip :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25 "
-                    }),
-                    _c("span", { staticClass: "line-height-25 mt-n2" }, [
-                      _vm._v("Liters")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8 " }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("6")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Motor Oil used :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "w-50" }, [
-                  _c("div", { staticClass: "d-flex pl-8" }, [
-                    _c("span", { staticClass: "box-number" }, [_vm._v("7")]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Break Fluid used :\n                                "
-                      )
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "d-flex text-nowrap" }, [
-                    _c("span", {
-                      staticClass: "underline div-height line-height-25"
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex mt-3" }, [
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    Odometer Reading\n                                "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("table", { staticClass: "w-100 odometer" }, [
-                    _c(
-                      "tbody",
-                      [
-                        _c("tr", [
-                          _c("td", [_vm._v("Destination")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Reading (Start)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Reading (Arrival)")]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v("Distance travelled (km)")]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                            Signature\n                                            "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "(Passenger/Driver)\n                                        "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.request.destinations, function(d, index) {
-                          return _c("tr", { key: index }, [
-                            _c("td", { staticClass: "row-height" }, [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(d) +
-                                  "\n                                        "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }, [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(_vm.travel.starting_odo) +
-                                  "\n                                        "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }, [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(_vm.travel.ending_odo) +
-                                  "\n                                        "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }, [
-                              _vm._v(
-                                "\n                                            " +
-                                  _vm._s(
-                                    _vm.travel.distance_travelled
-                                      ? _vm.travel.distance_travelled
-                                      : ""
-                                  ) +
-                                  "\n                                        "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" })
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _vm._l(_vm.freeDestinations, function(index) {
-                          return _c("tr", { key: index }, [
-                            _c("td", { staticClass: "row-height" }),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" }),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "row-height" })
-                          ])
-                        })
-                      ],
-                      2
+                _c("td", { attrs: { colspan: "3" } }, [
+                  _c("p", { staticClass: "fs-9 text-center" }, [
+                    _vm._v(
+                      "\n                                DSWD Central Office, IBP Road, Batasan\n                                Pambansa Complex, Constitution Hills, Quezon\n                                City, Philippines 1126\n                            "
                     )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex mt-3" }, [
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v("Remarks :")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "underline" })
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex pl-18 div-height" }, [
-                    _c("span", { staticClass: "underline" })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("div", { staticClass: "d-flex mt-3" }, [
-                    _c("p", { staticClass: "m-0 text-nowrap" }, [
-                      _vm._v(
-                        "\n                                    I hereby certify to the correction of\n                                    the above statement / record travel\n                                "
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td"),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "mt-5 w-75 ml-auto" }, [
-                    _c(
-                      "p",
-                      {
-                        staticClass:
-                          "underline mb-1 text-center font-weight-bold text-uppercase"
-                      },
-                      [
-                        _vm._v(
-                          "\n                                    " +
-                            _vm._s(_vm.travel.fullname) +
-                            "\n                                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-center" }, [_vm._v("Driver")])
+                  _c("p", { staticClass: "fs-9 text-center" }, [
+                    _vm._v("\n                                Website: "),
+                    _c("u", [_vm._v("http://wwww.dswd.gov.ph")]),
+                    _vm._v(
+                      " Tel\n                                Nos.: (632) 8 931-8191\n                            "
+                    )
                   ])
                 ])
               ])

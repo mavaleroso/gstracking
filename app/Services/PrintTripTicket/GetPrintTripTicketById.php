@@ -21,10 +21,34 @@ class GetPrintTripTicketById
      */
     public function execute(int $id)
     {
-        $data['travel'] = TransactionVehicles::select(['drivers.fullname', 'vehicles.name as vehicle_name', 'vehicles.plate_no as vehicle_plate_no', 'request_transactions.mot', 'transaction_vehicles.starting_odo', 'transaction_vehicles.ending_odo', 'transaction_vehicles.travelled'])
-            ->leftJoin('request_transactions', 'transaction_vehicles.id', '=', 'request_transactions.transaction_vehicles_id')
-            ->leftJoin('vehicles', 'vehicles.id', '=', 'transaction_vehicles.vehicle_id')
-            ->leftJoin('drivers', 'drivers.id', '=', 'transaction_vehicles.driver_id')
+        $data['travel'] = TransactionVehicles::select([
+            'drivers.fullname',
+            'vehicles.name as vehicle_name',
+            'vehicles.plate_no as vehicle_plate_no',
+            'request_transactions.mot',
+            'transaction_vehicles.starting_odo',
+            'transaction_vehicles.ending_odo',
+            'transaction_vehicles.travelled',
+            'transaction_vehicles.trip_ticket'
+        ])
+            ->leftJoin(
+                'request_transactions',
+                'transaction_vehicles.id',
+                '=',
+                'request_transactions.transaction_vehicles_id'
+            )
+            ->leftJoin(
+                'vehicles',
+                'vehicles.id',
+                '=',
+                'transaction_vehicles.vehicle_id'
+            )
+            ->leftJoin(
+                'drivers',
+                'drivers.id',
+                '=',
+                'transaction_vehicles.driver_id'
+            )
             ->where('transaction_vehicles.id', $id)
             ->first();
 
@@ -33,7 +57,9 @@ class GetPrintTripTicketById
             ->get();
 
         for ($i = 0; $i < count($req); $i++) {
+            $data['type'] = $req[$i]->type;
             $data['request'] = $req[$i]->type == 'rito' ? $this->rito($req[$i]->req_id) : $this->local($req[$i]->req_id);
+            $data['passengers'] = $req[$i]->type == 'rito' ? $this->rito_passengers($req[$i]->req_id) : $this->local_passengers($req[$i]->req_id);
         }
         $data['date_now'] = System::select([DB::raw('now() as dn')])->first()->dn;
 
@@ -111,5 +137,53 @@ class GetPrintTripTicketById
     {
         $user = UserDetail::where('user_id', $id)->first();
         return $user->first_name . ' ' . $user->last_name;
+    }
+
+    public function rito_passengers($id)
+    {
+        $passengers = [];
+        $req = explode(',', $id);
+
+        $portal_token = System::where('handler', 'PORTAL_TOKEN')->pluck('value')->first();
+
+        for ($i = 0; $i < count($req); $i++) {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details/people/?travel_id=' . $req[$i],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: ' . $portal_token,
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            if (header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404)) {
+                $passengers[] = 'Error 404';
+            } else {
+                try {
+                    $passengers[] = json_decode($response)[0];
+                } catch (\Throwable $th) {
+                    $passengers[] = json_decode($response);
+                }
+            }
+        }
+
+        return $passengers;
+    }
+
+    public function local_passengers($id)
+    {
+        return Passenger::where('request_id', $id)->where('type', 1)->get();
     }
 }
