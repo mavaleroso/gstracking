@@ -5938,6 +5938,134 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -6100,8 +6228,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             sortable: false,
             render: function render(data) {
               return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
-                                            <i class="flaticon2-document"></i> Details\
-                                        </button>';
+                                            <i class="flaticon2-document"></i> \
+                                        </button>' + '<a href="print_request?id=' + data + '" target="_blank"><button class="btn btn-sm btn-clean btn-details" title="View records">\
+                                            <i class="flaticon2-printer"></i> \
+                                        </button></a>';
             }
           }],
           drawCallback: function drawCallback() {
@@ -7460,6 +7590,318 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -7478,9 +7920,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       loading: true,
       searchData: null,
       modal: {
-        passengers_id: 'modal-passengers',
-        approved_id: 'modal-approved',
-        size: 'modal-lg'
+        passengers_id: "modal-passengers",
+        approved_id: "modal-approved",
+        size: "modal-lg"
       },
       current_to: null,
       selected: [],
@@ -7497,9 +7939,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         status: false,
         total: 1
       },
-      puvNames: ['remarks'],
-      rpNames: ['vehicle_1', 'driver_1'],
-      hiredNames: ['travel_po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'],
+      puvNames: ["remarks"],
+      rpNames: ["vehicle_1", "driver_1"],
+      hiredNames: ["travel_po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"],
       requesttrans: []
     };
   },
@@ -7550,17 +7992,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 _this.loading = true;
                 _this.rito = [];
                 _context.next = 4;
-                return axios.get(BASE_URL + '/travel/ritorequest?pages=' + _this.pages.currentPage).then(function (res) {
+                return axios.get(BASE_URL + "/travel/ritorequest?pages=" + _this.pages.currentPage).then(function (res) {
                   _this.rito = res.data.data;
                   _this.total = res.data.count;
                   _this.pages.totalPages = Math.ceil(res.data.count / 10);
                   _this.loading = false;
                   $(function () {
-                    $('input.checkable:checkbox').change(function () {
+                    $("input.checkable:checkbox").change(function () {
                       if ($(this).is(":checked")) {
-                        $(this).closest('tr').addClass('bg-gray');
+                        $(this).closest("tr").addClass("bg-gray");
                       } else {
-                        $(this).closest('tr').removeClass('bg-gray');
+                        $(this).closest("tr").removeClass("bg-gray");
                       }
                     });
                   });
@@ -7579,15 +8021,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     pageSet: function pageSet(type) {
       var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      $('input.checkable:checkbox:checked').click();
-      $('input.checkable:checkbox').closest('tr').removeClass('bg-gray');
+      $("input.checkable:checkbox:checked").click();
+      $("input.checkable:checkbox").closest("tr").removeClass("bg-gray");
 
-      if (type == 'jump') {
+      if (type == "jump") {
         this.pages.prevPage = page - 1;
         this.pages.currentPage = page;
         this.pages.nextPage = page + 1;
-      } else if (type == 'next' || type == 'prev') {
-        type == 'next' ? this.pages.currentPage++ : this.pages.currentPage--;
+      } else if (type == "next" || type == "prev") {
+        type == "next" ? this.pages.currentPage++ : this.pages.currentPage--;
         this.pages.prevPage = this.pages.currentPage - 1;
         this.pages.nextPage = this.pages.currentPage + 1;
       }
@@ -7600,7 +8042,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
         _this2.passengers = res.data;
         _this2.current_to = TO;
-        $('#modal-passengers').modal('show');
+        $("#modal-passengers").modal("show");
       });
     },
     assignVehicle: function assignVehicle() {
@@ -7609,44 +8051,43 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       vm.selected = [];
       vm.passengers_count = 0;
       var count = 0;
-      $('input.checkable:checkbox:checked').each(function () {
+      $("input.checkable:checkbox:checked").each(function () {
         arr.push($(this).val());
         vm.selected.push($(this).val());
-        var pasColumn = $('input.checkable:checkbox:checked')[count].closest('tr').children[8];
-        ;
+        var pasColumn = $("input.checkable:checkbox:checked")[count].closest("tr").children[8];
         vm.passengers_count += parseInt(pasColumn.textContent);
         count++;
       });
 
       if (arr.length > 0) {
-        $('#modal-approved').modal('show');
-        $('.radio-vehicle').change(function () {
+        $("#modal-approved").modal("show");
+        $(".radio-vehicle").change(function () {
           vm.rp.total = vm.hired.total = 1;
 
           if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
-            $('#vehicle-select-1').select2({
+            $("#vehicle-select-1").select2({
               placeholder: "Select a vehicle"
             });
-            $('#driver-select-1').select2({
+            $("#driver-select-1").select2({
               placeholder: "Select a driver"
             });
           } else {
-            vm.rpNames = ['vehicle_1', 'driver_1'];
+            vm.rpNames = ["vehicle_1", "driver_1"];
           }
 
           if (vm.vehicle_type == 4) {
-            $('#travel_po-select').select2({
+            $("#travel_po-select").select2({
               placeholder: "Select a Travel PO"
             });
-            $('.select-remove').siblings('.select2').remove();
-            $('.select-remove').siblings('.select2').remove();
+            $(".select-remove").siblings(".select2").remove();
+            $(".select-remove").siblings(".select2").remove();
           } else {
-            vm.hiredNames = ['po', 'vehicle_name_1', 'vehicle_plate_1', 'driver_name_1', 'driver_contact_1'];
+            vm.hiredNames = ["po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"];
           }
         });
-        $('.radio-vehicle').on('change', function () {
-          $('.invalid-feedback').remove();
-          $('.invalid').removeClass('is-invalid');
+        $(".radio-vehicle").on("change", function () {
+          $(".invalid-feedback").remove();
+          $(".invalid").removeClass("is-invalid");
         });
       }
     },
@@ -7676,10 +8117,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     incrementHiredlVehicle: function incrementHiredlVehicle(event) {
       event.preventDefault();
       var count = this.hired.total += 1;
-      this.hiredNames.push('vehicle_name_' + count);
-      this.hiredNames.push('vehicle_plate_' + count);
-      this.hiredNames.push('driver_name_' + count);
-      this.hiredNames.push('driver_contact_' + count);
+      this.hiredNames.push("vehicle_name_" + count);
+      this.hiredNames.push("vehicle_plate_" + count);
+      this.hiredNames.push("driver_name_" + count);
+      this.hiredNames.push("driver_contact_" + count);
     },
     decrementHiredVehicle: function decrementHiredVehicle(event) {
       event.preventDefault();
@@ -7695,37 +8136,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getPos: function getPos() {
       var _this3 = this;
 
-      axios.get(BASE_URL + '/api/v1/po').then(function (response) {
+      axios.get(BASE_URL + "/api/v1/po").then(function (response) {
         _this3.pos = response.data;
       });
     },
     getVehicles: function getVehicles() {
       var _this4 = this;
 
-      axios.get(BASE_URL + '/api/v1/vehicle').then(function (response) {
+      axios.get(BASE_URL + "/api/v1/vehicle").then(function (response) {
         _this4.vehicles = response.data;
       });
     },
     getDrivers: function getDrivers() {
       var _this5 = this;
 
-      axios.get(BASE_URL + '/api/v1/driver').then(function (response) {
+      axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
         _this5.drivers = response.data;
       });
     },
     approved: function approved() {
       var _this6 = this;
 
-      var ritoData = $('#rito-form').serialize();
-      axios.post(BASE_URL + '/travel/ritorequest', ritoData).then(function (response) {
-        $('.invalid-feedback').remove();
-        $('.invalid').removeClass('is-invalid');
+      var ritoData = $("#rito-form").serialize();
+      axios.post(BASE_URL + "/travel/ritorequest", ritoData).then(function (response) {
+        $(".invalid-feedback").remove();
+        $(".invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this6.$showToast(response.data.message, 'success');
+        _this6.$showToast(response.data.message, "success");
 
-        $('#modal-approved').modal('toggle');
-        $('input.checkable:checkbox:checked').click();
+        $("#modal-approved").modal("toggle");
+        $("input.checkable:checkbox:checked").click();
 
         _this6.getRITO();
 
@@ -7743,63 +8184,61 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           keys.push("".concat(key));
           values.push("".concat(value));
 
-          var _keys = "".concat(key).replace(/[0-9]/g, '');
+          var _keys = "".concat(key).replace(/[0-9]/g, "");
 
-          if ("".concat(key) == 'travel_po') {
-            if ($('#' + "".concat(key) + '-select').next().next().length == 0) {
-              $('#' + "".concat(key) + '-select').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+          if ("".concat(key) == "travel_po") {
+            if ($("#" + "".concat(key) + "-select").next().next().length == 0) {
+              $("#" + "".concat(key) + "-select").next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
             }
-          } else if (_keys == 'driver_name_' || _keys == 'driver_contact_' || _keys == 'vehicle_name_' || _keys == 'vehicle_plate_' || "".concat(key) == 'remarks') {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr('class').search('invalid-feedback') == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass('is-invalid');
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + '</div>');
+          } else if (_keys == "driver_name_" || _keys == "driver_contact_" || _keys == "vehicle_name_" || _keys == "vehicle_plate_" || "".concat(key) == "remarks") {
+            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+              $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
+              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
             }
           } else {
             if ($('[name="' + "".concat(key) + '"]').next().next().length == 0) {
-              $('[name="' + "".concat(key) + '"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + '</div>');
+              $('[name="' + "".concat(key) + '"]').next().after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
             }
           }
         }
 
-        ;
-
         for (var i = 0; i < _this6.hiredNames.length; i++) {
-          if (_this6.hiredNames[i] == 'travel_po') {
-            if (keys.indexOf('' + _this6.hiredNames[i] + '') == -1) {
-              if ($('#' + _this6.hiredNames[i] + '-select').next().next().length != 0) {
-                $('#' + _this6.hiredNames[i] + '-select').next().next('.invalid-feedback').remove();
+          if (_this6.hiredNames[i] == "travel_po") {
+            if (keys.indexOf("" + _this6.hiredNames[i] + "") == -1) {
+              if ($("#" + _this6.hiredNames[i] + "-select").next().next().length != 0) {
+                $("#" + _this6.hiredNames[i] + "-select").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf('' + _this6.hiredNames[i] + '') == -1) {
-              $('[name="' + _this6.hiredNames[i] + '"]').removeClass('is-invalid');
-              $('[name="' + _this6.hiredNames[i] + '"]').next('.invalid-feedback').remove();
+            if (keys.indexOf("" + _this6.hiredNames[i] + "") == -1) {
+              $('[name="' + _this6.hiredNames[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this6.hiredNames[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
         for (var _i2 = 0; _i2 < _this6.rpNames.length; _i2++) {
-          if (keys.indexOf('' + _this6.rpNames[_i2] + '') == -1) {
+          if (keys.indexOf("" + _this6.rpNames[_i2] + "") == -1) {
             if ($('[name="' + _this6.rpNames[_i2] + '"]').next().next().length != 0) {
-              $('[name="' + _this6.rpNames[_i2] + '"]').next().next('.invalid-feedback').remove();
+              $('[name="' + _this6.rpNames[_i2] + '"]').next().next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this6.$showToast(values.toString().replace(/,/g, '</br>'), 'error');
+        _this6.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     getVehicleModes: function getVehicleModes() {
       var _this7 = this;
 
-      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
         _this7.vehiclemodes = res.data.results;
       });
     },
     getRequestTrans: function getRequestTrans() {
       var _this8 = this;
 
-      axios.get(BASE_URL + '/api/v1/requesttrans').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/requesttrans").then(function (res) {
         _this8.requesttrans = res.data;
       });
     }
@@ -9054,6 +9493,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9125,8 +9589,8 @@ __webpack_require__.r(__webpack_exports__);
         $("#page-1").printThis();
       });
       var url = window.location.href;
-      var data = this.$parseURLParams(url);
-      this.getData(data.id[0]); // document.getElementById("footer").style.pageBreakBefore = "always";
+      var data = this.$parseURLParams(url); // this.getData(data.id[0]);
+      // document.getElementById("footer").style.pageBreakBefore = "always";
       // $('#footer').css('page-break-before', 'always');
     },
     getData: function getData(id) {
@@ -11844,6 +12308,185 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -11897,7 +12540,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       this.loading = true;
-      axios.get(BASE_URL + '/tracking/travelsstatus?pages=' + this.pages.currentPage).then(function (res) {
+      axios.get(BASE_URL + "/tracking/travelsstatus?pages=" + this.pages.currentPage).then(function (res) {
         _this.travels = res.data.data ? res.data.data : null;
         _this.total = res.data.count;
         _this.pages.totalPages = Math.ceil(res.data.count / 10);
@@ -11907,12 +12550,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     pageSet: function pageSet(type) {
       var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-      if (type == 'jump') {
+      if (type == "jump") {
         this.pages.prevPage = page - 1;
         this.pages.currentPage = page;
         this.pages.nextPage = page + 1;
-      } else if (type == 'next' || type == 'prev') {
-        type == 'next' ? this.pages.currentPage++ : this.pages.currentPage--;
+      } else if (type == "next" || type == "prev") {
+        type == "next" ? this.pages.currentPage++ : this.pages.currentPage--;
         this.pages.prevPage = this.pages.currentPage - 1;
         this.pages.nextPage = this.pages.currentPage + 1;
       }
@@ -11922,7 +12565,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getVehicleModes: function getVehicleModes() {
       var _this2 = this;
 
-      axios.get(BASE_URL + '/api/v1/vehiclemode').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
         _this2.vehiclemodes = res.data.results;
       });
     }
@@ -58285,7 +58928,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Requestor Details:\n          "
+                              "\n                        Requestor Details:\n                    "
                             )
                           ]
                         ),
@@ -58567,7 +59210,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                  Passenger Details:\n                "
+                                    "\n                                    Passenger Details:\n                                "
                                   )
                                 ]
                               ),
@@ -58620,18 +59263,9 @@ var render = function() {
                                         staticClass: "text-center",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("#")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "th",
-                                      {
-                                        staticClass: "text-center",
-                                        attrs: { scope: "col" }
-                                      },
                                       [
                                         _vm._v(
-                                          "\n                      Name of Passenger/s\n                    "
+                                          "\n                                            #\n                                        "
                                         )
                                       ]
                                     ),
@@ -58644,7 +59278,20 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                      Position/Designation\n                    "
+                                          "\n                                            Name of Passenger/s\n                                        "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "th",
+                                      {
+                                        staticClass: "text-center",
+                                        attrs: { scope: "col" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                            Position/Designation\n                                        "
                                         )
                                       ]
                                     ),
@@ -58655,7 +59302,11 @@ var render = function() {
                                         staticClass: "text-center w-15",
                                         attrs: { scope: "col" }
                                       },
-                                      [_vm._v("Sex")]
+                                      [
+                                        _vm._v(
+                                          "\n                                            Sex\n                                        "
+                                        )
+                                      ]
                                     )
                                   ])
                                 ]),
@@ -58672,9 +59323,9 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                      " +
+                                            "\n                                            " +
                                               _vm._s(_vm.paxIndex(index)) +
-                                              "\n                    "
+                                              "\n                                        "
                                           )
                                         ]
                                       ),
@@ -58721,19 +59372,19 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                          " +
+                                                      "\n                                                    " +
                                                         _vm._s(
                                                           result.first_name
                                                         ) +
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.middle_name
                                                         ) +
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                         _vm._s(
                                                           result.last_name
                                                         ) +
-                                                        "\n                        "
+                                                        "\n                                                "
                                                     )
                                                   ]
                                                 )
@@ -58800,7 +59451,7 @@ var render = function() {
                             "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("\n        Close\n      ")]
+                        [_vm._v("\n                Close\n            ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -58815,7 +59466,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("\n        Save\n      ")]
+                        [_vm._v("\n                Save\n            ")]
                       )
                     ]
                   },
@@ -58842,7 +59493,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n            Administrative Fill-in:\n          "
+                              "\n                        Administrative Fill-in:\n                    "
                             )
                           ]
                         ),
@@ -58920,9 +59571,9 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(
-                                        "\n                    " +
+                                        "\n                                        " +
                                           _vm._s(v.name) +
-                                          "\n                    "
+                                          "\n                                        "
                                       ),
                                       _c("span")
                                     ]
@@ -58966,9 +59617,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                    " +
+                                                "\n                                        " +
                                                   _vm._s(po.po_no) +
-                                                  " - ₱\n                    " +
+                                                  " - ₱\n                                        " +
                                                   _vm._s(
                                                     po.totalBalance
                                                       ? _vm.$toParseNum(
@@ -58978,7 +59629,7 @@ var render = function() {
                                                           po.po_amount
                                                         )
                                                   ) +
-                                                  "\n                  "
+                                                  "\n                                    "
                                               )
                                             ]
                                           )
@@ -59114,7 +59765,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59123,7 +59778,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59132,7 +59791,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -59151,9 +59814,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                      " +
+                                                "\n                                            " +
                                                   _vm._s(index) +
-                                                  "\n                    "
+                                                  "\n                                        "
                                               )
                                             ]
                                           ),
@@ -59187,13 +59850,13 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(vehicle.name) +
-                                                          " -\n                          " +
+                                                          " -\n                                                    " +
                                                           _vm._s(
                                                             vehicle.plate_no
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -59232,11 +59895,11 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                          " +
+                                                        "\n                                                    " +
                                                           _vm._s(
                                                             driver.fullname
                                                           ) +
-                                                          "\n                        "
+                                                          "\n                                                "
                                                       )
                                                     ]
                                                   )
@@ -59344,7 +60007,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("#")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59353,7 +60020,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Plate #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Plate #\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59362,7 +60033,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Vehicle Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Vehicle Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59371,7 +60046,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Driver Name")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Driver Name\n                                        "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -59380,7 +60059,11 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "col" }
                                           },
-                                          [_vm._v("Contact #")]
+                                          [
+                                            _vm._v(
+                                              "\n                                            Contact #\n                                        "
+                                            )
+                                          ]
                                         )
                                       ])
                                     ]),
@@ -59399,9 +60082,9 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                      " +
+                                                "\n                                            " +
                                                   _vm._s(index) +
-                                                  "\n                    "
+                                                  "\n                                        "
                                               )
                                             ]
                                           ),
@@ -59484,7 +60167,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declined }
                     },
-                    [_vm._v("\n        Decline\n      ")]
+                    [_vm._v("\n                Decline\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -59494,7 +60177,7 @@ var render = function() {
                         "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n        Close\n      ")]
+                    [_vm._v("\n                Close\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -59505,7 +60188,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.approved }
                     },
-                    [_vm._v("\n        Approved\n      ")]
+                    [_vm._v("\n                Approved\n            ")]
                   )
                 ]
               },
@@ -59576,7 +60259,11 @@ var render = function() {
                       staticClass: "btn btn-light-primary font-weight-bold",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("\n            Close\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Close\n                    "
+                      )
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
@@ -59586,7 +60273,11 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.declinedRequest }
                     },
-                    [_vm._v("\n            Save changes\n          ")]
+                    [
+                      _vm._v(
+                        "\n                        Save changes\n                    "
+                      )
+                    ]
                   )
                 ])
               ])
@@ -59657,7 +60348,7 @@ var staticRenderFns = [
         "h3",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
         [
-          _vm._v("\n            Remarks "),
+          _vm._v("\n                        Remarks "),
           _c("small", {}, [_vm._v("Declined request")])
         ]
       ),
@@ -60284,7 +60975,7 @@ var render = function() {
                         ]
                       )
                     ]),
-                    _vm._v("Assign Vehicle")
+                    _vm._v("Assign Vehicle\n                ")
                   ]
                 )
               ])
@@ -60395,11 +61086,30 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v(_vm._s(r.passenger_count))]
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(r.passenger_count) +
+                                  "\n                            "
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.requested_by))])
+                        _c("td", [_vm._v(_vm._s(r.requested_by))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: "print_request?id=" + r.id,
+                                target: "_blank"
+                              }
+                            },
+                            [_vm._m(2, true)]
+                          )
+                        ])
                       ])
                     }),
                     0
@@ -60529,7 +61239,7 @@ var render = function() {
                     _vm._v(
                       "Displaying " +
                         _vm._s(_vm.rito.length) +
-                        " of " +
+                        " of\n                        " +
                         _vm._s(_vm.total) +
                         " records"
                     )
@@ -60604,11 +61314,13 @@ var render = function() {
                       return _c("tr", { key: index }, [
                         _c("td", [
                           _vm._v(
-                            _vm._s(p.first_name) +
+                            "\n                            " +
+                              _vm._s(p.first_name) +
                               " " +
                               _vm._s(p.middle_name[0]) +
-                              " " +
-                              _vm._s(p.last_name)
+                              "\n                            " +
+                              _vm._s(p.last_name) +
+                              "\n                        "
                           )
                         ]),
                         _vm._v(" "),
@@ -60740,7 +61452,9 @@ var render = function() {
                                 "btn font-weight-bold btn-primary mr-2"
                             },
                             [
-                              _vm._v("Request "),
+                              _vm._v(
+                                "\n                            Request\n                            "
+                              ),
                               _c(
                                 "span",
                                 {
@@ -60758,7 +61472,9 @@ var render = function() {
                                 "btn font-weight-bold btn-primary mr-2"
                             },
                             [
-                              _vm._v("Passengers "),
+                              _vm._v(
+                                "\n                            Passengers\n                            "
+                              ),
                               _c(
                                 "span",
                                 {
@@ -60810,7 +61526,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(
-                                      " " +
+                                      "\n                                    " +
                                         _vm._s(v.name) +
                                         "\n                                    "
                                     ),
@@ -60855,7 +61571,7 @@ var render = function() {
                                           [
                                             _vm._v(
                                               _vm._s(po.po_no) +
-                                                " - ₱ " +
+                                                " - ₱\n                                    " +
                                                 _vm._s(
                                                   po.totalBalance
                                                     ? _vm.$toParseNum(
@@ -60971,7 +61687,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("#")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        #\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -60980,7 +61700,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Vehicle Name")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Vehicle Name\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -60989,7 +61713,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Driver")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Driver\n                                    "
+                                          )
+                                        ]
                                       )
                                     ])
                                   ]),
@@ -61004,7 +61732,13 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "row" }
                                           },
-                                          [_vm._v(_vm._s(index))]
+                                          [
+                                            _vm._v(
+                                              "\n                                        " +
+                                                _vm._s(index) +
+                                                "\n                                    "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c("td", [
@@ -61037,7 +61771,7 @@ var render = function() {
                                                   [
                                                     _vm._v(
                                                       _vm._s(vehicle.name) +
-                                                        " - " +
+                                                        " -\n                                                " +
                                                         _vm._s(vehicle.plate_no)
                                                     )
                                                   ]
@@ -61156,7 +61890,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("#")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        #\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -61165,7 +61903,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Plate #")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Plate #\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -61174,7 +61916,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Vehicle Name")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Vehicle Name\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -61183,7 +61929,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Driver Name")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Driver Name\n                                    "
+                                          )
+                                        ]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -61192,7 +61942,11 @@ var render = function() {
                                           staticClass: "text-center",
                                           attrs: { scope: "col" }
                                         },
-                                        [_vm._v("Contact #")]
+                                        [
+                                          _vm._v(
+                                            "\n                                        Contact #\n                                    "
+                                          )
+                                        ]
                                       )
                                     ])
                                   ]),
@@ -61207,7 +61961,13 @@ var render = function() {
                                             staticClass: "text-center",
                                             attrs: { scope: "row" }
                                           },
-                                          [_vm._v(_vm._s(index))]
+                                          [
+                                            _vm._v(
+                                              "\n                                        " +
+                                                _vm._s(index) +
+                                                "\n                                    "
+                                            )
+                                          ]
                                         ),
                                         _vm._v(" "),
                                         _c("td", [
@@ -61286,7 +62046,7 @@ var render = function() {
                             "btn btn-sm btn-light-primary font-weight-bold text-uppercase",
                           attrs: { type: "button", "data-dismiss": "modal" }
                         },
-                        [_vm._v("Close")]
+                        [_vm._v("\n                Close\n            ")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -61297,7 +62057,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: { click: _vm.approved }
                         },
-                        [_vm._v("Approved")]
+                        [_vm._v("\n                Approved\n            ")]
                       )
                     ]
                   },
@@ -61348,9 +62108,24 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Passengers")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Requested By")])
+        _c("th", [_vm._v("Requested By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-sm btn-clean btn-details",
+        attrs: { title: "View records" }
+      },
+      [_c("i", { staticClass: "flaticon2-printer" })]
+    )
   }
 ]
 render._withStripped = true
@@ -62616,688 +63391,576 @@ var render = function() {
     [
       _c("page", { staticClass: "paper-page", attrs: { size: "A4" } }, [
         _c("div", { attrs: { id: "page-1" } }, [
-          _c("table", { staticClass: "w-100" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
-                  _c("div", { staticClass: "page-header mt-2" }, [
+          _c(
+            "table",
+            { staticClass: "w-100", attrs: { id: "vehicle-request" } },
+            [
+              _c("thead", [
+                _c("tr", [
+                  _c("td", { staticClass: "left-header" }, [
                     _c("img", {
                       staticClass: "print-logo d-block m-auto",
                       attrs: {
                         alt: "Print Logo",
-                        src: "assets/media/logos/dswd_print_logo.png"
+                        src: "assets/media/logos/dswd_logo_new.png"
                       }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "span",
-                      { staticClass: "header-text d-block m-auto text-center" },
-                      [_vm._v("Field Office"), _c("br"), _vm._v("Butuan City")]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
-                  _vm.transaction.mot == 1
-                    ? _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "text-center d-block mr-auto ml-auto mt-5"
-                        },
-                        [
-                          _vm._v(
-                            "\n                                Motor Vehicle Declined Request\n                            "
-                          )
-                        ]
-                      )
-                    : _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "text-center d-block mr-auto ml-auto mt-5"
-                        },
-                        [
-                          _vm._v(
-                            "\n                                Motor Vehicle Request\n                            "
-                          )
-                        ]
-                      )
-                ])
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("div", { staticClass: "header-title" }, [
+                      _c("p", { staticClass: "main" }, [
+                        _vm._v("ADMINISTRATIVE SERVICES")
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "sub-main" }, [
+                        _vm._v(
+                          "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    SERVICES GROUP\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "sub" }, [
+                        _vm._v(
+                          "\n                                    DSWD-AS-GF-027 | REV 00/ 04 JAN 2021\n                                "
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "right-header" })
+                ]),
+                _vm._v(" "),
+                _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])])
               ]),
               _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("p", { staticClass: "text-left my-10" }, [
-                    _vm._v(
-                      "\n                                Date:\n                                "
-                    ),
-                    _c("span", { staticClass: " text-underline" }, [
-                      _vm._v(_vm._s(_vm.date))
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("h5", { staticClass: "text-center" }, [
+                      _vm._v(
+                        "\n                                REQUEST FOR USE OF VEHICLE\n                            "
+                      )
                     ])
                   ])
                 ]),
                 _vm._v(" "),
-                _c("td", { attrs: { colspan: "1" } }, [
-                  _c("p", { staticClass: "text-right my-10" }, [
-                    _vm._v(
-                      "\n                                Series:\n                                "
-                    ),
-                    _c("span", { staticClass: " text-underline" }, [
-                      _vm._v(_vm._s(_vm.transaction.serial_code))
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", [
+                      _c("strong", [_vm._v("Note:")]),
+                      _vm._v(
+                        " Request for use of\n                                vehicle shall be made at least two (2) days\n                                from the intended date of use. Failure to\n                                use the vehicle at the given date/time\n                                forfeits one's right to use the vehicle\n                                assigned.\n                            "
+                      )
                     ])
                   ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [
-                  _c("p", {}, [_vm._v("Program / Division / Section:")])
                 ]),
                 _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.department,
-                        expression: "transaction.department"
-                      }
-                    ],
-                    staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.department },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "department",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_c("p", {}, [_vm._v("Purpose of travel:")])]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.purpose,
-                        expression: "transaction.purpose"
-                      }
-                    ],
-                    staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.purpose },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "purpose",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_c("p", {}, [_vm._v("Destination:")])]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.destinations,
-                        expression: "destinations"
-                      }
-                    ],
-                    staticClass: "form-control textarea my-3",
-                    attrs: {
-                      id: "kt_autosize_1",
-                      cols: "60",
-                      rows: "3",
-                      readonly: ""
-                    },
-                    domProps: { value: _vm.destinations },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.destinations = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_c("p", {}, [_vm._v("Date of travel:")])]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.travel_date,
-                        expression: "transaction.travel_date"
-                      }
-                    ],
-                    staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.travel_date },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "travel_date",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_c("p", {}, [_vm._v("Date return:")])]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.return_date,
-                        expression: "transaction.return_date"
-                      }
-                    ],
-                    staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.return_date },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "return_date",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "pb-8" }, [
-                  _c("p", {}, [_vm._v("Time of departure:")])
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                1. REQUESTING OFFICE/UNIT\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("td", { staticClass: "pb-8", attrs: { colspan: "2" } }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transaction.depart_time,
-                        expression: "transaction.depart_time"
-                      }
-                    ],
-                    staticClass: "input-text w-100 mb-3 mt-n2",
-                    attrs: { type: "text", disabled: "" },
-                    domProps: { value: _vm.transaction.depart_time },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.transaction,
-                          "depart_time",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
-                  _c(
-                    "table",
-                    [
-                      _c("tr", [
-                        _c("td", { staticClass: "text-center table-border" }, [
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                2. PURPOSE OF TRIP\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                3. NAME OF PASSENGER(S)\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                4. PLACE OF TRAVEL\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                5. DATE OF NEEDED\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [
+                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                      _vm._v(
+                        "\n                                6. TIME NEEDED\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("div", { staticClass: "d-flex signatories" }, [
+                      _c("div", { staticClass: "sign" }, [
+                        _c("p", { staticClass: "mb-4 font-weight-bold" }, [
                           _vm._v(
-                            "\n                                        Name of Passenger/s\n                                    "
+                            "\n                                        REQUESTED BY:\n                                    "
                           )
                         ]),
                         _vm._v(" "),
-                        _c("td", { staticClass: "text-center table-border" }, [
+                        _c("p", {
+                          staticClass: "text-center font-weight-bold h-15"
+                        }),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center fs-12" }, [
                           _vm._v(
-                            "\n                                        Position/Designation\n                                    "
+                            "\n                                        SIGNATURE OVER PRINTED NAME\n                                    "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "d-flex mt-4" }, [
+                          _c(
+                            "p",
+                            {
+                              staticClass: "fs-11 text-nowrap font-weight-bold"
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            DATE REQUESTED:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "underline" })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "sign" }, [
+                        _c("p", { staticClass: "mb-4 font-weight-bold" }, [
+                          _vm._v(
+                            "\n                                        REQUEST RECEIVED BY:\n                                    "
                           )
                         ]),
                         _vm._v(" "),
                         _c(
-                          "td",
-                          { staticClass: "text-center table-border w-10" },
+                          "p",
+                          { staticClass: "text-center font-weight-bold" },
                           [
                             _vm._v(
-                              "\n                                        Gender\n                                    "
+                              "\n                                        MARLENE D. SINOC\n                                    "
                             )
                           ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.passengers, function(p) {
-                        return _c("tr", { key: p.id }, [
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" },
-                              domProps: {
-                                value:
-                                  _vm.type == "rito"
-                                    ? p.first_name +
-                                      " " +
-                                      p.middle_name +
-                                      " " +
-                                      p.last_name
-                                    : p.name
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" },
-                              domProps: {
-                                value:
-                                  _vm.type == "rito"
-                                    ? p.position
-                                    : p.designation
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" },
-                              domProps: { value: p.gender }
-                            })
-                          ])
-                        ])
-                      }),
-                      _vm._v(" "),
-                      _vm._l(_vm.freePassengers, function(f) {
-                        return _c("tr", { key: f.id }, [
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "table-border" }, [
-                            _c("input", {
-                              staticClass: "w-100 border-0 outline-0 pr-2 pl-2",
-                              attrs: { type: "text", disabled: "" }
-                            })
-                          ])
-                        ])
-                      })
-                    ],
-                    2
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { attrs: { colspan: "3" } }, [
-                  _c("table", [
-                    _c("tr", [
-                      _c("td", { staticClass: "p-4 py-10 w-50" }, [
-                        _c("p", { staticClass: "mb-6" }, [
-                          _vm._v("Requested by:")
+                        ),
+                        _vm._v(" "),
+                        _c("hr"),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-center fs-12" }, [
+                          _vm._v(
+                            "\n                                        SIGNATURE OVER PRINTED NAME\n                                    "
+                          )
                         ]),
                         _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.transaction.requestor,
-                              expression: "transaction.requestor"
-                            }
-                          ],
-                          staticClass:
-                            "text-center input-text w-100 text-uppercase",
-                          attrs: { type: "text", disabled: "" },
-                          domProps: { value: _vm.transaction.requestor },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.transaction,
-                                "requestor",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Requestor")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "p-4 py-10" }, [
-                        _c("p", { staticClass: "mb-6" }, [_vm._v("Noted by:")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "input-text w-100",
-                          attrs: { type: "text", disabled: "" }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "text-center" }, [
-                          _vm._v(
-                            "\n                                            Section/Program/Division Head\n                                        "
-                          )
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            class:
-              _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                ? "d-none"
-                : "dashed-border my-2"
-          }),
-          _vm._v(" "),
-          _c(
-            "table",
-            {
-              class:
-                _vm.passengers.length > 5 || _vm.vehicles.length > 2
-                  ? "break-page"
-                  : ""
-            },
-            [
-              _vm.passengers.length > 5
-                ? _c("thead", [
-                    _c("tr", [
-                      _c("td", { attrs: { colspan: "3" } }, [
-                        _c("div", { staticClass: "page-header mt-2" }, [
-                          _c("img", {
-                            staticClass: "print-logo d-block m-auto",
-                            attrs: {
-                              alt: "Print Logo",
-                              src: "assets/media/logos/dswd_print_logo.png"
-                            }
-                          }),
-                          _vm._v(" "),
+                        _c("div", { staticClass: "d-flex mt-4" }, [
                           _c(
-                            "span",
+                            "p",
                             {
-                              staticClass:
-                                "header-text d-block m-auto text-center"
+                              staticClass: "fs-11 text-nowrap font-weight-bold"
                             },
                             [
-                              _vm._v("Field Office"),
-                              _c("br"),
-                              _vm._v("Butuan City")
+                              _vm._v(
+                                "\n                                            DATE RECEIVED:\n                                        "
+                              )
                             ]
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "underline" })
                         ])
                       ])
                     ])
                   ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("tbody", [
-                _c("tr", [
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c(
-                      "h5",
-                      {
-                        staticClass: "text-center d-block mr-auto ml-auto my-8"
-                      },
-                      [
-                        _vm._v(
-                          "\n                                Motor Vehicle Confirmation Slip\n                            "
-                        )
-                      ]
-                    )
-                  ])
                 ]),
                 _vm._v(" "),
-                _c("tr", [
-                  _c("td", { attrs: { colspan: "1" } }, [
-                    _c("p", { staticClass: "text-left my-10" }, [
-                      _vm._v(
-                        "\n                                Date:\n                                "
-                      ),
-                      _c("span", { staticClass: " text-underline" }, [
-                        _vm._v(_vm._s(_vm.date))
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { attrs: { colspan: "1" } }, [
-                    _c("p", { staticClass: "text-right my-8" }, [
-                      _vm._v(
-                        "\n                                Series:\n                                "
-                      ),
-                      _c("span", { staticClass: "text-underline" }, [
-                        _vm._v(_vm._s(_vm.transaction.serial_code))
-                      ])
-                    ])
-                  ])
-                ]),
+                _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
                 _vm._v(" "),
                 _c("tr", [
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c(
-                      "table",
-                      [
-                        _c("tr", [
-                          _c(
-                            "td",
-                            { staticClass: "text-center table-border" },
-                            [
-                              _vm._v(
-                                "\n                                        Vehicle Name\n                                    "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-center table-border" },
-                            [
-                              _vm._v(
-                                "\n                                        Plate No.\n                                    "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-center table-border" },
-                            [
-                              _vm._v(
-                                "\n                                        Driver Name\n                                    "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-center table-border" },
-                            [
-                              _vm._v(
-                                "\n                                        Contact No.\n                                    "
-                              )
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.vehicles, function(v) {
-                          return _c("tr", { key: v.id }, [
-                            _c("td", { staticClass: "table-border" }, [
-                              _c("input", {
-                                staticClass:
-                                  "w-100 border-0 outline-0 pr-2 pl-2",
-                                attrs: { type: "text", disabled: "" },
-                                domProps: { value: v.name }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "table-border" }, [
-                              _c("input", {
-                                staticClass:
-                                  "w-100 border-0 outline-0 pr-2 pl-2",
-                                attrs: { type: "text", disabled: "" },
-                                domProps: { value: v.plate_no }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "table-border" }, [
-                              _c("input", {
-                                staticClass:
-                                  "w-100 border-0 outline-0 pr-2 pl-2",
-                                attrs: { type: "text", disabled: "" },
-                                domProps: { value: v.fullname }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "table-border" }, [
-                              _c("input", {
-                                staticClass:
-                                  "w-100 border-0 outline-0 pr-2 pl-2",
-                                attrs: { type: "text", disabled: "" },
-                                domProps: { value: v.contact }
-                              })
-                            ])
-                          ])
-                        })
-                      ],
-                      2
-                    )
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "font-weight-bold text-center" }, [
+                      _vm._v(
+                        "\n                                TO BE FILLED-UP BY DISPATCHER\n                            "
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "mt-5" }, [
+                    _c("p", { staticClass: "font-weight-bold my-3" }, [
                       _vm._v(
-                        "\n                                Confirmed No. of Passenger/s:\n                            "
+                        "\n                                TICKET NO:\n                            "
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.passengers.length,
-                          expression: "passengers.length"
-                        }
-                      ],
-                      staticClass: "input-text w-100 mb-3 mt-n2",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.passengers.length },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.passengers,
-                            "length",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
-                  _c("td", { staticClass: "p-4 pt-10" }, [
-                    _c("p", { staticClass: "mb-6" }, [_vm._v("Accepted by:")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass:
-                        "text-center text-uppercase input-text w-100",
-                      attrs: { type: "text", disabled: "" },
-                      domProps: { value: _vm.transaction.gs_staff }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-center" }, [
-                      _vm._v("Assigned GS staff")
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("div", { staticClass: "d-flex mt-3" }, [
+                      _c("div", { staticClass: "assignment pr-8" }, [
+                        _c(
+                          "p",
+                          { staticClass: "text-center font-weight-bold" },
+                          [
+                            _vm._v(
+                              "\n                                        VEHICLE ASSIGNMENT\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("hr")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "assignment pl-8" }, [
+                        _c(
+                          "p",
+                          { staticClass: "text-center font-weight-bold" },
+                          [
+                            _vm._v(
+                              "\n                                        VEHICLE ASSIGNMENT\n                                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("hr")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("div", { staticClass: "assignment pr-8" }, [
+                        _c("table", [
+                          _c("tr", [
+                            _c("td", { attrs: { width: "100" } }, [
+                              _c("p", [_vm._v("VEHICLE TYPE:")])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("p", { staticClass: "underline" }, [
+                                _vm._v("A")
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "assignment pl-8" }, [
+                        _c("table", [
+                          _c("tr", [
+                            _c("td", { attrs: { width: "100" } }, [
+                              _c("p", [_vm._v("NAME:")])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("p", { staticClass: "underline" }, [
+                                _vm._v("A")
+                              ])
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c("div", { staticClass: "assignment pr-8" }, [
+                        _c("table", [
+                          _c("tr", [
+                            _c("td", { attrs: { width: "100" } }, [
+                              _c("p", [_vm._v("PLATE NO.:")])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("p", { staticClass: "underline" }, [
+                                _vm._v("A")
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "assignment pl-8" }, [
+                        _c("table", [
+                          _c("tr", [
+                            _c("td", { attrs: { width: "100" } }, [
+                              _c("p", [_vm._v("CONTACT NO.:")])
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("p", { staticClass: "underline" }, [
+                                _vm._v("A")
+                              ])
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "font-weight-bold mt-4" }, [
+                      _vm._v("REMARKS:")
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("div", { staticClass: "checked mt-4 w-60" }, [
+                      _c("p", { staticClass: "mb-4 font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                    CHECKED BY:\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                    MARLENE D. SINOC\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center fs-12" }, [
+                        _vm._v(
+                          "\n                                    DISPATCHER\n                                "
+                        )
+                      ])
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "p-4 pt-10" }, [
-                    _c("p", { staticClass: "mb-6" }, [_vm._v("Approved by:")]),
+                  _c("td", [
+                    _c("table", { staticClass: "mt-5" }, [
+                      _c("tr", [
+                        _c("td", { attrs: { width: "30" } }, [
+                          _c("p", { staticClass: "fs-11 font-weight-bold" }, [
+                            _vm._v(
+                              "\n                                            DATE:\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("p", { staticClass: "underline fs-11" }, [
+                            _vm._v("A")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { attrs: { width: "30" } }, [
+                          _c("p", { staticClass: "fs-11 font-weight-bold" }, [
+                            _vm._v(
+                              "\n                                            TIME:\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("p", { staticClass: "underline fs-11" }, [
+                            _vm._v("A")
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "font-weight-bold text-center" }, [
+                      _vm._v(
+                        "\n                                TO BE FILLED-UP BY THE ADMINISTRATIVE\n                                SERVICE - GENERAL SERVICES DIVISION\n                            "
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("div", { staticClass: "d-flex mt-4" }, [
+                      _c("div", { staticClass: "assignment pr-8" }, [
+                        _c("div", { staticClass: "d-flex mt-n10" }, [
+                          _c("input", {
+                            staticClass: "m-1",
+                            attrs: { type: "checkbox", name: "", id: "" }
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "font-weight-bold mr-4" }, [
+                            _vm._v(
+                              "\n                                            AVAILABLE\n                                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "m-1",
+                            attrs: { type: "checkbox", name: "", id: "" }
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "font-weight-bold" }, [
+                            _vm._v(
+                              "\n                                            NOT AVAILABLE\n                                        "
+                            )
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "assignment pl-8" }, [
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c("input", {
+                            staticClass: "m-1",
+                            attrs: { type: "checkbox", name: "", id: "" }
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "font-weight-bold" }, [
+                            _vm._v(
+                              "\n                                            APPROVED\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "d-flex" }, [
+                          _c("input", {
+                            staticClass: "m-1",
+                            attrs: { type: "checkbox", name: "", id: "" }
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "font-weight-bold" }, [
+                            _vm._v(
+                              "\n                                            DISAPPROVED\n                                        "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "font-weight-bold fs-10" }, [
+                          _vm._v(
+                            "\n                                        IF DISAPPROVED, PASSENGER TO USE\n                                        PUBLIC TRANSPORTATION, SUBJECT TO\n                                        REIMBURESEMENT IN ACCORDANCE WITH\n                                        RELEVANT GUIDELINES.\n                                    "
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "2" } }, [
+                    _c("div", { staticClass: "checked mt-4 w-60" }, [
+                      _c("p", { staticClass: "text-center font-weight-bold" }, [
+                        _vm._v(
+                          "\n                                    TERESA M. BIDAURE AO - IV\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-center fs-12" }, [
+                        _vm._v(
+                          "\n                                    HEAD, GENERAL SERVICES SECTION\n                                "
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tfoot", [
+                _c("tr", [_c("td", { attrs: { colspan: "3" } }, [_c("hr")])]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }, [
+                    _c("p", { staticClass: "fs-9 text-center" }, [
+                      _vm._v(
+                        "\n                                DSWD Central Office, IBP Road, Batasan\n                                Pambansa Complex, Constitution Hills, Quezon\n                                City, Philippines 1126\n                            "
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("input", {
-                      staticClass: "input-text w-100",
-                      attrs: { type: "text", disabled: "" }
-                    }),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-center" }, [
-                      _vm._v("GSS Head")
+                    _c("p", { staticClass: "fs-9 text-center" }, [
+                      _vm._v("\n                                Website: "),
+                      _c("u", [_vm._v("http://wwww.dswd.gov.ph")]),
+                      _vm._v(
+                        " Tel\n                                Nos.: (632) 8 931-8191\n                            "
+                      )
                     ])
                   ])
                 ])
@@ -66472,7 +67135,7 @@ var render = function() {
                   ]
                 )
               ]),
-              _vm._v("\n            Advance Filter")
+              _vm._v("\n                Advance Filter")
             ]
           )
         ])
@@ -66678,20 +67341,7 @@ var render = function() {
                               )
                             }),
                             0
-                          ),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                attrs: {
-                                  href: "print_request?id=" + t.group,
-                                  target: "_blank"
-                                }
-                              },
-                              [_vm._m(3, true)]
-                            )
-                          ])
+                          )
                         ])
                       }),
                       0
@@ -66824,7 +67474,7 @@ var render = function() {
                     _vm._v(
                       "Displaying " +
                         _vm._s(_vm.travels.length) +
-                        " of " +
+                        " of\n                    " +
                         _vm._s(_vm.total) +
                         " records"
                     )
@@ -66895,27 +67545,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Return Date")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Portal Status")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Slip")])
+        _c("th", [_vm._v("Portal Status")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-sm btn-clean btn-details",
-        attrs: { title: "View records" }
-      },
-      [
-        _c("i", { staticClass: "flaticon2-printer" }),
-        _vm._v(" Form\n                                ")
-      ]
-    )
   }
 ]
 render._withStripped = true

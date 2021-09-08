@@ -2,403 +2,428 @@
     <div>
         <page size="A4" class="paper-page">
             <div id="page-1">
-                <table class="w-100">
+                <table id="vehicle-request" class="w-100">
                     <thead>
                         <tr>
-                            <td colspan="3">
-                                <div class="page-header mt-2">
-                                    <img
-                                        alt="Print Logo"
-                                        class="print-logo d-block m-auto"
-                                        src="assets/media/logos/dswd_print_logo.png"
-                                    />
-                                    <span
-                                        class="header-text d-block m-auto text-center"
-                                        >Field Office<br />Butuan City</span
-                                    >
+                            <td class="left-header">
+                                <img
+                                    alt="Print Logo"
+                                    class="print-logo d-block m-auto"
+                                    src="assets/media/logos/dswd_logo_new.png"
+                                />
+                            </td>
+                            <td>
+                                <div class="header-title">
+                                    <p class="main">ADMINISTRATIVE SERVICES</p>
+                                    <p class="sub-main">
+                                        GENERAL ADMINISTRATION AND SUPPORT
+                                        SERVICES GROUP
+                                    </p>
+                                    <p class="sub">
+                                        DSWD-AS-GF-027 | REV 00/ 04 JAN 2021
+                                    </p>
                                 </div>
+                            </td>
+                            <td class="right-header"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <hr />
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td colspan="3">
-                                <h5
-                                    v-if="transaction.mot == 1"
-                                    class="text-center d-block mr-auto ml-auto mt-5"
-                                >
-                                    Motor Vehicle Declined Request
-                                </h5>
-                                <h5
-                                    v-else
-                                    class="text-center d-block mr-auto ml-auto mt-5"
-                                >
-                                    Motor Vehicle Request
+                                <h5 class="text-center">
+                                    REQUEST FOR USE OF VEHICLE
                                 </h5>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                                <p class="text-left my-10">
-                                    Date:
-                                    <span class=" text-underline">{{
-                                        date
-                                    }}</span>
-                                </p>
-                            </td>
-                            <td colspan="1">
-                                <p class="text-right my-10">
-                                    Series:
-                                    <span class=" text-underline">{{
-                                        transaction.serial_code
-                                    }}</span>
+                            <td colspan="3">
+                                <p>
+                                    <strong>Note:</strong> Request for use of
+                                    vehicle shall be made at least two (2) days
+                                    from the intended date of use. Failure to
+                                    use the vehicle at the given date/time
+                                    forfeits one's right to use the vehicle
+                                    assigned.
                                 </p>
                             </td>
                         </tr>
-
                         <tr>
                             <td>
-                                <p class="">Program / Division / Section:</p>
+                                <p class="font-weight-bold my-1">
+                                    1. REQUESTING OFFICE/UNIT
+                                </p>
                             </td>
                             <td colspan="2">
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="transaction.department"
-                                    disabled
-                                />
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="">Purpose of travel:</p>
+                                <p class="font-weight-bold my-1">
+                                    2. PURPOSE OF TRIP
+                                </p>
                             </td>
                             <td colspan="2">
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="transaction.purpose"
-                                    disabled
-                                />
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="">Destination:</p>
+                                <p class="font-weight-bold my-1">
+                                    3. NAME OF PASSENGER(S)
+                                </p>
                             </td>
                             <td colspan="2">
-                                <textarea
-                                    class="form-control textarea my-3"
-                                    id="kt_autosize_1"
-                                    cols="60"
-                                    rows="3"
-                                    v-model="destinations"
-                                    readonly
-                                >
-                                </textarea>
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="">Date of travel:</p>
+                                <p class="font-weight-bold my-1">
+                                    4. PLACE OF TRAVEL
+                                </p>
                             </td>
                             <td colspan="2">
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="transaction.travel_date"
-                                    disabled
-                                />
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="">Date return:</p>
+                                <p class="font-weight-bold my-1">
+                                    5. DATE OF NEEDED
+                                </p>
                             </td>
                             <td colspan="2">
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="transaction.return_date"
-                                    disabled
-                                />
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
-                            <td class="pb-8">
-                                <p class="">Time of departure:</p>
+                            <td>
+                                <p class="font-weight-bold my-1">
+                                    6. TIME NEEDED
+                                </p>
                             </td>
-                            <td colspan="2" class="pb-8">
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="transaction.depart_time"
-                                    disabled
-                                />
+                            <td colspan="2">
+                                <p class="underline">:</p>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <table>
-                                    <tr>
-                                        <td class="text-center table-border">
-                                            Name of Passenger/s
-                                        </td>
-                                        <td class="text-center table-border">
-                                            Position/Designation
-                                        </td>
-                                        <td
-                                            class="text-center table-border w-10"
-                                        >
-                                            Gender
-                                        </td>
-                                    </tr>
-                                    <tr v-for="p in passengers" :key="p.id">
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="
-                                                    type == 'rito'
-                                                        ? p.first_name +
-                                                          ' ' +
-                                                          p.middle_name +
-                                                          ' ' +
-                                                          p.last_name
-                                                        : p.name
-                                                "
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="
-                                                    type == 'rito'
-                                                        ? p.position
-                                                        : p.designation
-                                                "
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="p.gender"
-                                                disabled
-                                            />
-                                        </td>
-                                    </tr>
-                                    <tr v-for="f in freePassengers" :key="f.id">
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                disabled
-                                            />
-                                        </td>
-                                    </tr>
-                                </table>
+                                <hr />
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <table>
+                                <div class="d-flex signatories">
+                                    <div class="sign">
+                                        <p class="mb-4 font-weight-bold">
+                                            REQUESTED BY:
+                                        </p>
+                                        <p
+                                            class="text-center font-weight-bold h-15"
+                                        ></p>
+                                        <hr />
+                                        <p class="text-center fs-12">
+                                            SIGNATURE OVER PRINTED NAME
+                                        </p>
+                                        <div class="d-flex mt-4">
+                                            <p
+                                                class="fs-11 text-nowrap font-weight-bold"
+                                            >
+                                                DATE REQUESTED:
+                                            </p>
+                                            <p class="underline"></p>
+                                        </div>
+                                    </div>
+                                    <div class="sign">
+                                        <p class="mb-4 font-weight-bold">
+                                            REQUEST RECEIVED BY:
+                                        </p>
+                                        <p class="text-center font-weight-bold">
+                                            MARLENE D. SINOC
+                                        </p>
+                                        <hr />
+                                        <p class="text-center fs-12">
+                                            SIGNATURE OVER PRINTED NAME
+                                        </p>
+                                        <div class="d-flex mt-4">
+                                            <p
+                                                class="fs-11 text-nowrap font-weight-bold"
+                                            >
+                                                DATE RECEIVED:
+                                            </p>
+                                            <p class="underline"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="font-weight-bold text-center">
+                                    TO BE FILLED-UP BY DISPATCHER
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="font-weight-bold my-3">
+                                    TICKET NO:
+                                </p>
+                            </td>
+                            <td colspan="2">
+                                <p class="underline">A</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex mt-3">
+                                    <div class="assignment pr-8">
+                                        <p class="text-center font-weight-bold">
+                                            VEHICLE ASSIGNMENT
+                                        </p>
+                                        <hr />
+                                    </div>
+                                    <div class="assignment pl-8">
+                                        <p class="text-center font-weight-bold">
+                                            VEHICLE ASSIGNMENT
+                                        </p>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex">
+                                    <div class="assignment pr-8">
+                                        <table>
+                                            <tr>
+                                                <td width="100">
+                                                    <p>VEHICLE TYPE:</p>
+                                                </td>
+                                                <td>
+                                                    <p class="underline">A</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="assignment pl-8">
+                                        <table>
+                                            <tr>
+                                                <td width="100">
+                                                    <p>NAME:</p>
+                                                </td>
+                                                <td>
+                                                    <p class="underline">A</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex">
+                                    <div class="assignment pr-8">
+                                        <table>
+                                            <tr>
+                                                <td width="100">
+                                                    <p>PLATE NO.:</p>
+                                                </td>
+                                                <td>
+                                                    <p class="underline">A</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="assignment pl-8">
+                                        <table>
+                                            <tr>
+                                                <td width="100">
+                                                    <p>CONTACT NO.:</p>
+                                                </td>
+                                                <td>
+                                                    <p class="underline">A</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="font-weight-bold mt-4">REMARKS:</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="underline">A</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="underline">A</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="checked mt-4 w-60">
+                                    <p class="mb-4 font-weight-bold">
+                                        CHECKED BY:
+                                    </p>
+                                    <p class="text-center font-weight-bold">
+                                        MARLENE D. SINOC
+                                    </p>
+                                    <hr />
+                                    <p class="text-center fs-12">
+                                        DISPATCHER
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <table class="mt-5">
                                     <tr>
-                                        <td class="p-4 py-10 w-50">
-                                            <p class="mb-6">Requested by:</p>
-                                            <input
-                                                type="text"
-                                                class="text-center input-text w-100 text-uppercase"
-                                                v-model="transaction.requestor"
-                                                disabled
-                                            />
-                                            <p class="text-center">Requestor</p>
-                                        </td>
-                                        <td class="p-4 py-10">
-                                            <p class="mb-6">Noted by:</p>
-                                            <input
-                                                type="text"
-                                                class="input-text w-100"
-                                                disabled
-                                            />
-                                            <p class="text-center">
-                                                Section/Program/Division Head
+                                        <td width="30">
+                                            <p class="fs-11 font-weight-bold">
+                                                DATE:
                                             </p>
                                         </td>
+                                        <td>
+                                            <p class="underline fs-11">A</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30">
+                                            <p class="fs-11 font-weight-bold">
+                                                TIME:
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="underline fs-11">A</p>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <hr
-                    :class="
-                        passengers.length > 5 || vehicles.length > 2
-                            ? 'd-none'
-                            : 'dashed-border my-2'
-                    "
-                />
-                <table
-                    :class="
-                        passengers.length > 5 || vehicles.length > 2
-                            ? 'break-page'
-                            : ''
-                    "
-                >
-                    <thead v-if="passengers.length > 5">
                         <tr>
                             <td colspan="3">
-                                <div class="page-header mt-2">
-                                    <img
-                                        alt="Print Logo"
-                                        class="print-logo d-block m-auto"
-                                        src="assets/media/logos/dswd_print_logo.png"
-                                    />
-                                    <span
-                                        class="header-text d-block m-auto text-center"
-                                        >Field Office<br />Butuan City</span
-                                    >
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="font-weight-bold text-center">
+                                    TO BE FILLED-UP BY THE ADMINISTRATIVE
+                                    SERVICE - GENERAL SERVICES DIVISION
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex mt-4">
+                                    <div class="assignment pr-8">
+                                        <div class="d-flex mt-n10">
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                class="m-1"
+                                            />
+                                            <p class="font-weight-bold mr-4">
+                                                AVAILABLE
+                                            </p>
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                class="m-1"
+                                            />
+                                            <p class="font-weight-bold">
+                                                NOT AVAILABLE
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="assignment pl-8">
+                                        <div class="d-flex">
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                class="m-1"
+                                            />
+                                            <p class="font-weight-bold">
+                                                APPROVED
+                                            </p>
+                                        </div>
+                                        <div class="d-flex">
+                                            <input
+                                                type="checkbox"
+                                                name=""
+                                                id=""
+                                                class="m-1"
+                                            />
+                                            <p class="font-weight-bold">
+                                                DISAPPROVED
+                                            </p>
+                                        </div>
+                                        <p class="font-weight-bold fs-10">
+                                            IF DISAPPROVED, PASSENGER TO USE
+                                            PUBLIC TRANSPORTATION, SUBJECT TO
+                                            REIMBURESEMENT IN ACCORDANCE WITH
+                                            RELEVANT GUIDELINES.
+                                        </p>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td colspan="2">
-                                <h5
-                                    class="text-center d-block mr-auto ml-auto my-8"
-                                >
-                                    Motor Vehicle Confirmation Slip
-                                </h5>
+                                <div class="checked mt-4 w-60">
+                                    <p class="text-center font-weight-bold">
+                                        TERESA M. BIDAURE AO - IV
+                                    </p>
+                                    <hr />
+                                    <p class="text-center fs-12">
+                                        HEAD, GENERAL SERVICES SECTION
+                                    </p>
+                                </div>
                             </td>
-                        </tr>
-                        <tr>
-                            <td colspan="1">
-                                <p class="text-left my-10">
-                                    Date:
-                                    <span class=" text-underline">{{
-                                        date
-                                    }}</span>
-                                </p>
-                            </td>
-                            <td colspan="1">
-                                <p class="text-right my-8">
-                                    Series:
-                                    <span class="text-underline">{{
-                                        transaction.serial_code
-                                    }}</span>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <table>
-                                    <tr>
-                                        <td class="text-center table-border">
-                                            Vehicle Name
-                                        </td>
-                                        <td class="text-center table-border">
-                                            Plate No.
-                                        </td>
-                                        <td class="text-center table-border">
-                                            Driver Name
-                                        </td>
-                                        <td class="text-center table-border">
-                                            Contact No.
-                                        </td>
-                                    </tr>
-                                    <tr v-for="v in vehicles" :key="v.id">
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="v.name"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="v.plate_no"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="v.fullname"
-                                                disabled
-                                            />
-                                        </td>
-                                        <td class="table-border">
-                                            <input
-                                                type="text"
-                                                class="w-100 border-0 outline-0 pr-2 pl-2"
-                                                :value="v.contact"
-                                                disabled
-                                            />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p class="mt-5">
-                                    Confirmed No. of Passenger/s:
-                                </p>
-                            </td>
-                            <td>
-                                <input
-                                    class="input-text w-100 mb-3 mt-n2"
-                                    type="text"
-                                    v-model="passengers.length"
-                                    disabled
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="p-4 pt-10">
-                                <p class="mb-6">Accepted by:</p>
-                                <input
-                                    type="text"
-                                    class="text-center text-uppercase input-text w-100"
-                                    :value="transaction.gs_staff"
-                                    disabled
-                                />
-                                <p class="text-center">Assigned GS staff</p>
-                            </td>
-                            <td class="p-4 pt-10">
-                                <p class="mb-6">Approved by:</p>
-                                <input
-                                    type="text"
-                                    class="input-text w-100"
-                                    disabled
-                                />
-                                <p class="text-center">GSS Head</p>
-                            </td>
+                            <td></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p class="fs-9 text-center">
+                                    DSWD Central Office, IBP Road, Batasan
+                                    Pambansa Complex, Constitution Hills, Quezon
+                                    City, Philippines 1126
+                                </p>
+                                <p class="fs-9 text-center">
+                                    Website: <u>http://wwww.dswd.gov.ph</u> Tel
+                                    Nos.: (632) 8 931-8191
+                                </p>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </page>
@@ -474,7 +499,7 @@ export default {
 
             let url = window.location.href;
             let data = this.$parseURLParams(url);
-            this.getData(data.id[0]);
+            // this.getData(data.id[0]);
 
             // document.getElementById("footer").style.pageBreakBefore = "always";
             // $('#footer').css('page-break-before', 'always');
