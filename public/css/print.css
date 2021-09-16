@@ -199,9 +199,18 @@ table {
     height: 15px !important;
 }
 
+.h-17 {
+    height: 17px !important;
+}
+
+.w-60 {
+    width: 60% !important;
+}
 .w-90 {
     width: 90% !important;
 }
+
+/* TRIP TICKET */
 
 #tripTicket p {
     margin: 0;
@@ -270,6 +279,73 @@ table {
     height: 25px;
 }
 
+/* VEHICLE REQUEST */
+
+#vehicle-request p {
+    margin: 0;
+    padding: 0;
+}
+#vehicle-request .left-header,
+#vehicle-request .right-header {
+    width: 28%;
+}
+#vehicle-request img {
+    margin: 0 0 0 17px !important;
+}
+
+#vehicle-request .header-title p {
+    margin: 0;
+    text-align: center;
+}
+
+#vehicle-request .header-title .main {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#vehicle-request .header-title .sub-main {
+    font-size: 9px;
+}
+
+#vehicle-request .header-title .sub {
+    font-size: 7px;
+}
+
+#vehicle-request .paper-page {
+    padding: 1.75rem;
+}
+
+#vehicle-request hr {
+    border: 1px solid black;
+}
+
+#vehicle-request .sign {
+    width: 40%;
+    margin: auto;
+}
+
+#vehicle-request .signatories {
+    margin-top: 10px;
+}
+
+#vehicle-request .signatories hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid black;
+}
+
+#vehicle-request .assignment {
+    width: 50%;
+    margin: auto;
+}
+
+#vehicle-request .assignment hr,
+#vehicle-request .checked hr {
+    border: none;
+    border-top: 1px solid black;
+    margin: 0;
+}
+
 @media print {
     @page {
         /* margin: 3rem; */
@@ -282,20 +358,38 @@ table {
     table {
         font-size: 20px !important;
     }
-    #tripTicket thead .main {
-        font-size: 14px !important;
-    }
-    #tripTicket thead .sub-main {
-        font-size: 13px !important;
-    }
-    #tripTicket thead .sub {
-        font-size: 12px !important;
-    }
-    #tripTicket tbody p {
-        font-size: 17px !important;
+
+    #vehicle-request {
+        margin-top: 30px !important;
     }
 
-    #tripTicket table {
+    #vehicle-request h5 {
+        font-size: 22px !important;
+    }
+
+    #tripTicket img,
+    #vehicle-request img {
+        height: 60px !important;
+        width: 220px !important;
+    }
+    #tripTicket thead .main,
+    #vehicle-request thead .main {
+        font-size: 14px !important;
+    }
+    #tripTicket thead .sub-main,
+    #vehicle-request thead .sub-main {
+        font-size: 13px !important;
+    }
+    #tripTicket thead .sub,
+    #vehicle-request thead .sub {
+        font-size: 12px !important;
+    }
+    #tripTicket tbody p,
+    #vehicle-request tbody p {
+        font-size: 17px !important;
+    }
+    #tripTicket table,
+    #vehicle-request table {
         font-size: 15px !important;
     }
 
@@ -315,6 +409,15 @@ table {
 
     #tripTicket .print-logo {
         height: 60px !important;
+    }
+
+    #vehicle-request .fs-11 {
+        font-size: 14px !important;
+    }
+
+    #vehicle-request .p-fs-16 {
+        font-size: 20px !important;
+        margin: 10px !important;
     }
 
     /* h5 {

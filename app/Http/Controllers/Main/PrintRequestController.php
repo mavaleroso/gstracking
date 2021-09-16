@@ -9,7 +9,7 @@ use App\Services\PrintRequest\GetPrintRequestById;
 class PrintRequestController extends Controller
 {
 
-     /**
+    /**
      * Initialization
      */
     public function __construct()
@@ -21,7 +21,7 @@ class PrintRequestController extends Controller
         $this->middleware('permission:printrequest-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:printrequest-delete', ['only' => ['destroy']]);
         $this->middleware('permission:printrequest-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -59,9 +59,9 @@ class PrintRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, GetPrintRequestById $getPrintRequestById)
+    public function show($id, GetPrintRequestById $getPrintRequestById, Request $request)
     {
-        $data = $getPrintRequestById->execute($id);
+        $data = $getPrintRequestById->execute($id, $request->type);
         return response()->json($data);
     }
 
