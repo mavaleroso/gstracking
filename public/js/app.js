@@ -7906,6 +7906,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -61033,6 +61046,10 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.requestor.division))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(r.requestor.section))]),
+                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(r.place))]),
                         _vm._v(" "),
                         _c("td", [
@@ -61090,7 +61107,20 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(r.requested_by))]),
+                        _c("td", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                r.requestor.first_name +
+                                  " " +
+                                  (r.requestor.middle_name != null
+                                    ? r.requestor.middle_name[0] + ". "
+                                    : " ") +
+                                  r.requestor.last_name
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("td", [
                           _c(
@@ -62087,6 +62117,10 @@ var staticRenderFns = [
         _c("th"),
         _vm._v(" "),
         _c("th", [_vm._v("Tracking No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Division")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Section")]),
         _vm._v(" "),
         _c("th", [_vm._v("Destination")]),
         _vm._v(" "),

@@ -70,6 +70,8 @@
                         <tr>
                             <th></th>
                             <th>Tracking No.</th>
+                            <th>Division</th>
+                            <th>Section</th>
                             <th>Destination</th>
                             <th>Travel Date</th>
                             <th>Return Date</th>
@@ -100,6 +102,8 @@
                                     >{{ r.tracking_no }}</span
                                 >
                             </td>
+                            <td>{{ r.requestor.division }}</td>
+                            <td>{{ r.requestor.section }}</td>
                             <td>{{ r.place }}</td>
                             <td>{{ $dateEng(r.inclusive_from) }}</td>
                             <td>{{ $dateEng(r.inclusive_to) }}</td>
@@ -127,7 +131,16 @@
                                     {{ r.passenger_count }}
                                 </button>
                             </td>
-                            <td>{{ r.requested_by }}</td>
+                            <td>
+                                {{
+                                    r.requestor.first_name +
+                                        " " +
+                                        (r.requestor.middle_name != null
+                                            ? r.requestor.middle_name[0] + ". "
+                                            : " ") +
+                                        r.requestor.last_name
+                                }}
+                            </td>
                             <td>
                                 <a
                                     :href="
