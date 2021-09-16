@@ -943,7 +943,7 @@ export default {
                                         </button>' +
                                     '<a href="print_request?id=' +
                                     data +
-                                    '" target="_blank"><button class="btn btn-sm btn-clean btn-details" title="View records">\
+                                    '&type=local" target="_blank"><button class="btn btn-sm btn-clean btn-details" title="View records">\
                                             <i class="flaticon2-printer"></i> \
                                         </button></a>'
                                 );

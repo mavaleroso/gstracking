@@ -130,7 +130,11 @@
                             <td>{{ r.requested_by }}</td>
                             <td>
                                 <a
-                                    :href="'print_request?id=' + r.id"
+                                    :href="
+                                        'print_request?id=' +
+                                            r.id +
+                                            '&type=rito'
+                                    "
                                     target="_blank"
                                 >
                                     <button

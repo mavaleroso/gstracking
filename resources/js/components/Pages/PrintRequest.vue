@@ -42,7 +42,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <p>
+                                <p class="p-fs-16">
                                     <strong>Note:</strong> Request for use of
                                     vehicle shall be made at least two (2) days
                                     from the intended date of use. Failure to
@@ -54,62 +54,68 @@
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     1. REQUESTING OFFICE/UNIT
                                 </p>
                             </td>
-                            <td colspan="2">
-                                <p class="underline">:</p>
+                            <td colspan="2 p-fs-16">
+                                <p class="underline p-fs-16">
+                                    : {{ department }}
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     2. PURPOSE OF TRIP
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">:</p>
+                                <p class="underline p-fs-16">: {{ purpose }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     3. NAME OF PASSENGER(S)
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">:</p>
+                                <p class="underline p-fs-16">
+                                    : {{ passengers.toString() }}
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     4. PLACE OF TRAVEL
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">:</p>
+                                <p class="underline p-fs-16">: {{ place }}</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     5. DATE OF NEEDED
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">:</p>
+                                <p class="underline p-fs-16">
+                                    : {{ travel_date }}
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p class="font-weight-bold my-1">
+                                <p class="font-weight-bold my-1 p-fs-16">
                                     6. TIME NEEDED
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">:</p>
+                                <p class="underline p-fs-16">:</p>
                             </td>
                         </tr>
                         <tr>
@@ -124,9 +130,9 @@
                                         <p class="mb-4 font-weight-bold">
                                             REQUESTED BY:
                                         </p>
-                                        <p
-                                            class="text-center font-weight-bold h-15"
-                                        ></p>
+                                        <p class="text-center font-weight-bold">
+                                            {{ requested_by }}
+                                        </p>
                                         <hr />
                                         <p class="text-center fs-12">
                                             SIGNATURE OVER PRINTED NAME
@@ -182,7 +188,7 @@
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline">A</p>
+                                <p class="underline">{{ ticket_no }}</p>
                             </td>
                         </tr>
                         <tr>
@@ -210,10 +216,14 @@
                                         <table>
                                             <tr>
                                                 <td width="100">
-                                                    <p>VEHICLE TYPE:</p>
+                                                    <p class="fs-11">
+                                                        VEHICLE TYPE:
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p class="underline">A</p>
+                                                    <p
+                                                        class="underline h-17"
+                                                    ></p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -222,10 +232,12 @@
                                         <table>
                                             <tr>
                                                 <td width="100">
-                                                    <p>NAME:</p>
+                                                    <p class="fs-11">NAME:</p>
                                                 </td>
                                                 <td>
-                                                    <p class="underline">A</p>
+                                                    <p
+                                                        class="underline h-17"
+                                                    ></p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -240,10 +252,14 @@
                                         <table>
                                             <tr>
                                                 <td width="100">
-                                                    <p>PLATE NO.:</p>
+                                                    <p class="fs-11">
+                                                        PLATE NO.:
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p class="underline">A</p>
+                                                    <p
+                                                        class="underline h-17"
+                                                    ></p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -252,10 +268,14 @@
                                         <table>
                                             <tr>
                                                 <td width="100">
-                                                    <p>CONTACT NO.:</p>
+                                                    <p class="fs-11">
+                                                        CONTACT NO.:
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p class="underline">A</p>
+                                                    <p
+                                                        class="underline h-17"
+                                                    ></p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -270,12 +290,12 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <p class="underline">A</p>
+                                <p class="underline h-17"></p>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <p class="underline">A</p>
+                                <p class="underline h-17"></p>
                             </td>
                         </tr>
                         <tr>
@@ -302,7 +322,7 @@
                                             </p>
                                         </td>
                                         <td>
-                                            <p class="underline fs-11">A</p>
+                                            <p class="underline fs-11 h-17"></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -312,7 +332,7 @@
                                             </p>
                                         </td>
                                         <td>
-                                            <p class="underline fs-11">A</p>
+                                            <p class="underline fs-11 h-17"></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -434,30 +454,16 @@ export default {
     data() {
         return {
             type: null,
-            date: null,
-            passenger_count: 7,
-            transaction: {
-                depart_time: [],
-                department: [],
-                gs_staff: null,
-                purpose: [],
-                travel_date: [],
-                return_date: [],
-                serial_code: null,
-                is_status: null,
-                mot: null,
-                requestor: []
-            },
-            destinations: [],
+            department: null,
+            purpose: null,
             passengers: [],
-            vehicles: []
+            place: null,
+            travel_date: null,
+            travel_time: null,
+            requested_by: null,
+            requested_date: null,
+            ticket_no: null
         };
-    },
-    computed: {
-        freePassengers() {
-            let result = 5 - this.passengers.length;
-            return result > 0 ? result : 0;
-        }
     },
     mounted() {
         this.ini();
@@ -499,109 +505,64 @@ export default {
 
             let url = window.location.href;
             let data = this.$parseURLParams(url);
-            // this.getData(data.id[0]);
+            this.getData(data.id[0], data.type[0]);
+            this.type = data.type[0];
 
             // document.getElementById("footer").style.pageBreakBefore = "always";
             // $('#footer').css('page-break-before', 'always');
         },
-        getData(id) {
-            axios.get(BASE_URL + "/travel/printrequest/" + id).then(res => {
-                this.transaction.serial_code = res.data.trans[0].serial_code;
-                this.transaction.mot = res.data.trans[0].mot;
-                this.type = res.data.trans[0].type;
-                this.date = this.$dateEng(res.data.date_now);
-                for (let i = 0; i < res.data.travels.length; i++) {
-                    if (
-                        this.transaction.purpose.indexOf(
-                            res.data.travels[i].data[0].purpose
-                        ) === -1
-                    ) {
-                        this.transaction.purpose.push(
-                            res.data.travels[i].data[0].purpose
-                        );
+        getData(id, type) {
+            axios
+                .get(BASE_URL + "/travel/printrequest/" + id, {
+                    params: {
+                        type: type
                     }
-                    if (
-                        this.destinations.indexOf(
-                            res.data.travels[i].data[0].place
-                        ) === -1
-                    ) {
-                        this.destinations.push(
-                            res.data.travels[i].data[0].place
-                        );
+                })
+                .then(res => {
+                    this.department =
+                        this.type == "rito"
+                            ? res.data.travel[0].requestor.division +
+                              ", " +
+                              res.data.travel[0].requestor.area_of_assignment
+                            : res.data.travel[0].department;
+                    this.purpose = res.data.travel[0].purpose;
+                    for (let i = 0; i < res.data.passengers.length; i++) {
+                        if (this.type == "rito") {
+                            this.passengers.push(
+                                this.$titleCase(
+                                    res.data.passengers[i].first_name +
+                                        " " +
+                                        res.data.passengers[i].middle_name[0] +
+                                        ". " +
+                                        res.data.passengers[i].last_name
+                                )
+                            );
+                        } else if (this.type == "local") {
+                            this.passengers.push(
+                                this.$titleCase(res.data.passengers[i].name)
+                            );
+                        }
                     }
-                    if (
-                        this.transaction.travel_date.indexOf(
-                            this.$dateEng(
-                                res.data.travels[i].data[0].inclusive_from
-                            )
-                        ) === -1
-                    ) {
-                        this.transaction.travel_date.push(
-                            this.$dateEng(
-                                res.data.travels[i].data[0].inclusive_from
-                            )
-                        );
-                    }
-                    if (
-                        this.transaction.return_date.indexOf(
-                            this.$dateEng(
-                                res.data.travels[i].data[0].inclusive_to
-                            )
-                        ) === -1
-                    ) {
-                        this.transaction.return_date.push(
-                            this.$dateEng(
-                                res.data.travels[i].data[0].inclusive_to
-                            )
-                        );
-                    }
-                    if (
-                        this.transaction.requestor.indexOf(
-                            res.data.travels[i].data[0].requested_by
-                        ) === -1
-                    ) {
-                        this.transaction.requestor.push(
-                            res.data.travels[i].data[0].requested_by
-                        );
-                    }
-                    if (
-                        this.transaction.department.indexOf(
-                            res.data.travels[i].data[0].department
-                        ) === -1
-                    ) {
-                        this.transaction.department.push(
-                            res.data.travels[i].data[0].department
-                        );
-                    }
-                    if (
-                        res.data.travels[i].data[0].depart_time &&
-                        this.transaction.depart_time.indexOf(
-                            this.$timeEng(
-                                res.data.travels[i].data[0].depart_time
-                            )
-                        ) === -1
-                    ) {
-                        this.transaction.depart_time.push(
-                            this.$timeEng(
-                                res.data.travels[i].data[0].depart_time
-                            )
-                        );
-                    }
-                    for (
-                        let j = 0;
-                        j < res.data.travels[i].passengers.length;
-                        j++
-                    ) {
-                        this.passengers.push(res.data.travels[i].passengers[j]);
-                    }
-                }
-                this.vehicles = res.data.vehicles;
-                this.transaction.gs_staff =
-                    res.data.gs_staff.first_name +
-                    " " +
-                    res.data.gs_staff.last_name;
-                autosize($("#kt_autosize_1"));
-            });
+                    this.place = res.data.travel[0].place;
+                    this.travel_date =
+                        this.$dateEng(res.data.travel[0].inclusive_from) +
+                        " - " +
+                        this.$dateEng(res.data.travel[0].inclusive_to);
+                    this.requested_by = this.$titleCase(
+                        res.data.travel[0].requestor.first_name +
+                            " " +
+                            (res.data.travel[0].requestor.middle_name == null
+                                ? ""
+                                : res.data.travel[0].requestor.middle_name[0]) +
+                            ". " +
+                            res.data.travel[0].requestor.last_name
+                    );
+                    this.ticket_no =
+                        this.type == "rito"
+                            ? res.data.travel[0].tracking_no
+                            : res.data.travel[0].serial_code;
+                    autosize($("#kt_autosize_1"));
+                });
         }
     }
 };

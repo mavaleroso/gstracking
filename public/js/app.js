@@ -6229,7 +6229,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             render: function render(data) {
               return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
                                             <i class="flaticon2-document"></i> \
-                                        </button>' + '<a href="print_request?id=' + data + '" target="_blank"><button class="btn btn-sm btn-clean btn-details" title="View records">\
+                                        </button>' + '<a href="print_request?id=' + data + '&type=local" target="_blank"><button class="btn btn-sm btn-clean btn-details" title="View records">\
                                             <i class="flaticon2-printer"></i> \
                                         </button></a>';
             }
@@ -7344,6 +7344,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -9518,34 +9522,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       type: null,
-      date: null,
-      passenger_count: 7,
-      transaction: {
-        depart_time: [],
-        department: [],
-        gs_staff: null,
-        purpose: [],
-        travel_date: [],
-        return_date: [],
-        serial_code: null,
-        is_status: null,
-        mot: null,
-        requestor: []
-      },
-      destinations: [],
+      department: null,
+      purpose: null,
       passengers: [],
-      vehicles: []
+      place: null,
+      travel_date: null,
+      travel_time: null,
+      requested_by: null,
+      requested_date: null,
+      ticket_no: null
     };
-  },
-  computed: {
-    freePassengers: function freePassengers() {
-      var result = 5 - this.passengers.length;
-      return result > 0 ? result : 0;
-    }
   },
   mounted: function mounted() {
     this.ini();
@@ -9589,55 +9599,34 @@ __webpack_require__.r(__webpack_exports__);
         $("#page-1").printThis();
       });
       var url = window.location.href;
-      var data = this.$parseURLParams(url); // this.getData(data.id[0]);
-      // document.getElementById("footer").style.pageBreakBefore = "always";
+      var data = this.$parseURLParams(url);
+      this.getData(data.id[0], data.type[0]);
+      this.type = data.type[0]; // document.getElementById("footer").style.pageBreakBefore = "always";
       // $('#footer').css('page-break-before', 'always');
     },
-    getData: function getData(id) {
+    getData: function getData(id, type) {
       var _this = this;
 
-      axios.get(BASE_URL + "/travel/printrequest/" + id).then(function (res) {
-        _this.transaction.serial_code = res.data.trans[0].serial_code;
-        _this.transaction.mot = res.data.trans[0].mot;
-        _this.type = res.data.trans[0].type;
-        _this.date = _this.$dateEng(res.data.date_now);
+      axios.get(BASE_URL + "/travel/printrequest/" + id, {
+        params: {
+          type: type
+        }
+      }).then(function (res) {
+        _this.department = _this.type == "rito" ? res.data.travel[0].requestor.division + ", " + res.data.travel[0].requestor.area_of_assignment : res.data.travel[0].department;
+        _this.purpose = res.data.travel[0].purpose;
 
-        for (var i = 0; i < res.data.travels.length; i++) {
-          if (_this.transaction.purpose.indexOf(res.data.travels[i].data[0].purpose) === -1) {
-            _this.transaction.purpose.push(res.data.travels[i].data[0].purpose);
-          }
-
-          if (_this.destinations.indexOf(res.data.travels[i].data[0].place) === -1) {
-            _this.destinations.push(res.data.travels[i].data[0].place);
-          }
-
-          if (_this.transaction.travel_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_from)) === -1) {
-            _this.transaction.travel_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_from));
-          }
-
-          if (_this.transaction.return_date.indexOf(_this.$dateEng(res.data.travels[i].data[0].inclusive_to)) === -1) {
-            _this.transaction.return_date.push(_this.$dateEng(res.data.travels[i].data[0].inclusive_to));
-          }
-
-          if (_this.transaction.requestor.indexOf(res.data.travels[i].data[0].requested_by) === -1) {
-            _this.transaction.requestor.push(res.data.travels[i].data[0].requested_by);
-          }
-
-          if (_this.transaction.department.indexOf(res.data.travels[i].data[0].department) === -1) {
-            _this.transaction.department.push(res.data.travels[i].data[0].department);
-          }
-
-          if (res.data.travels[i].data[0].depart_time && _this.transaction.depart_time.indexOf(_this.$timeEng(res.data.travels[i].data[0].depart_time)) === -1) {
-            _this.transaction.depart_time.push(_this.$timeEng(res.data.travels[i].data[0].depart_time));
-          }
-
-          for (var j = 0; j < res.data.travels[i].passengers.length; j++) {
-            _this.passengers.push(res.data.travels[i].passengers[j]);
+        for (var i = 0; i < res.data.passengers.length; i++) {
+          if (_this.type == "rito") {
+            _this.passengers.push(_this.$titleCase(res.data.passengers[i].first_name + " " + res.data.passengers[i].middle_name[0] + ". " + res.data.passengers[i].last_name));
+          } else if (_this.type == "local") {
+            _this.passengers.push(_this.$titleCase(res.data.passengers[i].name));
           }
         }
 
-        _this.vehicles = res.data.vehicles;
-        _this.transaction.gs_staff = res.data.gs_staff.first_name + " " + res.data.gs_staff.last_name;
+        _this.place = res.data.travel[0].place;
+        _this.travel_date = _this.$dateEng(res.data.travel[0].inclusive_from) + " - " + _this.$dateEng(res.data.travel[0].inclusive_to);
+        _this.requested_by = _this.$titleCase(res.data.travel[0].requestor.first_name + " " + (res.data.travel[0].requestor.middle_name == null ? "" : res.data.travel[0].requestor.middle_name[0]) + ". " + res.data.travel[0].requestor.last_name);
+        _this.ticket_no = _this.type == "rito" ? res.data.travel[0].tracking_no : res.data.travel[0].serial_code;
         autosize($("#kt_autosize_1"));
       });
     }
@@ -14061,6 +14050,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     $label: function $label(lbl) {
       return '<span class="btn-details label label-lg font-weight-bold label-light-primary label-inline text-nowrap">' + lbl + "</span>";
+    },
+    $titleCase: function $titleCase(str) {
+      return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
     }
   }
 });
@@ -61103,7 +61097,7 @@ var render = function() {
                             "a",
                             {
                               attrs: {
-                                href: "print_request?id=" + r.id,
+                                href: "print_request?id=" + r.id + "&type=rito",
                                 target: "_blank"
                               }
                             },
@@ -63446,7 +63440,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", { attrs: { colspan: "3" } }, [
-                    _c("p", [
+                    _c("p", { staticClass: "p-fs-16" }, [
                       _c("strong", [_vm._v("Note:")]),
                       _vm._v(
                         " Request for use of\n                                vehicle shall be made at least two (2) days\n                                from the intended date of use. Failure to\n                                use the vehicle at the given date/time\n                                forfeits one's right to use the vehicle\n                                assigned.\n                            "
@@ -63457,21 +63451,27 @@ var render = function() {
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                1. REQUESTING OFFICE/UNIT\n                            "
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                  _c("td", { attrs: { colspan: "2 p-fs-16" } }, [
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(
+                        "\n                                : " +
+                          _vm._s(_vm.department) +
+                          "\n                            "
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                2. PURPOSE OF TRIP\n                            "
                       )
@@ -63479,13 +63479,15 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(": " + _vm._s(_vm.purpose))
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                3. NAME OF PASSENGER(S)\n                            "
                       )
@@ -63493,13 +63495,19 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(
+                        "\n                                : " +
+                          _vm._s(_vm.passengers.toString()) +
+                          "\n                            "
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                4. PLACE OF TRAVEL\n                            "
                       )
@@ -63507,13 +63515,15 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(": " + _vm._s(_vm.place))
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                5. DATE OF NEEDED\n                            "
                       )
@@ -63521,13 +63531,19 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(
+                        "\n                                : " +
+                          _vm._s(_vm.travel_date) +
+                          "\n                            "
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", [
-                    _c("p", { staticClass: "font-weight-bold my-1" }, [
+                    _c("p", { staticClass: "font-weight-bold my-1 p-fs-16" }, [
                       _vm._v(
                         "\n                                6. TIME NEEDED\n                            "
                       )
@@ -63535,7 +63551,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [_vm._v(":")])
                   ])
                 ]),
                 _vm._v(" "),
@@ -63551,9 +63567,17 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("p", {
-                          staticClass: "text-center font-weight-bold h-15"
-                        }),
+                        _c(
+                          "p",
+                          { staticClass: "text-center font-weight-bold" },
+                          [
+                            _vm._v(
+                              "\n                                        " +
+                                _vm._s(_vm.requested_by) +
+                                "\n                                    "
+                            )
+                          ]
+                        ),
                         _vm._v(" "),
                         _c("hr"),
                         _vm._v(" "),
@@ -63647,7 +63671,9 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
+                    _c("p", { staticClass: "underline" }, [
+                      _vm._v(_vm._s(_vm.ticket_no))
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
@@ -63692,13 +63718,15 @@ var render = function() {
                         _c("table", [
                           _c("tr", [
                             _c("td", { attrs: { width: "100" } }, [
-                              _c("p", [_vm._v("VEHICLE TYPE:")])
+                              _c("p", { staticClass: "fs-11" }, [
+                                _vm._v(
+                                  "\n                                                    VEHICLE TYPE:\n                                                "
+                                )
+                              ])
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("p", { staticClass: "underline" }, [
-                                _vm._v("A")
-                              ])
+                              _c("p", { staticClass: "underline h-17" })
                             ])
                           ])
                         ])
@@ -63708,13 +63736,13 @@ var render = function() {
                         _c("table", [
                           _c("tr", [
                             _c("td", { attrs: { width: "100" } }, [
-                              _c("p", [_vm._v("NAME:")])
+                              _c("p", { staticClass: "fs-11" }, [
+                                _vm._v("NAME:")
+                              ])
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("p", { staticClass: "underline" }, [
-                                _vm._v("A")
-                              ])
+                              _c("p", { staticClass: "underline h-17" })
                             ])
                           ])
                         ])
@@ -63730,13 +63758,15 @@ var render = function() {
                         _c("table", [
                           _c("tr", [
                             _c("td", { attrs: { width: "100" } }, [
-                              _c("p", [_vm._v("PLATE NO.:")])
+                              _c("p", { staticClass: "fs-11" }, [
+                                _vm._v(
+                                  "\n                                                    PLATE NO.:\n                                                "
+                                )
+                              ])
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("p", { staticClass: "underline" }, [
-                                _vm._v("A")
-                              ])
+                              _c("p", { staticClass: "underline h-17" })
                             ])
                           ])
                         ])
@@ -63746,13 +63776,15 @@ var render = function() {
                         _c("table", [
                           _c("tr", [
                             _c("td", { attrs: { width: "100" } }, [
-                              _c("p", [_vm._v("CONTACT NO.:")])
+                              _c("p", { staticClass: "fs-11" }, [
+                                _vm._v(
+                                  "\n                                                    CONTACT NO.:\n                                                "
+                                )
+                              ])
                             ]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("p", { staticClass: "underline" }, [
-                                _vm._v("A")
-                              ])
+                              _c("p", { staticClass: "underline h-17" })
                             ])
                           ])
                         ])
@@ -63771,13 +63803,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", { attrs: { colspan: "3" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
+                    _c("p", { staticClass: "underline h-17" })
                   ])
                 ]),
                 _vm._v(" "),
                 _c("tr", [
                   _c("td", { attrs: { colspan: "3" } }, [
-                    _c("p", { staticClass: "underline" }, [_vm._v("A")])
+                    _c("p", { staticClass: "underline h-17" })
                   ])
                 ]),
                 _vm._v(" "),
@@ -63818,9 +63850,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("p", { staticClass: "underline fs-11" }, [
-                            _vm._v("A")
-                          ])
+                          _c("p", { staticClass: "underline fs-11 h-17" })
                         ])
                       ]),
                       _vm._v(" "),
@@ -63834,9 +63864,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("p", { staticClass: "underline fs-11" }, [
-                            _vm._v("A")
-                          ])
+                          _c("p", { staticClass: "underline fs-11 h-17" })
                         ])
                       ])
                     ])

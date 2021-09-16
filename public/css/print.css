@@ -199,6 +199,10 @@ table {
     height: 15px !important;
 }
 
+.h-17 {
+    height: 17px !important;
+}
+
 .w-60 {
     width: 60% !important;
 }
@@ -354,9 +358,19 @@ table {
     table {
         font-size: 20px !important;
     }
+
+    #vehicle-request {
+        margin-top: 30px !important;
+    }
+
+    #vehicle-request h5 {
+        font-size: 22px !important;
+    }
+
     #tripTicket img,
     #vehicle-request img {
-        height: 55px;
+        height: 60px !important;
+        width: 220px !important;
     }
     #tripTicket thead .main,
     #vehicle-request thead .main {
@@ -395,6 +409,15 @@ table {
 
     #tripTicket .print-logo {
         height: 60px !important;
+    }
+
+    #vehicle-request .fs-11 {
+        font-size: 14px !important;
+    }
+
+    #vehicle-request .p-fs-16 {
+        font-size: 20px !important;
+        margin: 10px !important;
     }
 
     /* h5 {
