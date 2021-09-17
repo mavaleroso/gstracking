@@ -56,5 +56,9 @@ return [
     'fuelCharges_updated_successfully' => 'Fuel Charges updated succesfully',
     'fuelCharges_deleted_successfully' => 'Fuel Charges deleted succesfully',
 
-    'requestTransaction_created_successfully' => 'Request Transactions created successfully'
+    'requestTransaction_created_successfully' => 'Request Transactions created successfully',
+
+
+    // External Passengers
+    'externalpassengers_updated_successfully' => 'External Passengers updated succesfully',
 ];

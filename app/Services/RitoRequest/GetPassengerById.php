@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Services\RitoRequest;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use App\Models\Passenger;
 
-class GetPassengerById 
+class GetPassengerById
 {
     /**
      * Get user by email
@@ -13,10 +13,18 @@ class GetPassengerById
      */
     public function execute(int $id)
     {
+        $data['emp'] = $this->employee($id);
+        $data['ext'] = $this->external($id);
+
+        return $data;
+    }
+
+    public function employee($id)
+    {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details/people/?travel_id='.$id,
+            CURLOPT_URL => 'https://caraga-portal.dswd.gov.ph/api/travel/details/people/?travel_id=' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -35,8 +43,10 @@ class GetPassengerById
 
         curl_close($curl);
         return json_decode($response);
-
     }
 
-
-}   
+    public function external($id)
+    {
+        return Passenger::where('type', 2)->where('request_id', $id)->get();
+    }
+}
