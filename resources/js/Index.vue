@@ -102,6 +102,8 @@ export default {
             this.$store.dispatch("drivers/loadDrivers");
             this.$store.dispatch("po/loadPos");
             this.$store.dispatch("vehicles/loadVehicles");
+            this.$store.dispatch("department/loadSection");
+            this.$store.dispatch("department/loadDivision");
         }
 
         // storeDestination() {
