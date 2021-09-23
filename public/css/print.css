@@ -15,7 +15,8 @@ page[size="officio"] {
 }
 page[size="A4"] {
     width: 21cm;
-    height: 29.7cm;
+    /* height: 29.7cm; */
+    height: auto;
 }
 page[size="A4"][layout="landscape"] {
     width: 29.7cm;

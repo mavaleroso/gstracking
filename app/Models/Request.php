@@ -14,7 +14,7 @@ class Request extends Model
 {
     use ExtendedEloquentTrait;
     use WithPaginate;
-    
+
     protected $table = 'requests';
 
     /**
@@ -26,6 +26,7 @@ class Request extends Model
         'user_id',
         'division_id',
         'section_id',
+        'serial_code',
         'type_vehicle',
         'department',
         'purpose',
@@ -34,7 +35,7 @@ class Request extends Model
         'return_date',
         'depart_time',
         'is_status',
-        'remarks'   
+        'remarks'
     ];
 
     public function destinations(): HasMany

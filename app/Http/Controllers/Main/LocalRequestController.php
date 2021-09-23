@@ -24,7 +24,7 @@ class LocalRequestController extends Controller
         $this->middleware('permission:localrequest-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:localrequest-delete', ['only' => ['destroy']]);
         $this->middleware('permission:localrequest-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,7 +91,7 @@ class LocalRequestController extends Controller
     {
         $url = $travelStoreRequest->url();
         $result = $updateTravel->execute($id, $travelStoreRequest->validated(), $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.travel_updated_successfully'), 'result' => $result]);
     }
 
     /**

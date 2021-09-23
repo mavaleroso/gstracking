@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Services\LocalRequest;
 
 // use Illuminate\Http\Request;
 use App\Models\Request;
 
-class UpdateRequests 
+class UpdateRequests
 {
     /**
      * Get user by email
@@ -15,8 +16,8 @@ class UpdateRequests
     public function execute($fields, $url)
     {
         $user = auth()->user()->id;
-        $arr = array('luser' => $user, 'lpage' => 'Local_requests' , 'lurl' => $url, 'laction' => 'declined');
-        $createLogs = createLogs($arr);
+        $arr = array('luser' => $user, 'lpage' => 'Local_requests', 'lurl' => $url, 'laction' => 'declined');
+        createLogs($arr);
 
         $requests = Request::where('id', $fields['id'])->update([
             'is_status' => 4,
@@ -24,4 +25,4 @@ class UpdateRequests
         ]);
         return $requests;
     }
-}   
+}
