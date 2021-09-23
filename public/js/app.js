@@ -7919,6 +7919,109 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -7942,8 +8045,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         size: "modal-lg"
       },
       current_to: null,
+      current_id: null,
       selected: [],
-      passengers: [],
+      emp_passengers: [],
+      ext_passengers: [],
+      ext_passengers_edit: false,
       passengers_count: 0,
       pos: [],
       vehicles: [],
@@ -7959,7 +8065,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       puvNames: ["remarks"],
       rpNames: ["vehicle_1", "driver_1"],
       hiredNames: ["travel_po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"],
-      requesttrans: []
+      requesttrans: [],
+      ext_passenger_names: ["name_0", "designation_0", "gender_0"]
     };
   },
   components: {
@@ -8057,8 +8164,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
-        _this2.passengers = res.data;
+        _this2.emp_passengers = res.data.emp;
+        _this2.ext_passengers = res.data.ext;
+        _this2.emp_passengers_count = res.data.ext.length;
         _this2.current_to = TO;
+        _this2.current_id = id;
+        _this2.ext_passengers_edit = false;
         $("#modal-passengers").modal("show");
       });
     },
@@ -8150,29 +8261,110 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.hired.total -= 1;
       }
     },
-    getPos: function getPos() {
+    updateExtPassengers: function updateExtPassengers() {
+      if (this.ext_passengers_edit) {
+        this.getPassengers(this.current_id, this.current_to);
+      }
+
+      this.ext_passengers_edit = !this.ext_passengers_edit;
+    },
+    incrementExtPassenger: function incrementExtPassenger() {
+      var passenger = {
+        name: null,
+        designation: null,
+        gender: null
+      };
+      this.ext_passengers.push(passenger);
+      this.ext_passenger_names.push("name_" + (this.ext_passengers.length - 1));
+      this.ext_passenger_names.push("designation_" + (this.ext_passengers.length - 1));
+      this.ext_passenger_names.push("gender_" + (this.ext_passengers.length - 1));
+    },
+    decrementExtPassenger: function decrementExtPassenger() {
+      this.ext_passengers.pop();
+      this.ext_passenger_names.pop();
+      this.ext_passenger_names.pop();
+      this.ext_passenger_names.pop();
+    },
+    saveExtPassengers: function saveExtPassengers() {
       var _this3 = this;
 
+      var extForm = new FormData();
+      extForm.append("ext_total", this.ext_passengers.length);
+
+      for (var i = 0; i < this.ext_passengers.length; i++) {
+        extForm.append("name_" + i, this.ext_passengers[i].name ? this.ext_passengers[i].name : "");
+        extForm.append("designation_" + i, this.ext_passengers[i].designation ? this.ext_passengers[i].designation : "");
+        extForm.append("gender_" + i, this.ext_passengers[i].gender ? this.ext_passengers[i].gender : "");
+      }
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Save"
+      }).then(function (result) {
+        if (result.value) {
+          axios.put(BASE_URL + "/travel/externalpassenger/" + _this3.current_id, extForm).then(function (res) {
+            if (res.data.type == "success") {
+              _this3.updateExtPassengers();
+
+              $(".invalid-feedback").remove();
+              $(".invalid").removeClass("is-invalid");
+
+              _this3.$showToast(res.data.message, "success");
+            }
+          })["catch"](function (err) {
+            var data = err.response.data.errors;
+            var keys = [];
+            var values = [];
+
+            for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+              var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                  key = _Object$entries$_i[0],
+                  value = _Object$entries$_i[1];
+
+              keys.push("".concat(key));
+              values.push("".concat(value));
+
+              if ($('[name="' + "".concat(key) + '"]').next().length == 0) {
+                $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
+              }
+            }
+
+            for (var _i2 = 0; _i2 < _this3.ext_passenger_names.length; _i2++) {
+              if (keys.indexOf("" + _this3.ext_passenger_names[_i2] + "") == -1) {
+                $('[name="' + _this3.ext_passenger_names[_i2] + '"]').removeClass("is-invalid");
+                $('[name="' + _this3.ext_passenger_names[_i2] + '"]').next(".invalid-feedback").remove();
+              }
+            }
+          });
+        }
+      });
+    },
+    getPos: function getPos() {
+      var _this4 = this;
+
       axios.get(BASE_URL + "/api/v1/po").then(function (response) {
-        _this3.pos = response.data;
+        _this4.pos = response.data;
       });
     },
     getVehicles: function getVehicles() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get(BASE_URL + "/api/v1/vehicle").then(function (response) {
-        _this4.vehicles = response.data;
+        _this5.vehicles = response.data;
       });
     },
     getDrivers: function getDrivers() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
-        _this5.drivers = response.data;
+        _this6.drivers = response.data;
       });
     },
     approved: function approved() {
-      var _this6 = this;
+      var _this7 = this;
 
       var ritoData = $("#rito-form").serialize();
       axios.post(BASE_URL + "/travel/ritorequest", ritoData).then(function (response) {
@@ -8180,23 +8372,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         $(".invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this6.$showToast(response.data.message, "success");
+        _this7.$showToast(response.data.message, "success");
 
         $("#modal-approved").modal("toggle");
         $("input.checkable:checkbox:checked").click();
 
-        _this6.getRITO();
+        _this7.getRITO();
 
-        _this6.getRequestTrans();
+        _this7.getRequestTrans();
       })["catch"](function (error) {
         var data = error.response.data.errors;
         var keys = [];
         var values = [];
 
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
+        for (var _i3 = 0, _Object$entries2 = Object.entries(data); _i3 < _Object$entries2.length; _i3++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
 
           keys.push("".concat(key));
           values.push("".concat(value));
@@ -8219,44 +8411,44 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           }
         }
 
-        for (var i = 0; i < _this6.hiredNames.length; i++) {
-          if (_this6.hiredNames[i] == "travel_po") {
-            if (keys.indexOf("" + _this6.hiredNames[i] + "") == -1) {
-              if ($("#" + _this6.hiredNames[i] + "-select").next().next().length != 0) {
-                $("#" + _this6.hiredNames[i] + "-select").next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this7.hiredNames.length; i++) {
+          if (_this7.hiredNames[i] == "travel_po") {
+            if (keys.indexOf("" + _this7.hiredNames[i] + "") == -1) {
+              if ($("#" + _this7.hiredNames[i] + "-select").next().next().length != 0) {
+                $("#" + _this7.hiredNames[i] + "-select").next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this6.hiredNames[i] + "") == -1) {
-              $('[name="' + _this6.hiredNames[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this6.hiredNames[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this7.hiredNames[i] + "") == -1) {
+              $('[name="' + _this7.hiredNames[i] + '"]').removeClass("is-invalid");
+              $('[name="' + _this7.hiredNames[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        for (var _i2 = 0; _i2 < _this6.rpNames.length; _i2++) {
-          if (keys.indexOf("" + _this6.rpNames[_i2] + "") == -1) {
-            if ($('[name="' + _this6.rpNames[_i2] + '"]').next().next().length != 0) {
-              $('[name="' + _this6.rpNames[_i2] + '"]').next().next(".invalid-feedback").remove();
+        for (var _i4 = 0; _i4 < _this7.rpNames.length; _i4++) {
+          if (keys.indexOf("" + _this7.rpNames[_i4] + "") == -1) {
+            if ($('[name="' + _this7.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this7.rpNames[_i4] + '"]').next().next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this6.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this7.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     getVehicleModes: function getVehicleModes() {
-      var _this7 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this7.vehiclemodes = res.data.results;
+        _this8.vehiclemodes = res.data.results;
       });
     },
     getRequestTrans: function getRequestTrans() {
-      var _this8 = this;
+      var _this9 = this;
 
       axios.get(BASE_URL + "/api/v1/requesttrans").then(function (res) {
-        _this8.requesttrans = res.data;
+        _this9.requesttrans = res.data;
       });
     }
   }
@@ -61100,7 +61292,10 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                                " +
-                                  _vm._s(r.passenger_count) +
+                                  _vm._s(
+                                    parseInt(r.passenger_count) +
+                                      parseInt(r.ext_passengers)
+                                  ) +
                                   "\n                            "
                               )
                             ]
@@ -61285,7 +61480,7 @@ var render = function() {
                 _c("h5", { staticClass: "modal-title" }, [
                   _c("span", { staticClass: "m-title" }, [
                     _vm._v(
-                      _vm._s(_vm.passengers.length ? _vm.current_to : null)
+                      _vm._s(_vm.emp_passengers.length ? _vm.current_to : null)
                     )
                   ]),
                   _vm._v(" "),
@@ -61321,21 +61516,35 @@ var render = function() {
             key: "body",
             fn: function() {
               return [
+                _c("h5", [_vm._v("Employee Passengers")]),
+                _vm._v(" "),
                 _c("table", { staticClass: "w-100 table" }, [
                   _c("thead", [
                     _c("tr", [
-                      _c("th", [_vm._v("Name")]),
+                      _c("th", [_vm._v("#")]),
                       _vm._v(" "),
-                      _c("th", [_vm._v("Position / Designation")]),
+                      _c("th", { attrs: { width: "40%" } }, [_vm._v("Name")]),
                       _vm._v(" "),
-                      _c("th", [_vm._v("Gender")])
+                      _c("th", { attrs: { width: "40%" } }, [
+                        _vm._v("Position / Designation")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", { attrs: { width: "20%" } }, [_vm._v("Gender")])
                     ])
                   ]),
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.passengers, function(p, index) {
+                    _vm._l(_vm.emp_passengers, function(p, index) {
                       return _c("tr", { key: index }, [
+                        _c("td", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(index + 1) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
                         _c("td", [
                           _vm._v(
                             "\n                            " +
@@ -61355,7 +61564,225 @@ var render = function() {
                     }),
                     0
                   )
-                ])
+                ]),
+                _vm._v(" "),
+                _vm.ext_passengers.length ? _c("hr") : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex" }, [
+                  _c("h5", [
+                    _vm._v(
+                      "\n                    External Passengers\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex ml-auto" }, [
+                    _vm.ext_passengers_edit
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-sm btn-outline-primary py-1 mr-1",
+                            on: { click: _vm.incrementExtPassenger }
+                          },
+                          [_c("i", { staticClass: "fa fa-plus p-0 fs-11" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.ext_passengers_edit
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-sm btn-outline-primary py-1 mr-1",
+                            on: { click: _vm.decrementExtPassenger }
+                          },
+                          [_c("i", { staticClass: "fa fa-minus p-0 fs-11" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-primary ml-auto py-1",
+                        on: { click: _vm.updateExtPassengers }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              _vm.ext_passengers_edit ? "Cancel" : "Update"
+                            ) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm.ext_passengers.length
+                  ? _c("table", { staticClass: "w-100 table" }, [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", [_vm._v("#")]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { width: "40%" } }, [
+                            _vm._v("Name")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { width: "40%" } }, [
+                            _vm._v("Position / Designation")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", { attrs: { width: "20%" } }, [
+                            _vm._v("Gender")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.ext_passengers, function(ext, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { staticClass: "py-2" }, [
+                              _vm._v(_vm._s(index + 1))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: ext.name,
+                                    expression: "ext.name"
+                                  }
+                                ],
+                                class: _vm.ext_passengers_edit
+                                  ? "w-100 border-pass"
+                                  : "w-100 border-none",
+                                attrs: {
+                                  type: "text",
+                                  name: "name_" + index,
+                                  readonly: !_vm.ext_passengers_edit
+                                },
+                                domProps: { value: ext.name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(ext, "name", $event.target.value)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: ext.designation,
+                                    expression: "ext.designation"
+                                  }
+                                ],
+                                class: _vm.ext_passengers_edit
+                                  ? "w-100 border-pass"
+                                  : "w-100 border-none",
+                                attrs: {
+                                  type: "text",
+                                  name: "designation_" + index,
+                                  readonly: !_vm.ext_passengers_edit
+                                },
+                                domProps: { value: ext.designation },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      ext,
+                                      "designation",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: ext.gender,
+                                      expression: "ext.gender"
+                                    }
+                                  ],
+                                  class: _vm.ext_passengers_edit
+                                    ? "w-100 text-dark border-pass"
+                                    : "w-100 text-dark border-none",
+                                  attrs: {
+                                    name: "gender_" + index,
+                                    disabled: !_vm.ext_passengers_edit
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        ext,
+                                        "gender",
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("option", { attrs: { value: "" } }),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "Male" } }, [
+                                    _vm._v("Male")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("option", { attrs: { value: "Female" } }, [
+                                    _vm._v("Female")
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ext_passengers.length && _vm.ext_passengers_edit
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary py-1 d-block ml-auto",
+                        on: { click: _vm.saveExtPassengers }
+                      },
+                      [_vm._v("\n                Save\n            ")]
+                    )
+                  : _vm._e()
               ]
             },
             proxy: true

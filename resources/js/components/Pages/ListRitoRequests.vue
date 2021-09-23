@@ -128,7 +128,10 @@
                                     @click="getPassengers(r.id, r.tracking_no)"
                                     class="btn btn-sm btn-light-primary px-2 py-1"
                                 >
-                                    {{ r.passenger_count }}
+                                    {{
+                                        parseInt(r.passenger_count) +
+                                            parseInt(r.ext_passengers)
+                                    }}
                                 </button>
                             </td>
                             <td>
@@ -240,7 +243,7 @@
             <template v-slot:header>
                 <h5 class="modal-title">
                     <span class="m-title">{{
-                        passengers.length ? current_to : null
+                        emp_passengers.length ? current_to : null
                     }}</span>
                     <span class="d-block text-muted font-size-sm"
                         >Tracking Number</span
@@ -256,16 +259,21 @@
                 </button>
             </template>
             <template v-slot:body>
+                <h5>Employee Passengers</h5>
                 <table class="w-100 table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Position / Designation</th>
-                            <th>Gender</th>
+                            <th>#</th>
+                            <th width="40%">Name</th>
+                            <th width="40%">Position / Designation</th>
+                            <th width="20%">Gender</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(p, index) in passengers" :key="index">
+                        <tr v-for="(p, index) in emp_passengers" :key="index">
+                            <td>
+                                {{ index + 1 }}
+                            </td>
                             <td>
                                 {{ p.first_name }} {{ p.middle_name[0] }}
                                 {{ p.last_name }}
@@ -275,6 +283,101 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <hr v-if="ext_passengers.length" />
+
+                <div class="d-flex">
+                    <h5>
+                        External Passengers
+                    </h5>
+                    <div class="d-flex ml-auto">
+                        <button
+                            v-if="ext_passengers_edit"
+                            @click="incrementExtPassenger"
+                            class="btn btn-sm btn-outline-primary py-1 mr-1"
+                        >
+                            <i class="fa fa-plus p-0 fs-11"></i>
+                        </button>
+                        <button
+                            v-if="ext_passengers_edit"
+                            @click="decrementExtPassenger"
+                            class="btn btn-sm btn-outline-primary py-1 mr-1"
+                        >
+                            <i class="fa fa-minus p-0 fs-11"></i>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-primary ml-auto py-1"
+                            @click="updateExtPassengers"
+                        >
+                            {{ ext_passengers_edit ? "Cancel" : "Update" }}
+                        </button>
+                    </div>
+                </div>
+
+                <table v-if="ext_passengers.length" class="w-100 table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th width="40%">Name</th>
+                            <th width="40%">Position / Designation</th>
+                            <th width="20%">Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(ext, index) in ext_passengers" :key="index">
+                            <td class="py-2">{{ index + 1 }}</td>
+                            <td>
+                                <input
+                                    type="text"
+                                    :name="'name_' + index"
+                                    :class="
+                                        ext_passengers_edit
+                                            ? 'w-100 border-pass'
+                                            : 'w-100 border-none'
+                                    "
+                                    v-model="ext.name"
+                                    :readonly="!ext_passengers_edit"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    :name="'designation_' + index"
+                                    :class="
+                                        ext_passengers_edit
+                                            ? 'w-100 border-pass'
+                                            : 'w-100 border-none'
+                                    "
+                                    v-model="ext.designation"
+                                    :readonly="!ext_passengers_edit"
+                                />
+                            </td>
+                            <td>
+                                <select
+                                    :name="'gender_' + index"
+                                    :class="
+                                        ext_passengers_edit
+                                            ? 'w-100 text-dark border-pass'
+                                            : 'w-100 text-dark border-none'
+                                    "
+                                    v-model="ext.gender"
+                                    :disabled="!ext_passengers_edit"
+                                >
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button
+                    v-if="ext_passengers.length && ext_passengers_edit"
+                    class="btn btn-primary py-1 d-block ml-auto"
+                    @click="saveExtPassengers"
+                >
+                    Save
+                </button>
             </template>
         </modal>
         <modal :id="modal.approved_id">
@@ -597,8 +700,11 @@ export default {
                 size: "modal-lg"
             },
             current_to: null,
+            current_id: null,
             selected: [],
-            passengers: [],
+            emp_passengers: [],
+            ext_passengers: [],
+            ext_passengers_edit: false,
             passengers_count: 0,
             pos: [],
             vehicles: [],
@@ -620,7 +726,8 @@ export default {
                 "driver_name_1",
                 "driver_contact_1"
             ],
-            requesttrans: []
+            requesttrans: [],
+            ext_passenger_names: ["name_0", "designation_0", "gender_0"]
         };
     },
     components: {
@@ -726,8 +833,12 @@ export default {
         },
         getPassengers(id, TO) {
             axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res => {
-                this.passengers = res.data;
+                this.emp_passengers = res.data.emp;
+                this.ext_passengers = res.data.ext;
+                this.emp_passengers_count = res.data.ext.length;
                 this.current_to = TO;
+                this.current_id = id;
+                this.ext_passengers_edit = false;
                 $("#modal-passengers").modal("show");
             });
         },
@@ -835,6 +946,128 @@ export default {
 
                 this.hired.total -= 1;
             }
+        },
+        updateExtPassengers() {
+            if (this.ext_passengers_edit) {
+                this.getPassengers(this.current_id, this.current_to);
+            }
+            this.ext_passengers_edit = !this.ext_passengers_edit;
+        },
+        incrementExtPassenger() {
+            let passenger = {
+                name: null,
+                designation: null,
+                gender: null
+            };
+            this.ext_passengers.push(passenger);
+            this.ext_passenger_names.push(
+                "name_" + (this.ext_passengers.length - 1)
+            );
+            this.ext_passenger_names.push(
+                "designation_" + (this.ext_passengers.length - 1)
+            );
+            this.ext_passenger_names.push(
+                "gender_" + (this.ext_passengers.length - 1)
+            );
+        },
+        decrementExtPassenger() {
+            this.ext_passengers.pop();
+            this.ext_passenger_names.pop();
+            this.ext_passenger_names.pop();
+            this.ext_passenger_names.pop();
+        },
+        saveExtPassengers() {
+            var extForm = new FormData();
+            extForm.append("ext_total", this.ext_passengers.length);
+            for (let i = 0; i < this.ext_passengers.length; i++) {
+                extForm.append(
+                    "name_" + i,
+                    this.ext_passengers[i].name
+                        ? this.ext_passengers[i].name
+                        : ""
+                );
+                extForm.append(
+                    "designation_" + i,
+                    this.ext_passengers[i].designation
+                        ? this.ext_passengers[i].designation
+                        : ""
+                );
+                extForm.append(
+                    "gender_" + i,
+                    this.ext_passengers[i].gender
+                        ? this.ext_passengers[i].gender
+                        : ""
+                );
+            }
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Save"
+            }).then(result => {
+                if (result.value) {
+                    axios
+                        .put(
+                            BASE_URL +
+                                "/travel/externalpassenger/" +
+                                this.current_id,
+                            extForm
+                        )
+                        .then(res => {
+                            if (res.data.type == "success") {
+                                this.updateExtPassengers();
+                                $(".invalid-feedback").remove();
+                                $(".invalid").removeClass("is-invalid");
+                                this.$showToast(res.data.message, "success");
+                            }
+                        })
+                        .catch(err => {
+                            let data = err.response.data.errors;
+                            let keys = [];
+                            let values = [];
+                            for (const [key, value] of Object.entries(data)) {
+                                keys.push(`${key}`);
+                                values.push(`${value}`);
+                                if (
+                                    $('[name="' + `${key}` + '"]').next()
+                                        .length == 0
+                                ) {
+                                    $('[name="' + `${key}` + '"]').after(
+                                        '<div class="invalid-feedback invalid-feedback-admin d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
+                                }
+                            }
+
+                            for (
+                                let i = 0;
+                                i < this.ext_passenger_names.length;
+                                i++
+                            ) {
+                                if (
+                                    keys.indexOf(
+                                        "" + this.ext_passenger_names[i] + ""
+                                    ) == -1
+                                ) {
+                                    $(
+                                        '[name="' +
+                                            this.ext_passenger_names[i] +
+                                            '"]'
+                                    ).removeClass("is-invalid");
+                                    $(
+                                        '[name="' +
+                                            this.ext_passenger_names[i] +
+                                            '"]'
+                                    )
+                                        .next(".invalid-feedback")
+                                        .remove();
+                                }
+                            }
+                        });
+                }
+            });
         },
         getPos() {
             axios.get(BASE_URL + "/api/v1/po").then(response => {

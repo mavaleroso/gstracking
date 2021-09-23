@@ -3,6 +3,7 @@
 namespace App\Services\RitoRequest;
 
 use App\Models\System;
+use App\Models\Passenger;
 
 class GetListingRito
 {
@@ -22,6 +23,7 @@ class GetListingRito
 
         for ($i = 0; $i < count($results['data']); $i++) {
             $results['data'][$i]->requestor = $this->requested_by($results['data'][$i]->requested_by)[0];
+            $results['data'][$i]->ext_passengers = $this->external_passengers($results['data'][$i]->id);
         }
         return $results;
     }
@@ -78,5 +80,10 @@ class GetListingRito
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
         return $response;
+    }
+
+    public function external_passengers($id)
+    {
+        return Passenger::where('type', 2)->where('request_id', $id)->get()->count();
     }
 }

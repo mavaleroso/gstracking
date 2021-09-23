@@ -109,6 +109,12 @@ Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
             'destroy' => 'main.printtripticket.destroy',
         ]
     ]);
+
+    Route::resource('externalpassenger', 'ExternalPassengersController', [
+        'names' => [
+            'update' => 'main.externalpassenger.update',
+        ]
+    ]);
     Route::post('listrequeststaff/declined/', 'ListRequestStaffController@declined');
 });
 
