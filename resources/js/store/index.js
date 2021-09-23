@@ -6,6 +6,7 @@ import drivers from "./modules/drivers";
 import vehicles from "./modules/vehicles";
 import sessionStore from "./modules/session";
 import po from "./modules/po";
+import department from "./modules/department";
 Vue.use(Vuex);
 Vue.config.devtools = true;
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         drivers,
         vehicles,
         po,
-        sessionStore
+        sessionStore,
+        department
     }
 });

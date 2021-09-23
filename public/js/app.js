@@ -1962,6 +1962,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("drivers/loadDrivers");
       this.$store.dispatch("po/loadPos");
       this.$store.dispatch("vehicles/loadVehicles");
+      this.$store.dispatch("department/loadSection");
+      this.$store.dispatch("department/loadDivision");
     } // storeDestination() {
     //     let division = localStorage.getItem("division");
     //     let region = localStorage.getItem("region");
@@ -10721,6 +10723,53 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -10734,7 +10783,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       travelDate: null,
       returnDate: null,
       activeDivision: null,
-      results: [],
+      employees: [],
       total: 1,
       gender: "",
       designation: "",
@@ -10745,19 +10794,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   created: function created() {
     this.getDivision();
-    this.getSection();
-    this.EmployeeList();
-    this.getDestination();
+    this.getSection(); // this.getDestination();
   },
   computed: {
     loadingStats: function loadingStats() {
-      var res = this.$store.getters["currentUser/loadingStats"];
-
-      if (!res) {
-        this.results = JSON.parse(localStorage.getItem("ListEmployee"));
-      }
-
-      return res;
+      this.employees = this.$store.getters["employees/employee"];
+      return this.$store.getters["employees/loadingStats"];
     }
   },
   mounted: function mounted() {
@@ -10805,24 +10847,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     getData: function getData(id, index) {
       var vm = this;
-      this.pax_des[index - 1] = vm.results[id].position;
-      this.pax_gen[index - 1] = vm.results[id].gender;
-      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.results[id].gender);
-      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.results[id].position);
+      this.pax_des[index - 1] = vm.employees[id].position;
+      this.pax_gen[index - 1] = vm.employees[id].gender;
+      $("[name=\"pax_gen_".concat(index, "\"]")).val(vm.employees[id].gender);
+      $("[name=\"pax_des_".concat(index, "\"]")).val(vm.employees[id].position);
     },
     clearData: function clearData() {
       var vm = this;
       vm.total = 1;
       vm.pax_des.length = 0;
       vm.pax_gen.length = 0;
-    },
-    EmployeeList: function EmployeeList() {
-      this.results = JSON.parse(localStorage.getItem("ListEmployee"));
-    },
-    convertToInt: function convertToInt(data) {
-      console.log("Called");
-      console.log(data);
-      return false;
     },
     addRow: function addRow(event) {
       event.preventDefault();
@@ -10867,67 +10901,89 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       var requestform = $("#kt_form").serialize();
-      axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
-        $(".invalid-feedback").remove();
-        $(".is-invalid").removeClass("is-invalid");
-        Swal.fire("Good job!", response.data.message, "success");
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Approve",
+        cancelButtonText: "Cancel",
+        reverseButtons: false
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(BASE_URL + "/travel/request", requestform).then(function (response) {
+            $(".invalid-feedback").remove();
+            $(".is-invalid").removeClass("is-invalid");
+            Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, "success");
+            _this2.$showToast(response.data.message, "success");
 
-        $(".details-input").attr("disabled", true);
-        _this2.complete = true;
-        _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
-      })["catch"](function (error) {
-        var data = error.response.data.errors;
-        var keys = [];
-        var values = [];
+            $(".details-input").attr("disabled", true);
+            _this2.complete = true;
+            _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
+          })["catch"](function (error) {
+            var data = error.response.data.errors;
+            var keys = [];
+            var values = [];
 
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
+            for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+              var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                  key = _Object$entries$_i[0],
+                  value = _Object$entries$_i[1];
 
-          keys.push("".concat(key));
-          values.push("".concat(value));
+              keys.push("".concat(key));
+              values.push("".concat(value));
 
-          if ("".concat(key) == "region" || "".concat(key) == "province" || "".concat(key) == "city" || "".concat(key) == "division" || "".concat(key) == "section") {
-            if ($("#kt_select_" + "".concat(key)).next().next().length == 0 || $("#kt_select_" + "".concat(key)).next().next().attr("class").search("invalid-feedback") == -1) {
-              $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
-            }
-          } else {
-            if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
-              $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
-              $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
-            }
-          }
-        }
-
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "region" || _this2.names[i] == "province" || _this2.names[i] == "city" || _this2.names[i] == "division" || _this2.names[i] == "section") {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
-                $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
+              if ("".concat(key) == "region" || "".concat(key) == "province" || "".concat(key) == "city" || "".concat(key) == "division" || "".concat(key) == "section") {
+                if ($("#kt_select_" + "".concat(key)).next().next().length == 0 || $("#kt_select_" + "".concat(key)).next().next().attr("class").search("invalid-feedback") == -1) {
+                  $("#kt_select_" + "".concat(key)).next().after('<div class="invalid-feedback d-block">' + "".concat(value) + "</div>");
+                }
+              } else {
+                if ($('[name="' + "".concat(key) + '"]').next().length == 0 || $('[name="' + "".concat(key) + '"]').next().attr("class").search("invalid-feedback") == -1) {
+                  $('[name="' + "".concat(key) + '"]').addClass("is-invalid");
+                  $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback">' + "".concat(value) + "</div>");
+                }
               }
             }
-          } else {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
-              $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
-            }
-          }
-        }
 
-        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+            for (var i = 0; i < _this2.names.length; i++) {
+              if (_this2.names[i] == "region" || _this2.names[i] == "province" || _this2.names[i] == "city" || _this2.names[i] == "division" || _this2.names[i] == "section") {
+                if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+                  if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
+                    $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
+                  }
+                }
+              } else {
+                if (keys.indexOf("" + _this2.names[i] + "") == -1) {
+                  $('[name="' + _this2.names[i] + '"]').removeClass("is-invalid");
+                  $('[name="' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
+                }
+              }
+            }
+
+            _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+          });
+        } else if (result.dismiss === "cancel") {
+          Swal.fire("Cancelled!", "The request has been cancelled.", "error");
+        }
       });
     },
     getDivision: function getDivision() {
-      this.divisions = JSON.parse(localStorage.getItem("division"));
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.divisions = _this3.$store.getters["department/Division"];
+      }, 1000);
     },
     getSection: function getSection() {
-      this.sections = JSON.parse(localStorage.getItem("section"));
+      var _this4 = this;
+
+      setTimeout(function () {
+        _this4.sections = _this4.$store.getters["department/Section"];
+      }, 1000);
     },
     getDestination: function getDestination() {
-      axios.get(BASE_URL + "/travel/request/").then(function (response) {
+      axios.get(BASE_URL + "/travel/request").then(function (response) {
         var res = response.data.result;
         var result = res.map(function (a) {
           return a.destination;
@@ -14543,14 +14599,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_employees__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/employees */ "./resources/js/store/modules/employees.js");
 /* harmony import */ var _modules_destination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/destination */ "./resources/js/store/modules/destination.js");
 /* harmony import */ var _modules_drivers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/drivers */ "./resources/js/store/modules/drivers.js");
 /* harmony import */ var _modules_vehicles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/vehicles */ "./resources/js/store/modules/vehicles.js");
 /* harmony import */ var _modules_session__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/session */ "./resources/js/store/modules/session.js");
 /* harmony import */ var _modules_po__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/po */ "./resources/js/store/modules/po.js");
+/* harmony import */ var _modules_department__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/department */ "./resources/js/store/modules/department.js");
 
 
 
@@ -14559,18 +14616,93 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_6__.default.use(vuex__WEBPACK_IMPORTED_MODULE_7__.default);
-vue__WEBPACK_IMPORTED_MODULE_6__.default.config.devtools = true;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_7__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
+vue__WEBPACK_IMPORTED_MODULE_7__.default.config.devtools = true;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_8__.default.Store({
   modules: {
     employees: _modules_employees__WEBPACK_IMPORTED_MODULE_0__.default,
     destination: _modules_destination__WEBPACK_IMPORTED_MODULE_1__.default,
     drivers: _modules_drivers__WEBPACK_IMPORTED_MODULE_2__.default,
     vehicles: _modules_vehicles__WEBPACK_IMPORTED_MODULE_3__.default,
     po: _modules_po__WEBPACK_IMPORTED_MODULE_5__.default,
-    sessionStore: _modules_session__WEBPACK_IMPORTED_MODULE_4__.default
+    sessionStore: _modules_session__WEBPACK_IMPORTED_MODULE_4__.default,
+    department: _modules_department__WEBPACK_IMPORTED_MODULE_6__.default
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/department.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/department.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  loadingStats: false,
+  Division: [],
+  Section: []
+};
+var getters = {
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  },
+  Division: function Division(state) {
+    return state.Division;
+  },
+  Section: function Section(state) {
+    return state.Section;
+  }
+};
+var actions = {
+  loadDivision: function loadDivision(_ref) {
+    var commit = _ref.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/division").then(function (response) {
+      commit("setDivision", response.data);
+    });
+  },
+  loadSection: function loadSection(_ref2) {
+    var commit = _ref2.commit;
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/section").then(function (response) {
+      commit("setSection", response.data);
+    });
+  },
+  setLocalDivision: function setLocalDivision(_ref3, data) {
+    var commit = _ref3.commit;
+    commit("setDivision", data);
+  },
+  setLocalSection: function setLocalSection(_ref4, data) {
+    var commit = _ref4.commit;
+    commit("setSection", data);
+  }
+};
+var mutations = {
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  },
+  setDivision: function setDivision(state, division) {
+    state.Division = division;
+  },
+  setSection: function setSection(state, section) {
+    state.Section = section;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
 
 /***/ }),
 
@@ -14625,42 +14757,36 @@ var actions = {
     var commit = _ref.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/division").then(function (response) {
       commit("setDivision", response.data);
-      localStorage.setItem("division", JSON.stringify(response.data));
     });
   },
   loadRegion: function loadRegion(_ref2) {
     var commit = _ref2.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/region").then(function (response) {
       commit("setRegion", response.data);
-      localStorage.setItem("region", JSON.stringify(response.data));
     });
   },
   loadSection: function loadSection(_ref3) {
     var commit = _ref3.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/section").then(function (response) {
       commit("setRegion", response.data);
-      localStorage.setItem("section", JSON.stringify(response.data));
     });
   },
   loadProvince: function loadProvince(_ref4) {
     var commit = _ref4.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/province").then(function (response) {
       commit("setProvince", response.data);
-      localStorage.setItem("province", JSON.stringify(response.data));
     });
   },
   loadCity: function loadCity(_ref5) {
     var commit = _ref5.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/city").then(function (response) {
       commit("setCity", response.data);
-      localStorage.setItem("city", JSON.stringify(response.data));
     });
   },
   loadBarangay: function loadBarangay(_ref6) {
     var commit = _ref6.commit;
     return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/brgy").then(function (response) {
       commit("setBarangay", response.data);
-      localStorage.setItem("barangay", JSON.stringify(response.data));
     });
   },
   setLocalDivision: function setLocalDivision(_ref7, data) {
@@ -65215,7 +65341,9 @@ var render = function() {
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
                     _c("p", { staticClass: "lead" }, [
-                      _vm._v("Your request has successfully completed!")
+                      _vm._v(
+                        "\n                            Your request has successfully completed!\n                        "
+                      )
                     ]),
                     _vm._v(" "),
                     _c("hr", { staticClass: "my-4" }),
@@ -65260,7 +65388,9 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("h3", { staticClass: "text-dark font-weight-bold mb-10" }, [
-                  _vm._v("Requestor Info:")
+                  _vm._v(
+                    "\n                            Requestor Info:\n                        "
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group row" }, [
@@ -65287,9 +65417,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n                                        " +
                                   _vm._s(division.division_name) +
-                                  "\n                  "
+                                  "\n                                    "
                               )
                             ]
                           )
@@ -65328,9 +65458,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                    " +
+                                  "\n                                        " +
                                     _vm._s(section.section_name) +
-                                    "\n                  "
+                                    "\n                                    "
                                 )
                               ]
                             )
@@ -65408,7 +65538,7 @@ var render = function() {
                         { staticClass: "text-dark font-weight-bold mb-10" },
                         [
                           _vm._v(
-                            "\n                  Passenger Details:\n                "
+                            "\n                                    Passenger Details:\n                                "
                           )
                         ]
                       ),
@@ -65490,9 +65620,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                      " +
+                                    "\n                                            " +
                                       _vm._s(index) +
-                                      "\n                    "
+                                      "\n                                        "
                                   )
                                 ]
                               ),
@@ -65515,7 +65645,7 @@ var render = function() {
                                           attrs: { label: "Label" }
                                         }),
                                         _vm._v(" "),
-                                        _vm._l(_vm.results, function(
+                                        _vm._l(_vm.employees, function(
                                           result,
                                           index
                                         ) {
@@ -65535,13 +65665,13 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                          " +
+                                                "\n                                                    " +
                                                   _vm._s(result.first_name) +
-                                                  "\n                          " +
+                                                  "\n                                                    " +
                                                   _vm._s(result.middle_name) +
-                                                  "\n                          " +
+                                                  "\n                                                    " +
                                                   _vm._s(result.last_name) +
-                                                  "\n                        "
+                                                  "\n                                                "
                                               )
                                             ]
                                           )
@@ -65564,7 +65694,7 @@ var render = function() {
                                           attrs: { label: "Label" }
                                         }),
                                         _vm._v(" "),
-                                        _vm._l(_vm.results, function(
+                                        _vm._l(_vm.employees, function(
                                           result,
                                           index
                                         ) {
@@ -65584,13 +65714,13 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                          " +
+                                                "\n                                                    " +
                                                   _vm._s(result.first_name) +
-                                                  "\n                          " +
+                                                  "\n                                                    " +
                                                   _vm._s(result.middle_name) +
-                                                  "\n                          " +
+                                                  "\n                                                    " +
                                                   _vm._s(result.last_name) +
-                                                  "\n                        "
+                                                  "\n                                                "
                                               )
                                             ]
                                           )
@@ -65693,7 +65823,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "ki ki-check icon-sm" }),
-                  _vm._v("Save Form\n      ")
+                  _vm._v("Save Form\n            ")
                 ]
               )
             ])
@@ -65710,7 +65840,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [
-          _vm._v("\n        Motor Vehicle\n        "),
+          _vm._v("\n                Motor Vehicle\n                "),
           _c("i", { staticClass: "mr-2" }),
           _vm._v(" "),
           _c("small", {}, [_vm._v("Request Form")])
@@ -65780,23 +65910,27 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
-          _vm._v("#")
-        ]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
           _vm._v(
-            "\n                      Name of Passenger/s\n                    "
+            "\n                                            #\n                                        "
           )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
           _vm._v(
-            "\n                      Position/Designation\n                    "
+            "\n                                            Name of Passenger/s\n                                        "
+          )
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v(
+            "\n                                            Position/Designation\n                                        "
           )
         ]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center w-15", attrs: { scope: "col" } }, [
-          _vm._v("Gender")
+          _vm._v(
+            "\n                                            Gender\n                                        "
+          )
         ])
       ])
     ])
