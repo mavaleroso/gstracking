@@ -47,6 +47,6 @@ class GetPassengerById
 
     public function external($id)
     {
-        return Passenger::where('type', 2)->where('request_id', $id)->get();
+        return Passenger::where('request_type', 'rito')->where('type', 2)->where('request_id', $id)->get();
     }
 }

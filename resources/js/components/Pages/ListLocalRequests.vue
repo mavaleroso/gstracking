@@ -99,37 +99,16 @@
                     v-if="status == 1"
                     @click="edit"
                     type="button"
-                    class="btn-edit btn btn-sm btn-primary mr-7"
+                    :disabled="employeeStats"
+                    :class="
+                        employeeStats
+                            ? 'btn-edit btn btn-sm btn-primary mr-7 spinner spinner-white spinner-right'
+                            : 'btn-edit btn btn-sm btn-primary mr-7'
+                    "
                 >
                     <i class="la la-edit icon-md"></i>
                     <span>Edit</span>
                 </button>
-                <a
-                    v-if="status == 2"
-                    :href="'print_request?id=' + current_id"
-                    target="_blank"
-                >
-                    <button
-                        type="button"
-                        class="btn-print btn btn-sm btn-primary mr-7"
-                    >
-                        <i class="la la-print icon-md"></i>
-                        <span>Print</span>
-                    </button>
-                </a>
-                <a
-                    v-else-if="status === 4"
-                    :href="'print_request?id=' + current_id"
-                    target="_blank"
-                >
-                    <button
-                        type="button"
-                        class="btn-print btn btn-sm btn-primary mr-7"
-                    >
-                        <i class="la la-print icon-md"></i>
-                        <span>Print</span>
-                    </button>
-                </a>
                 <button
                     type="button"
                     class="close"
@@ -229,7 +208,17 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="separator separator-dashed my-10"></div>
-                            <div class="">
+                            <div
+                                :class="
+                                    employeeStats ? 'overlay overlay-block' : ''
+                                "
+                            >
+                                <div
+                                    v-if="employeeStats"
+                                    class="overlay-layer bg-dark-o-10"
+                                >
+                                    <div class="spinner spinner-primary"></div>
+                                </div>
                                 <div class="d-flex">
                                     <input
                                         id="pax-total"
@@ -240,7 +229,7 @@
                                     <h5
                                         class="text-dark font-weight-bold mb-10"
                                     >
-                                        Passenger Details:
+                                        Employee Passenger Details:
                                     </h5>
                                     <div class="ml-auto" v-if="request_edit">
                                         <button
@@ -313,7 +302,7 @@
                                                     ></option>
                                                     <option
                                                         v-for="(result,
-                                                        index) in employee_results"
+                                                        index) in employees"
                                                         :key="index"
                                                         :value="
                                                             result.first_name +
@@ -341,8 +330,8 @@
                                                     "
                                                     class="form-control"
                                                     type="text"
-                                                    readonly
                                                     :value="pax.designation"
+                                                    readonly
                                                 />
                                             </td>
                                             <td>
@@ -353,10 +342,115 @@
                                                     "
                                                     class="form-control details-input"
                                                     type="text"
-                                                    disabled="disabled"
                                                     :value="pax.gender"
                                                     readonly
                                                 />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr />
+                                <div class="d-flex">
+                                    <input
+                                        id="ext-pax-total"
+                                        type="hidden"
+                                        name="ext_pax_total"
+                                        v-model="ext_pax.length"
+                                    />
+                                    <h5
+                                        class="text-dark font-weight-bold mb-10"
+                                    >
+                                        External Passenger Details:
+                                    </h5>
+                                    <div class="ml-auto" v-if="request_edit">
+                                        <button
+                                            class="btn btn-sm btn-outline-primary"
+                                            @click="addExtPassengerRow"
+                                        >
+                                            <i
+                                                class="fa fa-plus-square p-0"
+                                            ></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-primary"
+                                            @click="removeExtPassengerRow"
+                                        >
+                                            <i
+                                                class="fa fa-minus-square p-0"
+                                            ></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <table
+                                    v-if="ext_pax.length"
+                                    id="ext-passenger-tbl"
+                                    class="table w-100"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">
+                                                #
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                Name of Passenger/s
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                Position/Designation
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="text-center w-15"
+                                            >
+                                                Sex
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="(ext, index) in ext_pax"
+                                            :key="index"
+                                        >
+                                            <td scope="row" class="text-center">
+                                                {{ index + 1 }}
+                                            </td>
+                                            <td>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    v-model="ext.name"
+                                                    :name="'ext_name_' + index"
+                                                    :readonly="!request_edit"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    v-model="ext.designation"
+                                                    :name="
+                                                        'ext_designation_' +
+                                                            index
+                                                    "
+                                                    :readonly="!request_edit"
+                                                />
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-control"
+                                                    v-model="ext.gender"
+                                                    :name="
+                                                        'ext_gender_' + index
+                                                    "
+                                                    :disabled="!request_edit"
+                                                >
+                                                    <option value=""></option>
+                                                    <option value="Male"
+                                                        >Male</option
+                                                    >
+                                                    <option value="Female"
+                                                        >Female</option
+                                                    >
+                                                </select>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -820,9 +914,11 @@ export default {
                 "driver_contact_1"
             ],
             remarks: null,
-            employee_results: [],
+            employees: [],
             pax_des: [],
-            pax_gen: []
+            pax_gen: [],
+            ext_pax: [],
+            extNames: []
         };
     },
     components: {
@@ -833,10 +929,15 @@ export default {
         this.getPo();
         this.getDriver();
         this.getVehiclemode();
-        this.EmployeeList();
     },
     mounted() {
         this.ini();
+    },
+    computed: {
+        employeeStats() {
+            this.employees = this.$store.getters["employees/employee"];
+            return this.$store.getters["employees/loadingStats"];
+        }
     },
     methods: {
         ini() {
@@ -1066,19 +1167,16 @@ export default {
                                     paxVal = paxVal - 1;
                                     vm.getData(paxVal, i);
                                     let fullname =
-                                        vm.employee_results[paxVal].first_name +
+                                        vm.employees[paxVal].first_name +
                                         " " +
-                                        vm.employee_results[paxVal]
-                                            .middle_name +
+                                        vm.employees[paxVal].middle_name +
                                         " " +
-                                        vm.employee_results[paxVal].last_name;
+                                        vm.employees[paxVal].last_name;
                                     let data = {
                                         created_at: null,
                                         designation:
-                                            vm.employee_results[paxVal]
-                                                .position,
-                                        gender:
-                                            vm.employee_results[paxVal].gender,
+                                            vm.employees[paxVal].position,
+                                        gender: vm.employees[paxVal].gender,
                                         id: 1,
                                         name: fullname,
                                         request_id: 1,
@@ -1109,24 +1207,24 @@ export default {
                     }, 500);
                 });
         },
-
-        EmployeeList() {
-            this.employee_results = JSON.parse(
-                localStorage.getItem("ListEmployee")
-            );
-        },
         getData(id, index) {
             let vm = this;
-            this.pax_des[index - 1] = vm.employee_results[id].position;
-            this.pax_gen[index - 1] = vm.employee_results[id].gender;
-            $(`[name="pax_gen_${index}"]`).val(vm.employee_results[id].gender);
-            $(`[name="pax_des_${index}"]`).val(
-                vm.employee_results[id].position
-            );
+            this.pax_des[index - 1] = vm.employees[id].position;
+            this.pax_gen[index - 1] = vm.employees[id].gender;
+            $(`[name="pax_gen_${index}"]`).val(vm.employees[id].gender);
+            $(`[name="pax_des_${index}"]`).val(vm.employees[id].position);
         },
         getPassengers(id) {
+            this.passengers = [];
+            this.ext_pax = [];
             axios.get(BASE_URL + "/api/v1/passenger/" + id).then(response => {
-                this.passengers = response.data;
+                for (let i = 0; i < response.data.length; i++) {
+                    if (response.data[i].type == 1) {
+                        this.passengers.push(response.data[i]);
+                    } else if (response.data[i].type == 2) {
+                        this.ext_pax.push(response.data[i]);
+                    }
+                }
             });
         },
         paxIndex(index) {
@@ -1185,7 +1283,7 @@ export default {
                                 .attr("class")
                                 .search("invalid-feedback") == -1
                         ) {
-                            $('input[name="' + `${key}` + '"]').addClass(
+                            $('[name="' + `${key}` + '"]').addClass(
                                 "is-invalid"
                             );
                             $('[name="' + `${key}` + '"]').after(
@@ -1201,6 +1299,16 @@ export default {
                                 'input[name="' + this.names[i] + '"]'
                             ).removeClass("is-invalid");
                             $('[name="' + this.names[i] + '"]')
+                                .next(".invalid-feedback")
+                                .remove();
+                        }
+                    }
+                    for (let j = 0; j < this.extNames.length; j++) {
+                        if (keys.indexOf("" + this.extNames[j] + "") == -1) {
+                            $('[name="' + this.extNames[j] + '"]').removeClass(
+                                "is-invalid"
+                            );
+                            $('[name="' + this.extNames[j] + '"]')
                                 .next(".invalid-feedback")
                                 .remove();
                         }
@@ -1401,15 +1509,15 @@ export default {
                         paxVal = paxVal - 1;
                         vm.getData(paxVal, i);
                         let fullname =
-                            vm.employee_results[paxVal].first_name +
+                            vm.employees[paxVal].first_name +
                             " " +
-                            vm.employee_results[paxVal].middle_name +
+                            vm.employees[paxVal].middle_name +
                             " " +
-                            vm.employee_results[paxVal].last_name;
+                            vm.employees[paxVal].last_name;
                         let data = {
                             created_at: null,
-                            designation: vm.employee_results[paxVal].position,
-                            gender: vm.employee_results[paxVal].gender,
+                            designation: vm.employees[paxVal].position,
+                            gender: vm.employees[paxVal].gender,
                             id: 1,
                             name: fullname,
                             request_id: 1,
@@ -1473,6 +1581,20 @@ export default {
             $("#pax-total").val(
                 parseInt($("#passenger-tbl tbody tr:eq(-1) td:eq(0)").text())
             );
+        },
+        addExtPassengerRow(event) {
+            event.preventDefault();
+            this.ext_pax.push({ name: null, designation: null, gender: null });
+            this.extNames.push("ext_name_" + (this.ext_pax.length - 1));
+            this.extNames.push("ext_designation_" + (this.ext_pax.length - 1));
+            this.extNames.push("ext_gender_" + (this.ext_pax.length - 1));
+        },
+        removeExtPassengerRow(event) {
+            event.preventDefault();
+            this.ext_pax.pop();
+            this.extNames.pop();
+            this.extNames.pop();
+            this.extNames.pop();
         },
         incrementOfficeVehicle(event) {
             event.preventDefault();

@@ -35,8 +35,8 @@ class TravelStoreRequest extends FormRequest
             'date_return' => 'required|after_or_equal:today',
             'time_depart' => 'required',
             'pax_total' => 'required',
-            'destination_place' => 'required'
-
+            'destination_place' => 'required',
+            'ext_pax_total' => 'required',
         ];
 
         for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {
@@ -45,6 +45,11 @@ class TravelStoreRequest extends FormRequest
             $rules['pax_gen_' . $i] = 'required';
         }
 
+        for ($j = 0; $j < $this->request->get('ext_pax_total'); $j++) {
+            $rules['ext_name_' . $j] = 'required';
+            $rules['ext_designation_' . $j] = 'required';
+            $rules['ext_gender_' . $j] = 'required';
+        }
 
 
         return $rules;
@@ -73,6 +78,12 @@ class TravelStoreRequest extends FormRequest
             $attributes['pax_gen_' . $i] = 'Passenger Gender';
         }
 
+        for ($j = 0; $j < $this->request->get('ext_pax_total'); $j++) {
+            $attributes['ext_name_' . $j] = 'External Name';
+            $attributes['ext_designation_' . $j] = 'External Designation';
+            $attributes['ext_gender_' . $j] = 'External Gender';
+        }
+
 
         return $attributes;
     }
@@ -98,6 +109,12 @@ class TravelStoreRequest extends FormRequest
             $messages['pax_name_' . $i] = __('main/validations.required');
             $messages['pax_des_' . $i] = __('main/validations.required');
             $messages['pax_gen_' . $i] = __('main/validations.required');
+        }
+
+        for ($j = 0; $j < $this->request->get('ext_pax_total'); $j++) {
+            $messages['ext_name_' . $j] = __('main/validations.required');
+            $messages['ext_designation_' . $j] = __('main/validations.required');
+            $messages['ext_gender_' . $j] = __('main/validations.required');
         }
 
         return $messages;

@@ -18,6 +18,7 @@ class Passenger extends Model
      */
     protected $fillable = [
         'type',
+        'request_type',
         'request_id',
         'name',
         'designation',

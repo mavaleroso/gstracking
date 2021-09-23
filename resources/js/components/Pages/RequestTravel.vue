@@ -167,11 +167,11 @@
                             </div>
                             <div class="my-5">
                                 <div class="d-flex">
-                                    <h3
+                                    <h5
                                         class="text-dark font-weight-bold mb-10"
                                     >
-                                        Passenger Details:
-                                    </h3>
+                                        Employee Passenger Details:
+                                    </h5>
                                     <div
                                         v-if="complete == false"
                                         class="ml-auto"
@@ -200,7 +200,6 @@
                                     name="pax_total"
                                     v-model="total"
                                 />
-
                                 <table id="passenger-tbl" class="table w-100">
                                     <thead>
                                         <tr>
@@ -316,6 +315,109 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <hr />
+                                <div class="d-flex mt-5">
+                                    <h5
+                                        class="text-dark font-weight-bold mb-10"
+                                    >
+                                        External Passenger Details:
+                                    </h5>
+                                    <div class="ml-auto">
+                                        <button
+                                            class="btn btn-sm btn-outline-primary"
+                                            @click="addExtRow"
+                                        >
+                                            <i
+                                                class="fa fa-plus-square p-0"
+                                            ></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-primary"
+                                            @click="removeExtRow"
+                                        >
+                                            <i
+                                                class="fa fa-minus-square p-0"
+                                            ></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input
+                                    type="hidden"
+                                    id="ext-pax-total"
+                                    name="ext_pax_total"
+                                    :value="ext_pax.length"
+                                />
+                                <table
+                                    v-if="ext_pax.length"
+                                    id="ext-passenger-tbl"
+                                    class="table w-100"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">
+                                                #
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                Name of Passenger/s
+                                            </th>
+                                            <th scope="col" class="text-center">
+                                                Position/Designation
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                class="text-center w-15"
+                                            >
+                                                Gender
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-for="(ext, index) in ext_pax"
+                                            :key="index"
+                                        >
+                                            <td scope="row" class="text-center">
+                                                {{ index + 1 }}
+                                            </td>
+                                            <td>
+                                                <input
+                                                    class="details-input form-control"
+                                                    type="text"
+                                                    v-model="ext.name"
+                                                    :name="'ext_name_' + index"
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    class="details-input form-control"
+                                                    type="text"
+                                                    v-model="ext.designation"
+                                                    :name="
+                                                        'ext_designation_' +
+                                                            index
+                                                    "
+                                                />
+                                            </td>
+                                            <td>
+                                                <select
+                                                    class="form-control"
+                                                    v-model="ext.gender"
+                                                    :name="
+                                                        'ext_gender_' + index
+                                                    "
+                                                >
+                                                    <option value=""></option>
+                                                    <option value="Male"
+                                                        >Male</option
+                                                    >
+                                                    <option value="Female"
+                                                        >Female</option
+                                                    >
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -361,6 +463,7 @@ export default {
                 "date_return",
                 "destination_place"
             ],
+            extNames: [],
             complete: false,
             createdAt: null,
             maxDate: null,
@@ -369,11 +472,13 @@ export default {
             activeDivision: null,
             employees: [],
             total: 1,
+            extTotal: 1,
             gender: "",
             designation: "",
             semi_total: 1,
             pax_des: [],
-            pax_gen: []
+            pax_gen: [],
+            ext_pax: []
         };
     },
     created() {
@@ -385,6 +490,7 @@ export default {
         loadingStats() {
             this.employees = this.$store.getters["employees/employee"];
             return this.$store.getters["employees/loadingStats"];
+            // return false;
         }
     },
     mounted() {
@@ -496,6 +602,24 @@ export default {
                 parseInt($("#passenger-tbl tbody tr:eq(-1) td:eq(0)").text())
             );
         },
+        addExtRow(event) {
+            event.preventDefault();
+            this.ext_pax.push({
+                ext_name: null,
+                ext_designation: null,
+                ext_gender: null
+            });
+            this.extNames.push("ext_name_" + (this.ext_pax.length - 1));
+            this.extNames.push("ext_designation_" + (this.ext_pax.length - 1));
+            this.extNames.push("ext_gender_" + (this.ext_pax.length - 1));
+        },
+        removeExtRow(event) {
+            event.preventDefault();
+            this.ext_pax.pop();
+            this.extNames.pop();
+            this.extNames.pop();
+            this.extNames.pop();
+        },
         saveForm() {
             let requestform = $("#kt_form").serialize();
             Swal.fire({
@@ -503,7 +627,7 @@ export default {
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Approve",
+                confirmButtonText: "Submit",
                 cancelButtonText: "Cancel",
                 reverseButtons: false
             }).then(result => {
@@ -612,6 +736,19 @@ export default {
                                             .next(".invalid-feedback")
                                             .remove();
                                     }
+                                }
+                            }
+                            for (let j = 0; j < this.extNames.length; j++) {
+                                if (
+                                    keys.indexOf("" + this.extNames[j] + "") ==
+                                    -1
+                                ) {
+                                    $(
+                                        '[name="' + this.extNames[j] + '"]'
+                                    ).removeClass("is-invalid");
+                                    $('[name="' + this.extNames[j] + '"]')
+                                        .next(".invalid-feedback")
+                                        .remove();
                                 }
                             }
                             this.$showToast(

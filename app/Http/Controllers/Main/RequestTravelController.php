@@ -23,7 +23,7 @@ class RequestTravelController extends Controller
         $this->middleware('permission:request-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:request-delete', ['only' => ['destroy']]);
         $this->middleware('permission:request-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +33,7 @@ class RequestTravelController extends Controller
     {
 
         $result = $getdestination->execute();
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
         // return response()->json(Request::select('destination')->get());
         // dd("alright");
         //
@@ -56,10 +56,10 @@ class RequestTravelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(TravelStoreRequest $travelStoreRequest, CreateTravel $createTravel)
-    {   
+    {
         $url = $travelStoreRequest->url();
         $result = $createTravel->execute($travelStoreRequest->validated(), $url);
-        return json_encode(['type' => 'success','message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.travel_created_successfully'), 'result' => $result]);
     }
 
     /**

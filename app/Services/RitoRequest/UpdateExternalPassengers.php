@@ -13,10 +13,11 @@ class UpdateExternalPassengers
      */
     public function execute($id, $fields, $url)
     {
-        Passenger::where('type', 2,)->where('request_id', $id)->delete();
+        Passenger::where('request_type', 'rito')->where('type', 2,)->where('request_id', $id)->delete();
         for ($i = 0; $i < $fields['ext_total']; $i++) {
             Passenger::create([
                 'type' => 2,
+                'request_type' => 'rito',
                 'request_id' => $id,
                 'name' => $fields['name_' . $i],
                 'designation' => $fields['designation_' . $i],

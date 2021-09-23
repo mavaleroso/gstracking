@@ -17,6 +17,7 @@ class CreateExternalPassengers
 
         $passenger = Passenger::create([
             'type' => 2,
+            'request_type' => 'rito',
             'request_id' => $fields['travel_id'],
             'name' => $fields['fullname'],
             'designation' => $fields['designation'],
