@@ -329,6 +329,7 @@
                             <td>
                                 <input
                                     type="text"
+                                    :name="'name_' + index"
                                     :class="
                                         ext_passengers_edit
                                             ? 'w-100 border-pass'
@@ -341,6 +342,7 @@
                             <td>
                                 <input
                                     type="text"
+                                    :name="'designation_' + index"
                                     :class="
                                         ext_passengers_edit
                                             ? 'w-100 border-pass'
@@ -352,6 +354,7 @@
                             </td>
                             <td>
                                 <select
+                                    :name="'gender_' + index"
                                     :class="
                                         ext_passengers_edit
                                             ? 'w-100 text-dark border-pass'
@@ -702,7 +705,6 @@ export default {
             emp_passengers: [],
             ext_passengers: [],
             ext_passengers_edit: false,
-            ext_passengers_count: 0,
             passengers_count: 0,
             pos: [],
             vehicles: [],
@@ -724,7 +726,8 @@ export default {
                 "driver_name_1",
                 "driver_contact_1"
             ],
-            requesttrans: []
+            requesttrans: [],
+            ext_passenger_names: ["name_0", "designation_0", "gender_0"]
         };
     },
     components: {
@@ -957,20 +960,44 @@ export default {
                 gender: null
             };
             this.ext_passengers.push(passenger);
+            this.ext_passenger_names.push(
+                "name_" + (this.ext_passengers.length - 1)
+            );
+            this.ext_passenger_names.push(
+                "designation_" + (this.ext_passengers.length - 1)
+            );
+            this.ext_passenger_names.push(
+                "gender_" + (this.ext_passengers.length - 1)
+            );
         },
         decrementExtPassenger() {
             this.ext_passengers.pop();
+            this.ext_passenger_names.pop();
+            this.ext_passenger_names.pop();
+            this.ext_passenger_names.pop();
         },
         saveExtPassengers() {
             var extForm = new FormData();
             extForm.append("ext_total", this.ext_passengers.length);
             for (let i = 0; i < this.ext_passengers.length; i++) {
-                extForm.append("name_" + i, this.ext_passengers[i].name);
+                extForm.append(
+                    "name_" + i,
+                    this.ext_passengers[i].name
+                        ? this.ext_passengers[i].name
+                        : ""
+                );
                 extForm.append(
                     "designation_" + i,
                     this.ext_passengers[i].designation
+                        ? this.ext_passengers[i].designation
+                        : ""
                 );
-                extForm.append("gender_" + i, this.ext_passengers[i].gender);
+                extForm.append(
+                    "gender_" + i,
+                    this.ext_passengers[i].gender
+                        ? this.ext_passengers[i].gender
+                        : ""
+                );
             }
             Swal.fire({
                 title: "Are you sure?",
@@ -981,13 +1008,64 @@ export default {
             }).then(result => {
                 if (result.value) {
                     axios
-                        .post(
+                        .put(
                             BASE_URL +
                                 "/travel/externalpassenger/" +
                                 this.current_id,
                             extForm
                         )
-                        .then(res => {});
+                        .then(res => {
+                            if (res.data.type == "success") {
+                                this.updateExtPassengers();
+                                $(".invalid-feedback").remove();
+                                $(".invalid").removeClass("is-invalid");
+                                this.$showToast(res.data.message, "success");
+                            }
+                        })
+                        .catch(err => {
+                            let data = err.response.data.errors;
+                            let keys = [];
+                            let values = [];
+                            for (const [key, value] of Object.entries(data)) {
+                                keys.push(`${key}`);
+                                values.push(`${value}`);
+                                if (
+                                    $('[name="' + `${key}` + '"]').next()
+                                        .length == 0
+                                ) {
+                                    $('[name="' + `${key}` + '"]').after(
+                                        '<div class="invalid-feedback invalid-feedback-admin d-block">' +
+                                            `${value}` +
+                                            "</div>"
+                                    );
+                                }
+                            }
+
+                            for (
+                                let i = 0;
+                                i < this.ext_passenger_names.length;
+                                i++
+                            ) {
+                                if (
+                                    keys.indexOf(
+                                        "" + this.ext_passenger_names[i] + ""
+                                    ) == -1
+                                ) {
+                                    $(
+                                        '[name="' +
+                                            this.ext_passenger_names[i] +
+                                            '"]'
+                                    ).removeClass("is-invalid");
+                                    $(
+                                        '[name="' +
+                                            this.ext_passenger_names[i] +
+                                            '"]'
+                                    )
+                                        .next(".invalid-feedback")
+                                        .remove();
+                                }
+                            }
+                        });
                 }
             });
         },

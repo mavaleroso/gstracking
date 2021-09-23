@@ -8019,6 +8019,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -8047,7 +8050,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       emp_passengers: [],
       ext_passengers: [],
       ext_passengers_edit: false,
-      ext_passengers_count: 0,
       passengers_count: 0,
       pos: [],
       vehicles: [],
@@ -8063,7 +8065,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       puvNames: ["remarks"],
       rpNames: ["vehicle_1", "driver_1"],
       hiredNames: ["travel_po", "vehicle_name_1", "vehicle_plate_1", "driver_name_1", "driver_contact_1"],
-      requesttrans: []
+      requesttrans: [],
+      ext_passenger_names: ["name_0", "designation_0", "gender_0"]
     };
   },
   components: {
@@ -8272,9 +8275,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         gender: null
       };
       this.ext_passengers.push(passenger);
+      this.ext_passenger_names.push("name_" + (this.ext_passengers.length - 1));
+      this.ext_passenger_names.push("designation_" + (this.ext_passengers.length - 1));
+      this.ext_passenger_names.push("gender_" + (this.ext_passengers.length - 1));
     },
     decrementExtPassenger: function decrementExtPassenger() {
       this.ext_passengers.pop();
+      this.ext_passenger_names.pop();
+      this.ext_passenger_names.pop();
+      this.ext_passenger_names.pop();
     },
     saveExtPassengers: function saveExtPassengers() {
       var _this3 = this;
@@ -8283,9 +8292,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       extForm.append("ext_total", this.ext_passengers.length);
 
       for (var i = 0; i < this.ext_passengers.length; i++) {
-        extForm.append("name_" + i, this.ext_passengers[i].name);
-        extForm.append("designation_" + i, this.ext_passengers[i].designation);
-        extForm.append("gender_" + i, this.ext_passengers[i].gender);
+        extForm.append("name_" + i, this.ext_passengers[i].name ? this.ext_passengers[i].name : "");
+        extForm.append("designation_" + i, this.ext_passengers[i].designation ? this.ext_passengers[i].designation : "");
+        extForm.append("gender_" + i, this.ext_passengers[i].gender ? this.ext_passengers[i].gender : "");
       }
 
       Swal.fire({
@@ -8296,7 +8305,40 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         confirmButtonText: "Save"
       }).then(function (result) {
         if (result.value) {
-          axios.post(BASE_URL + "/travel/externalpassenger/" + _this3.current_id, extForm).then(function (res) {});
+          axios.put(BASE_URL + "/travel/externalpassenger/" + _this3.current_id, extForm).then(function (res) {
+            if (res.data.type == "success") {
+              _this3.updateExtPassengers();
+
+              $(".invalid-feedback").remove();
+              $(".invalid").removeClass("is-invalid");
+
+              _this3.$showToast(res.data.message, "success");
+            }
+          })["catch"](function (err) {
+            var data = err.response.data.errors;
+            var keys = [];
+            var values = [];
+
+            for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
+              var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                  key = _Object$entries$_i[0],
+                  value = _Object$entries$_i[1];
+
+              keys.push("".concat(key));
+              values.push("".concat(value));
+
+              if ($('[name="' + "".concat(key) + '"]').next().length == 0) {
+                $('[name="' + "".concat(key) + '"]').after('<div class="invalid-feedback invalid-feedback-admin d-block">' + "".concat(value) + "</div>");
+              }
+            }
+
+            for (var _i2 = 0; _i2 < _this3.ext_passenger_names.length; _i2++) {
+              if (keys.indexOf("" + _this3.ext_passenger_names[_i2] + "") == -1) {
+                $('[name="' + _this3.ext_passenger_names[_i2] + '"]').removeClass("is-invalid");
+                $('[name="' + _this3.ext_passenger_names[_i2] + '"]').next(".invalid-feedback").remove();
+              }
+            }
+          });
         }
       });
     },
@@ -8343,10 +8385,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var keys = [];
         var values = [];
 
-        for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
+        for (var _i3 = 0, _Object$entries2 = Object.entries(data); _i3 < _Object$entries2.length; _i3++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
 
           keys.push("".concat(key));
           values.push("".concat(value));
@@ -8384,10 +8426,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           }
         }
 
-        for (var _i2 = 0; _i2 < _this7.rpNames.length; _i2++) {
-          if (keys.indexOf("" + _this7.rpNames[_i2] + "") == -1) {
-            if ($('[name="' + _this7.rpNames[_i2] + '"]').next().next().length != 0) {
-              $('[name="' + _this7.rpNames[_i2] + '"]').next().next(".invalid-feedback").remove();
+        for (var _i4 = 0; _i4 < _this7.rpNames.length; _i4++) {
+          if (keys.indexOf("" + _this7.rpNames[_i4] + "") == -1) {
+            if ($('[name="' + _this7.rpNames[_i4] + '"]').next().next().length != 0) {
+              $('[name="' + _this7.rpNames[_i4] + '"]').next().next(".invalid-feedback").remove();
             }
           }
         }
@@ -61620,6 +61662,7 @@ var render = function() {
                                   : "w-100 border-none",
                                 attrs: {
                                   type: "text",
+                                  name: "name_" + index,
                                   readonly: !_vm.ext_passengers_edit
                                 },
                                 domProps: { value: ext.name },
@@ -61649,6 +61692,7 @@ var render = function() {
                                   : "w-100 border-none",
                                 attrs: {
                                   type: "text",
+                                  name: "designation_" + index,
                                   readonly: !_vm.ext_passengers_edit
                                 },
                                 domProps: { value: ext.designation },
@@ -61682,7 +61726,10 @@ var render = function() {
                                   class: _vm.ext_passengers_edit
                                     ? "w-100 text-dark border-pass"
                                     : "w-100 text-dark border-none",
-                                  attrs: { disabled: !_vm.ext_passengers_edit },
+                                  attrs: {
+                                    name: "gender_" + index,
+                                    disabled: !_vm.ext_passengers_edit
+                                  },
                                   on: {
                                     change: function($event) {
                                       var $$selectedVal = Array.prototype.filter

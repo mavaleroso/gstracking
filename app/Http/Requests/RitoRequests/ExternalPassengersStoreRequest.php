@@ -18,7 +18,9 @@ class ExternalPassengersStoreRequest extends FormRequest
 
     public function rules()
     {
-        $rules = [];
+        $rules = [
+            'ext_total' => 'nullable'
+        ];
 
 
         for ($i = 0; $i < $this->request->get('ext_total'); $i++) {
@@ -35,9 +37,9 @@ class ExternalPassengersStoreRequest extends FormRequest
         $attr = [];
 
         for ($i = 0; $i < $this->request->get('ext_total'); $i++) {
-            $attr['name_' . $i] = 'Passenger Name';
-            $attr['designation_' . $i] = 'Passenger Designation';
-            $attr['gender_' . $i] = 'Passenger Gender';
+            $attr['name_' . $i] = 'Name';
+            $attr['designation_' . $i] = 'Designation';
+            $attr['gender_' . $i] = 'Gender';
         }
 
         return $attr;
