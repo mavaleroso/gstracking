@@ -835,7 +835,9 @@ export default {
             axios.get(BASE_URL + `/travel/ritorequest/${id}`).then(res => {
                 this.emp_passengers = res.data.emp;
                 this.ext_passengers = res.data.ext;
-                this.emp_passengers_count = res.data.ext.length;
+                this.passengers_count =
+                    res.data.emp.length +
+                    (res.data.ext.length ? res.data.ext.length : 0);
                 this.current_to = TO;
                 this.current_id = id;
                 this.ext_passengers_edit = false;
@@ -853,7 +855,7 @@ export default {
                 vm.selected.push($(this).val());
                 let pasColumn = $("input.checkable:checkbox:checked")[
                     count
-                ].closest("tr").children[8];
+                ].closest("tr").children[10];
                 vm.passengers_count += parseInt(pasColumn.textContent);
                 count++;
             });

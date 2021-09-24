@@ -137,7 +137,7 @@
                             </td>
                             <td>
                                 <span
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap"
+                                    class="label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap h-auto p-2"
                                     >{{ t.serial_code }}</span
                                 >
                             </td>
@@ -145,7 +145,7 @@
                                 <span
                                     v-for="(t, index) in t.tracking_no"
                                     :key="index"
-                                    class="label label-lg label-rounded label-inline label-primary m-1"
+                                    class="label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
                                     >{{ t.tracking_no }}</span
                                 >
                             </td>
@@ -190,7 +190,7 @@
                                 <span
                                     v-for="(t, index) in t.tracking_no"
                                     :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                     >{{ t.inclusive_from }}</span
                                 >
                             </td>
@@ -198,7 +198,7 @@
                                 <span
                                     v-for="(t, index) in t.tracking_no"
                                     :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                     >{{ t.inclusive_to }}</span
                                 >
                             </td>
@@ -206,7 +206,7 @@
                                 <span
                                     v-for="(t, index) in t.tracking_no"
                                     :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                     >{{ t.status }}</span
                                 >
                             </td>
