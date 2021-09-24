@@ -156,6 +156,7 @@ class GetPrintRequestById
             'inclusive_to' => $req->return_date,
             'place' => $req->destination,
             'serial_code' => $req->serial_code,
+            'created_at' => $req->created_at,
             'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
             'requestor' => $this->requestor($req->user_id)
 

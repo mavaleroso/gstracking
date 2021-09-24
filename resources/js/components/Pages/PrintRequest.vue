@@ -143,7 +143,9 @@
                                             >
                                                 DATE REQUESTED:
                                             </p>
-                                            <p class="underline"></p>
+                                            <p class="underline pl-3 fs-11">
+                                                {{ $dateEng(requested_date) }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="sign">
@@ -561,6 +563,7 @@ export default {
                         this.type == "rito"
                             ? res.data.travel[0].tracking_no
                             : res.data.travel[0].serial_code;
+                    this.requested_date = res.data.travel[0].created_at;
                     autosize($("#kt_autosize_1"));
                 });
         }

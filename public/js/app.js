@@ -8299,7 +8299,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get(BASE_URL + "/travel/ritorequest/".concat(id)).then(function (res) {
         _this2.emp_passengers = res.data.emp;
         _this2.ext_passengers = res.data.ext;
-        _this2.emp_passengers_count = res.data.ext.length;
+        _this2.passengers_count = res.data.emp.length + (res.data.ext.length ? res.data.ext.length : 0);
         _this2.current_to = TO;
         _this2.current_id = id;
         _this2.ext_passengers_edit = false;
@@ -8315,7 +8315,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       $("input.checkable:checkbox:checked").each(function () {
         arr.push($(this).val());
         vm.selected.push($(this).val());
-        var pasColumn = $("input.checkable:checkbox:checked")[count].closest("tr").children[8];
+        var pasColumn = $("input.checkable:checkbox:checked")[count].closest("tr").children[10];
         vm.passengers_count += parseInt(pasColumn.textContent);
         count++;
       });
@@ -9880,6 +9880,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9965,6 +9967,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.travel_date = _this.$dateEng(res.data.travel[0].inclusive_from) + " - " + _this.$dateEng(res.data.travel[0].inclusive_to);
         _this.requested_by = _this.$titleCase(res.data.travel[0].requestor.first_name + " " + (res.data.travel[0].requestor.middle_name == null ? "" : res.data.travel[0].requestor.middle_name[0]) + ". " + res.data.travel[0].requestor.last_name);
         _this.ticket_no = _this.type == "rito" ? res.data.travel[0].tracking_no : res.data.travel[0].serial_code;
+        _this.requested_date = res.data.travel[0].created_at;
         autosize($("#kt_autosize_1"));
       });
     }
@@ -64742,7 +64745,13 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("p", { staticClass: "underline" })
+                          _c("p", { staticClass: "underline pl-3 fs-11" }, [
+                            _vm._v(
+                              "\n                                            " +
+                                _vm._s(_vm.$dateEng(_vm.requested_date)) +
+                                "\n                                        "
+                            )
+                          ])
                         ])
                       ]),
                       _vm._v(" "),
@@ -68615,7 +68624,7 @@ var render = function() {
                               "span",
                               {
                                 staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap"
+                                  "label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap h-auto p-2"
                               },
                               [_vm._v(_vm._s(t.serial_code))]
                             )
@@ -68629,7 +68638,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "label label-lg label-rounded label-inline label-primary m-1"
+                                    "label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
                                 },
                                 [_vm._v(_vm._s(t.tracking_no))]
                               )
@@ -68712,7 +68721,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                 },
                                 [_vm._v(_vm._s(t.inclusive_from))]
                               )
@@ -68728,7 +68737,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                 },
                                 [_vm._v(_vm._s(t.inclusive_to))]
                               )
@@ -68744,7 +68753,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1"
+                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
                                 },
                                 [_vm._v(_vm._s(t.status))]
                               )
