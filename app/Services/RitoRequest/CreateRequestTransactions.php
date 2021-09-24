@@ -22,7 +22,6 @@ class CreateRequestTransactions
     public function execute($fields)
     {
         $rg = System::select('value')->where('handler', 'REQUEST_GROUP')->first();
-        $rqt_code = $this->getCode->request_code();
         $process = false;
 
         if ($fields['radio_vehicle'] == 1) {
@@ -30,7 +29,6 @@ class CreateRequestTransactions
             for ($x = 0; $x < count($request_id); $x++) {
                 $rt = RequestTransactions::create([
                     'type' => 'rito',
-                    'serial_code' => $rqt_code,
                     'mot' => $fields['radio_vehicle'],
                     'group' => $rg->value,
                     'request_id' => $request_id[$x],
@@ -39,6 +37,7 @@ class CreateRequestTransactions
                 ]);
                 ($rt) ? $this->portal_mot_update($request_id[$x], $fields['radio_vehicle']) : NULL;
             }
+            $rt ? $process = true : NULL;
         }
 
         if ($fields['radio_vehicle'] == 2 || $fields['radio_vehicle'] == 3) {
@@ -59,7 +58,6 @@ class CreateRequestTransactions
                 for ($x = 0; $x < count($request_id); $x++) {
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
-                        'serial_code' => $rqt_code,
                         'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
                         'user_id' => auth()->user()->id,
@@ -102,7 +100,6 @@ class CreateRequestTransactions
                 for ($x = 0; $x < count($request_id); $x++) {
                     $rt = RequestTransactions::create([
                         'type' => 'rito',
-                        'serial_code' => $rqt_code,
                         'mot' => $fields['radio_vehicle'],
                         'group' => $rg->value,
                         'user_id' => auth()->user()->id,
@@ -114,7 +111,6 @@ class CreateRequestTransactions
             }
             $process = true;
         }
-        ($rt) ? System::where('handler', 'RQT_CODE')->update(['value' => $rqt_code]) : NULL;
         ($process) ? System::where('handler', 'REQUEST_GROUP')->update(['value' => $rg->value + 1]) : NULL;
     }
 

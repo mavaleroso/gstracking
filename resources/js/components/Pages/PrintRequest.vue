@@ -115,7 +115,9 @@
                                 </p>
                             </td>
                             <td colspan="2">
-                                <p class="underline p-fs-16">:</p>
+                                <p class="underline p-fs-16">
+                                    : {{ travel_time }}
+                                </p>
                             </td>
                         </tr>
                         <tr>
@@ -545,6 +547,11 @@ export default {
                             );
                         }
                     }
+                    for (let j = 0; j < res.data.ext_passengers.length; j++) {
+                        this.passengers.push(
+                            this.$titleCase(res.data.ext_passengers[j].name)
+                        );
+                    }
                     this.place = res.data.travel[0].place;
                     this.travel_date =
                         this.$dateEng(res.data.travel[0].inclusive_from) +
@@ -563,7 +570,14 @@ export default {
                         this.type == "rito"
                             ? res.data.travel[0].tracking_no
                             : res.data.travel[0].serial_code;
-                    this.requested_date = res.data.travel[0].created_at;
+                    this.requested_date =
+                        this.type == "rito"
+                            ? res.data.travel[0].created_at.split(" ")[0]
+                            : res.data.travel[0].created_at;
+                    this.travel_time =
+                        this.type == "local"
+                            ? this.$timeEng(res.data.travel[0].depart_time)
+                            : "";
                     autosize($("#kt_autosize_1"));
                 });
         }

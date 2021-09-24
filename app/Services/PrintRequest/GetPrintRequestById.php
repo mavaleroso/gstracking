@@ -9,6 +9,7 @@ use App\Models\Request;
 use App\Models\Destination;
 use App\Models\Passenger;
 use Illuminate\Support\Facades\DB;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class GetPrintRequestById
 {
@@ -21,29 +22,11 @@ class GetPrintRequestById
     public function execute(int $id, string $type)
     {
         $requests['travel'] = ($type == 'rito') ? $this->rito_travel_api($id) : $this->local_travel($id);
-        $requests['passengers'] = ($type == 'rito') ? $this->rito_passenger_api($id) : $this->local_passenger($id);
+        $requests['passengers'] = ($type == 'rito') ? $this->rito_passenger_api($id) : $this->passengers($id, 'local', 1);
+        $requests['ext_passengers'] = $this->passengers($id, $type, 2);
 
         return $requests;
     }
-    // public function execute(int $id)
-    // {
-    //     $reqTrans = RequestTransactions::where('group', $id)->groupBy('request_id')->get();
-
-    //     for ($i = 0; $i < count($reqTrans); $i++) {
-    //         $requests['travels'][] = [
-    //             'data' => ($reqTrans[0]->type == 'rito') ? $this->rito_travel_api($reqTrans[$i]->request_id) : $this->local_travel($reqTrans[$i]->request_id),
-    //             'passengers' => ($reqTrans[0]->type == 'rito') ? $this->rito_passenger_api($reqTrans[$i]->request_id) : $this->local_passenger($reqTrans[$i]->request_id),
-    //         ];
-    //     }
-    //     $requests['trans'] = $reqTrans;
-    //     $requests['date_now'] = System::select([DB::raw('now() as dn')])->first()->dn;
-    //     $requests['gs_staff'] = UserDetail::where('user_id', $reqTrans[0]->user_id)->first();
-    //     $requests['vehicles'] = $this->vehicles_drivers($id);
-
-
-    //     // return $requests;
-    //     dd($requests);
-    // }
 
     public function rito_travel_api($id)
     {
@@ -129,18 +112,6 @@ class GetPrintRequestById
         return json_decode($response);
     }
 
-    // public function vehicles_drivers($id)
-    // {
-    //     $query = RequestTransactions::select(['vehicles.name', 'vehicles.plate_no', 'drivers.fullname', 'drivers.contact'])
-    //         ->leftJoin('transaction_vehicles', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
-    //         ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-    //         ->leftJoin('drivers', 'transaction_vehicles.driver_id', '=', 'drivers.id')
-    //         ->where('request_transactions.group', $id)
-    //         ->get();
-
-    //     return $query;
-    // }
-
     public function local_travel($id)
     {
         $req = Request::find($id);
@@ -157,6 +128,7 @@ class GetPrintRequestById
             'place' => $req->destination,
             'serial_code' => $req->serial_code,
             'created_at' => $req->created_at,
+            'depart_time' => $req->depart_time,
             'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
             'requestor' => $this->requestor($req->user_id)
 
@@ -165,9 +137,9 @@ class GetPrintRequestById
         return $data;
     }
 
-    public function local_passenger($id)
+    public function passengers($id, $req, $type)
     {
-        return Passenger::where('request_id', $id)->get();
+        return Passenger::where('request_type', $req)->where('type', $type)->where('request_id', $id)->get();
     }
 
     public function requestor($id)

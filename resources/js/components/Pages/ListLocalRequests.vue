@@ -63,6 +63,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Serial Code</th>
                             <th>Department</th>
                             <th>Purpose</th>
                             <th>Travel Date</th>
@@ -973,6 +974,7 @@ export default {
                     },
                     columns: [
                         { data: "id" },
+                        { data: "serial_code" },
                         { data: "department" },
                         { data: "purpose" },
                         { data: "travel_date" },
@@ -985,19 +987,29 @@ export default {
                     ],
                     columnDefs: [
                         {
-                            targets: 3,
+                            targets: 1,
                             render: data => {
-                                return this.$dateEng(data);
+                                return (
+                                    '<span class="label label-outline-primary label-inline font-weight bold h-auto p-2">' +
+                                    data +
+                                    "</span>"
+                                );
                             }
                         },
                         {
                             targets: 4,
                             render: data => {
-                                return this.$timeEng(data);
+                                return this.$dateEng(data);
                             }
                         },
                         {
                             targets: 5,
+                            render: data => {
+                                return this.$timeEng(data);
+                            }
+                        },
+                        {
+                            targets: 6,
                             render: data => {
                                 var status = {
                                     1: {
@@ -1027,7 +1039,7 @@ export default {
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 7,
                             render: data => {
                                 return this.$dateTimeEng(data);
                             }
