@@ -38,5 +38,5 @@ class TransactionVehicles extends Model
         'nights_count',
         'total_cost',
         'status',
-    ];  
+    ];
 }
