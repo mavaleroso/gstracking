@@ -115,8 +115,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Type</th>
-                            <th>Serial Code</th>
-                            <th>Tracking Number</th>
+                            <th>Code</th>
                             <th>Destination</th>
                             <th>Passengers</th>
                             <th>Vehicles</th>
@@ -133,12 +132,6 @@
                                 <span
                                     class="label label-lg label-rounded label-inline label-light-primary m-1"
                                     >{{ t.type }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap h-auto p-2"
-                                    >{{ t.serial_code }}</span
                                 >
                             </td>
                             <td>
@@ -202,7 +195,7 @@
                                     >{{ t.inclusive_to }}</span
                                 >
                             </td>
-                            <td>
+                            <td v-if="t.type == 'rito'">
                                 <span
                                     v-for="(t, index) in t.tracking_no"
                                     :key="index"

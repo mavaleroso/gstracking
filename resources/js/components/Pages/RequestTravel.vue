@@ -18,6 +18,7 @@
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
                         <div v-if="complete" class="jumbotron">
+                            <h1>{{ code }}</h1>
                             <p class="lead">
                                 Your request has successfully completed!
                             </p>
@@ -444,6 +445,7 @@
 export default {
     data() {
         return {
+            code: null,
             divisions: [],
             sections: [],
             activeSections: [],
@@ -648,6 +650,7 @@ export default {
                             this.createdAt = this.$dateTimeEng(
                                 response.data.result.created_at
                             );
+                            this.code = response.data.result.serial_code;
                         })
                         .catch(error => {
                             let data = error.response.data.errors;

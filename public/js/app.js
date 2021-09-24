@@ -6162,6 +6162,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -6270,6 +6271,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           columns: [{
             data: "id"
           }, {
+            data: "serial_code"
+          }, {
             data: "department"
           }, {
             data: "purpose"
@@ -6289,17 +6292,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             data: "id"
           }],
           columnDefs: [{
-            targets: 3,
+            targets: 1,
             render: function render(data) {
-              return _this2.$dateEng(data);
+              return '<span class="label label-outline-primary label-inline font-weight bold h-auto p-2">' + data + "</span>";
             }
           }, {
             targets: 4,
             render: function render(data) {
-              return _this2.$timeEng(data);
+              return _this2.$dateEng(data);
             }
           }, {
             targets: 5,
+            render: function render(data) {
+              return _this2.$timeEng(data);
+            }
+          }, {
+            targets: 6,
             render: function render(data) {
               var status = {
                 1: {
@@ -6322,7 +6330,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
-            targets: 6,
+            targets: 7,
             render: function render(data) {
               return _this2.$dateTimeEng(data);
             }
@@ -9882,6 +9890,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9963,11 +9973,16 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
+        for (var j = 0; j < res.data.ext_passengers.length; j++) {
+          _this.passengers.push(_this.$titleCase(res.data.ext_passengers[j].name));
+        }
+
         _this.place = res.data.travel[0].place;
         _this.travel_date = _this.$dateEng(res.data.travel[0].inclusive_from) + " - " + _this.$dateEng(res.data.travel[0].inclusive_to);
         _this.requested_by = _this.$titleCase(res.data.travel[0].requestor.first_name + " " + (res.data.travel[0].requestor.middle_name == null ? "" : res.data.travel[0].requestor.middle_name[0]) + ". " + res.data.travel[0].requestor.last_name);
         _this.ticket_no = _this.type == "rito" ? res.data.travel[0].tracking_no : res.data.travel[0].serial_code;
-        _this.requested_date = res.data.travel[0].created_at;
+        _this.requested_date = _this.type == "rito" ? res.data.travel[0].created_at.split(" ")[0] : res.data.travel[0].created_at;
+        _this.travel_time = _this.type == "local" ? _this.$timeEng(res.data.travel[0].depart_time) : "";
         autosize($("#kt_autosize_1"));
       });
     }
@@ -11006,9 +11021,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      code: null,
       divisions: [],
       sections: [],
       activeSections: [],
@@ -11178,6 +11195,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             $(".details-input").attr("disabled", true);
             _this2.complete = true;
             _this2.createdAt = _this2.$dateTimeEng(response.data.result.created_at);
+            _this2.code = response.data.result.serial_code;
           })["catch"](function (error) {
             var data = error.response.data.errors;
             var keys = [];
@@ -12707,13 +12725,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -61199,6 +61210,8 @@ var staticRenderFns = [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Serial Code")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Department")]),
               _vm._v(" "),
               _c("th", [_vm._v("Purpose")]),
@@ -64696,7 +64709,13 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { colspan: "2" } }, [
-                    _c("p", { staticClass: "underline p-fs-16" }, [_vm._v(":")])
+                    _c("p", { staticClass: "underline p-fs-16" }, [
+                      _vm._v(
+                        "\n                                : " +
+                          _vm._s(_vm.travel_time) +
+                          "\n                            "
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
@@ -65904,6 +65923,8 @@ var render = function() {
             _c("div", { staticClass: "col-xl-8" }, [
               _vm.complete
                 ? _c("div", { staticClass: "jumbotron" }, [
+                    _c("h1", [_vm._v(_vm._s(_vm.code))]),
+                    _vm._v(" "),
                     _c("p", { staticClass: "lead" }, [
                       _vm._v(
                         "\n                            Your request has successfully completed!\n                        "
@@ -68619,17 +68640,6 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1 text-nowrap h-auto p-2"
-                              },
-                              [_vm._v(_vm._s(t.serial_code))]
-                            )
-                          ]),
-                          _vm._v(" "),
                           _c(
                             "td",
                             _vm._l(t.tracking_no, function(t, index) {
@@ -68745,21 +68755,23 @@ var render = function() {
                             0
                           ),
                           _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(t.tracking_no, function(t, index) {
-                              return _c(
-                                "span",
-                                {
-                                  key: index,
-                                  staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                },
-                                [_vm._v(_vm._s(t.status))]
+                          t.type == "rito"
+                            ? _c(
+                                "td",
+                                _vm._l(t.tracking_no, function(t, index) {
+                                  return _c(
+                                    "span",
+                                    {
+                                      key: index,
+                                      staticClass:
+                                        "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                    },
+                                    [_vm._v(_vm._s(t.status))]
+                                  )
+                                }),
+                                0
                               )
-                            }),
-                            0
-                          )
+                            : _vm._e()
                         ])
                       }),
                       0
@@ -68947,9 +68959,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Serial Code")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Tracking Number")]),
+        _c("th", [_vm._v("Code")]),
         _vm._v(" "),
         _c("th", [_vm._v("Destination")]),
         _vm._v(" "),
