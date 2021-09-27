@@ -7,6 +7,7 @@ import vehicles from "./modules/vehicles";
 import sessionStore from "./modules/session";
 import po from "./modules/po";
 import department from "./modules/department";
+import mot from "./modules/mot";
 Vue.use(Vuex);
 Vue.config.devtools = true;
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         vehicles,
         po,
         sessionStore,
-        department
+        department,
+        mot
     }
 });

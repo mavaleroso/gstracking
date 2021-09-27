@@ -2,112 +2,164 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="card card-custom card-stretch">
-                <div class="card-body">
+                <div
+                    :class="
+                        loading
+                            ? 'card-body overlay overlay-block '
+                            : 'card-body '
+                    "
+                >
+                    <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                        <div class="spinner spinner-primary"></div>
+                    </div>
                     <div id="kt_calendar"></div>
+                    <table
+                        v-if="!loading"
+                        class="table table-striped table-responsive w-100 fs-10 mt-5"
+                    >
+                        <thead>
+                            <tr class="table-primary fs-9">
+                                <th>ID</th>
+                                <th>Trip Ticket</th>
+                                <th>Type</th>
+                                <th>Tracking No.</th>
+                                <th>Purpose</th>
+                                <th>Place</th>
+                                <th>Travel Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(t, index) in vehicle.data" :key="t.id">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ t.trip_ticket }}</td>
+                                <td>{{ t.type }}</td>
+                                <td>{{ t.request.tracking_no }}</td>
+                                <td>{{ t.request.purpose }}</td>
+                                <td>{{ t.request.place }}</td>
+                                <td>
+                                    {{ $dateEng2(t.request.inclusive_from) }} -
+                                    {{ $dateEng2(t.request.inclusive_to) }}
+                                </td>
+                                <td v-html="$chkStatus(t.request.status)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="card card-custom">
+            <div class="card card-custom card-stretch">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Office</h3>
+                        <h3 class="card-label">Travels</h3>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div v-if="vehicle.office.length" class="accordion accordion-solid accordion-toggle-plus" id="accordion-office">
-                        <div class="card" v-for="v in vehicle.officeData" :key="v.id">
-                            <div class="card-header" :id="'headingOne' + v.id">
-                                <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseOfficeOne' + v.id">
-                                    <i class="flaticon2-lorry"></i> {{ v.name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.plate_no }}</span>
+                <div
+                    :class="
+                        loading
+                            ? 'card-body overlay overlay-block '
+                            : 'card-body '
+                    "
+                >
+                    <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                        <div class="spinner spinner-primary"></div>
+                    </div>
+                    <div v-for="(v, index) in vehicle.all" :key="index">
+                        <span class="label label-primary label-inline"
+                            >{{ v.name }} - {{ v.plate_no }} |
+                            {{ mot(v.type) }}</span
+                        >
+                        <div class="timeline timeline-5 mt-3">
+                            <div
+                                v-for="(data, index) in vehicle.data.filter(
+                                    i => i.vehicle.id === v.id
+                                )"
+                                :key="index"
+                                class="timeline-item align-items-start"
+                            >
+                                <div
+                                    class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap fs-9"
+                                >
+                                    {{ $dateNum(data.request.inclusive_from) }}
+                                    -
+                                    {{ $dateNum(data.request.inclusive_to) }}
                                 </div>
-                            </div>
-                            <div :id="'collapseOfficeOne' + v.id" class="collapse" data-parent="#accordion-office">
-                                <div class="card-body">
-                                    <div v-for="r in vehicle.office.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
-                                        <!-- cities.filter(i=>i.province_id == activeProv.id) -->
-                                        <!--begin::Item-->
-                                        <div class="timeline-item align-items-start">
-                                            <!--begin::Label-->
-                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng(r.travel_date) }}</div>
-                                            <!--end::Label-->
-                                            <!--begin::Badge-->
-                                            <div class="timeline-badge">
-                                                <i class="fa fa-genderless text-success icon-xxl"></i>
-                                            </div>
-                                            <!--end::Badge-->
-                                            <!--begin::Text-->
-                                            <div class="timeline-content text-dark-50">{{ r.purpose }}</div>
-                                            <!--end::Text-->
-                                        </div>
-                                        <!--end::Item-->
-                                    </div>
+                                <div class="timeline-badge">
+                                    <i
+                                        :class="
+                                            data.request.status == 'Approved'
+                                                ? 'fa fa-genderless text-success icon-xxl'
+                                                : 'fa fa-genderless text-warning icon-xxl'
+                                        "
+                                    ></i>
+                                </div>
+                                <div
+                                    class="timeline-content text-dark-50 fs-11"
+                                >
+                                    {{ data.trip_ticket }} :
+                                    {{ data.request.purpose }}
                                 </div>
                             </div>
                         </div>
+                        <hr />
                     </div>
-                    <div v-else>
-                        <div class="alert alert-custom alert-default" role="alert">
+                    <div v-if="vehicle.list.length == 0 && !loading">
+                        <div
+                            class="alert alert-custom alert-default"
+                            role="alert"
+                        >
                             <div class="alert-icon">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"/>
-                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
-                                        <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
-                                        <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
-                                    </g>
-                                </svg><!--end::Svg Icon--></span>
+                                <span
+                                    class="svg-icon svg-icon-primary svg-icon-2x"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px"
+                                        height="24px"
+                                        viewBox="0 0 24 24"
+                                        version="1.1"
+                                    >
+                                        <g
+                                            stroke="none"
+                                            stroke-width="1"
+                                            fill="none"
+                                            fill-rule="evenodd"
+                                        >
+                                            <rect
+                                                x="0"
+                                                y="0"
+                                                width="24"
+                                                height="24"
+                                            />
+                                            <circle
+                                                fill="#000000"
+                                                opacity="0.3"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                            />
+                                            <rect
+                                                fill="#000000"
+                                                x="11"
+                                                y="10"
+                                                width="2"
+                                                height="7"
+                                                rx="1"
+                                            />
+                                            <rect
+                                                fill="#000000"
+                                                x="11"
+                                                y="7"
+                                                width="2"
+                                                height="2"
+                                                rx="1"
+                                            />
+                                        </g></svg
+                                ></span>
                             </div>
                             <div class="alert-text">
-                                No office vehicle travel.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-custom mt-5">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h3 class="card-label">Rental</h3>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div v-if="vehicle.rental.length"  class="accordion accordion-solid accordion-toggle-plus" id="accordion-rental">
-                        <div class="card" v-for="v in vehicle.rentalData" :key="v.id">
-                            <div class="card-header" :id="'headingOne' + v.id">
-                                <div class="card-title collapsed" data-toggle="collapse" :data-target="'#collapseRentalOne' + v.id">
-                                    <i class="flaticon2-lorry"></i> {{ v.name }} <span class="mt-0 mb-0 ml-5 label label-primary label-inline">{{ v.plate_no }}</span>
-                                </div>
-                            </div>
-                            <div :id="'collapseRentalOne' + v.id" class="collapse" data-parent="#accordion-rental">
-                                <div class="card-body">
-                                    <div v-for="r in vehicle.rental.filter(i=>i.vehicle_id == v.id)" :key="r.id" class="timeline timeline-5 mt-1">
-                                        <div class="timeline-item align-items-start">
-                                            <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap">{{ $dateEng(r.travel_date) }}</div>
-                                            <div class="timeline-badge">
-                                                <i class="fa fa-genderless text-success icon-xxl"></i>
-                                            </div>
-                                            <div class="timeline-content text-dark-50">{{ r.purpose }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <div class="alert alert-custom alert-default" role="alert">
-                            <div class="alert-icon">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Info-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"/>
-                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
-                                        <rect fill="#000000" x="11" y="10" width="2" height="7" rx="1"/>
-                                        <rect fill="#000000" x="11" y="7" width="2" height="2" rx="1"/>
-                                    </g>
-                                </svg><!--end::Svg Icon--></span>
-                            </div>
-                            <div class="alert-text">
-                                No Rental vehicle travel.
+                                No ongoing travel.
                             </div>
                         </div>
                     </div>
@@ -122,61 +174,72 @@ export default {
         return {
             vehicle: {
                 list: [],
-                office: [],
-                rental: [],
-                officeData: [],
-                rentalData: []
-            }
-        }
+                data: [],
+                all: []
+            },
+            loading: true
+        };
     },
     created() {
-        this.getVehicles();
+        this.getData();
     },
     mounted() {
         this.ini();
+        this.getVehicles();
     },
     methods: {
         ini() {
-            $(() => {
-            });
+            $(() => {});
         },
         ktcalendar() {
             let vm = this;
             return {
                 init: function() {
-                    var todayDate = moment().startOf('day');
-                    var YM = todayDate.format('YYYY-MM');
-                    var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-                    var TODAY = todayDate.format('YYYY-MM-DD');
-                    var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+                    var todayDate = moment().startOf("day");
+                    var YM = todayDate.format("YYYY-MM");
+                    var YESTERDAY = todayDate
+                        .clone()
+                        .subtract(1, "day")
+                        .format("YYYY-MM-DD");
+                    var TODAY = todayDate.format("YYYY-MM-DD");
+                    var TOMORROW = todayDate
+                        .clone()
+                        .add(1, "day")
+                        .format("YYYY-MM-DD");
 
-                    var calendarEl = document.getElementById('kt_calendar');
+                    var calendarEl = document.getElementById("kt_calendar");
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-                        themeSystem: 'bootstrap',
+                        plugins: [
+                            "bootstrap",
+                            "interaction",
+                            "dayGrid",
+                            "timeGrid",
+                            "list"
+                        ],
+                        themeSystem: "bootstrap",
 
                         isRTL: KTUtil.isRTL(),
 
                         header: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                            left: "prev,next today",
+                            center: "title",
+                            right: "dayGridMonth,timeGridWeek,timeGridDay"
                         },
 
                         height: 800,
                         contentHeight: 780,
-                        aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+                        aspectRatio: 3, // see: https://fullcalendar.io/docs/aspectRatio
 
                         nowIndicator: true,
-                        now: TODAY + 'T09:25:00', // just for demo
+                        now: TODAY + "T09:25:00", // just for demo
 
                         views: {
-                            dayGridMonth: { buttonText: 'month' },
-                            timeGridWeek: { buttonText: 'week' },
-                            timeGridDay: { buttonText: 'day' }
+                            dayGridMonth: { buttonText: "month" },
+                            timeGridWeek: { buttonText: "week" },
+                            timeGridDay: { buttonText: "day" }
                         },
-  
-                        defaultView: 'dayGridMonth',
+
+                        defaultView: "dayGridMonth",
                         defaultDate: TODAY,
                         editable: false,
                         eventLimit: true, // allow "more" link when too many events
@@ -186,15 +249,40 @@ export default {
                         eventRender: function(info) {
                             var element = $(info.el);
 
-                            if (info.event.extendedProps && info.event.extendedProps.description) {
-                                if (element.hasClass('fc-day-grid-event')) {
-                                    element.data('content', info.event.extendedProps.description);
-                                    element.data('placement', 'top');
+                            if (
+                                info.event.extendedProps &&
+                                info.event.extendedProps.description
+                            ) {
+                                if (element.hasClass("fc-day-grid-event")) {
+                                    element.data(
+                                        "content",
+                                        info.event.extendedProps.description
+                                    );
+                                    element.data("placement", "top");
                                     KTApp.initPopover(element);
-                                } else if (element.hasClass('fc-time-grid-event')) {
-                                    element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
-                                } else if (element.find('.fc-list-item-title').lenght !== 0) {
-                                    element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                                } else if (
+                                    element.hasClass("fc-time-grid-event")
+                                ) {
+                                    element
+                                        .find(".fc-title")
+                                        .append(
+                                            '<div class="fc-description">' +
+                                                info.event.extendedProps
+                                                    .description +
+                                                "</div>"
+                                        );
+                                } else if (
+                                    element.find(".fc-list-item-title")
+                                        .lenght !== 0
+                                ) {
+                                    element
+                                        .find(".fc-list-item-title")
+                                        .append(
+                                            '<div class="fc-description">' +
+                                                info.event.extendedProps
+                                                    .description +
+                                                "</div>"
+                                        );
                                 }
                             }
                         }
@@ -204,16 +292,30 @@ export default {
                 }
             };
         },
-        getVehicles() {
-            axios.get(BASE_URL + '/tracking/travelcalendar').then(response => {
+        getData() {
+            axios.get(BASE_URL + "/tracking/travelcalendar").then(response => {
                 this.vehicle.list = response.data.list;
-                this.vehicle.office = response.data.office;
-                this.vehicle.rental = response.data.rental;
-                this.vehicle.officeData = response.data.officeData;
-                this.vehicle.rentalData = response.data.rentalData;
-                this.ktcalendar().init();
+                this.vehicle.data = response.data.data;
+                this.loading = false;
+                setTimeout(() => {
+                    this.ktcalendar().init();
+                }, 1000);
             });
         },
-    },
-}
+        getVehicles() {
+            setTimeout(() => {
+                this.vehicle.all = this.$store.getters[
+                    "vehicles/hired_vehicles"
+                ].concat(this.$store.getters["vehicles/rp_vehicles"]);
+            }, 3000);
+        },
+        mot(id) {
+            for (let i = 0; i < this.$store.getters["mot/mot"].length; i++) {
+                if (this.$store.getters["mot/mot"][i].id == id) {
+                    return this.$store.getters["mot/mot"][i].name;
+                }
+            }
+        }
+    }
+};
 </script>

@@ -48,6 +48,11 @@ export default {
             let options = { month: "short", day: "numeric" };
             return date.toLocaleDateString("en-US", options);
         },
+        $dateNum(nDate) {
+            let date = new Date(nDate);
+            let options = { month: "numeric", day: "numeric" };
+            return date.toLocaleDateString("en-US", options);
+        },
         $dateTimeEng(nDateTime) {
             let date = new Date(nDateTime);
             let options = {

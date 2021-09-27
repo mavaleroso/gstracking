@@ -104,6 +104,7 @@ export default {
             this.$store.dispatch("vehicles/loadVehicles");
             this.$store.dispatch("department/loadSection");
             this.$store.dispatch("department/loadDivision");
+            this.$store.dispatch("mot/loadMot");
         }
 
         // storeDestination() {

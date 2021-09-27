@@ -13,9 +13,9 @@ class VehiclesStoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingVehicles $getListingVehicles)
+    public function index(GetListingVehicles $getListingVehicles, Request $request)
     {
-        $result = $getListingVehicles->execute();
+        $result = $getListingVehicles->execute($request->type);
         return response()->json($result);
     }
 

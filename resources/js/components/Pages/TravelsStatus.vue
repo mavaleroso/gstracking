@@ -379,9 +379,7 @@ export default {
             this.getTravels();
         },
         getVehicleModes() {
-            axios.get(BASE_URL + "/api/v1/vehiclemode").then(res => {
-                this.vehiclemodes = res.data.results;
-            });
+            this.vehiclemodes = this.$store.getters["mot/mot"];
         }
     }
 };
