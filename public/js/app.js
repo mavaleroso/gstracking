@@ -1964,6 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("vehicles/loadVehicles");
       this.$store.dispatch("department/loadSection");
       this.$store.dispatch("department/loadDivision");
+      this.$store.dispatch("mot/loadMot");
     } // storeDestination() {
     //     let division = localStorage.getItem("division");
     //     let region = localStorage.getItem("region");
@@ -4772,7 +4773,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       if (!vehicleStats) {
-        this.vehicles = this.$store.getters["vehicles/vehicles"];
+        this.vehicles = this.$store.getters["vehicles/rp_vehicles"];
       }
 
       if (!poStats) {
@@ -6889,11 +6890,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.maxDate = maxDate;
     },
     getVehiclemode: function getVehiclemode() {
-      var _this11 = this;
-
-      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this11.vehiclemodes = res.data.results;
-      });
+      this.vehiclemodes = this$store.getters["mot/mot"];
     }
   }
 });
@@ -8579,17 +8576,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     getVehicleModes: function getVehicleModes() {
-      var _this8 = this;
-
-      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this8.vehiclemodes = res.data.results;
-      });
+      this.vehiclemodes = this.$store.getters["mot/mot"];
     },
     getRequestTrans: function getRequestTrans() {
-      var _this9 = this;
+      var _this8 = this;
 
       axios.get(BASE_URL + "/api/v1/requesttrans").then(function (res) {
-        _this9.requesttrans = res.data;
+        _this8.requesttrans = res.data;
       });
     }
   }
@@ -10545,11 +10538,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getVehiclemode: function getVehiclemode() {
-      var _this2 = this;
-
-      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this2.vehiclemodes = res.data.results;
-      });
+      this.vehiclemodes = this.$store.getters["mot/mot"];
     }
   }
 });
@@ -12632,23 +12621,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       vehicle: {
         list: [],
-        office: [],
-        rental: [],
-        officeData: [],
-        rentalData: []
-      }
+        data: [],
+        all: []
+      },
+      loading: true
     };
   },
   created: function created() {
-    this.getVehicles();
+    this.getData();
   },
   mounted: function mounted() {
     this.ini();
+    this.getVehicles();
   },
   methods: {
     ini: function ini() {
@@ -12718,17 +12725,31 @@ __webpack_require__.r(__webpack_exports__);
         }
       };
     },
-    getVehicles: function getVehicles() {
+    getData: function getData() {
       var _this = this;
 
       axios.get(BASE_URL + "/tracking/travelcalendar").then(function (response) {
-        _this.vehicle.list = response.data.list; // this.vehicle.office = response.data.office;
-        // this.vehicle.rental = response.data.rental;
-        // this.vehicle.officeData = response.data.officeData;
-        // this.vehicle.rentalData = response.data.rentalData;
-
-        _this.ktcalendar().init();
+        _this.vehicle.list = response.data.list;
+        _this.vehicle.data = response.data.data;
+        _this.loading = false;
+        setTimeout(function () {
+          _this.ktcalendar().init();
+        }, 1000);
       });
+    },
+    getVehicles: function getVehicles() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.vehicle.all = _this2.$store.getters["vehicles/hired_vehicles"].concat(_this2.$store.getters["vehicles/rp_vehicles"]);
+      }, 3000);
+    },
+    mot: function mot(id) {
+      for (var i = 0; i < this.$store.getters["mot/mot"].length; i++) {
+        if (this.$store.getters["mot/mot"][i].id == id) {
+          return this.$store.getters["mot/mot"][i].name;
+        }
+      }
     }
   }
 });
@@ -13121,11 +13142,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.getTravels();
     },
     getVehicleModes: function getVehicleModes() {
-      var _this2 = this;
-
-      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this2.vehiclemodes = res.data.results;
-      });
+      this.vehiclemodes = this.$store.getters["mot/mot"];
     }
   }
 });
@@ -14459,11 +14476,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
     },
     getVehiclemode: function getVehiclemode() {
-      var _this9 = this;
-
-      axios.get(BASE_URL + "/api/v1/vehiclemode").then(function (res) {
-        _this9.vehiclemodes = res.data.results;
-      });
+      this.vehiclemodes = this.$store.getters["mot/mot"];
     }
   }
 });
@@ -14527,6 +14540,14 @@ __webpack_require__.r(__webpack_exports__);
       var date = new Date(nDate);
       var options = {
         month: "short",
+        day: "numeric"
+      };
+      return date.toLocaleDateString("en-US", options);
+    },
+    $dateNum: function $dateNum(nDate) {
+      var date = new Date(nDate);
+      var options = {
+        month: "numeric",
         day: "numeric"
       };
       return date.toLocaleDateString("en-US", options);
@@ -14907,8 +14928,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_employees__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/employees */ "./resources/js/store/modules/employees.js");
 /* harmony import */ var _modules_destination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/destination */ "./resources/js/store/modules/destination.js");
 /* harmony import */ var _modules_drivers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/drivers */ "./resources/js/store/modules/drivers.js");
@@ -14916,6 +14937,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_session__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/session */ "./resources/js/store/modules/session.js");
 /* harmony import */ var _modules_po__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/po */ "./resources/js/store/modules/po.js");
 /* harmony import */ var _modules_department__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/department */ "./resources/js/store/modules/department.js");
+/* harmony import */ var _modules_mot__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/mot */ "./resources/js/store/modules/mot.js");
 
 
 
@@ -14925,9 +14947,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_7__.default.use(vuex__WEBPACK_IMPORTED_MODULE_8__.default);
-vue__WEBPACK_IMPORTED_MODULE_7__.default.config.devtools = true;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_8__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vuex__WEBPACK_IMPORTED_MODULE_9__.default);
+vue__WEBPACK_IMPORTED_MODULE_8__.default.config.devtools = true;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_9__.default.Store({
   modules: {
     employees: _modules_employees__WEBPACK_IMPORTED_MODULE_0__.default,
     destination: _modules_destination__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -14935,7 +14958,8 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.config.devtools = true;
     vehicles: _modules_vehicles__WEBPACK_IMPORTED_MODULE_3__.default,
     po: _modules_po__WEBPACK_IMPORTED_MODULE_5__.default,
     sessionStore: _modules_session__WEBPACK_IMPORTED_MODULE_4__.default,
-    department: _modules_department__WEBPACK_IMPORTED_MODULE_6__.default
+    department: _modules_department__WEBPACK_IMPORTED_MODULE_6__.default,
+    mot: _modules_mot__WEBPACK_IMPORTED_MODULE_7__.default
   }
 }));
 
@@ -15271,6 +15295,64 @@ var mutations = {
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/mot.js":
+/*!*******************************************!*\
+  !*** ./resources/js/store/modules/mot.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var state = {
+  mot: [],
+  loadingStats: false
+};
+var getters = {
+  mot: function mot(state) {
+    return state.mot;
+  },
+  loadingStats: function loadingStats(state) {
+    return state.loadingStats;
+  }
+};
+var actions = {
+  loadMot: function loadMot(_ref) {
+    var commit = _ref.commit;
+    commit("setLoadingStats", true);
+    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/api/v1/vehiclemode").then(function (response) {
+      commit("setMot", response.data.results);
+      commit("setLoadingStats", false);
+    });
+  },
+  setLocalData: function setLocalData(_ref2, payload) {
+    var commit = _ref2.commit;
+    commit("setMot", payload);
+  }
+};
+var mutations = {
+  setMot: function setMot(state, mot) {
+    state.mot = mot;
+  },
+  setLoadingStats: function setLoadingStats(state, value) {
+    state.loadingStats = value;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/po.js":
 /*!******************************************!*\
   !*** ./resources/js/store/modules/po.js ***!
@@ -15384,12 +15466,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var state = {
-  vehicles: [],
+  rp_vehicles: [],
+  hired_vehicles: [],
   loadingStats: false
 };
 var getters = {
-  vehicles: function vehicles(state) {
-    return state.vehicles;
+  rp_vehicles: function rp_vehicles(state) {
+    return state.rp_vehicles;
+  },
+  hired_vehicles: function hired_vehicles(state) {
+    return state.hired_vehicles;
   },
   loadingStats: function loadingStats(state) {
     return state.loadingStats;
@@ -15399,8 +15485,12 @@ var actions = {
   loadVehicles: function loadVehicles(_ref) {
     var commit = _ref.commit;
     commit("setLoadingStats", true);
-    return axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/vehicles").then(function (response) {
-      commit("setVehicles", response.data);
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/vehicles?type=1").then(function (response) {
+      commit("setRPVehicles", response.data);
+      commit("setLoadingStats", false);
+    });
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get(BASE_URL + "/store/vehicles?type=2").then(function (response) {
+      commit("setHiredVehicles", response.data);
       commit("setLoadingStats", false);
     });
   },
@@ -15410,8 +15500,11 @@ var actions = {
   }
 };
 var mutations = {
-  setVehicles: function setVehicles(state, vehicles) {
-    state.vehicles = vehicles;
+  setRPVehicles: function setRPVehicles(state, vehicles) {
+    state.rp_vehicles = vehicles;
+  },
+  setHiredVehicles: function setHiredVehicles(state, vehicles) {
+    state.hired_vehicles = vehicles;
   },
   setLoadingStats: function setLoadingStats(state, value) {
     state.loadingStats = value;
@@ -67952,234 +68045,286 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-lg-3" }, [
-      _c("div", { staticClass: "card card-custom" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _vm.vehicle.office.length
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "accordion accordion-solid accordion-toggle-plus",
-                  attrs: { id: "accordion-office" }
-                },
-                _vm._l(_vm.vehicle.officeData, function(v) {
-                  return _c("div", { key: v.id, staticClass: "card" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card-header",
-                        attrs: { id: "headingOne" + v.id }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card-title collapsed",
-                            attrs: {
-                              "data-toggle": "collapse",
-                              "data-target": "#collapseOfficeOne" + v.id
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "flaticon2-lorry" }),
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(v.name) +
-                                "\n                                "
-                            ),
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "mt-0 mb-0 ml-5 label label-primary label-inline"
-                              },
-                              [_vm._v(_vm._s(v.plate_no))]
-                            )
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "collapse",
-                        attrs: {
-                          id: "collapseOfficeOne" + v.id,
-                          "data-parent": "#accordion-office"
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "card-body" },
-                          _vm._l(
-                            _vm.vehicle.office.filter(function(i) {
-                              return i.vehicle_id == v.id
-                            }),
-                            function(r) {
-                              return _c(
-                                "div",
-                                {
-                                  key: r.id,
-                                  staticClass: "timeline timeline-5 mt-1"
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "timeline-item align-items-start"
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(
-                                                _vm.$dateEng(r.travel_date)
-                                              ) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm._m(2, true),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "timeline-content text-dark-50"
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(r.purpose) +
-                                              "\n                                        "
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            }
-                          ),
-                          0
-                        )
-                      ]
-                    )
-                  ])
-                }),
-                0
-              )
-            : _c("div", [
-                _c(
-                  "div",
+    _c("div", { staticClass: "col-lg-9" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _c(
+          "div",
+          {
+            class: _vm.loading
+              ? "card-body overlay overlay-block "
+              : "card-body "
+          },
+          [
+            _vm.loading
+              ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                  _c("div", { staticClass: "spinner spinner-primary" })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { attrs: { id: "kt_calendar" } }),
+            _vm._v(" "),
+            !_vm.loading
+              ? _c(
+                  "table",
                   {
-                    staticClass: "alert alert-custom alert-default",
-                    attrs: { role: "alert" }
+                    staticClass:
+                      "table table-striped table-responsive w-100 fs-10 mt-5"
                   },
                   [
-                    _c("div", { staticClass: "alert-icon" }, [
-                      _c(
-                        "span",
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.vehicle.data, function(t, index) {
+                        return _c("tr", { key: t.id }, [
+                          _c("td", [_vm._v(_vm._s(index + 1))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(t.trip_ticket))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(t.type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(t.request.tracking_no))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(t.request.purpose))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(t.request.place))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.$dateEng2(t.request.inclusive_from)
+                                ) +
+                                " -\n                                " +
+                                _vm._s(_vm.$dateEng2(t.request.inclusive_to)) +
+                                "\n                            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.$chkStatus(t.request.status)
+                              )
+                            }
+                          })
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              : _vm._e()
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-lg-3" }, [
+      _c("div", { staticClass: "card card-custom card-stretch" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            class: _vm.loading
+              ? "card-body overlay overlay-block "
+              : "card-body "
+          },
+          [
+            _vm.loading
+              ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                  _c("div", { staticClass: "spinner spinner-primary" })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.vehicle.all, function(v, index) {
+              return _c("div", { key: index }, [
+                _c(
+                  "span",
+                  { staticClass: "label label-primary label-inline" },
+                  [
+                    _vm._v(
+                      _vm._s(v.name) +
+                        " - " +
+                        _vm._s(v.plate_no) +
+                        " |\n                        " +
+                        _vm._s(_vm.mot(v.type))
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "timeline timeline-5 mt-3" },
+                  _vm._l(
+                    _vm.vehicle.data.filter(function(i) {
+                      return i.vehicle.id === v.id
+                    }),
+                    function(data, index) {
+                      return _c(
+                        "div",
                         {
-                          staticClass: "svg-icon svg-icon-primary svg-icon-2x"
+                          key: index,
+                          staticClass: "timeline-item align-items-start"
                         },
                         [
                           _c(
-                            "svg",
+                            "div",
                             {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
+                              staticClass:
+                                "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap fs-9"
                             },
                             [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("rect", {
-                                    attrs: {
-                                      x: "0",
-                                      y: "0",
-                                      width: "24",
-                                      height: "24"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("circle", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      opacity: "0.3",
-                                      cx: "12",
-                                      cy: "12",
-                                      r: "10"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "11",
-                                      y: "10",
-                                      width: "2",
-                                      height: "7",
-                                      rx: "1"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "11",
-                                      y: "7",
-                                      width: "2",
-                                      height: "2",
-                                      rx: "1"
-                                    }
-                                  })
-                                ]
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.$dateNum(data.request.inclusive_from)
+                                  ) +
+                                  "\n                                -\n                                " +
+                                  _vm._s(
+                                    _vm.$dateNum(data.request.inclusive_to)
+                                  ) +
+                                  "\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "timeline-badge" }, [
+                            _c("i", {
+                              class:
+                                data.request.status == "Approved"
+                                  ? "fa fa-genderless text-success icon-xxl"
+                                  : "fa fa-genderless text-warning icon-xxl"
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "timeline-content text-dark-50 fs-11"
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(data.trip_ticket) +
+                                  " :\n                                " +
+                                  _vm._s(data.request.purpose) +
+                                  "\n                            "
                               )
                             ]
                           )
                         ]
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "alert-text" }, [
-                      _vm._v(
-                        "\n                            No ongoing travel.\n                        "
-                      )
-                    ])
-                  ]
-                )
+                    }
+                  ),
+                  0
+                ),
+                _vm._v(" "),
+                _c("hr")
               ])
-        ])
+            }),
+            _vm._v(" "),
+            _vm.vehicle.list.length == 0 && !_vm.loading
+              ? _c("div", [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-custom alert-default",
+                      attrs: { role: "alert" }
+                    },
+                    [
+                      _c("div", { staticClass: "alert-icon" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "svg-icon svg-icon-primary svg-icon-2x"
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                  width: "24px",
+                                  height: "24px",
+                                  viewBox: "0 0 24 24",
+                                  version: "1.1"
+                                }
+                              },
+                              [
+                                _c(
+                                  "g",
+                                  {
+                                    attrs: {
+                                      stroke: "none",
+                                      "stroke-width": "1",
+                                      fill: "none",
+                                      "fill-rule": "evenodd"
+                                    }
+                                  },
+                                  [
+                                    _c("rect", {
+                                      attrs: {
+                                        x: "0",
+                                        y: "0",
+                                        width: "24",
+                                        height: "24"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("circle", {
+                                      attrs: {
+                                        fill: "#000000",
+                                        opacity: "0.3",
+                                        cx: "12",
+                                        cy: "12",
+                                        r: "10"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("rect", {
+                                      attrs: {
+                                        fill: "#000000",
+                                        x: "11",
+                                        y: "10",
+                                        width: "2",
+                                        height: "7",
+                                        rx: "1"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("rect", {
+                                      attrs: {
+                                        fill: "#000000",
+                                        x: "11",
+                                        y: "7",
+                                        width: "2",
+                                        height: "2",
+                                        rx: "1"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "alert-text" }, [
+                        _vm._v(
+                          "\n                            No ongoing travel.\n                        "
+                        )
+                      ])
+                    ]
+                  )
+                ])
+              : _vm._e()
+          ],
+          2
+        )
       ])
     ])
   ])
@@ -68189,11 +68334,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-9" }, [
-      _c("div", { staticClass: "card card-custom card-stretch" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "kt_calendar" } })
-        ])
+    return _c("thead", [
+      _c("tr", { staticClass: "table-primary fs-9" }, [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Trip Ticket")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tracking No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Purpose")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Place")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Travel Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")])
       ])
     ])
   },
@@ -68205,14 +68362,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "card-title" }, [
         _c("h3", { staticClass: "card-label" }, [_vm._v("Travels")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
     ])
   }
 ]

@@ -18,7 +18,7 @@ class GetListingTravel
      */
     public function execute()
     {
-        $transVehicles = TransactionVehicles::select('transaction_vehicles.id as trans_id', 'transaction_vehicles.trip_ticket', 'request_transactions.type', DB::raw('GROUP_CONCAT(request_transactions.request_id) as request_id'))
+        $transVehicles = TransactionVehicles::select('transaction_vehicles.id as trans_id', 'transaction_vehicles.vehicle_id', 'transaction_vehicles.driver_id', 'transaction_vehicles.trip_ticket', 'request_transactions.type', DB::raw('GROUP_CONCAT(request_transactions.request_id) as request_id'))
             ->leftJoin('request_transactions', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
             ->where('transaction_vehicles.status', 2)
             ->groupBy('transaction_vehicles.id')
@@ -26,65 +26,26 @@ class GetListingTravel
 
         foreach ($transVehicles as $key) {
             $data['data'][] = array(
+                'id' => $key['trans_id'],
                 'type' => $key['type'],
                 'request' => $key['type'] == 'rito' ? $this->rito_request($key['request_id']) :
                     $this->local_request($key['request_id']),
-                'vehicle' => Vehicle::find($key['trans_id']),
-                'drivers' => Driver::find($key['trans_id']),
+                'vehicle' => Vehicle::find($key['vehicle_id']),
+                'drivers' => Driver::find($key['driver_id']),
                 'trip_ticket' => $key['trip_ticket']
             );
         }
 
         for ($j = 0; $j < count($data['data']); $j++) {
             $data['list'][] = array(
-                'title' => $data['data'][$j]['request']['purpose'] . ' ( )',
-                'description' => $data['data'][$j]['trip_ticket'],
+                'title' => $data['data'][$j]['vehicle']['name'] . ' (' . $data['data'][$j]['vehicle']['plate_no'] . ')',
+                'description' => $data['data'][$j]['trip_ticket'] . ': ' . $data['data'][$j]['request']['purpose'],
                 'start' => $data['data'][$j]['request']['inclusive_from'],
-                'className' => 'fc-event-light fc-event-solid-primary',
+                'className' => $data['data'][$j]['request']['status'] == 'Approved' ? 'fc-event-light fc-event-solid-primary' : 'fc-event-light fc-event-solid-warning',
             );
         }
 
         return $data;
-        // $office = Transaction::leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
-        //     ->leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
-        //     ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-        //     ->select(['transactions.*', 'requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name', 'vehicles.plate_no', 'transaction_vehicles.vehicle_id'])
-        //     ->where('requests.is_status', 2)
-        //     ->where('transaction_vehicles.type', 1)
-        //     ->orderBy('requests.travel_date', 'ASC')
-        //     ->get();
-
-        // $rental = Transaction::leftJoin('requests', 'transactions.request_id', '=', 'requests.id')
-        //     ->leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
-        //     ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-        //     ->select(['transactions.*', 'requests.travel_date', 'requests.depart_time', 'requests.purpose', 'vehicles.name', 'vehicles.plate_no', 'transaction_vehicles.vehicle_id'])
-        //     ->where('requests.is_status', 2)
-        //     ->where('transaction_vehicles.type', 2)
-        //     ->orderBy('requests.travel_date', 'ASC')
-        //     ->get();
-
-
-
-        // $data['office'] = $office;
-
-        // $data['rental'] = $rental;
-
-        // $data['officeData'] = Transaction::leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
-        //     ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-        //     ->select(['vehicles.*'])
-        //     ->where('transaction_vehicles.type', 1)
-        //     ->groupBy('vehicles.id')
-        //     ->get();
-
-        // $data['rentalData'] = Transaction::leftJoin('transaction_vehicles', 'transactions.id', '=', 'transaction_vehicles.transaction_id')
-        //     ->leftJoin('vehicles', 'transaction_vehicles.vehicle_id', '=', 'vehicles.id')
-        //     ->select(['vehicles.*'])
-        //     ->where('transaction_vehicles.type', 2)
-        //     ->groupBy('vehicles.id')
-        //     ->get();
-
-        // return $data;
-
     }
 
     public function local_request($request_id)
@@ -99,7 +60,8 @@ class GetListingTravel
                 'place' => $key['place'],
                 'inclusive_from' => $key['travel_date'],
                 'inclusive_to' => $key['return_date'],
-                'purpose' => $key['purpose']
+                'purpose' => $key['purpose'],
+                'status' => 'Approved'
             );
         }
         return $result;
@@ -154,6 +116,7 @@ class GetListingTravel
             array_push($purpose, $tracking[$j]->purpose);
             $inclusive_from = $tracking[$j]->inclusive_from;
             $inclusive_to = $tracking[$j]->inclusive_to;
+            $status = $tracking[$j]->status;
         }
 
 
@@ -162,7 +125,8 @@ class GetListingTravel
             'place' => implode(", ", $place),
             'inclusive_from' => $inclusive_from,
             'inclusive_to' => $inclusive_to,
-            'purpose' => implode(", ", $purpose)
+            'purpose' => implode(", ", $purpose),
+            'status' => $status
         );
         return $result;
     }

@@ -12,8 +12,8 @@ class GetListingVehicles
      *
      * @param string $email
      */
-    public function execute()
+    public function execute($type)
     {
-        return Vehicle::where('type', 1)->get();
+        return Vehicle::where('type', $type)->get();
     }
 }

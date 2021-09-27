@@ -411,7 +411,7 @@ export default {
                 this.drivers = this.$store.getters["drivers/drivers"];
             }
             if (!vehicleStats) {
-                this.vehicles = this.$store.getters["vehicles/vehicles"];
+                this.vehicles = this.$store.getters["vehicles/rp_vehicles"];
             }
             if (!poStats) {
                 this.pos = this.$store.getters["po/pos"];

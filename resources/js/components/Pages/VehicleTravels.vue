@@ -1356,9 +1356,7 @@ export default {
             return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
         },
         getVehiclemode() {
-            axios.get(BASE_URL + "/api/v1/vehiclemode").then(res => {
-                this.vehiclemodes = res.data.results;
-            });
+            this.vehiclemodes = this.$store.getters["mot/mot"];
         }
     }
 };
