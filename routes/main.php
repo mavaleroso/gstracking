@@ -37,6 +37,8 @@ Route::get('/print_request', 'base\PrintController@index')->name('main.print_req
 Route::get('/print_trip_ticket', 'base\PrintController@index')->name('main.print_ticket');
 Route::get('/print_fuel_request_slip', 'base\PrintController@index')->name('main.print_fuel_request_slip');
 
+
+
 Route::group(['prefix' => 'travel', 'namespace' => 'Main'], function () {
     Route::resource('request', 'RequestTravelController', [
         'names' => [
@@ -160,6 +162,19 @@ Route::group(['prefix' => 'history', 'namespace' => 'Main'], function () {
 });
 
 Route::group(['prefix' => 'tracking', 'namespace' => 'Main'], function () {
+
+    Route::resource('dashboard', 'DashboardController', [
+        'names' => [
+            'index' => 'main.dashboard.index',
+            'create' => 'main.dashboard.create',
+            'store' => 'main.dashboard.store',
+            'show' => 'main.dashboard.show',
+            'edit' => 'main.dashboard.edit',
+            'update' => 'main.dashboard.update',
+            'destroy' => 'main.dashboard.destroy',
+        ]
+    ]);
+
     Route::resource('po', 'PoController', [
         'names' => [
             'index' => 'main.po.index',

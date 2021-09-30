@@ -126,44 +126,4 @@ class GetListingVehicleTravel
         );
         return $data;
     }
-
-    // if ($fields['division']){
-    //     $query->where('requests.division_id', 'like' , '%'.$fields['division'].'%');
-    // }
-    // if ($fields['section']){
-    //     $query->where('requests.section_id', 'like' , '%'.$fields['section'].'%');
-    // }
-    // if ($fields['tripTicket']){
-    //     $query->where('transaction_vehicles.trip_ticket', 'like' , '%'.$fields['tripTicket'].'%');
-    // }
-    // if ($fields['dateTravel']){
-    //     $query->where('requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%');
-    // }
-    // if ($fields['procurementSub']){
-    //     $query->where('transaction_vehicles.date_submit_proc', 'like' , '%'.$fields['procurementSub'].'%');
-    // }
-    // if ($fields['distanceTravelled']){
-    //     $query->where('transaction_vehicles.travelled', 'like' , '%'.$fields['distanceTravelled'].'%');
-    // }
-    // if ($fields['poNumber']){
-    //     $query->where('procurements.po_no', 'like' , '%'.$fields['poNumber'].'%');
-    // }
-    // if ($fields['poAmount']){
-    //     $query->where('procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%');
-    // }
-    // if ($fields['rateperKm']){
-    //     $query->where('transaction_vehicles.rate_per_km', 'like' , '%'.$fields['rateperKm'].'%');
-    // }
-    // if ($fields['flatRate']){
-    //     $query->where('transaction_vehicles.flat_rate', 'like' , '%'.$fields['flatRate'].'%');
-    // }
-    // if ($fields['rateperNight']){
-    //     $query->where('transaction_vehicles.rate_per_night', 'like' , '%'.$fields['rateperNight'].'%');
-    // }
-    // if ($fields['numberofNights']){
-    //     $query->where('transaction_vehicles.nights_count', 'like' , '%'.$fields['numberofNights'].'%');
-    // }
-    // if ($fields['vehicleTemplate']){
-    //     $query->where('vehicles.plate_no', 'like' , '%'.$fields['vehicleTemplate'].'%');
-    // }
 }

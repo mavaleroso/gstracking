@@ -46,7 +46,8 @@ class PermissionCommand extends Command
         'printrequest',
         'travelsstatus',
         'fuelcharges',
-        'externalpassenger'
+        'externalpassenger',
+        'dashboard'
     ];
 
     /**
