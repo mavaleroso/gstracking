@@ -3437,6 +3437,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3458,7 +3464,7 @@ __webpack_require__.r(__webpack_exports__);
       var year = function year() {
         $(function () {
           var system = JSON.parse(JSON.stringify(_this.system));
-          $('#year').val(system[4].value);
+          $("#year").val(system[4].value);
         });
       };
 
@@ -3472,7 +3478,7 @@ __webpack_require__.r(__webpack_exports__);
     getYear: function getYear() {
       var _this2 = this;
 
-      axios.get(BASE_URL + '/api/v1/config/year').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/config/year").then(function (res) {
         _this2.years = res.data;
 
         _this2.ini().setYear();
@@ -3481,7 +3487,7 @@ __webpack_require__.r(__webpack_exports__);
     getSystem: function getSystem() {
       var _this3 = this;
 
-      axios.get(BASE_URL + '/api/v1/config/system').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/config/system").then(function (res) {
         _this3.system = res.data;
       });
     }
@@ -3767,6 +3773,12 @@ __webpack_require__.r(__webpack_exports__);
       travel: {
         month: [],
         count: []
+      },
+      overview: {
+        unassigned: 0,
+        pending: 0,
+        approved: 0,
+        completed: 0
       }
     };
   },
@@ -3799,6 +3811,8 @@ __webpack_require__.r(__webpack_exports__);
         var division_values = [];
         var travel_keys = [];
         var travel_values = [];
+        var overview_keys = [];
+        var overview_values = [];
 
         for (var k in res.data.divisions) {
           division_keys.push(k);
@@ -3816,10 +3830,41 @@ __webpack_require__.r(__webpack_exports__);
           travel_values.push(res.data.travels[c]);
         }
 
+        for (var s in res.data.overview) {
+          overview_keys.push(s);
+        }
+
+        for (var t in res.data.overview) {
+          overview_values.push(res.data.overview[t]);
+        }
+
         _this.division.dep = division_keys;
         _this.division.count = division_values;
         _this.travel.month = travel_keys;
         _this.travel.count = travel_values;
+
+        for (var o in res.data.overview) {
+          switch (o) {
+            case "unassigned":
+              _this.overview.unassigned = res.data.overview[o];
+              break;
+
+            case "pending":
+              _this.overview.pending = res.data.overview[o];
+              break;
+
+            case "approved":
+              _this.overview.approved = res.data.overview[o];
+              break;
+
+            case "completed":
+              _this.overview.completed = res.data.overview[o];
+              break;
+
+            default:
+              break;
+          }
+        }
 
         _this.KTApexCharts().init();
       });
@@ -13798,10 +13843,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.getData();
     this.getPoNumber();
     this.getDivision();
-    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
+    this.getVehiclemode();
   },
   computed: {
     totalCost: function totalCost() {
@@ -14087,7 +14132,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
     },
     getVehiclemode: function getVehiclemode() {
-      this.vehiclemodes = this.$store.getters["mot/mot"];
+      var _this9 = this;
+
+      setTimeout(function () {
+        _this9.vehiclemodes = _this9.$store.getters["mot/mot"];
+      }, 1000);
     }
   }
 });
@@ -57025,7 +57074,13 @@ var render = function() {
               _c(
                 "h5",
                 { staticClass: "text-dark font-weight-bold mt-2 mb-2 mr-5" },
-                [_vm._v(_vm._s(_vm.$route.meta.title))]
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.$route.meta.title) +
+                      "\n                "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c("div", {
@@ -57035,50 +57090,13 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-center" }, [
-            _c(
-              "div",
-              {
-                class:
-                  _vm.$route.meta.title == "Dashboard"
-                    ? "input-group"
-                    : "d-none"
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  { staticClass: "form-control", attrs: { id: "year" } },
-                  _vm._l(_vm.years, function(year) {
-                    return _c(
-                      "option",
-                      { key: year.id, domProps: { value: year.travel_year } },
-                      [_vm._v(_vm._s(year.travel_year))]
-                    )
-                  }),
-                  0
-                )
-              ]
-            )
-          ])
+          _c("div", { staticClass: "d-flex align-items-center" })
         ]
       )
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-prepend" }, [
-      _c("span", { staticClass: "input-group-text" }, [
-        _c("i", { staticClass: "la la-calendar-alt" })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -57183,7 +57201,13 @@ var render = function() {
                 _c(
                   "h1",
                   { staticClass: "float-right text-danger font-weight-bold" },
-                  [_vm._v("\n                        1\n                    ")]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.unassigned) +
+                        "\n                    "
+                    )
+                  ]
                 )
               ]
             ),
@@ -57194,7 +57218,7 @@ var render = function() {
                 staticClass: "text-danger font-weight-bold font-size-h6 mt-2",
                 attrs: { href: "#" }
               },
-              [_vm._v("Rejected")]
+              [_vm._v("Unassigned")]
             )
           ]
         )
@@ -57268,7 +57292,13 @@ var render = function() {
                 _c(
                   "h1",
                   { staticClass: "float-right text-warning font-weight-bold" },
-                  [_vm._v("\n                        1\n                    ")]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.pending) +
+                        "\n                    "
+                    )
+                  ]
                 )
               ]
             ),
@@ -57360,7 +57390,13 @@ var render = function() {
                 _c(
                   "h1",
                   { staticClass: "float-right text-primary font-weight-bold" },
-                  [_vm._v("\n                        1\n                    ")]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.approved) +
+                        "\n                    "
+                    )
+                  ]
                 )
               ]
             ),
@@ -57447,7 +57483,13 @@ var render = function() {
                 _c(
                   "h1",
                   { staticClass: "float-right text-success font-weight-bold" },
-                  [_vm._v("\n                        1\n                    ")]
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.completed) +
+                        "\n                    "
+                    )
+                  ]
                 )
               ]
             ),
@@ -69907,7 +69949,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Group")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Tracking No.")]),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Code")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Trip Ticket")]),
         _vm._v(" "),

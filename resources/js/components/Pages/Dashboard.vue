@@ -47,14 +47,14 @@
                             </g>
                         </svg>
                         <h1 class="float-right text-danger font-weight-bold">
-                            1
+                            {{ overview.unassigned }}
                         </h1>
                         <!--end::Svg Icon-->
                     </span>
                     <a
                         href="#"
                         class="text-danger font-weight-bold font-size-h6 mt-2"
-                        >Rejected</a
+                        >Unassigned</a
                     >
                 </div>
             </div>
@@ -94,7 +94,7 @@
                             </g>
                         </svg>
                         <h1 class="float-right text-warning font-weight-bold">
-                            1
+                            {{ overview.pending }}
                         </h1>
                         <!--end::Svg Icon-->
                     </span>
@@ -144,7 +144,7 @@
                             </g>
                         </svg>
                         <h1 class="float-right text-primary font-weight-bold">
-                            1
+                            {{ overview.approved }}
                         </h1>
                         <!--end::Svg Icon-->
                     </span>
@@ -192,7 +192,7 @@
                             </g>
                         </svg>
                         <h1 class="float-right text-success font-weight-bold">
-                            1
+                            {{ overview.completed }}
                         </h1>
                         <!--end::Svg Icon-->
                     </span>
@@ -265,6 +265,12 @@ export default {
             travel: {
                 month: [],
                 count: []
+            },
+            overview: {
+                unassigned: 0,
+                pending: 0,
+                approved: 0,
+                completed: 0
             }
         };
     },
@@ -294,6 +300,8 @@ export default {
                 var division_values = [];
                 var travel_keys = [];
                 var travel_values = [];
+                var overview_keys = [];
+                var overview_values = [];
 
                 for (var k in res.data.divisions) division_keys.push(k);
                 for (var v in res.data.divisions)
@@ -303,11 +311,35 @@ export default {
                 for (var c in res.data.travels)
                     travel_values.push(res.data.travels[c]);
 
+                for (var s in res.data.overview) overview_keys.push(s);
+                for (var t in res.data.overview)
+                    overview_values.push(res.data.overview[t]);
+
                 this.division.dep = division_keys;
                 this.division.count = division_values;
 
                 this.travel.month = travel_keys;
                 this.travel.count = travel_values;
+
+                for (let o in res.data.overview) {
+                    switch (o) {
+                        case "unassigned":
+                            this.overview.unassigned = res.data.overview[o];
+                            break;
+                        case "pending":
+                            this.overview.pending = res.data.overview[o];
+                            break;
+                        case "approved":
+                            this.overview.approved = res.data.overview[o];
+                            break;
+                        case "completed":
+                            this.overview.completed = res.data.overview[o];
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
 
                 this.KTApexCharts().init();
             });

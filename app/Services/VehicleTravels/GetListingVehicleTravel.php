@@ -107,20 +107,21 @@ class GetListingVehicleTravel
     public function local($id)
     {
         $request = Request::find($id);
-        $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
-            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
-            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
-            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
-            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
-            ->where('destinations.request_id', $id)
-            ->first();
+        // $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
+        //     ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
+        //     ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
+        //     ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
+        //     ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
+        //     ->where('destinations.request_id', $id)
+        //     ->first();
 
         $data[] = (object) array(
             'id' => $request->id,
             'purpose' => $request->purpose,
             'inclusive_from' => $request->travel_date,
             'inclusive_to' => $request->return_date,
-            'place' => $place->place,
+            'place' => $request->destination,
+            'tracking_no' => $request->serial_code,
             'status' => "Approved",
             'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
         );
