@@ -64247,12 +64247,12 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "header-title" }, [
                     _c("p", { staticClass: "main" }, [
-                      _vm._v("ADMINISTRATIVE SERVICES")
+                      _vm._v("GENERAL SERVICES SECTION")
                     ]),
                     _vm._v(" "),
                     _c("p", { staticClass: "sub-main" }, [
                       _vm._v(
-                        "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    SERVICES GROUP\n                                "
+                        "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    DIVISION\n                                "
                       )
                     ]),
                     _vm._v(" "),
