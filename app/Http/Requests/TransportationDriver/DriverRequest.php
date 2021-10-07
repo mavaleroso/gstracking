@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class DriverRequest extends FormRequest
 {
-     /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -16,11 +16,12 @@ class DriverRequest extends FormRequest
     {
         return true;
     }
-    
+
     public function rules()
     {
         return [
             'id' => 'nullable',
+            'emp_id' => 'nullable',
             'fullname' => 'required',
             'birthdate' => 'required',
             'gender' => 'required',
@@ -38,7 +39,6 @@ class DriverRequest extends FormRequest
             'contactNumber' => 'Contact Number',
             'status' => 'Status'
         ];
-
     }
 
     public function messages()
@@ -50,6 +50,5 @@ class DriverRequest extends FormRequest
             'contactNumber.required' => __('main/validations.required'),
             'status.required' => __('main/validations.required')
         ];
-
     }
 }

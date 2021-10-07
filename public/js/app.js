@@ -6546,7 +6546,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.maxDate = maxDate;
     },
     getVehiclemode: function getVehiclemode() {
-      this.vehiclemodes = this$store.getters["mot/mot"];
+      var _this11 = this;
+
+      setTimeout(function () {
+        _this11.vehiclemodes = _this11.$store.getters["mot/mot"];
+      }, 3000);
     }
   }
 });
@@ -10973,14 +10977,245 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11231,6 +11466,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       create: false,
       formFields: {
         id: "",
+        emp_id: "",
         fullname: "",
         birthdate: "",
         gender: "",
@@ -11239,13 +11475,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         results: [],
         image: ""
       },
-      loadingStatus: "true",
-      listdata: [],
-      states: [],
-      names: ["fullname", "birthdate", "gender", "contactNumber", "status"]
+      names: ["fullname", "birthdate", "gender", "contactNumber", "status"],
+      drivers: [],
+      total: null,
+      searchData: "",
+      timer: null,
+      pages: {
+        totalPages: null,
+        prevPage: null,
+        currentPage: 1,
+        nextPage: 2,
+        display: 5
+      },
+      loading: true
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.getDriversList();
+  },
   mounted: function mounted() {
     this.ini();
   },
@@ -11258,14 +11505,54 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       return res;
+    },
+    pagination: function pagination() {
+      var result = null;
+      var current = this.pages.currentPage;
+
+      if (this.pages.totalPages < 5) {
+        result = _toConsumableArray(Array(this.pages.totalPages).keys()).map(function (x) {
+          return ++x;
+        });
+      } else {
+        if (current <= 3) {
+          result = _toConsumableArray(Array(this.pages.display).keys()).map(function (x) {
+            return ++x;
+          });
+        } else if (current == this.pages.totalPages - 1 || current == this.pages.totalPages) {
+          result = [this.pages.totalPages - 4, this.pages.totalPages - 3, this.pages.totalPages - 2, this.pages.totalPages - 1, this.pages.totalPages];
+        } else {
+          result = [current - 2, current - 1, current, current + 1, current + 2];
+        }
+      }
+
+      return result;
     }
   },
   methods: {
     ini: function ini() {
+      $(function () {});
+    },
+    indexers: function indexers(idx) {
+      return this.pages.currentPage == 1 ? idx : (this.pages.currentPage - 1) * 10 + idx;
+    },
+    search: function search() {
       var _this = this;
 
-      $(function () {
-        _this.tdatatable().init();
+      clearTimeout(this.timer);
+      this.timer = setTimeout(function () {
+        _this.getDriversList();
+      }, 2000);
+    },
+    getDriversList: function getDriversList() {
+      var _this2 = this;
+
+      this.loading = true;
+      axios.get(BASE_URL + "/transportation/driver?page=" + this.pages.currentPage + "&search=" + this.searchData).then(function (res) {
+        _this2.loading = false;
+        _this2.drivers = res.data.data ? res.data.data : null;
+        _this2.total = res.data.count;
+        _this2.pages.totalPages = Math.ceil(res.data.count / 10);
       });
     },
     newEntry: function newEntry() {
@@ -11303,6 +11590,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       vm.formFields.birthdate = vm.formFields.results[id].birthdate;
       vm.formFields.fullname = fullname;
       vm.formFields.image = vm.formFields.results[id].image_path;
+      vm.formFields.emp_id = vm.formFields.results[id].id_number;
     },
     cancelEntry: function cancelEntry() {
       this.formFields.id = "";
@@ -11311,11 +11599,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.formFields.gender = "";
       this.formFields.contactNumber = "";
       this.formFields.status = "";
+      this.formFields.emp_id = "";
       this.create = false;
-      this.ini();
+      this.getDriversList();
     },
     saveEntry: function saveEntry() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formD = new FormData();
       var method = null;
@@ -11326,6 +11615,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       formD.append("gender", this.formFields.gender);
       formD.append("contactNumber", this.formFields.contactNumber);
       formD.append("status", this.formFields.status);
+      formD.append("emp_id", this.formFields.emp_id);
       method = this.create ? "POST" : "PUT";
       putParams = this.create ? "" : "/" + this.formFields.id;
       axios({
@@ -11340,10 +11630,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         $(".is-invalid").removeClass("is-invalid");
         Swal.fire("Good job!", response.data.message, "success");
 
-        _this2.$showToast(response.data.message, "success");
+        _this3.$showToast(response.data.message, "success");
 
         setTimeout(function () {
-          _this2.cancelEntry();
+          _this3.cancelEntry();
         }, 1000);
       })["catch"](function (error) {
         var data = error.response.data.errors;
@@ -11370,25 +11660,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
 
-        for (var i = 0; i < _this2.names.length; i++) {
-          if (_this2.names[i] == "fullname") {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              if ($("#kt_select_" + _this2.names[i]).next().next().length != 0) {
-                $("#kt_select_" + _this2.names[i]).next().next(".invalid-feedback").remove();
+        for (var i = 0; i < _this3.names.length; i++) {
+          if (_this3.names[i] == "fullname") {
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              if ($("#kt_select_" + _this3.names[i]).next().next().length != 0) {
+                $("#kt_select_" + _this3.names[i]).next().next(".invalid-feedback").remove();
               }
             }
           } else {
-            if (keys.indexOf("" + _this2.names[i] + "") == -1) {
-              $('[name="driver_' + _this2.names[i] + '"]').removeClass("is-invalid");
-              $('[name="driver_' + _this2.names[i] + '"]').next(".invalid-feedback").remove();
+            if (keys.indexOf("" + _this3.names[i] + "") == -1) {
+              $('[name="driver_' + _this3.names[i] + '"]').removeClass("is-invalid");
+              $('[name="driver_' + _this3.names[i] + '"]').next(".invalid-feedback").remove();
             }
           }
         }
 
-        _this2.$showToast(values.toString().replace(/,/g, "</br>"), "error");
+        _this3.$showToast(values.toString().replace(/,/g, "</br>"), "error");
       });
     },
     deleteEntry: function deleteEntry(id) {
+      var _this4 = this;
+
       Swal.fire({
         title: "Are you sure?",
         text: 'You won"t be able to revert this!',
@@ -11399,100 +11691,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (result.value) {
           axios["delete"](BASE_URL + "/transportation/driver/" + id).then(function (response) {
             Swal.fire("Deleted!", response.data.message, "success");
-            $("#driver-tbl").DataTable().ajax.reload();
+            _this4.drivers = [];
+
+            _this4.getDriversList();
           });
         }
       });
     },
-    tdatatable: function tdatatable() {
-      var _this3 = this;
+    pageSet: function pageSet(type) {
+      var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-      var vm = this;
+      if (type == "jump") {
+        this.pages.prevPage = page - 1;
+        this.pages.currentPage = page;
+        this.pages.nextPage = page + 1;
+      } else if (type == "next" || type == "prev") {
+        type == "next" ? this.pages.currentPage++ : this.pages.currentPage--;
+        this.pages.prevPage = this.pages.currentPage - 1;
+        this.pages.nextPage = this.pages.currentPage + 1;
+      }
 
-      var initTable = function initTable() {
-        var table = $("#driver-tbl");
-        table.DataTable({
-          scrollY: "50vh",
-          scrollX: true,
-          scrollCollapse: true,
-          processing: true,
-          serverSide: true,
-          ajax: {
-            url: BASE_URL + "/transportation/driver",
-            type: "GET"
-          },
-          columns: [{
-            data: "id"
-          }, {
-            data: "fullname"
-          }, {
-            data: "birthdate"
-          }, {
-            data: "sex"
-          }, {
-            data: "contact"
-          }, {
-            data: "status"
-          }, {
-            data: "updated_at"
-          }, {
-            data: "id"
-          }],
-          columnDefs: [{
-            targets: 5,
-            render: function render(data) {
-              var status = {
-                Inactive: {
-                  title: "Inactive",
-                  "class": " label-light-warning"
-                },
-                Active: {
-                  title: "Active",
-                  "class": " label-light-primary"
-                }
-              };
-              return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
-            }
-          }, {
-            targets: -1,
-            title: "Action",
-            orderable: false,
-            width: "125px",
-            render: function render(data) {
-              return '\
-                                    <a href="javascript:;" data-id="' + data + '" class="btn-delete btn btn-sm btn-clean btn-icon" title="Delete">\
-                                        <span class="svg-icon svg-icon-md">\
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-                                                    <rect x="0" y="0" width="24" height="24"/>\
-                                                    <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
-                                                    <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
-                                                </g>\
-                                            </svg>\
-                                        </span>\
-                                    </a>\
-                                ';
-            }
-          }, {
-            targets: 6,
-            render: function render(data) {
-              return _this3.$dateTimeEng(data);
-            }
-          }],
-          drawCallback: function drawCallback() {
-            $(".btn-delete").click(function () {
-              var id = $(this).data("id");
-              vm.deleteEntry(id);
-            });
-          }
-        });
-      };
-
-      return {
-        init: function init() {
-          initTable();
-        }
-      };
+      this.getDriversList();
     }
   }
 });
@@ -14238,6 +14457,17 @@ __webpack_require__.r(__webpack_exports__);
         label = '<span class="label label-inline label-light-primary">Approved</span>';
       } else if (stats == "Completed") {
         label = '<span class="label label-inline label-light-success">Completed</span>';
+      }
+
+      return label;
+    },
+    $chkStatus2: function $chkStatus2(stats) {
+      var label;
+
+      if (stats == "active") {
+        label = '<span class="label label-inline label-light-primary">Active</span>';
+      } else if (stats == "inactive") {
+        label = '<span class="label label-inline label-light-warning">Inactive</span>';
       }
 
       return label;
@@ -65845,6 +66075,31 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "card-body" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formFields.emp_id,
+                            expression: "formFields.emp_id"
+                          }
+                        ],
+                        attrs: { type: "hidden", name: "emp_id" },
+                        domProps: { value: _vm.formFields.emp_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formFields,
+                              "emp_id",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
                         _vm.formFields.image != ""
                           ? _c(
@@ -66205,12 +66460,106 @@ var render = function() {
       : _c(
           "div",
           {
-            staticClass:
-              "card card-custom gutter-b animate__animated animate__fadeIn"
+            staticClass: "card card-custom card-stretch",
+            attrs: { id: "kt_page_stretched_card" }
           },
           [
             _c("div", { staticClass: "card-header flex-wrap" }, [
-              _c("div", { staticClass: "card-title" }),
+              _c("div", { staticClass: "card-title" }, [
+                _c("a", { staticClass: "mr-3", attrs: { href: "#" } }, [
+                  _c("div", { staticClass: "input-group" }, [
+                    _c("div", { staticClass: "input-group-prepend" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "input-group-text svg-icon svg-icon-md svg-icon-primary"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                width: "24px",
+                                height: "24px",
+                                viewBox: "0 0 24 24",
+                                version: "1.1"
+                              }
+                            },
+                            [
+                              _c(
+                                "g",
+                                {
+                                  attrs: {
+                                    stroke: "none",
+                                    "stroke-width": "1",
+                                    fill: "none",
+                                    "fill-rule": "evenodd"
+                                  }
+                                },
+                                [
+                                  _c("rect", {
+                                    attrs: {
+                                      x: "0",
+                                      y: "0",
+                                      width: "24",
+                                      height: "24"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero",
+                                      opacity: "0.3"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      d:
+                                        "M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z",
+                                      fill: "#000000",
+                                      "fill-rule": "nonzero"
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.searchData,
+                          expression: "searchData"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", name: "", placeholder: "Search" },
+                      domProps: { value: _vm.searchData },
+                      on: {
+                        keyup: _vm.search,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.searchData = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-toolbar" }, [
                 _c(
@@ -66282,7 +66631,321 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _c(
+              "div",
+              {
+                class: _vm.loading
+                  ? "card-body overlay overlay-block"
+                  : "card-body"
+              },
+              [
+                _vm.drivers == null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "alert-text" }, [
+                          _vm._v("No data available!")
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(3)
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                      _c("div", { staticClass: "spinner spinner-primary" })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-separate table-head-custom table-checkable",
+                    attrs: { id: "driver-tbl" }
+                  },
+                  [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _vm.drivers
+                      ? _c(
+                          "tbody",
+                          _vm._l(_vm.drivers, function(d, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.indexers(index + 1)))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn-delete btn btn-sm btn-clean btn-icon",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteEntry(d.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "svg-icon svg-icon-md" },
+                                      [
+                                        _c(
+                                          "svg",
+                                          {
+                                            attrs: {
+                                              xmlns:
+                                                "http://www.w3.org/2000/svg",
+                                              "xmlns:xlink":
+                                                "http://www.w3.org/1999/xlink",
+                                              width: "24px",
+                                              height: "24px",
+                                              viewBox: "0 0 24 24",
+                                              version: "1.1"
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "g",
+                                              {
+                                                attrs: {
+                                                  stroke: "none",
+                                                  "stroke-width": "1",
+                                                  fill: "none",
+                                                  "fill-rule": "evenodd"
+                                                }
+                                              },
+                                              [
+                                                _c("rect", {
+                                                  attrs: {
+                                                    x: "0",
+                                                    y: "0",
+                                                    width: "24",
+                                                    height: "24"
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("path", {
+                                                  attrs: {
+                                                    d:
+                                                      "M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z",
+                                                    fill: "#000000",
+                                                    "fill-rule": "nonzero"
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("path", {
+                                                  attrs: {
+                                                    d:
+                                                      "M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z",
+                                                    fill: "#000000",
+                                                    opacity: "0.3"
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "label label-inline label-light-primary"
+                                  },
+                                  [_vm._v(_vm._s(d.emp_id))]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(d.fullname))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.$dateEng(d.birthdate)))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(d.sex))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(d.contact))]),
+                              _vm._v(" "),
+                              _c("td", {
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.$chkStatus2(d.status))
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(d.reasons))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(_vm._s(_vm.$dateEng(d.created_at)))
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      : _vm._e()
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _vm.drivers
+                ? _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex justify-content-between align-items-center flex-wrap"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex flex-wrap py-2 mr-3" },
+                        [
+                          _c(
+                            "a",
+                            {
+                              class:
+                                _vm.loading || this.pages.currentPage < 2
+                                  ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                                  : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.pageSet("prev")
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "ki ki-bold-arrow-back icon-xs"
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.pages.currentPage > 3
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                                  attrs: { href: "#" }
+                                },
+                                [_vm._v("...")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm._l(_vm.pagination, function(p) {
+                            return _c(
+                              "a",
+                              {
+                                key: p,
+                                class: _vm.loading
+                                  ? "btn btn-icon btn-sm border-0 btn-light mr-2 my-1 disabled"
+                                  : p == _vm.pages.currentPage
+                                  ? "btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1"
+                                  : "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                                attrs: { href: "#", disabled: _vm.loading },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.pageSet("jump", p)
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(p))]
+                            )
+                          }),
+                          _vm._v(" "),
+                          _vm.pages.currentPage != _vm.pages.totalPages &&
+                          _vm.pages.currentPage != _vm.pages.totalPages - 1 &&
+                          _vm.pages.currentPage != _vm.pages.totalPages - 2
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "btn btn-icon btn-sm border-0 btn-light mr-2 my-1",
+                                  attrs: { href: "#" }
+                                },
+                                [_vm._v("...")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              class:
+                                _vm.loading ||
+                                this.pages.currentPage == this.pages.totalPages
+                                  ? "btn btn-icon btn-sm btn-light mr-2 my-1 disabled"
+                                  : "btn btn-icon btn-sm btn-light mr-2 my-1",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.pageSet("next")
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "ki ki-bold-arrow-next icon-xs"
+                              })
+                            ]
+                          )
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex align-items-center py-3" },
+                        [
+                          _vm.loading
+                            ? _c(
+                                "div",
+                                { staticClass: "d-flex align-items-center" },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "mr-2 text-muted" },
+                                    [_vm._v("Loading...")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "spinner mr-10" })
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "text-muted" }, [
+                            _vm._v(
+                              "Displaying " +
+                                _vm._s(_vm.drivers.length) +
+                                " of\n                        " +
+                                _vm._s(_vm.total) +
+                                " records"
+                            )
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                : _vm._e()
+            ])
           ]
         )
   ])
@@ -66318,35 +66981,59 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
+    return _c("div", { staticClass: "alert-icon" }, [
+      _c("i", { staticClass: "flaticon-warning" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-close" }, [
       _c(
-        "table",
+        "button",
         {
-          staticClass: "table table-separate table-head-custom table-checkable",
-          attrs: { id: "driver-tbl" }
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "alert",
+            "aria-label": "Close"
+          }
         },
         [
-          _c("thead", [
-            _c("tr", [
-              _c("th", [_vm._v("ID")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Fullname")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Birthdate")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Sex")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Contact No.")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Date")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
-            ])
+          _c("span", { attrs: { "aria-hidden": "true" } }, [
+            _c("i", { staticClass: "ki ki-close" })
           ])
         ]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Employee ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Fullname")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Birthdate")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Sex")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Contact No.")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Reasons")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date")])
+      ])
     ])
   }
 ]
