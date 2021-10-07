@@ -84,6 +84,17 @@ export default {
             }
             return label;
         },
+        $chkStatus2(stats) {
+            let label;
+            if (stats == "active") {
+                label =
+                    '<span class="label label-inline label-light-primary">Active</span>';
+            } else if (stats == "inactive") {
+                label =
+                    '<span class="label label-inline label-light-warning">Inactive</span>';
+            }
+            return label;
+        },
         $chkAssigned(mot, id = null) {
             let label;
             $(`#checkable_${id}`).prop("disabled", false);

@@ -29,10 +29,10 @@ class TransportationDriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetListingDriver $getListingDriver)
+    public function index(Request $request, GetListingDriver $getListingDriver)
     {
 
-        $records = $getListingDriver->execute();
+        $records = $getListingDriver->execute($request);
         return response()->json($records);
     }
 

@@ -23,6 +23,7 @@ class Driver extends Model
      */
     protected $fillable = [
         'type',
+        'emp_id',
         'fullname',
         'birthdate',
         'sex',

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\TransportationVehicle;
 
 use Ccore\Core\Datatable;
@@ -6,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 
-class GetListingVehicle 
+class GetListingVehicle
 {
     /**
      * Get user by email
@@ -45,4 +46,4 @@ class GetListingVehicle
             'recordsFiltered' => $result['total']
         ];
     }
-}   
+}

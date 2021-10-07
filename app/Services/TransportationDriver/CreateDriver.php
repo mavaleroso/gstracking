@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Services\TransportationDriver;
 
 use Illuminate\Http\Request;
 use App\Models\Driver;
 
-class CreateDriver 
+class CreateDriver
 {
     /**
      * Get user by email
@@ -14,13 +15,14 @@ class CreateDriver
      */
     public function execute($fields, $url)
     {
-      
+
         $user = auth()->user()->id;
-        $arr = array('luser' => $user, 'lpage' => 'Office_driver' , 'lurl' => $url, 'laction' => 'create');
+        $arr = array('luser' => $user, 'lpage' => 'Office_driver', 'lurl' => $url, 'laction' => 'create');
         $createLogs = createLogs($arr);
 
         $driver = Driver::create([
             'type' => 1,
+            'emp_id' => $fields['emp_id'],
             'fullname' => $fields['fullname'],
             'birthdate' => $fields['birthdate'],
             'sex' => $fields['gender'],
@@ -30,4 +32,4 @@ class CreateDriver
 
         return $driver;
     }
-}   
+}

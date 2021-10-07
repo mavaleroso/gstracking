@@ -1732,7 +1732,9 @@ export default {
             this.maxDate = maxDate;
         },
         getVehiclemode() {
-            this.vehiclemodes = this$store.getters["mot/mot"];
+            setTimeout(() => {
+                this.vehiclemodes = this.$store.getters["mot/mot"];
+            }, 3000);
         }
     }
 };

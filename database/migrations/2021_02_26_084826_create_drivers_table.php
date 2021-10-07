@@ -16,6 +16,7 @@ class CreateDriversTable extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('type');
+            $table->string('emp_id')->nullable();
             $table->string('fullname')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('sex')->nullable();
