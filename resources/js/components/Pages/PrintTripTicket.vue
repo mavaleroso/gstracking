@@ -14,10 +14,10 @@
                             </td>
                             <td>
                                 <div class="header-title">
-                                    <p class="main">ADMINISTRATIVE SERVICES</p>
+                                    <p class="main">GENERAL SERVICES SECTION</p>
                                     <p class="sub-main">
                                         GENERAL ADMINISTRATION AND SUPPORT
-                                        SERVICES GROUP
+                                        DIVISION
                                     </p>
                                     <p class="sub">
                                         DSWD-AS-GF-031 | REV 00/ 11 JAN 2021

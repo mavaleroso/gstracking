@@ -3437,6 +3437,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3458,7 +3464,7 @@ __webpack_require__.r(__webpack_exports__);
       var year = function year() {
         $(function () {
           var system = JSON.parse(JSON.stringify(_this.system));
-          $('#year').val(system[4].value);
+          $("#year").val(system[4].value);
         });
       };
 
@@ -3472,7 +3478,7 @@ __webpack_require__.r(__webpack_exports__);
     getYear: function getYear() {
       var _this2 = this;
 
-      axios.get(BASE_URL + '/api/v1/config/year').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/config/year").then(function (res) {
         _this2.years = res.data;
 
         _this2.ini().setYear();
@@ -3481,7 +3487,7 @@ __webpack_require__.r(__webpack_exports__);
     getSystem: function getSystem() {
       var _this3 = this;
 
-      axios.get(BASE_URL + '/api/v1/config/system').then(function (res) {
+      axios.get(BASE_URL + "/api/v1/config/system").then(function (res) {
         _this3.system = res.data;
       });
     }
@@ -3757,193 +3763,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      overview: {
-        pending: 0,
-        approved: 0,
-        rejected: 0,
-        completed: 0
+      division: {
+        dep: [],
+        count: []
       },
       travel: {
         month: [],
         count: []
       },
-      po: {
-        no: [],
-        amount: [],
-        balance: [],
-        balance_percent: []
-      },
-      activities: {
-        upcoming: [],
-        recent: []
-      },
-      division: {
-        dep: [],
-        count: []
-      },
-      drivers: [],
-      vehicles: [],
-      listdata: []
+      overview: {
+        unassigned: 0,
+        pending: 0,
+        approved: 0,
+        completed: 0
+      }
     };
   },
   mounted: function mounted() {
     this.ini().init();
-    this.ini().events();
   },
   methods: {
-    dashData: function dashData() {
-      var _this = this;
-
-      var year = $('#year').val();
-      axios.get(BASE_URL + '/api/v1/dash/' + year).then(function (res) {
-        for (var i = 0; i < res.data.overview.length; i++) {
-          switch (res.data.overview[i]['is_status']) {
-            case 1:
-              _this.overview.pending = res.data.overview[i]['count_status'];
-              break;
-
-            case 2:
-              _this.overview.approved = res.data.overview[i]['count_status'];
-              break;
-
-            case 3:
-              _this.overview.completed = res.data.overview[i]['count_status'];
-              break;
-
-            case 4:
-              _this.overview.rejected = res.data.overview[i]['count_status'];
-              break;
-
-            default:
-              break;
-          }
-        }
-
-        for (var _i = 0; _i < res.data.travel.length; _i++) {
-          _this.travel.month.push(res.data.travel[_i]['travel_month']);
-
-          _this.travel.count.push(res.data.travel[_i]['travel_count']);
-        }
-
-        for (var _i2 = 0; _i2 < res.data.division.length; _i2++) {
-          _this.division.dep.push(res.data.division[_i2]['division_code']);
-
-          _this.division.count.push(res.data.division[_i2]['div_count']);
-        }
-
-        for (var _i3 = 0; _i3 < res.data.procurement.length; _i3++) {
-          var amount = res.data.procurement[_i3]['po_amount'];
-          var balance = res.data.procurement[_i3]['totalBalance'] ? res.data.procurement[_i3]['totalBalance'] : res.data.procurement[_i3]['po_amount'];
-          var percent = balance / amount * 100;
-
-          _this.po.no.push(res.data.procurement[_i3]['po_no']);
-
-          _this.po.amount.push(amount);
-
-          _this.po.balance.push(balance);
-
-          _this.po.balance_percent.push(percent.toFixed(2));
-        }
-
-        _this.drivers = res.data.drivers;
-        _this.vehicles = res.data.vehicles;
-        _this.activities.upcoming = res.data.activities.upcoming;
-        _this.activities.recent = res.data.activities.recent;
-
-        _this.KTApexCharts().init();
-      });
-    },
     ini: function ini() {
       var vm = this;
 
@@ -3955,109 +3797,102 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
 
-      var _events = function events() {
-        $(function () {
-          $('#year').change(function () {
-            vm.overview.pending = 0;
-            vm.overview.approved = 0;
-            vm.overview.rejected = 0;
-            vm.overview.completed = 0;
-            vm.travel.month = [], vm.travel.count = [], vm.po.no = [], vm.po.amount = [], vm.po.balance = [], vm.po.balance_percent = [], vm.activities.upcoming = [], vm.activities.recent = [], $('#overview-line-chart').children().remove();
-            $('#travel-bar-chart').children().remove();
-            $('#division-bar-chart').children().remove();
-            $('#po-bar-chart').children().remove();
-            $('#po-pie-chart').children().remove();
-            vm.ini().init();
-          });
-        });
-      };
-
       return {
         init: function init() {
           charts();
-        },
-        events: function events() {
-          _events();
         }
       };
     },
+    dashData: function dashData() {
+      var _this = this;
+
+      axios.get(BASE_URL + "/tracking/dashboard").then(function (res) {
+        var division_keys = [];
+        var division_values = [];
+        var travel_keys = [];
+        var travel_values = [];
+        var overview_keys = [];
+        var overview_values = [];
+
+        for (var k in res.data.divisions) {
+          division_keys.push(k);
+        }
+
+        for (var v in res.data.divisions) {
+          division_values.push(res.data.divisions[v]);
+        }
+
+        for (var m in res.data.travels) {
+          travel_keys.push(m);
+        }
+
+        for (var c in res.data.travels) {
+          travel_values.push(res.data.travels[c]);
+        }
+
+        for (var s in res.data.overview) {
+          overview_keys.push(s);
+        }
+
+        for (var t in res.data.overview) {
+          overview_values.push(res.data.overview[t]);
+        }
+
+        _this.division.dep = division_keys;
+        _this.division.count = division_values;
+        _this.travel.month = travel_keys;
+        _this.travel.count = travel_values;
+
+        for (var o in res.data.overview) {
+          switch (o) {
+            case "unassigned":
+              _this.overview.unassigned = res.data.overview[o];
+              break;
+
+            case "pending":
+              _this.overview.pending = res.data.overview[o];
+              break;
+
+            case "approved":
+              _this.overview.approved = res.data.overview[o];
+              break;
+
+            case "completed":
+              _this.overview.completed = res.data.overview[o];
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        _this.KTApexCharts().init();
+      });
+    },
     KTApexCharts: function KTApexCharts() {
       var vm = this;
-      var primary = '#6993FF';
-      var success = '#1BC5BD';
-      var info = '#8950FC';
-      var warning = '#FFA800';
-      var danger = '#F64E60';
-
-      var TravelBarChart = function TravelBarChart() {
-        var apexChart = "#travel-bar-chart";
-        var options = {
-          series: [{
-            name: 'Travel/s',
-            data: JSON.parse(JSON.stringify(vm.travel.count))
-          }],
-          chart: {
-            type: 'bar',
-            height: 350
-          },
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: '55%',
-              endingShape: 'rounded'
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-          },
-          xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.travel.month)),
-            title: {
-              text: 'Travels'
-            }
-          },
-          yaxis: {
-            title: {
-              text: 'Months'
-            }
-          },
-          fill: {
-            opacity: 1
-          },
-          tooltip: {
-            y: {
-              formatter: function formatter(val) {
-                return val;
-              }
-            }
-          },
-          colors: [primary, success, warning]
-        };
-        var chart = new ApexCharts(document.querySelector(apexChart), options);
-        chart.render();
-      };
+      var primary = "#6993FF";
+      var success = "#1BC5BD";
+      var info = "#8950FC";
+      var warning = "#FFA800";
+      var danger = "#F64E60";
 
       var DivisionBarChart = function DivisionBarChart() {
         var apexChart = "#division-bar-chart";
         var options = {
           series: [{
-            name: 'Travel/s',
+            name: "Travel/s",
             data: JSON.parse(JSON.stringify(vm.division.count))
           }],
           chart: {
-            type: 'bar',
+            type: "bar",
             height: 350
           },
           plotOptions: {
             bar: {
               horizontal: true,
-              columnWidth: '55%',
-              endingShape: 'rounded'
+              columnWidth: "55%",
+              endingShape: "rounded"
             }
           },
           dataLabels: {
@@ -4066,17 +3901,17 @@ __webpack_require__.r(__webpack_exports__);
           stroke: {
             show: true,
             width: 2,
-            colors: ['transparent']
+            colors: ["transparent"]
           },
           xaxis: {
             categories: JSON.parse(JSON.stringify(vm.division.dep)),
             title: {
-              text: 'Travels'
+              text: "Travels"
             }
           },
           yaxis: {
             title: {
-              text: 'Divisions'
+              text: "Divisions"
             }
           },
           fill: {
@@ -4095,161 +3930,22 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var OverviewLineChart = function OverviewLineChart() {
-        var element = document.getElementById("overview-line-chart");
-        var height = parseInt(KTUtil.css(element, 'height'));
-
-        if (!element) {
-          return;
-        }
-
-        var strokeColor = '#D13647';
+      var TravelBarChart = function TravelBarChart() {
+        var apexChart = "#travel-bar-chart";
         var options = {
           series: [{
-            name: 'Monthly Travel',
+            name: "Travel/s",
             data: JSON.parse(JSON.stringify(vm.travel.count))
           }],
           chart: {
-            type: 'area',
-            height: height,
-            toolbar: {
-              show: false
-            },
-            zoom: {
-              enabled: false
-            },
-            sparkline: {
-              enabled: true
-            },
-            dropShadow: {
-              enabled: true,
-              enabledOnSeries: undefined,
-              top: 5,
-              left: 0,
-              blur: 3,
-              color: strokeColor,
-              opacity: 0.5
-            }
-          },
-          plotOptions: {},
-          legend: {
-            show: false
-          },
-          dataLabels: {
-            enabled: false
-          },
-          fill: {
-            type: 'solid',
-            opacity: 0
-          },
-          stroke: {
-            curve: 'smooth',
-            show: true,
-            width: 3,
-            colors: [strokeColor]
-          },
-          xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.travel.month)),
-            axisBorder: {
-              show: false
-            },
-            axisTicks: {
-              show: false
-            },
-            labels: {
-              show: false,
-              style: {
-                colors: ['#B5B5C3'],
-                fontSize: '12px',
-                fontFamily: "Poppins"
-              }
-            },
-            crosshairs: {
-              show: false,
-              position: 'front',
-              stroke: {
-                color: ['#E5EAEE'],
-                width: 1,
-                dashArray: 3
-              }
-            }
-          },
-          yaxis: {
-            min: 0,
-            labels: {
-              show: false,
-              style: {
-                colors: ['#B5B5C3'],
-                fontSize: '12px',
-                fontFamily: "Poppins"
-              }
-            }
-          },
-          states: {
-            normal: {
-              filter: {
-                type: 'none',
-                value: 0
-              }
-            },
-            hover: {
-              filter: {
-                type: 'none',
-                value: 0
-              }
-            },
-            active: {
-              allowMultipleDataPointsSelection: false,
-              filter: {
-                type: 'none',
-                value: 0
-              }
-            }
-          },
-          tooltip: {
-            style: {
-              fontSize: '12px',
-              fontFamily: KTApp.getSettings()['font-family']
-            },
-            y: {
-              formatter: function formatter(val) {
-                return "" + val + " Travels";
-              }
-            },
-            marker: {
-              show: false
-            }
-          },
-          colors: ['transparent'],
-          markers: {
-            colors: "#FFE2E5",
-            strokeColor: [strokeColor],
-            strokeWidth: 3
-          }
-        };
-        var chart = new ApexCharts(element, options);
-        chart.render();
-      };
-
-      var PoBarChart = function PoBarChart() {
-        var apexChart = "#po-bar-chart";
-        var options = {
-          series: [{
-            name: 'Amount',
-            data: JSON.parse(JSON.stringify(vm.po.amount))
-          }, {
-            name: 'Balance',
-            data: JSON.parse(JSON.stringify(vm.po.balance))
-          }],
-          chart: {
-            type: 'bar',
+            type: "bar",
             height: 350
           },
           plotOptions: {
             bar: {
               horizontal: false,
-              columnWidth: '55%',
-              endingShape: 'rounded'
+              columnWidth: "55%",
+              endingShape: "rounded"
             }
           },
           dataLabels: {
@@ -4258,14 +3954,17 @@ __webpack_require__.r(__webpack_exports__);
           stroke: {
             show: true,
             width: 2,
-            colors: ['transparent']
+            colors: ["transparent"]
           },
           xaxis: {
-            categories: JSON.parse(JSON.stringify(vm.po.no))
+            categories: JSON.parse(JSON.stringify(vm.travel.month)),
+            title: {
+              text: "Months"
+            }
           },
           yaxis: {
             title: {
-              text: '₱ (thousands)'
+              text: "Travels"
             }
           },
           fill: {
@@ -4274,7 +3973,7 @@ __webpack_require__.r(__webpack_exports__);
           tooltip: {
             y: {
               formatter: function formatter(val) {
-                return "₱ " + toParseNum(val);
+                return val;
               }
             }
           },
@@ -4284,53 +3983,10 @@ __webpack_require__.r(__webpack_exports__);
         chart.render();
       };
 
-      var PoPieChart = function PoPieChart() {
-        var apexChart = "#po-pie-chart";
-        var options = {
-          series: JSON.parse(JSON.stringify(vm.po.balance_percent)),
-          chart: {
-            height: 350,
-            type: 'radialBar'
-          },
-          plotOptions: {
-            radialBar: {
-              dataLabels: {
-                name: {
-                  fontSize: '22px'
-                },
-                value: {
-                  fontSize: '16px'
-                },
-                total: {
-                  show: true,
-                  label: 'Total Balance',
-                  formatter: function formatter(w) {
-                    var total = 0;
-
-                    for (var i = 0; i < vm.po.balance_percent.length; i++) {
-                      total += parseInt(vm.po.balance_percent[i]);
-                    }
-
-                    return (total / vm.po.balance_percent.length).toFixed(2) + ' %';
-                  }
-                }
-              }
-            }
-          },
-          labels: JSON.parse(JSON.stringify(vm.po.amount)),
-          colors: [primary, success, warning, danger]
-        };
-        var chart = new ApexCharts(document.querySelector(apexChart), options);
-        chart.render();
-      };
-
       return {
         init: function init() {
-          OverviewLineChart();
           DivisionBarChart();
           TravelBarChart();
-          PoBarChart();
-          PoPieChart();
         }
       };
     }
@@ -14187,10 +13843,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.getData();
     this.getPoNumber();
     this.getDivision();
-    this.getVehiclemode();
   },
   mounted: function mounted() {
     this.ini();
+    this.getVehiclemode();
   },
   computed: {
     totalCost: function totalCost() {
@@ -14476,7 +14132,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
     },
     getVehiclemode: function getVehiclemode() {
-      this.vehiclemodes = this.$store.getters["mot/mot"];
+      var _this9 = this;
+
+      setTimeout(function () {
+        _this9.vehiclemodes = _this9.$store.getters["mot/mot"];
+      }, 1000);
     }
   }
 });
@@ -57414,7 +57074,13 @@ var render = function() {
               _c(
                 "h5",
                 { staticClass: "text-dark font-weight-bold mt-2 mb-2 mr-5" },
-                [_vm._v(_vm._s(_vm.$route.meta.title))]
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.$route.meta.title) +
+                      "\n                "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c("div", {
@@ -57424,50 +57090,13 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex align-items-center" }, [
-            _c(
-              "div",
-              {
-                class:
-                  _vm.$route.meta.title == "Dashboard"
-                    ? "input-group"
-                    : "d-none"
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  { staticClass: "form-control", attrs: { id: "year" } },
-                  _vm._l(_vm.years, function(year) {
-                    return _c(
-                      "option",
-                      { key: year.id, domProps: { value: year.travel_year } },
-                      [_vm._v(_vm._s(year.travel_year))]
-                    )
-                  }),
-                  0
-                )
-              ]
-            )
-          ])
+          _c("div", { staticClass: "d-flex align-items-center" })
         ]
       )
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-prepend" }, [
-      _c("span", { staticClass: "input-group-text" }, [
-        _c("i", { staticClass: "la la-calendar-alt" })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -57490,928 +57119,436 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c(
-        "div",
-        { staticClass: "card card-custom bg-gray-100 card-stretch gutter-b" },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body p-0 position-relative overflow-hidden" },
-            [
-              _c("div", {
-                staticClass: "card-rounded-bottom bg-danger",
-                staticStyle: { height: "200px" },
-                attrs: { id: "overview-line-chart" }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-spacer mt-n25" }, [
-                _c("div", { staticClass: "row m-0" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "col bg-light-warning px-6 py-8 rounded-xl mr-7 mb-7"
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "svg-icon svg-icon-3x svg-icon-warning d-block my-2"
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("rect", {
-                                    attrs: {
-                                      x: "0",
-                                      y: "0",
-                                      width: "24",
-                                      height: "24"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      opacity: "0.3",
-                                      x: "13",
-                                      y: "4",
-                                      width: "3",
-                                      height: "16",
-                                      rx: "1.5"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "8",
-                                      y: "9",
-                                      width: "3",
-                                      height: "11",
-                                      rx: "1.5"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "18",
-                                      y: "11",
-                                      width: "3",
-                                      height: "9",
-                                      rx: "1.5"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("rect", {
-                                    attrs: {
-                                      fill: "#000000",
-                                      x: "3",
-                                      y: "13",
-                                      width: "3",
-                                      height: "7",
-                                      rx: "1.5"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "h1",
-                            {
-                              staticClass:
-                                "float-right text-warning font-weight-bold"
-                            },
-                            [_vm._v(_vm._s(_vm.overview.pending))]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-warning font-weight-bold font-size-h6",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("Pending")]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "col bg-light-primary px-6 py-8 rounded-xl mb-7"
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "svg-icon svg-icon-3x svg-icon-primary d-block my-2"
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("polygon", {
-                                    attrs: { points: "0 0 24 0 24 24 0 24" }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z",
-                                      fill: "#000000",
-                                      "fill-rule": "nonzero",
-                                      opacity: "0.3"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z",
-                                      fill: "#000000",
-                                      "fill-rule": "nonzero"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "h1",
-                            {
-                              staticClass:
-                                "float-right text-primary font-weight-bold"
-                            },
-                            [_vm._v(_vm._s(_vm.overview.approved))]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-primary font-weight-bold font-size-h6 mt-2",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("Approved")]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row m-0" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "col bg-light-danger px-6 py-8 rounded-xl mr-7"
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "svg-icon svg-icon-3x svg-icon-danger d-block my-2"
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("polygon", {
-                                    attrs: { points: "0 0 24 0 24 24 0 24" }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z",
-                                      fill: "#000000",
-                                      "fill-rule": "nonzero"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z",
-                                      fill: "#000000",
-                                      opacity: "0.3"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "h1",
-                            {
-                              staticClass:
-                                "float-right text-danger font-weight-bold"
-                            },
-                            [_vm._v(_vm._s(_vm.overview.rejected))]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-danger font-weight-bold font-size-h6 mt-2",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("Rejected")]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col bg-light-success px-6 py-8 rounded-xl"
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass:
-                            "svg-icon svg-icon-3x svg-icon-success d-block my-2"
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                                width: "24px",
-                                height: "24px",
-                                viewBox: "0 0 24 24",
-                                version: "1.1"
-                              }
-                            },
-                            [
-                              _c(
-                                "g",
-                                {
-                                  attrs: {
-                                    stroke: "none",
-                                    "stroke-width": "1",
-                                    fill: "none",
-                                    "fill-rule": "evenodd"
-                                  }
-                                },
-                                [
-                                  _c("rect", {
-                                    attrs: {
-                                      x: "0",
-                                      y: "0",
-                                      width: "24",
-                                      height: "24"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z",
-                                      fill: "#000000",
-                                      opacity: "0.3"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      d:
-                                        "M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z",
-                                      fill: "#000000"
-                                    }
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "h1",
-                            {
-                              staticClass:
-                                "float-right text-success font-weight-bold"
-                            },
-                            [_vm._v(_vm._s(_vm.overview.completed))]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "text-success font-weight-bold font-size-h6 mt-2",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("Completed")]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ]
-          )
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _vm._m(2),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "tab-content" }, [
+  return _c("div", { attrs: { id: "dashboard-page" } }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-3 col-md-4" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col bg-light-danger px-6 py-8 rounded-xl mr-7 shadow-sm"
+          },
+          [
             _c(
-              "div",
+              "span",
               {
-                staticClass: "tab-pane fade show active p-10",
-                attrs: {
-                  id: "kt_tab_pane_4_1",
-                  role: "tabpanel",
-                  "aria-labelledby": "kt_tab_pane_4_1"
-                }
+                staticClass: "svg-icon svg-icon-3x svg-icon-danger d-block my-2"
               },
               [
-                _vm.activities.upcoming.length
-                  ? _c(
-                      "div",
-                      { staticClass: "timeline timeline-5 mt-3" },
-                      _vm._l(_vm.activities.upcoming, function(activity) {
-                        return _c(
-                          "div",
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      width: "24px",
+                      height: "24px",
+                      viewBox: "0 0 24 24",
+                      version: "1.1"
+                    }
+                  },
+                  [
+                    _c(
+                      "g",
+                      {
+                        attrs: {
+                          stroke: "none",
+                          "stroke-width": "1",
+                          fill: "none",
+                          "fill-rule": "evenodd"
+                        }
+                      },
+                      [
+                        _c(
+                          "g",
                           {
-                            key: activity.id,
-                            staticClass: "timeline-item align-items-start"
+                            attrs: {
+                              transform:
+                                "translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)",
+                              fill: "#000000"
+                            }
                           },
                           [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.$dateEng2(activity.travel_date))
-                                )
-                              ]
-                            ),
+                            _c("rect", {
+                              attrs: {
+                                x: "0",
+                                y: "7",
+                                width: "16",
+                                height: "2",
+                                rx: "1"
+                              }
+                            }),
                             _vm._v(" "),
-                            _vm._m(3, true),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "timeline-content text-dark-50" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "label label-primary label-inline mr-2"
-                                  },
-                                  [_vm._v(_vm._s(activity.trip_ticket))]
-                                ),
-                                _vm._v(" " + _vm._s(activity.purpose))
-                              ]
-                            )
+                            _c("rect", {
+                              attrs: {
+                                opacity: "0.3",
+                                transform:
+                                  "translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000) ",
+                                x: "0",
+                                y: "7",
+                                width: "16",
+                                height: "2",
+                                rx: "1"
+                              }
+                            })
                           ]
                         )
-                      }),
-                      0
+                      ]
                     )
-                  : _c("div", [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-custom alert-default",
-                          attrs: { role: "alert" }
-                        },
-                        [
-                          _c("div", { staticClass: "alert-icon" }, [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "svg-icon svg-icon-primary svg-icon-2x"
-                              },
-                              [
-                                _c(
-                                  "svg",
-                                  {
-                                    attrs: {
-                                      xmlns: "http://www.w3.org/2000/svg",
-                                      "xmlns:xlink":
-                                        "http://www.w3.org/1999/xlink",
-                                      width: "24px",
-                                      height: "24px",
-                                      viewBox: "0 0 24 24",
-                                      version: "1.1"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          stroke: "none",
-                                          "stroke-width": "1",
-                                          fill: "none",
-                                          "fill-rule": "evenodd"
-                                        }
-                                      },
-                                      [
-                                        _c("rect", {
-                                          attrs: {
-                                            x: "0",
-                                            y: "0",
-                                            width: "24",
-                                            height: "24"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("circle", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            opacity: "0.3",
-                                            cx: "12",
-                                            cy: "12",
-                                            r: "10"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("rect", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            x: "11",
-                                            y: "10",
-                                            width: "2",
-                                            height: "7",
-                                            rx: "1"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("rect", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            x: "11",
-                                            y: "7",
-                                            width: "2",
-                                            height: "2",
-                                            rx: "1"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "alert-text" }, [
-                            _vm._v(
-                              "\n                                    No Upcoming Activities.\n                                "
-                            )
-                          ])
-                        ]
-                      )
-                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h1",
+                  { staticClass: "float-right text-danger font-weight-bold" },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.unassigned) +
+                        "\n                    "
+                    )
+                  ]
+                )
               ]
             ),
             _vm._v(" "),
             _c(
-              "div",
+              "a",
               {
-                staticClass: "tab-pane fade p-10",
-                attrs: {
-                  id: "kt_tab_pane_4_2",
-                  role: "tabpanel",
-                  "aria-labelledby": "kt_tab_pane_4_2"
-                }
+                staticClass: "text-danger font-weight-bold font-size-h6 mt-2",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Unassigned")]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-md-4" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col bg-light-warning px-6 py-8 rounded-xl mr-7 mb-7 shadow-sm"
+          },
+          [
+            _c(
+              "span",
+              {
+                staticClass:
+                  "svg-icon svg-icon-3x svg-icon-warning d-block my-2"
               },
               [
-                _vm.activities.recent.length
-                  ? _c(
-                      "div",
-                      { staticClass: "timeline timeline-5 mt-3" },
-                      _vm._l(_vm.activities.recent, function(activity) {
-                        return _c(
-                          "div",
-                          {
-                            key: activity.id,
-                            staticClass: "timeline-item align-items-start"
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap"
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.$dateEng2(activity.travel_date))
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm._m(4, true),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "timeline-content text-dark-50" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "label label-success label-inline mr-2"
-                                  },
-                                  [_vm._v(_vm._s(activity.trip_ticket))]
-                                ),
-                                _vm._v(" " + _vm._s(activity.purpose))
-                              ]
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  : _c("div", [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "alert alert-custom alert-default",
-                          attrs: { role: "alert" }
-                        },
-                        [
-                          _c("div", { staticClass: "alert-icon" }, [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "svg-icon svg-icon-primary svg-icon-2x"
-                              },
-                              [
-                                _c(
-                                  "svg",
-                                  {
-                                    attrs: {
-                                      xmlns: "http://www.w3.org/2000/svg",
-                                      "xmlns:xlink":
-                                        "http://www.w3.org/1999/xlink",
-                                      width: "24px",
-                                      height: "24px",
-                                      viewBox: "0 0 24 24",
-                                      version: "1.1"
-                                    }
-                                  },
-                                  [
-                                    _c(
-                                      "g",
-                                      {
-                                        attrs: {
-                                          stroke: "none",
-                                          "stroke-width": "1",
-                                          fill: "none",
-                                          "fill-rule": "evenodd"
-                                        }
-                                      },
-                                      [
-                                        _c("rect", {
-                                          attrs: {
-                                            x: "0",
-                                            y: "0",
-                                            width: "24",
-                                            height: "24"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("circle", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            opacity: "0.3",
-                                            cx: "12",
-                                            cy: "12",
-                                            r: "10"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("rect", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            x: "11",
-                                            y: "10",
-                                            width: "2",
-                                            height: "7",
-                                            rx: "1"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("rect", {
-                                          attrs: {
-                                            fill: "#000000",
-                                            x: "11",
-                                            y: "7",
-                                            width: "2",
-                                            height: "2",
-                                            rx: "1"
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "alert-text" }, [
-                            _vm._v(
-                              "\n                                    No Recent Activities.\n                                "
-                            )
-                          ])
-                        ]
-                      )
-                    ])
-              ]
-            )
-          ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(5),
-    _vm._v(" "),
-    _vm._m(6),
-    _vm._v(" "),
-    _vm._m(7),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _vm._m(8),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c(
-            "div",
-            { staticClass: "col bg-light-primary px-6 py-8 rounded-xl mr-7" },
-            [
-              _c(
-                "span",
-                { staticClass: "svg-icon svg-icon-3x svg-icon-primary my-2" },
-                [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                        width: "24px",
-                        height: "24px",
-                        viewBox: "0 0 24 24",
-                        version: "1.1"
-                      }
-                    },
-                    [
-                      _c(
-                        "g",
-                        {
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      width: "24px",
+                      height: "24px",
+                      viewBox: "0 0 24 24",
+                      version: "1.1"
+                    }
+                  },
+                  [
+                    _c(
+                      "g",
+                      {
+                        attrs: {
+                          stroke: "none",
+                          "stroke-width": "1",
+                          fill: "none",
+                          "fill-rule": "evenodd"
+                        }
+                      },
+                      [
+                        _c("rect", {
+                          attrs: { x: "0", y: "0", width: "24", height: "24" }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
                           attrs: {
-                            stroke: "none",
-                            "stroke-width": "1",
-                            fill: "none",
-                            "fill-rule": "evenodd"
+                            d:
+                              "M18.6225,9.75 L18.75,9.75 C19.9926407,9.75 21,10.7573593 21,12 C21,13.2426407 19.9926407,14.25 18.75,14.25 L18.6854912,14.249994 C18.4911876,14.250769 18.3158978,14.366855 18.2393549,14.5454486 C18.1556809,14.7351461 18.1942911,14.948087 18.3278301,15.0846699 L18.372535,15.129375 C18.7950334,15.5514036 19.03243,16.1240792 19.03243,16.72125 C19.03243,17.3184208 18.7950334,17.8910964 18.373125,18.312535 C17.9510964,18.7350334 17.3784208,18.97243 16.78125,18.97243 C16.1840792,18.97243 15.6114036,18.7350334 15.1896699,18.3128301 L15.1505513,18.2736469 C15.008087,18.1342911 14.7951461,18.0956809 14.6054486,18.1793549 C14.426855,18.2558978 14.310769,18.4311876 14.31,18.6225 L14.31,18.75 C14.31,19.9926407 13.3026407,21 12.06,21 C10.8173593,21 9.81,19.9926407 9.81,18.75 C9.80552409,18.4999185 9.67898539,18.3229986 9.44717599,18.2361469 C9.26485393,18.1556809 9.05191298,18.1942911 8.91533009,18.3278301 L8.870625,18.372535 C8.44859642,18.7950334 7.87592081,19.03243 7.27875,19.03243 C6.68157919,19.03243 6.10890358,18.7950334 5.68746499,18.373125 C5.26496665,17.9510964 5.02757002,17.3784208 5.02757002,16.78125 C5.02757002,16.1840792 5.26496665,15.6114036 5.68716991,15.1896699 L5.72635306,15.1505513 C5.86570889,15.008087 5.90431906,14.7951461 5.82064513,14.6054486 C5.74410223,14.426855 5.56881236,14.310769 5.3775,14.31 L5.25,14.31 C4.00735931,14.31 3,13.3026407 3,12.06 C3,10.8173593 4.00735931,9.81 5.25,9.81 C5.50008154,9.80552409 5.67700139,9.67898539 5.76385306,9.44717599 C5.84431906,9.26485393 5.80570889,9.05191298 5.67216991,8.91533009 L5.62746499,8.870625 C5.20496665,8.44859642 4.96757002,7.87592081 4.96757002,7.27875 C4.96757002,6.68157919 5.20496665,6.10890358 5.626875,5.68746499 C6.04890358,5.26496665 6.62157919,5.02757002 7.21875,5.02757002 C7.81592081,5.02757002 8.38859642,5.26496665 8.81033009,5.68716991 L8.84944872,5.72635306 C8.99191298,5.86570889 9.20485393,5.90431906 9.38717599,5.82385306 L9.49484664,5.80114977 C9.65041313,5.71688974 9.7492905,5.55401473 9.75,5.3775 L9.75,5.25 C9.75,4.00735931 10.7573593,3 12,3 C13.2426407,3 14.25,4.00735931 14.25,5.25 L14.249994,5.31450877 C14.250769,5.50881236 14.366855,5.68410223 14.552824,5.76385306 C14.7351461,5.84431906 14.948087,5.80570889 15.0846699,5.67216991 L15.129375,5.62746499 C15.5514036,5.20496665 16.1240792,4.96757002 16.72125,4.96757002 C17.3184208,4.96757002 17.8910964,5.20496665 18.312535,5.626875 C18.7350334,6.04890358 18.97243,6.62157919 18.97243,7.21875 C18.97243,7.81592081 18.7350334,8.38859642 18.3128301,8.81033009 L18.2736469,8.84944872 C18.1342911,8.99191298 18.0956809,9.20485393 18.1761469,9.38717599 L18.1988502,9.49484664 C18.2831103,9.65041313 18.4459853,9.7492905 18.6225,9.75 Z",
+                            fill: "#000000",
+                            "fill-rule": "nonzero",
+                            opacity: "0.3"
                           }
-                        },
-                        [
-                          _c("polygon", {
-                            attrs: { points: "0 0 24 0 24 24 0 24" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z",
-                              fill: "#000000",
-                              "fill-rule": "nonzero"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "h1",
-                    {
-                      staticClass:
-                        "float-right text-primary font-weight-bold mr-5"
-                    },
-                    [_vm._v(_vm._s(_vm.vehicles.length))]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass:
-                    "text-primary font-weight-bold font-size-h6 mt-2",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("Vehicles")]
-              )
-            ]
-          ),
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z",
+                            fill: "#000000"
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h1",
+                  { staticClass: "float-right text-warning font-weight-bold" },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.pending) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "text-warning font-weight-bold font-size-h6",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Pending")]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-md-4" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col bg-light-primary px-6 py-8 rounded-xl mb-7 shadow-sm"
+          },
+          [
+            _c(
+              "span",
+              {
+                staticClass:
+                  "svg-icon svg-icon-3x svg-icon-primary d-block my-2"
+              },
+              [
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      width: "24px",
+                      height: "24px",
+                      viewBox: "0 0 24 24",
+                      version: "1.1"
+                    }
+                  },
+                  [
+                    _c(
+                      "g",
+                      {
+                        attrs: {
+                          stroke: "none",
+                          "stroke-width": "1",
+                          fill: "none",
+                          "fill-rule": "evenodd"
+                        }
+                      },
+                      [
+                        _c("rect", {
+                          attrs: { x: "0", y: "0", width: "24", height: "24" }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z",
+                            fill: "#000000",
+                            opacity: "0.3"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M10.875,15.75 C10.6354167,15.75 10.3958333,15.6541667 10.2041667,15.4625 L8.2875,13.5458333 C7.90416667,13.1625 7.90416667,12.5875 8.2875,12.2041667 C8.67083333,11.8208333 9.29375,11.8208333 9.62916667,12.2041667 L10.875,13.45 L14.0375,10.2875 C14.4208333,9.90416667 14.9958333,9.90416667 15.3791667,10.2875 C15.7625,10.6708333 15.7625,11.2458333 15.3791667,11.6291667 L11.5458333,15.4625 C11.3541667,15.6541667 11.1145833,15.75 10.875,15.75 Z",
+                            fill: "#000000"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z",
+                            fill: "#000000"
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h1",
+                  { staticClass: "float-right text-primary font-weight-bold" },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.approved) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "text-primary font-weight-bold font-size-h6 mt-2",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Approved")]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-md-4" }, [
+        _c(
+          "div",
+          { staticClass: "col bg-light-success px-6 py-8 rounded-xl" },
+          [
+            _c(
+              "span",
+              {
+                staticClass:
+                  "svg-icon svg-icon-3x svg-icon-success d-block my-2"
+              },
+              [
+                _c(
+                  "svg",
+                  {
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      width: "24px",
+                      height: "24px",
+                      viewBox: "0 0 24 24",
+                      version: "1.1"
+                    }
+                  },
+                  [
+                    _c(
+                      "g",
+                      {
+                        attrs: {
+                          stroke: "none",
+                          "stroke-width": "1",
+                          fill: "none",
+                          "fill-rule": "evenodd"
+                        }
+                      },
+                      [
+                        _c("polygon", {
+                          attrs: { points: "0 0 24 0 24 24 0 24" }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M9.26193932,16.6476484 C8.90425297,17.0684559 8.27315905,17.1196257 7.85235158,16.7619393 C7.43154411,16.404253 7.38037434,15.773159 7.73806068,15.3523516 L16.2380607,5.35235158 C16.6013618,4.92493855 17.2451015,4.87991302 17.6643638,5.25259068 L22.1643638,9.25259068 C22.5771466,9.6195087 22.6143273,10.2515811 22.2474093,10.6643638 C21.8804913,11.0771466 21.2484189,11.1143273 20.8356362,10.7474093 L17.0997854,7.42665306 L9.26193932,16.6476484 Z",
+                            fill: "#000000",
+                            "fill-rule": "nonzero",
+                            opacity: "0.3",
+                            transform:
+                              "translate(14.999995, 11.000002) rotate(-180.000000) translate(-14.999995, -11.000002) "
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("path", {
+                          attrs: {
+                            d:
+                              "M4.26193932,17.6476484 C3.90425297,18.0684559 3.27315905,18.1196257 2.85235158,17.7619393 C2.43154411,17.404253 2.38037434,16.773159 2.73806068,16.3523516 L11.2380607,6.35235158 C11.6013618,5.92493855 12.2451015,5.87991302 12.6643638,6.25259068 L17.1643638,10.2525907 C17.5771466,10.6195087 17.6143273,11.2515811 17.2474093,11.6643638 C16.8804913,12.0771466 16.2484189,12.1143273 15.8356362,11.7474093 L12.0997854,8.42665306 L4.26193932,17.6476484 Z",
+                            fill: "#000000",
+                            "fill-rule": "nonzero",
+                            transform:
+                              "translate(9.999995, 12.000002) rotate(-180.000000) translate(-9.999995, -12.000002) "
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h1",
+                  { staticClass: "float-right text-success font-weight-bold" },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.overview.completed) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "text-success font-weight-bold font-size-h6 mt-2",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Completed")]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "card card-stretch" }, [
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "div",
             {
-              staticClass: "col bg-light-primary px-6 py-8 rounded-xl mr-7 my-2"
+              class: !_vm.division.count.length
+                ? "card-body overlay overlay-block min-height-400"
+                : "card-body min-height-400"
             },
             [
-              _c(
-                "span",
-                { staticClass: "svg-icon svg-icon-3x svg-icon-primary my-2" },
-                [
-                  _c(
-                    "svg",
-                    {
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                        width: "24px",
-                        height: "24px",
-                        viewBox: "0 0 24 24",
-                        version: "1.1"
-                      }
-                    },
-                    [
-                      _c(
-                        "g",
-                        {
-                          attrs: {
-                            stroke: "none",
-                            "stroke-width": "1",
-                            fill: "none",
-                            "fill-rule": "evenodd"
-                          }
-                        },
-                        [
-                          _c("rect", {
-                            attrs: { x: "0", y: "0", width: "24", height: "24" }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M12,11 C10.8954305,11 10,10.1045695 10,9 C10,7.8954305 10.8954305,7 12,7 C13.1045695,7 14,7.8954305 14,9 C14,10.1045695 13.1045695,11 12,11 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M7.00036205,16.4995035 C7.21569918,13.5165724 9.36772908,12 11.9907452,12 C14.6506758,12 16.8360465,13.4332455 16.9988413,16.5 C17.0053266,16.6221713 16.9988413,17 16.5815,17 C14.5228466,17 11.463736,17 7.4041679,17 C7.26484009,17 6.98863236,16.6619875 7.00036205,16.4995035 Z",
-                              fill: "#000000",
-                              opacity: "0.3"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "h1",
-                    {
-                      staticClass:
-                        "float-right text-primary font-weight-bold mr-5"
-                    },
-                    [_vm._v(_vm._s(_vm.drivers.length))]
-                  )
-                ]
-              ),
+              !_vm.division.count.length
+                ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                    _c("div", { staticClass: "spinner spinner-primary" })
+                  ])
+                : _vm._e(),
               _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass:
-                    "text-primary font-weight-bold font-size-h6 mt-2",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("Drivers")]
-              )
+              _c("div", { attrs: { id: "division-bar-chart" } })
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "card card-stretch" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              class: !_vm.travel.count.length
+                ? "card-body overlay overlay-block min-height-400"
+                : "card-body min-height-400"
+            },
+            [
+              !_vm.travel.count.length
+                ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                    _c("div", { staticClass: "spinner spinner-primary" })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { attrs: { id: "travel-bar-chart" } })
             ]
           )
         ])
@@ -58424,99 +57561,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header border-0 bg-danger py-5" }, [
-      _c("h3", { staticClass: "card-title font-weight-bolder text-white" }, [
-        _vm._v("Overview")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-toolbar" }, [
-        _c("div", { staticClass: "dropdown dropdown-inline" }, [
-          _c(
-            "a",
-            {
-              staticClass:
-                "btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5",
-              attrs: {
-                href: "#",
-                "data-toggle": "dropdown",
-                "aria-haspopup": "true",
-                "aria-expanded": "false"
-              }
-            },
-            [_vm._v("Export")]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dropdown-menu dropdown-menu-sm dropdown-menu-right"
-            },
-            [
-              _c("ul", { staticClass: "navi navi-hover" }, [
-                _c("li", { staticClass: "navi-header pb-1" }, [
-                  _c(
-                    "span",
-                    {
-                      staticClass:
-                        "text-primary text-uppercase font-weight-bold font-size-sm"
-                    },
-                    [_vm._v("Add new:")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "navi-item" }, [
-                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-                    _c("span", { staticClass: "navi-icon" }, [
-                      _c("i", { staticClass: "flaticon2-shopping-cart-1" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "navi-text" }, [_vm._v("Order")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "navi-item" }, [
-                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-                    _c("span", { staticClass: "navi-icon" }, [
-                      _c("i", { staticClass: "flaticon2-calendar-8" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "navi-text" }, [_vm._v("Event")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "navi-item" }, [
-                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-                    _c("span", { staticClass: "navi-icon" }, [
-                      _c("i", { staticClass: "flaticon2-graph-1" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "navi-text" }, [_vm._v("Report")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "navi-item" }, [
-                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-                    _c("span", { staticClass: "navi-icon" }, [
-                      _c("i", { staticClass: "flaticon2-rocket-1" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "navi-text" }, [_vm._v("Post")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "navi-item" }, [
-                  _c("a", { staticClass: "navi-link", attrs: { href: "#" } }, [
-                    _c("span", { staticClass: "navi-icon" }, [
-                      _c("i", { staticClass: "flaticon2-writing" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "navi-text" }, [_vm._v("File")])
-                  ])
-                ])
-              ])
-            ]
-          )
-        ])
+    return _c("div", { staticClass: "card-header m-0 p-5" }, [
+      _c("div", { staticClass: "card-title p-0 mb-0 h6" }, [
+        _vm._v("\n                        Divisions Stat\n                    ")
       ])
     ])
   },
@@ -58524,150 +57571,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("Division")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "division-bar-chart" } })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "card-title" }, [
-        _c("h3", { staticClass: "card-label" }, [_vm._v("Activities")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-toolbar" }, [
-        _c("ul", { staticClass: "nav nav-light-success nav-bold nav-pills" }, [
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link active",
-                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_4_1" }
-              },
-              [
-                _c("span", { staticClass: "nav-icon" }, [
-                  _c("i", { staticClass: "flaticon-event-calendar-symbol" })
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "nav-text" }, [_vm._v("Upcoming")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "a",
-              {
-                staticClass: "nav-link",
-                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_4_2" }
-              },
-              [
-                _c("span", { staticClass: "nav-icon" }, [
-                  _c("i", { staticClass: "flaticon-list-1" })
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "nav-text" }, [_vm._v("Recent")])
-              ]
-            )
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-primary icon-xxl" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-success icon-xxl" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("Travel Stat")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "travel-bar-chart" } })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("PO Stat")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { attrs: { id: "po-bar-chart" } })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xl-4 col-lg-6" }, [
-      _c("div", { staticClass: "card card-custom card-stretch gutter-b" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "card-title" }, [
-            _c("h3", { staticClass: "card-label" }, [_vm._v("PO Balance")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", {
-            staticClass: "d-flex justify-content-center",
-            attrs: { id: "po-pie-chart" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "card-title" }, [
-        _c("h3", { staticClass: "card-label" }, [
-          _vm._v("Driver & Vehicle Stat")
-        ])
+    return _c("div", { staticClass: "card-header m-0 p-5" }, [
+      _c("div", { staticClass: "card-title p-0 mb-0 h6" }, [
+        _vm._v("\n                        Travels Stat\n                    ")
       ])
     ])
   }
@@ -65341,12 +64247,12 @@ var render = function() {
                 _c("td", [
                   _c("div", { staticClass: "header-title" }, [
                     _c("p", { staticClass: "main" }, [
-                      _vm._v("ADMINISTRATIVE SERVICES")
+                      _vm._v("GENERAL SERVICES SECTION")
                     ]),
                     _vm._v(" "),
                     _c("p", { staticClass: "sub-main" }, [
                       _vm._v(
-                        "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    SERVICES GROUP\n                                "
+                        "\n                                    GENERAL ADMINISTRATION AND SUPPORT\n                                    DIVISION\n                                "
                       )
                     ]),
                     _vm._v(" "),
@@ -71043,7 +69949,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Group")]),
         _vm._v(" "),
-        _c("th", { staticClass: "text-center" }, [_vm._v("Tracking No.")]),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Code")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Trip Ticket")]),
         _vm._v(" "),

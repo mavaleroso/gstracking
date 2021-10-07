@@ -107,63 +107,24 @@ class GetListingVehicleTravel
     public function local($id)
     {
         $request = Request::find($id);
-        $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
-            ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
-            ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
-            ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
-            ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
-            ->where('destinations.request_id', $id)
-            ->first();
+        // $place = Destination::select(DB::raw("GROUP_CONCAT(IF(lib_brgys.`brgy_name`, CONCAT(lib_brgys.`brgy_name`, ' ', lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`) , CONCAT(lib_cities.`city_name`, ' ', lib_provinces.`province_code`, ' ', lib_regions.`region_nick`))) as place"))
+        //     ->leftJoin('lib_regions', 'lib_regions.id', '=', 'destinations.region_id')
+        //     ->leftJoin('lib_provinces', 'lib_provinces.id', '=', 'destinations.province_id')
+        //     ->leftJoin('lib_cities', 'lib_cities.id', '=', 'destinations.city_id')
+        //     ->leftJoin('lib_brgys', 'lib_brgys.id', '=', 'destinations.brgy_id')
+        //     ->where('destinations.request_id', $id)
+        //     ->first();
 
         $data[] = (object) array(
             'id' => $request->id,
             'purpose' => $request->purpose,
             'inclusive_from' => $request->travel_date,
             'inclusive_to' => $request->return_date,
-            'place' => $place->place,
+            'place' => $request->destination,
+            'tracking_no' => $request->serial_code,
             'status' => "Approved",
             'passenger_count' => (string) Passenger::select(DB::raw('COUNT(*) as total'))->where('request_id', $id)->first()->total,
         );
         return $data;
     }
-
-    // if ($fields['division']){
-    //     $query->where('requests.division_id', 'like' , '%'.$fields['division'].'%');
-    // }
-    // if ($fields['section']){
-    //     $query->where('requests.section_id', 'like' , '%'.$fields['section'].'%');
-    // }
-    // if ($fields['tripTicket']){
-    //     $query->where('transaction_vehicles.trip_ticket', 'like' , '%'.$fields['tripTicket'].'%');
-    // }
-    // if ($fields['dateTravel']){
-    //     $query->where('requests.travel_date', 'like' , '%'.$fields['dateTravel'].'%');
-    // }
-    // if ($fields['procurementSub']){
-    //     $query->where('transaction_vehicles.date_submit_proc', 'like' , '%'.$fields['procurementSub'].'%');
-    // }
-    // if ($fields['distanceTravelled']){
-    //     $query->where('transaction_vehicles.travelled', 'like' , '%'.$fields['distanceTravelled'].'%');
-    // }
-    // if ($fields['poNumber']){
-    //     $query->where('procurements.po_no', 'like' , '%'.$fields['poNumber'].'%');
-    // }
-    // if ($fields['poAmount']){
-    //     $query->where('procurements.po_amount', 'like' , '%'.$fields['poAmount'].'%');
-    // }
-    // if ($fields['rateperKm']){
-    //     $query->where('transaction_vehicles.rate_per_km', 'like' , '%'.$fields['rateperKm'].'%');
-    // }
-    // if ($fields['flatRate']){
-    //     $query->where('transaction_vehicles.flat_rate', 'like' , '%'.$fields['flatRate'].'%');
-    // }
-    // if ($fields['rateperNight']){
-    //     $query->where('transaction_vehicles.rate_per_night', 'like' , '%'.$fields['rateperNight'].'%');
-    // }
-    // if ($fields['numberofNights']){
-    //     $query->where('transaction_vehicles.nights_count', 'like' , '%'.$fields['numberofNights'].'%');
-    // }
-    // if ($fields['vehicleTemplate']){
-    //     $query->where('vehicles.plate_no', 'like' , '%'.$fields['vehicleTemplate'].'%');
-    // }
 }

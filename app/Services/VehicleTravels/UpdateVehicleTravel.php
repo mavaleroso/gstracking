@@ -4,6 +4,7 @@ namespace App\Services\VehicleTravels;
 
 use App\Models\TransactionVehicles;
 use App\Models\Request;
+use App\Models\RequestTransactions;
 
 class UpdateVehicleTravel
 {
@@ -33,6 +34,9 @@ class UpdateVehicleTravel
             'remarks' => $fields['remarks'],
             'status' => $fields['status']
         ]);
+
+        $requestTrans = RequestTransactions::where('transaction_vehicles_id', $id)->first();
+        $trans ? Request::where('id', $requestTrans['request_id'])->update(['is_status' => $fields['status']]) : NULL;
 
         return $trans;
     }

@@ -63,7 +63,7 @@
                             <th class="text-center">ID</th>
                             <th class="text-center">Type</th>
                             <th class="text-center">Group</th>
-                            <th class="text-center">Tracking No.</th>
+                            <th class="text-center">Code</th>
                             <th class="text-center">Trip Ticket</th>
                             <th class="text-center">Vehicle Type</th>
                             <th class="text-center">Plate No</th>
@@ -1009,10 +1009,10 @@ export default {
         this.getData();
         this.getPoNumber();
         this.getDivision();
-        this.getVehiclemode();
     },
     mounted() {
         this.ini();
+        this.getVehiclemode();
     },
     computed: {
         totalCost() {
@@ -1356,7 +1356,9 @@ export default {
             return type ? this.$dateTimeEng(dt) : this.$dateEng(dt);
         },
         getVehiclemode() {
-            this.vehiclemodes = this.$store.getters["mot/mot"];
+            setTimeout(() => {
+                this.vehiclemodes = this.$store.getters["mot/mot"];
+            }, 1000);
         }
     }
 };
