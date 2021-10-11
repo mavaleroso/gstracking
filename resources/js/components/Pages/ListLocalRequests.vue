@@ -651,11 +651,20 @@
                                                         label="Label"
                                                     ></option>
                                                     <option
-                                                        v-for="driver in drivers"
+                                                        v-for="driver in drivers.filter(
+                                                            i =>
+                                                                i.status !=
+                                                                    'unavailable' &&
+                                                                i.travel_status !=
+                                                                    'approved'
+                                                        )"
                                                         :key="driver.id"
                                                         :value="driver.id"
                                                     >
                                                         {{ driver.fullname }}
+                                                        ({{
+                                                            driver.travel_status
+                                                        }})
                                                     </option>
                                                 </select>
                                             </td>
@@ -928,7 +937,6 @@ export default {
     created() {
         this.getVehicle();
         this.getPo();
-        this.getDriver();
         this.getVehiclemode();
     },
     mounted() {
@@ -1124,6 +1132,7 @@ export default {
                         response.data[0].created_at
                     );
                     vm.getPassengers(vm.current_id);
+                    vm.getDriver();
                     !app ? $("#kt_datatable_modal").modal("show") : NULL;
 
                     setTimeout(() => {
@@ -1664,9 +1673,17 @@ export default {
             });
         },
         getDriver() {
-            axios.get(BASE_URL + "/api/v1/driver").then(response => {
-                this.drivers = response.data;
-            });
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/driver?date_from=" +
+                        this.request_travelDate +
+                        "&date_to=" +
+                        this.request_returnDate
+                )
+                .then(response => {
+                    this.drivers = response.data;
+                });
         },
         declined() {
             this.remarks = "";

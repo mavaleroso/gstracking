@@ -14,9 +14,9 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetAvailableDrivers $getAvailableDrivers)
+    public function index(GetAvailableDrivers $getAvailableDrivers, Request $request)
     {
-        $data = $getAvailableDrivers->execute();
+        $data = $getAvailableDrivers->execute($request->date_from, $request->date_to);
         return response()->json($data);
     }
 

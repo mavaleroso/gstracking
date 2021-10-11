@@ -5820,6 +5820,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5879,7 +5888,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   created: function created() {
     this.getVehicle();
     this.getPo();
-    this.getDriver();
     this.getVehiclemode();
   },
   mounted: function mounted() {
@@ -6061,6 +6069,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.place = response.data[0].destination;
         vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
         vm.getPassengers(vm.current_id);
+        vm.getDriver();
         !app ? $("#kt_datatable_modal").modal("show") : NULL;
         setTimeout(function () {
           var count = _this3.passengers.length;
@@ -6489,7 +6498,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getDriver: function getDriver() {
       var _this9 = this;
 
-      axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/driver?date_from=" + this.request_travelDate + "&date_to=" + this.request_returnDate).then(function (response) {
         _this9.drivers = response.data;
       });
     },
@@ -60038,28 +60047,42 @@ var render = function() {
                                                   attrs: { label: "Label" }
                                                 }),
                                                 _vm._v(" "),
-                                                _vm._l(_vm.drivers, function(
-                                                  driver
-                                                ) {
-                                                  return _c(
-                                                    "option",
-                                                    {
-                                                      key: driver.id,
-                                                      domProps: {
-                                                        value: driver.id
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                    " +
-                                                          _vm._s(
-                                                            driver.fullname
-                                                          ) +
-                                                          "\n                                                "
-                                                      )
-                                                    ]
-                                                  )
-                                                })
+                                                _vm._l(
+                                                  _vm.drivers.filter(function(
+                                                    i
+                                                  ) {
+                                                    return (
+                                                      i.status !=
+                                                        "unavailable" &&
+                                                      i.travel_status !=
+                                                        "approved"
+                                                    )
+                                                  }),
+                                                  function(driver) {
+                                                    return _c(
+                                                      "option",
+                                                      {
+                                                        key: driver.id,
+                                                        domProps: {
+                                                          value: driver.id
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                    " +
+                                                            _vm._s(
+                                                              driver.fullname
+                                                            ) +
+                                                            "\n                                                    (" +
+                                                            _vm._s(
+                                                              driver.travel_status
+                                                            ) +
+                                                            ")\n                                                "
+                                                        )
+                                                      ]
+                                                    )
+                                                  }
+                                                )
                                               ],
                                               2
                                             )
