@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Driver;
+use App\Services\Api\v1\GetAvailableDrivers;
 
 class DriverController extends Controller
 {
@@ -13,9 +14,10 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetAvailableDrivers $getAvailableDrivers)
     {
-        return response()->json(Driver::where('status', 'Active')->get());
+        $data = $getAvailableDrivers->execute();
+        return response()->json($data);
     }
 
     /**
