@@ -63,6 +63,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Actions</th>
                             <th>Serial Code</th>
                             <th>Department</th>
                             <th>Purpose</th>
@@ -72,7 +73,6 @@
                             <th>Date Created</th>
                             <th>Request By</th>
                             <th>Remarks</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -974,11 +974,14 @@ export default {
                     scrollCollapse: true,
                     processing: true,
                     serverSide: true,
+                    order: [[1, "desc"]],
+                    select: true,
                     ajax: {
                         url: BASE_URL + "/travel/localrequest",
                         type: "GET"
                     },
                     columns: [
+                        { data: "id" },
                         { data: "id" },
                         { data: "serial_code" },
                         { data: "department" },
@@ -988,12 +991,11 @@ export default {
                         { data: "is_status" },
                         { data: "created_at" },
                         { data: "fullname" },
-                        { data: "remarks" },
-                        { data: "id" }
+                        { data: "remarks" }
                     ],
                     columnDefs: [
                         {
-                            targets: 1,
+                            targets: 2,
                             render: data => {
                                 return (
                                     '<span class="label label-outline-primary label-inline font-weight bold h-auto p-2">' +
@@ -1003,19 +1005,19 @@ export default {
                             }
                         },
                         {
-                            targets: 4,
+                            targets: 5,
                             render: data => {
                                 return this.$dateEng(data);
                             }
                         },
                         {
-                            targets: 5,
+                            targets: 6,
                             render: data => {
                                 return this.$timeEng(data);
                             }
                         },
                         {
-                            targets: 6,
+                            targets: 7,
                             render: data => {
                                 var status = {
                                     1: {
@@ -1045,13 +1047,13 @@ export default {
                             }
                         },
                         {
-                            targets: 7,
+                            targets: 8,
                             render: data => {
                                 return this.$dateTimeEng(data);
                             }
                         },
                         {
-                            targets: -1,
+                            targets: 1,
                             sortable: false,
                             render: data => {
                                 return (

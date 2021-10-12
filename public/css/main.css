@@ -151,3 +151,8 @@
 .min-height-400 {
     min-height: 400px !important;
 }
+
+tbody tr:hover {
+    background-color: #eee !important;
+    cursor: pointer;
+}
