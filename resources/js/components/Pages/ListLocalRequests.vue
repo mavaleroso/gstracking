@@ -630,7 +630,11 @@
                                                         label="Label"
                                                     ></option>
                                                     <option
-                                                        v-for="vehicle in vehicles"
+                                                        v-for="vehicle in vehicles.filter(
+                                                            i =>
+                                                                i.status !=
+                                                                'unavailable'
+                                                        )"
                                                         :key="vehicle.id"
                                                         :value="vehicle.id"
                                                     >
@@ -654,17 +658,12 @@
                                                         v-for="driver in drivers.filter(
                                                             i =>
                                                                 i.status !=
-                                                                    'unavailable' &&
-                                                                i.travel_status !=
-                                                                    'approved'
+                                                                'unavailable'
                                                         )"
                                                         :key="driver.id"
                                                         :value="driver.id"
                                                     >
                                                         {{ driver.fullname }}
-                                                        ({{
-                                                            driver.travel_status
-                                                        }})
                                                     </option>
                                                 </select>
                                             </td>
@@ -935,7 +934,6 @@ export default {
         Modal
     },
     created() {
-        this.getVehicle();
         this.getPo();
         this.getVehiclemode();
     },
@@ -1133,6 +1131,7 @@ export default {
                     );
                     vm.getPassengers(vm.current_id);
                     vm.getDriver();
+                    vm.getVehicle();
                     !app ? $("#kt_datatable_modal").modal("show") : NULL;
 
                     setTimeout(() => {
@@ -1225,7 +1224,7 @@ export default {
                                 }
                             );
                         }
-                    }, 500);
+                    }, 1000);
                 });
         },
         getData(id, index) {
@@ -1663,9 +1662,17 @@ export default {
             }
         },
         getVehicle() {
-            axios.get(BASE_URL + "/api/v1/vehicle").then(response => {
-                this.vehicles = response.data;
-            });
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/vehicle?date_from=" +
+                        this.request_travelDate +
+                        "&date_to=" +
+                        this.request_returnDate
+                )
+                .then(response => {
+                    this.vehicles = response.data;
+                });
         },
         getPo() {
             axios.get(BASE_URL + "/api/v1/po").then(response => {

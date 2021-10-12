@@ -3,12 +3,12 @@
 namespace App\Services\Api\v1;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Driver;
+use App\Models\Vehicle;
 use App\Models\System;
 use App\Models\Request;
 use App\Models\TransactionVehicles;
 
-class GetAvailableDrivers
+class GetAvailableVehicles
 {
     /**
      * Get user by email
@@ -20,14 +20,13 @@ class GetAvailableDrivers
     {
         $travelDates = getDatesFromRange($from, $to);
 
-        $drivers = Driver::where('type', 1)->get();
-        for ($i = 0; $i < count($drivers); $i++) {
+        $vehicles = Vehicle::where('type', 1)->where('status', 1)->get();
+        for ($i = 0; $i < count($vehicles); $i++) {
             $results[] = [
-                'id' => $drivers[$i]->id,
-                'fullname' => $drivers[$i]->fullname,
-                'sex' => $drivers[$i]->sex,
-                'contact' => $drivers[$i]->contact,
-                'status' => $this->process_status($drivers[$i]->id, $travelDates)
+                'id' => $vehicles[$i]->id,
+                'name' => $vehicles[$i]->name,
+                'plate_no' => $vehicles[$i]->plate_no,
+                'status' => $this->process_status($vehicles[$i]->id, $travelDates)
             ];
         }
         return $results;
@@ -37,10 +36,9 @@ class GetAvailableDrivers
     {
         $trans = TransactionVehicles::select(['request_transactions.type', 'request_transactions.request_id'])
             ->leftJoin('request_transactions', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
-            ->where('transaction_vehicles.driver_id', $id)
+            ->where('transaction_vehicles.vehicle_id', $id)
             ->where('transaction_vehicles.status', 2)
             ->get();
-
         $trans_length = count($trans);
         if ($trans_length < 1) return 'available';
         $status_results = 'available';
