@@ -61214,6 +61214,19 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [
                           _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: "print_request?id=" + r.id + "&type=rito",
+                                target: "_blank"
+                              }
+                            },
+                            [_vm._m(2, true)]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
                             "span",
                             {
                               staticClass:
@@ -61299,19 +61312,6 @@ var render = function() {
                                   r.requestor.last_name
                               ) +
                               "\n                        "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "a",
-                            {
-                              attrs: {
-                                href: "print_request?id=" + r.id + "&type=rito",
-                                target: "_blank"
-                              }
-                            },
-                            [_vm._m(2, true)]
                           )
                         ])
                       ])
@@ -62528,6 +62528,8 @@ var staticRenderFns = [
       _c("tr", [
         _c("th"),
         _vm._v(" "),
+        _c("th", [_vm._v("Action")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Tracking No.")]),
         _vm._v(" "),
         _c("th", [_vm._v("Division")]),
@@ -62548,9 +62550,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Passengers")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Requested By")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Action")])
+        _c("th", [_vm._v("Requested By")])
       ])
     ])
   },
