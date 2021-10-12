@@ -5820,6 +5820,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5877,9 +5885,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Modal: _components_Layouts_Modal__WEBPACK_IMPORTED_MODULE_0__.default
   },
   created: function created() {
-    this.getVehicle();
     this.getPo();
-    this.getDriver();
     this.getVehiclemode();
   },
   mounted: function mounted() {
@@ -6061,6 +6067,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         vm.place = response.data[0].destination;
         vm.dateTimeEng = _this3.$dateTimeEng(response.data[0].created_at);
         vm.getPassengers(vm.current_id);
+        vm.getDriver();
+        vm.getVehicle();
         !app ? $("#kt_datatable_modal").modal("show") : NULL;
         setTimeout(function () {
           var count = _this3.passengers.length;
@@ -6129,7 +6137,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           for (var i = 1; i <= count; i++) {
             _loop(i);
           }
-        }, 500);
+        }, 1000);
       });
     },
     getData: function getData(id, index) {
@@ -6475,7 +6483,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getVehicle: function getVehicle() {
       var _this7 = this;
 
-      axios.get(BASE_URL + "/api/v1/vehicle").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/vehicle?date_from=" + this.request_travelDate + "&date_to=" + this.request_returnDate).then(function (response) {
         _this7.vehicles = response.data;
       });
     },
@@ -6489,7 +6497,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getDriver: function getDriver() {
       var _this9 = this;
 
-      axios.get(BASE_URL + "/api/v1/driver").then(function (response) {
+      axios.get(BASE_URL + "/api/v1/driver?date_from=" + this.request_travelDate + "&date_to=" + this.request_returnDate).then(function (response) {
         _this9.drivers = response.data;
       });
     },
@@ -59993,30 +60001,39 @@ var render = function() {
                                                   attrs: { label: "Label" }
                                                 }),
                                                 _vm._v(" "),
-                                                _vm._l(_vm.vehicles, function(
-                                                  vehicle
-                                                ) {
-                                                  return _c(
-                                                    "option",
-                                                    {
-                                                      key: vehicle.id,
-                                                      domProps: {
-                                                        value: vehicle.id
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                    " +
-                                                          _vm._s(vehicle.name) +
-                                                          " -\n                                                    " +
-                                                          _vm._s(
-                                                            vehicle.plate_no
-                                                          ) +
-                                                          "\n                                                "
-                                                      )
-                                                    ]
-                                                  )
-                                                })
+                                                _vm._l(
+                                                  _vm.vehicles.filter(function(
+                                                    i
+                                                  ) {
+                                                    return (
+                                                      i.status != "unavailable"
+                                                    )
+                                                  }),
+                                                  function(vehicle) {
+                                                    return _c(
+                                                      "option",
+                                                      {
+                                                        key: vehicle.id,
+                                                        domProps: {
+                                                          value: vehicle.id
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                    " +
+                                                            _vm._s(
+                                                              vehicle.name
+                                                            ) +
+                                                            " -\n                                                    " +
+                                                            _vm._s(
+                                                              vehicle.plate_no
+                                                            ) +
+                                                            "\n                                                "
+                                                        )
+                                                      ]
+                                                    )
+                                                  }
+                                                )
                                               ],
                                               2
                                             )
@@ -60038,28 +60055,35 @@ var render = function() {
                                                   attrs: { label: "Label" }
                                                 }),
                                                 _vm._v(" "),
-                                                _vm._l(_vm.drivers, function(
-                                                  driver
-                                                ) {
-                                                  return _c(
-                                                    "option",
-                                                    {
-                                                      key: driver.id,
-                                                      domProps: {
-                                                        value: driver.id
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                    " +
-                                                          _vm._s(
-                                                            driver.fullname
-                                                          ) +
-                                                          "\n                                                "
-                                                      )
-                                                    ]
-                                                  )
-                                                })
+                                                _vm._l(
+                                                  _vm.drivers.filter(function(
+                                                    i
+                                                  ) {
+                                                    return (
+                                                      i.status != "unavailable"
+                                                    )
+                                                  }),
+                                                  function(driver) {
+                                                    return _c(
+                                                      "option",
+                                                      {
+                                                        key: driver.id,
+                                                        domProps: {
+                                                          value: driver.id
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                                    " +
+                                                            _vm._s(
+                                                              driver.fullname
+                                                            ) +
+                                                            "\n                                                "
+                                                        )
+                                                      ]
+                                                    )
+                                                  }
+                                                )
                                               ],
                                               2
                                             )

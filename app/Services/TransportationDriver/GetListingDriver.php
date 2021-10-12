@@ -19,13 +19,10 @@ class GetListingDriver
         $results = [];
         $columns = Schema::getColumnListing('drivers');
         $query = Driver::query();
-
         foreach ($columns as $column) {
-            $query->orWhere($column, 'LIKE', '%' . $fields['search'] . '%');
+            $query->orWhere($column, 'LIKE', '%' . $fields['search'] . '%')->where('type', 1);
         }
-
-        $driver = $query->where('type', 1)->paginate(10, ['*'], 'page', $fields['pages']);
-
+        $driver = $query->paginate(10, ['*'], 'page', $fields['pages']);
         for ($i = 0; $i < count($driver); $i++) {
             $results['data'][] = [
                 'id' => $driver[$i]->id,

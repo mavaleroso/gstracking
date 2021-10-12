@@ -4,7 +4,7 @@ namespace App\Http\Controllers\ajax;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Vehicle;
+use App\Services\Api\v1\GetAvailableVehicles;
 
 class VehicleController extends Controller
 {
@@ -13,9 +13,10 @@ class VehicleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GetAvailableVehicles $getAvailableVehicles, Request $request)
     {
-        return response()->json(Vehicle::where('type', 1)->get());
+        $data = $getAvailableVehicles->execute($request->date_from, $request->date_to);
+        return response()->json($data);
     }
 
     /**

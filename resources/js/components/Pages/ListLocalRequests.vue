@@ -630,7 +630,11 @@
                                                         label="Label"
                                                     ></option>
                                                     <option
-                                                        v-for="vehicle in vehicles"
+                                                        v-for="vehicle in vehicles.filter(
+                                                            i =>
+                                                                i.status !=
+                                                                'unavailable'
+                                                        )"
                                                         :key="vehicle.id"
                                                         :value="vehicle.id"
                                                     >
@@ -651,7 +655,11 @@
                                                         label="Label"
                                                     ></option>
                                                     <option
-                                                        v-for="driver in drivers"
+                                                        v-for="driver in drivers.filter(
+                                                            i =>
+                                                                i.status !=
+                                                                'unavailable'
+                                                        )"
                                                         :key="driver.id"
                                                         :value="driver.id"
                                                     >
@@ -926,9 +934,7 @@ export default {
         Modal
     },
     created() {
-        this.getVehicle();
         this.getPo();
-        this.getDriver();
         this.getVehiclemode();
     },
     mounted() {
@@ -1124,6 +1130,8 @@ export default {
                         response.data[0].created_at
                     );
                     vm.getPassengers(vm.current_id);
+                    vm.getDriver();
+                    vm.getVehicle();
                     !app ? $("#kt_datatable_modal").modal("show") : NULL;
 
                     setTimeout(() => {
@@ -1216,7 +1224,7 @@ export default {
                                 }
                             );
                         }
-                    }, 500);
+                    }, 1000);
                 });
         },
         getData(id, index) {
@@ -1654,9 +1662,17 @@ export default {
             }
         },
         getVehicle() {
-            axios.get(BASE_URL + "/api/v1/vehicle").then(response => {
-                this.vehicles = response.data;
-            });
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/vehicle?date_from=" +
+                        this.request_travelDate +
+                        "&date_to=" +
+                        this.request_returnDate
+                )
+                .then(response => {
+                    this.vehicles = response.data;
+                });
         },
         getPo() {
             axios.get(BASE_URL + "/api/v1/po").then(response => {
@@ -1664,9 +1680,17 @@ export default {
             });
         },
         getDriver() {
-            axios.get(BASE_URL + "/api/v1/driver").then(response => {
-                this.drivers = response.data;
-            });
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/driver?date_from=" +
+                        this.request_travelDate +
+                        "&date_to=" +
+                        this.request_returnDate
+                )
+                .then(response => {
+                    this.drivers = response.data;
+                });
         },
         declined() {
             this.remarks = "";
