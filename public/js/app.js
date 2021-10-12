@@ -5927,11 +5927,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           scrollCollapse: true,
           processing: true,
           serverSide: true,
+          order: [[1, "desc"]],
+          select: true,
           ajax: {
             url: BASE_URL + "/travel/localrequest",
             type: "GET"
           },
           columns: [{
+            data: "id"
+          }, {
             data: "id"
           }, {
             data: "serial_code"
@@ -5951,26 +5955,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             data: "fullname"
           }, {
             data: "remarks"
-          }, {
-            data: "id"
           }],
           columnDefs: [{
-            targets: 1,
+            targets: 2,
             render: function render(data) {
               return '<span class="label label-outline-primary label-inline font-weight bold h-auto p-2">' + data + "</span>";
             }
           }, {
-            targets: 4,
+            targets: 5,
             render: function render(data) {
               return _this2.$dateEng(data);
             }
           }, {
-            targets: 5,
+            targets: 6,
             render: function render(data) {
               return _this2.$timeEng(data);
             }
           }, {
-            targets: 6,
+            targets: 7,
             render: function render(data) {
               var status = {
                 1: {
@@ -5993,12 +5995,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               return '<span class="btn-details label label-lg font-weight-bold ' + status[data]["class"] + ' label-inline">' + status[data].title + "</span>";
             }
           }, {
-            targets: 7,
+            targets: 8,
             render: function render(data) {
               return _this2.$dateTimeEng(data);
             }
           }, {
-            targets: -1,
+            targets: 1,
             sortable: false,
             render: function render(data) {
               return '<button data-record-id="' + data + '" class="btn btn-sm btn-clean btn-details" title="View records">\
@@ -60496,6 +60498,8 @@ var staticRenderFns = [
             _c("tr", [
               _c("th", [_vm._v("ID")]),
               _vm._v(" "),
+              _c("th", [_vm._v("Actions")]),
+              _vm._v(" "),
               _c("th", [_vm._v("Serial Code")]),
               _vm._v(" "),
               _c("th", [_vm._v("Department")]),
@@ -60512,9 +60516,7 @@ var staticRenderFns = [
               _vm._v(" "),
               _c("th", [_vm._v("Request By")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Remarks")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Actions")])
+              _c("th", [_vm._v("Remarks")])
             ])
           ])
         ]
