@@ -69,6 +69,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th>Action</th>
                             <th>Tracking No.</th>
                             <th>Division</th>
                             <th>Section</th>
@@ -80,7 +81,6 @@
                             <th>Tracking Status</th>
                             <th>Passengers</th>
                             <th>Requested By</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +95,23 @@
                                     />
                                     <span></span>
                                 </label>
+                            </td>
+                            <td>
+                                <a
+                                    :href="
+                                        'print_request?id=' +
+                                            r.id +
+                                            '&type=rito'
+                                    "
+                                    target="_blank"
+                                >
+                                    <button
+                                        class="btn btn-sm btn-clean btn-details"
+                                        title="View records"
+                                    >
+                                        <i class="flaticon2-printer"></i>
+                                    </button>
+                                </a>
                             </td>
                             <td>
                                 <span
@@ -143,23 +160,6 @@
                                             : " ") +
                                         r.requestor.last_name
                                 }}
-                            </td>
-                            <td>
-                                <a
-                                    :href="
-                                        'print_request?id=' +
-                                            r.id +
-                                            '&type=rito'
-                                    "
-                                    target="_blank"
-                                >
-                                    <button
-                                        class="btn btn-sm btn-clean btn-details"
-                                        title="View records"
-                                    >
-                                        <i class="flaticon2-printer"></i>
-                                    </button>
-                                </a>
                             </td>
                         </tr>
                     </tbody>
