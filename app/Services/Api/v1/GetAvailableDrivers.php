@@ -27,13 +27,14 @@ class GetAvailableDrivers
                 'fullname' => $drivers[$i]->fullname,
                 'sex' => $drivers[$i]->sex,
                 'contact' => $drivers[$i]->contact,
-                'status' => $this->process_status($drivers[$i]->id, $travelDates)
+                'status' => $this->process_status($drivers[$i]->id, $travelDates, 'status'),
+                'travel_status' => $this->process_status($drivers[$i]->id, $travelDates, 'travel')
             ];
         }
         return $results;
     }
 
-    public function process_status($id, $travelDates)
+    public function process_status($id, $travelDates, $type)
     {
         $trans = TransactionVehicles::select(['request_transactions.type', 'request_transactions.request_id'])
             ->leftJoin('request_transactions', 'request_transactions.transaction_vehicles_id', '=', 'transaction_vehicles.id')
@@ -42,27 +43,40 @@ class GetAvailableDrivers
             ->get();
 
         $trans_length = count($trans);
-        if ($trans_length < 1) return 'available';
+        if ($trans_length < 1) return $type == 'status' ? 'available' : NULL;
         $status_results = 'available';
+        $travel_results = NULL;
         for ($i = 0; $i < $trans_length; $i++) {
             if ($trans[$i]->type == 'rito') {
                 $rito = $this->rito_data($trans[$i]->request_id);
                 $rDate = getDatesFromRange($rito->inclusive_from, $rito->inclusive_to);
 
                 if (array_intersect($travelDates, $rDate)) {
-                    $status_results = 'unavailable';
+                    if ($rito->status == 'Approved') {
+                        $status_results = 'unavailable';
+                        $travel_results = $rito->status;
+                    } else if ($rito->status == 'Pending') {
+                        $status_results = 'available';
+                        $travel_results = $rito->status;
+                    }
                 }
             } else if ($trans[$i]->type == 'local') {
                 $local = Request::find($trans[$i]->request_id);
                 $lDate = getDatesFromRange($local->travel_date, $local->return_date);
 
                 if (array_intersect($travelDates, $lDate)) {
-                    $status_results = 'unavailable';
+                    if ($local->is_status == 2) {
+                        $status_results = 'unavailable';
+                        $travel_results = 'Approved';
+                    } else if ($local->is_status == 1) {
+                        $status_results = 'available';
+                        $travel_results = 'Pending';
+                    }
                 }
             }
         }
 
-        return $status_results;
+        return $type == 'status' ? $status_results : $travel_results;
     }
 
     public function rito_data($id)

@@ -12,10 +12,22 @@
                     <div v-if="loading" class="overlay-layer bg-dark-o-10">
                         <div class="spinner spinner-primary"></div>
                     </div>
+                    <div class="legend d-flex">
+                        <h6 class="font-weight-bold mr-4 mt-2">Legend:</h6>
+                        <div class="d-flex mx-3 my-2">
+                            <span class="label label-warning mr-2"></span>
+                            <label for=""> Pending Status</label>
+                        </div>
+                        <div class="d-flex mx-3 my-2">
+                            <span class="label label-primary mr-2"></span>
+                            <label for=""> Approved Status</label>
+                        </div>
+                    </div>
+                    <hr />
                     <div id="kt_calendar"></div>
                     <table
                         v-if="!loading"
-                        class="table table-striped table-responsive w-100 fs-10 mt-5"
+                        class="table table-responsive w-100 fs-10 mt-5"
                     >
                         <thead>
                             <tr class="table-primary fs-9">
@@ -23,6 +35,9 @@
                                 <th>Trip Ticket</th>
                                 <th>Type</th>
                                 <th>Tracking No.</th>
+                                <th>Vehicle Name</th>
+                                <th>Plate No.</th>
+                                <th>Driver</th>
                                 <th>Purpose</th>
                                 <th>Place</th>
                                 <th>Travel Date</th>
@@ -35,6 +50,9 @@
                                 <td>{{ t.trip_ticket }}</td>
                                 <td>{{ t.type }}</td>
                                 <td>{{ t.request.tracking_no }}</td>
+                                <td>{{ t.vehicle.name }}</td>
+                                <td>{{ t.vehicle.plate_no }}</td>
+                                <td>{{ t.drivers.fullname }}</td>
                                 <td>{{ t.request.purpose }}</td>
                                 <td>{{ t.request.place }}</td>
                                 <td>
@@ -49,10 +67,10 @@
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="card card-custom card-stretch">
+            <div class="card card-custom">
                 <div class="card-header">
                     <div class="card-title">
-                        <h3 class="card-label">Travels</h3>
+                        <h3 class="card-label">RP Travels</h3>
                     </div>
                 </div>
                 <div
@@ -65,10 +83,10 @@
                     <div v-if="loading" class="overlay-layer bg-dark-o-10">
                         <div class="spinner spinner-primary"></div>
                     </div>
-                    <div v-for="(v, index) in vehicle.all" :key="index">
-                        <span class="label label-primary label-inline"
-                            >{{ v.name }} - {{ v.plate_no }} |
-                            {{ mot(v.type) }}</span
+                    <div v-for="(v, index) in vehicle.rp" :key="index">
+                        <span
+                            class="label label-primary label-inline h-auto p-1"
+                            >{{ v.name }} - {{ v.plate_no }}</span
                         >
                         <div class="timeline timeline-5 mt-3">
                             <div
@@ -89,7 +107,7 @@
                                     <i
                                         :class="
                                             data.request.status == 'Approved'
-                                                ? 'fa fa-genderless text-success icon-xxl'
+                                                ? 'fa fa-genderless text-primary icon-xxl'
                                                 : 'fa fa-genderless text-warning icon-xxl'
                                         "
                                     ></i>
@@ -97,6 +115,137 @@
                                 <div
                                     class="timeline-content text-dark-50 fs-11"
                                 >
+                                    <span
+                                        class="label label-light-primary label-inline h-auto p-1"
+                                        >{{ data.drivers.fullname }}</span
+                                    >
+                                    - {{ data.trip_ticket }} :
+                                    {{ data.request.purpose }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div v-if="vehicle.list.length == 0 && !loading">
+                        <div
+                            class="alert alert-custom alert-default"
+                            role="alert"
+                        >
+                            <div class="alert-icon">
+                                <span
+                                    class="svg-icon svg-icon-primary svg-icon-2x"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px"
+                                        height="24px"
+                                        viewBox="0 0 24 24"
+                                        version="1.1"
+                                    >
+                                        <g
+                                            stroke="none"
+                                            stroke-width="1"
+                                            fill="none"
+                                            fill-rule="evenodd"
+                                        >
+                                            <rect
+                                                x="0"
+                                                y="0"
+                                                width="24"
+                                                height="24"
+                                            />
+                                            <circle
+                                                fill="#000000"
+                                                opacity="0.3"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                            />
+                                            <rect
+                                                fill="#000000"
+                                                x="11"
+                                                y="10"
+                                                width="2"
+                                                height="7"
+                                                rx="1"
+                                            />
+                                            <rect
+                                                fill="#000000"
+                                                x="11"
+                                                y="7"
+                                                width="2"
+                                                height="2"
+                                                rx="1"
+                                            />
+                                        </g></svg
+                                ></span>
+                            </div>
+                            <div class="alert-text">
+                                No ongoing travel.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-custom mt-3">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Hired Travels</h3>
+                    </div>
+                </div>
+                <div
+                    :class="
+                        loading
+                            ? 'card-body overlay overlay-block '
+                            : 'card-body '
+                    "
+                >
+                    <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                        <div class="spinner spinner-primary"></div>
+                    </div>
+                    <div
+                        v-for="(v, index) in vehicle.hired.filter(
+                            i => (i.used = 1)
+                        )"
+                        :key="index"
+                    >
+                        <span
+                            class="label label-primary label-inline h-auto p-1"
+                            >{{ v.name }} - {{ v.plate_no }}</span
+                        >
+                        <div class="timeline timeline-5 mt-3">
+                            <div
+                                v-for="(data, index) in vehicle.data.filter(
+                                    i => i.vehicle.id === v.id
+                                )"
+                                :key="index"
+                                class="timeline-item align-items-start"
+                            >
+                                <div
+                                    class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3 text-nowrap fs-9"
+                                >
+                                    {{ $dateNum(data.request.inclusive_from) }}
+                                    -
+                                    {{ $dateNum(data.request.inclusive_to) }}
+                                </div>
+                                <div class="timeline-badge">
+                                    <i
+                                        :class="
+                                            data.request.status == 'Approved'
+                                                ? 'fa fa-genderless text-primary icon-xxl'
+                                                : 'fa fa-genderless text-warning icon-xxl'
+                                        "
+                                    ></i>
+                                </div>
+                                <div
+                                    class="timeline-content text-dark-50 fs-11"
+                                >
+                                    <span
+                                        class="label label-light-primary label-inline h-auto p-1"
+                                        >{{ data.drivers.fullname }}</span
+                                    >
+                                    -
                                     {{ data.trip_ticket }} :
                                     {{ data.request.purpose }}
                                 </div>
@@ -173,6 +322,8 @@ export default {
     data() {
         return {
             vehicle: {
+                rp: [],
+                hired: [],
                 list: [],
                 data: [],
                 all: []
@@ -228,7 +379,7 @@ export default {
 
                         height: 800,
                         contentHeight: 780,
-                        aspectRatio: 3, // see: https://fullcalendar.io/docs/aspectRatio
+                        aspectRatio: 4, // see: https://fullcalendar.io/docs/aspectRatio
 
                         nowIndicator: true,
                         now: TODAY + "T09:25:00", // just for demo
@@ -304,9 +455,10 @@ export default {
         },
         getVehicles() {
             setTimeout(() => {
-                this.vehicle.all = this.$store.getters[
+                this.vehicle.hired = this.$store.getters[
                     "vehicles/hired_vehicles"
-                ].concat(this.$store.getters["vehicles/rp_vehicles"]);
+                ];
+                this.vehicle.rp = this.$store.getters["vehicles/rp_vehicles"];
             }, 3000);
         },
         mot(id) {

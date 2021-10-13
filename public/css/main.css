@@ -153,6 +153,11 @@
 }
 
 tbody tr:hover {
-    background-color: #eee !important;
+    background-color: #eee;
     cursor: pointer;
+}
+
+#kt_calendar tbody tr:hover {
+    background-color: transparent;
+    cursor: default;
 }

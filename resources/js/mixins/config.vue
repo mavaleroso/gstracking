@@ -175,6 +175,27 @@ export default {
                     txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                 );
             });
+        },
+        $getSpecificDate(arr, type) {
+            let sDate =
+                type == "max"
+                    ? arr[arr.length - 1]
+                    : type == "min"
+                    ? arr[0]
+                    : null;
+            if (!sDate) return "Error Params";
+            for (let i = 0; i < arr.length; i++) {
+                if (type == "min") {
+                    if (arr[i] < sDate) {
+                        sDate = arr[i];
+                    }
+                } else if (type == "max") {
+                    if (arr[i] > sDate) {
+                        sDate = arr[i];
+                    }
+                }
+            }
+            return sDate;
         }
     }
 };

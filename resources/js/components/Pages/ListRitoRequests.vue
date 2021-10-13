@@ -90,8 +90,9 @@
                                     <input
                                         type="checkbox"
                                         :id="'checkable_' + r.id"
-                                        :value="r.id"
+                                        :value="index"
                                         class="checkable"
+                                        v-model="selectedIndex"
                                     />
                                     <span></span>
                                 </label>
@@ -532,12 +533,21 @@
                                             >
                                                 <option label="Label"></option>
                                                 <option
-                                                    v-for="vehicle in vehicles"
+                                                    v-for="vehicle in vehicles.filter(
+                                                        i =>
+                                                            i.status !=
+                                                                'unavailable' &&
+                                                            i.travel_status !=
+                                                                'Approved'
+                                                    )"
                                                     :key="vehicle.id"
                                                     :value="vehicle.id"
                                                     >{{ vehicle.name }} -
+                                                    {{ vehicle.plate_no }}
                                                     {{
-                                                        vehicle.plate_no
+                                                        vehicle.travel_status
+                                                            ? vehicle.travel_Status
+                                                            : null
                                                     }}</option
                                                 >
                                             </select>
@@ -550,11 +560,20 @@
                                             >
                                                 <option label="Label"></option>
                                                 <option
-                                                    v-for="driver in drivers"
+                                                    v-for="driver in drivers.filter(
+                                                        i =>
+                                                            i.status !=
+                                                                'unavailable' &&
+                                                            i.travel_status !=
+                                                                'Approved'
+                                                    )"
                                                     :key="driver.id"
                                                     :value="driver.id"
-                                                    >{{
-                                                        driver.fullname
+                                                    >{{ driver.fullname }}
+                                                    {{
+                                                        driver.travel_status
+                                                            ? driver.travel_Status
+                                                            : null
                                                     }}</option
                                                 >
                                             </select>
@@ -702,6 +721,7 @@ export default {
             current_to: null,
             current_id: null,
             selected: [],
+            selectedIndex: [],
             emp_passengers: [],
             ext_passengers: [],
             ext_passengers_edit: false,
@@ -709,6 +729,8 @@ export default {
             pos: [],
             vehicles: [],
             drivers: [],
+            travel_date: [],
+            return_date: [],
             rp: {
                 status: false,
                 total: 1
@@ -772,8 +794,6 @@ export default {
     created() {
         this.getRITO();
         this.getPos();
-        this.getVehicles();
-        this.getDrivers();
         this.getVehicleModes();
         this.getRequestTrans();
     },
@@ -846,58 +866,65 @@ export default {
         },
         assignVehicle() {
             let vm = this;
-            let arr = [];
-            vm.selected = [];
-            vm.passengers_count = 0;
-            let count = 0;
-            $("input.checkable:checkbox:checked").each(function() {
-                arr.push($(this).val());
-                vm.selected.push($(this).val());
-                let pasColumn = $("input.checkable:checkbox:checked")[
-                    count
-                ].closest("tr").children[10];
-                vm.passengers_count += parseInt(pasColumn.textContent);
-                count++;
-            });
+            this.passengers_count = 0;
+            this.selected = [];
+            this.travel_date = [];
+            this.return_date = [];
 
-            if (arr.length > 0) {
+            for (let i = 0; i < this.selectedIndex.length; i++) {
+                this.passengers_count += parseInt(
+                    this.rito[this.selectedIndex[i]].passenger_count
+                );
+                this.selected.push(this.rito[this.selectedIndex[i]].id);
+                this.travel_date.push(
+                    this.rito[this.selectedIndex[i]].inclusive_from
+                );
+                this.return_date.push(
+                    this.rito[this.selectedIndex[i]].inclusive_to
+                );
+            }
+            this.getVehicles();
+            this.getDrivers();
+
+            if (this.selected.length > 0) {
                 $("#modal-approved").modal("show");
+                setTimeout(() => {
+                    $(".radio-vehicle").change(function() {
+                        vm.rp.total = vm.hired.total = 1;
+                        if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
+                            $("#vehicle-select-1").select2({
+                                placeholder: "Select a vehicle"
+                            });
 
-                $(".radio-vehicle").change(function() {
-                    vm.rp.total = vm.hired.total = 1;
-                    if (vm.vehicle_type == 3 || vm.vehicle_type == 2) {
-                        $("#vehicle-select-1").select2({
-                            placeholder: "Select a vehicle"
-                        });
+                            $("#driver-select-1").select2({
+                                placeholder: "Select a driver"
+                            });
+                        } else {
+                            vm.rpNames = ["vehicle_1", "driver_1"];
+                        }
 
-                        $("#driver-select-1").select2({
-                            placeholder: "Select a driver"
-                        });
-                    } else {
-                        vm.rpNames = ["vehicle_1", "driver_1"];
-                    }
+                        if (vm.vehicle_type == 4) {
+                            $("#travel_po-select").select2({
+                                placeholder: "Select a Travel PO"
+                            });
 
-                    if (vm.vehicle_type == 4) {
-                        $("#travel_po-select").select2({
-                            placeholder: "Select a Travel PO"
-                        });
-
-                        $(".select-remove")
-                            .siblings(".select2")
-                            .remove();
-                        $(".select-remove")
-                            .siblings(".select2")
-                            .remove();
-                    } else {
-                        vm.hiredNames = [
-                            "po",
-                            "vehicle_name_1",
-                            "vehicle_plate_1",
-                            "driver_name_1",
-                            "driver_contact_1"
-                        ];
-                    }
-                });
+                            $(".select-remove")
+                                .siblings(".select2")
+                                .remove();
+                            $(".select-remove")
+                                .siblings(".select2")
+                                .remove();
+                        } else {
+                            vm.hiredNames = [
+                                "po",
+                                "vehicle_name_1",
+                                "vehicle_plate_1",
+                                "driver_name_1",
+                                "driver_contact_1"
+                            ];
+                        }
+                    });
+                }, 1000);
 
                 $(".radio-vehicle").on("change", () => {
                     $(".invalid-feedback").remove();
@@ -1077,14 +1104,36 @@ export default {
             });
         },
         getVehicles() {
-            axios.get(BASE_URL + "/api/v1/vehicle").then(response => {
-                this.vehicles = response.data;
-            });
+            let travel_date = this.$getSpecificDate(this.travel_date, "min");
+            let return_date = this.$getSpecificDate(this.travel_date, "max");
+
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/vehicle?date_from=" +
+                        travel_date +
+                        "&date_to=" +
+                        return_date
+                )
+                .then(response => {
+                    this.vehicles = response.data;
+                });
         },
         getDrivers() {
-            axios.get(BASE_URL + "/api/v1/driver").then(response => {
-                this.drivers = response.data;
-            });
+            let travel_date = this.$getSpecificDate(this.travel_date, "min");
+            let return_date = this.$getSpecificDate(this.travel_date, "max");
+
+            axios
+                .get(
+                    BASE_URL +
+                        "/api/v1/driver?date_from=" +
+                        travel_date +
+                        "&date_to=" +
+                        return_date
+                )
+                .then(response => {
+                    this.drivers = response.data;
+                });
         },
         approved() {
             let ritoData = $("#rito-form").serialize();
@@ -1214,7 +1263,9 @@ export default {
                 });
         },
         getVehicleModes() {
-            this.vehiclemodes = this.$store.getters["mot/mot"];
+            setTimeout(() => {
+                this.vehiclemodes = this.$store.getters["mot/mot"];
+            }, 3000);
         },
         getRequestTrans() {
             axios.get(BASE_URL + "/api/v1/requesttrans").then(res => {
