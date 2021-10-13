@@ -31,16 +31,17 @@ class GetListingTravel
                 'request' => $key['type'] == 'rito' ? $this->rito_request($key['request_id']) :
                     $this->local_request($key['request_id']),
                 'vehicle' => Vehicle::find($key['vehicle_id']),
-                'drivers' => Driver::find($key['driver_id']),
+                'drivers' => Driver::withTrashed()->find($key['driver_id']),
                 'trip_ticket' => $key['trip_ticket']
             );
         }
 
         for ($j = 0; $j < count($data['data']); $j++) {
             $data['list'][] = array(
-                'title' => $data['data'][$j]['vehicle']['name'] . ' (' . $data['data'][$j]['vehicle']['plate_no'] . ')',
+                'title' => $data['data'][$j]['vehicle']['name'] . '-' . $data['data'][$j]['vehicle']['plate_no'] . ' (' . $data['data'][$j]['drivers']['fullname'] . ')',
                 'description' => $data['data'][$j]['trip_ticket'] . ': ' . $data['data'][$j]['request']['purpose'],
                 'start' => $data['data'][$j]['request']['inclusive_from'],
+                'end' => date('Y-m-d', strtotime($data['data'][$j]['request']['inclusive_to'] . " +1 days")),
                 'className' => $data['data'][$j]['request']['status'] == 'Approved' ? 'fc-event-light fc-event-solid-primary' : 'fc-event-light fc-event-solid-warning',
             );
         }
