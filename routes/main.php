@@ -14,28 +14,28 @@ use App\Http\Controller;
 |
 */
 
-Route::get('/', 'base\LoginController@index')->name('main.login');
-Route::post('/login', 'base\AuthController@login')->name('main.auth.login');
-Route::get('/logout', 'base\AuthController@logout')->name('main.auth.logout');
-Route::get('/dashboard', 'base\DashboardController@index')->name('main.dashboard');
+Route::get('/', 'Base\LoginController@index')->name('main.login');
+Route::post('/login', 'Base\AuthController@login')->name('main.auth.login');
+Route::get('/logout', 'Base\AuthController@logout')->name('main.auth.logout');
+Route::get('/dashboard', 'Base\DashboardController@index')->name('main.dashboard');
 
 // SPA
-Route::get('/request_travel', 'base\DashboardController@index');
-Route::get('/local_requests', 'base\DashboardController@index');
-Route::get('/rito_requests', 'base\DashboardController@index');
-Route::get('/travels_status', 'base\DashboardController@index');
-Route::get('/vehicle_travels', 'base\DashboardController@index');
-Route::get('/transaction_logs', 'base\DashboardController@index');
-Route::get('/list_transportation', 'base\DashboardController@index');
-Route::get('/list_vehicle', 'base\DashboardController@index');
-Route::get('/list_drivers', 'base\DashboardController@index');
-Route::get('/list_po', 'base\DashboardController@index');
-Route::get('/list_users', 'base\DashboardController@index');
-Route::get('/travel_calendar', 'base\DashboardController@index');
-Route::get('/fuel_charges', 'base\DashboardController@index');
-Route::get('/print_request', 'base\PrintController@index')->name('main.print_request');
-Route::get('/print_trip_ticket', 'base\PrintController@index')->name('main.print_ticket');
-Route::get('/print_fuel_request_slip', 'base\PrintController@index')->name('main.print_fuel_request_slip');
+Route::get('/request_travel', 'Base\DashboardController@index');
+Route::get('/local_requests', 'Base\DashboardController@index');
+Route::get('/rito_requests', 'Base\DashboardController@index');
+Route::get('/travels_status', 'Base\DashboardController@index');
+Route::get('/vehicle_travels', 'Base\DashboardController@index');
+Route::get('/transaction_logs', 'Base\DashboardController@index');
+Route::get('/list_transportation', 'Base\DashboardController@index');
+Route::get('/list_vehicle', 'Base\DashboardController@index');
+Route::get('/list_drivers', 'Base\DashboardController@index');
+Route::get('/list_po', 'Base\DashboardController@index');
+Route::get('/list_users', 'Base\DashboardController@index');
+Route::get('/travel_calendar', 'Base\DashboardController@index');
+Route::get('/fuel_charges', 'Base\DashboardController@index');
+Route::get('/print_request', 'Base\PrintController@index')->name('main.print_request');
+Route::get('/print_trip_ticket', 'Base\PrintController@index')->name('main.print_ticket');
+Route::get('/print_fuel_request_slip', 'Base\PrintController@index')->name('main.print_fuel_request_slip');
 
 
 
