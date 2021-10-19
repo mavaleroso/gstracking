@@ -1965,60 +1965,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("department/loadSection");
       this.$store.dispatch("department/loadDivision");
       this.$store.dispatch("mot/loadMot");
-    } // storeDestination() {
-    //     let division = localStorage.getItem("division");
-    //     let region = localStorage.getItem("region");
-    //     let section = localStorage.getItem("section");
-    //     let province = localStorage.getItem("province");
-    //     let city = localStorage.getItem("city");
-    //     let barangay = localStorage.getItem("barangay");
-    //     if (
-    //         division === null ||
-    //         region === null ||
-    //         section === null ||
-    //         province === null ||
-    //         city === null ||
-    //         barangay === null
-    //     ) {
-    //         this.$store.dispatch("destination/loadDivision");
-    //         this.$store.dispatch("destination/loadRegion");
-    //         this.$store.dispatch("destination/loadSection");
-    //         this.$store.dispatch("destination/loadProvince");
-    //         this.$store.dispatch("destination/loadCity");
-    //         this.$store.dispatch("destination/loadBarangay");
-    //     } else {
-    //         this.$store.dispatch(
-    //             "destination/setLocalDivision",
-    //             JSON.parse(localStorage.getItem("division"))
-    //         );
-    //         this.$store.dispatch(
-    //             "destination/setLocalRegion",
-    //             JSON.parse(localStorage.getItem("region"))
-    //         );
-    //         this.$store.dispatch(
-    //             "destination/setLocalSection",
-    //             JSON.parse(localStorage.getItem("section"))
-    //         );
-    //         this.$store.dispatch(
-    //             "destination/setLocalProvince",
-    //             JSON.parse(localStorage.getItem("province]"))
-    //         );
-    //         this.$store.dispatch(
-    //             "destination/setLocalCity",
-    //             JSON.parse(localStorage.getItem("city]"))
-    //         );
-    //         this.$store.dispatch(
-    //             "destination/setLocalBarangay",
-    //             JSON.parse(localStorage.getItem("barangay]"))
-    //         );
-    //     }
-    //     // if (localStorage.getItem("ListEmployee") === null) {
-    //     // }
-    //     // else {
-    //     // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
-    //     // }
-    // },
-
+    }
   }
 });
 
@@ -2275,6 +2222,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Login",
   props: {
@@ -2286,6 +2239,7 @@ __webpack_require__.r(__webpack_exports__);
       password: "",
       errors: [],
       listdata: [],
+      base: BASE_URL,
       req: axios.create({
         baseUrl: BASE_URL
       })
@@ -2311,7 +2265,7 @@ __webpack_require__.r(__webpack_exports__);
           password: this.password
         };
         $("#login-btn").addClass("spinner spinner-white spinner-right");
-        this.req.post(BASE_URL + "/login", data).then(function (response) {
+        this.req.post(BASE_URL + "/auth", data).then(function (response) {
           if (response.data[0].type == "error") {
             _this.errors.push(response.data[0].message);
 
@@ -2323,7 +2277,7 @@ __webpack_require__.r(__webpack_exports__);
 
             _this.$session.set("user", response.data[0].user);
 
-            window.location = "/";
+            window.location = BASE_URL;
           }
         })["catch"](function (error) {
           _this.errors.push(error.response.data.errors[0][0]);
@@ -2663,7 +2617,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     logout: function logout() {
       this.$session.destroy();
-      location.href = "/logout";
+      location.href = BASE_URL + "/logout";
     }
   }
 });
@@ -5920,8 +5874,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var vm = this;
 
       var initTable = function initTable() {
-        var table = $("#request-tbl");
-        table.DataTable({
+        var table = $("#request-tbl").DataTable({
           scrollY: "50vh",
           scrollX: true,
           scrollCollapse: true,
@@ -6019,6 +5972,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             });
           }
         });
+        table.on("order.dt search.dt", function () {
+          table.column(0, {
+            search: "applied",
+            order: "applied"
+          }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+          });
+        }).draw();
       };
 
       return {
@@ -14909,106 +14870,106 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [{
-  path: "/dashboard",
+  path: "/gstracking/dashboard",
   component: _components_Pages_Dashboard__WEBPACK_IMPORTED_MODULE_0__.default,
   name: "dashboard",
   meta: {
     title: "Dashboard"
   }
 }, {
-  path: "/request_travel",
+  path: "/gstracking/request_travel",
   component: _components_Pages_RequestTravel__WEBPACK_IMPORTED_MODULE_1__.default,
   name: "requestTravel",
   meta: {
     title: "Request Travel"
   }
 }, {
-  path: "/local_requests",
+  path: "/gstracking/local_requests",
   component: _components_Pages_ListLocalRequests__WEBPACK_IMPORTED_MODULE_2__.default,
   name: "listLocalRequests",
   meta: {
     title: "Local Requests"
   }
 }, {
-  path: "/rito_requests",
+  path: "/gstracking/rito_requests",
   component: _components_Pages_ListRitoRequests__WEBPACK_IMPORTED_MODULE_3__.default,
   name: "listRitoRequests",
   meta: {
     title: "RITO Requests"
   }
 }, {
-  path: "/travels_status",
+  path: "/gstracking/travels_status",
   component: _components_Pages_TravelsStatus__WEBPACK_IMPORTED_MODULE_13__.default,
   name: "travelsStatus",
   meta: {
     title: "List of Travels Status"
   }
 }, {
-  path: "/vehicle_travels",
+  path: "/gstracking/vehicle_travels",
   component: _components_Pages_VehicleTravels__WEBPACK_IMPORTED_MODULE_4__.default,
   name: "vehicleTravels",
   meta: {
     title: "List of Vehicle Travels"
   }
 }, {
-  path: "/list_vehicle",
+  path: "/gstracking/list_vehicle",
   component: _components_Pages_Transportation_Vehicle__WEBPACK_IMPORTED_MODULE_6__.default,
   name: "listVehicle",
   meta: {
     title: "List of Vehicles"
   }
 }, {
-  path: "/list_drivers",
+  path: "/gstracking/list_drivers",
   component: _components_Pages_Transportation_Driver__WEBPACK_IMPORTED_MODULE_7__.default,
   name: "listDriver",
   meta: {
     title: "List of Drivers"
   }
 }, {
-  path: "/transaction_logs",
+  path: "/gstracking/transaction_logs",
   component: _components_Pages_Logs__WEBPACK_IMPORTED_MODULE_5__.default,
   name: "Logs",
   meta: {
     title: "List of Logs"
   }
 }, {
-  path: "/fuel_charges",
+  path: "/gstracking/fuel_charges",
   component: _components_Pages_FuelCharges__WEBPACK_IMPORTED_MODULE_14__.default,
   name: "fuelCharges",
   meta: {
     title: "List of Fuel Charges"
   }
 }, {
-  path: "/list_po",
+  path: "/gstracking/list_po",
   component: _components_Pages_ListPo__WEBPACK_IMPORTED_MODULE_8__.default,
   name: "listPo",
   meta: {
     title: "List of PO"
   }
 }, {
-  path: "/list_users",
+  path: "/gstracking/list_users",
   component: _components_Pages_ListUsers__WEBPACK_IMPORTED_MODULE_9__.default,
   name: "listUsers",
   meta: {
     title: "List of Users"
   }
 }, {
-  path: "/travel_calendar",
+  path: "/gstracking/travel_calendar",
   component: _components_Pages_TravelCalendar__WEBPACK_IMPORTED_MODULE_10__.default,
   name: "travelCalendar",
   meta: {
     title: "Travel Calendar"
   }
 }, {
-  path: "/print_request",
+  path: "/gstracking/print_request",
   component: _components_Pages_PrintRequest__WEBPACK_IMPORTED_MODULE_11__.default,
   name: "printRequest"
 }, {
-  path: "/print_trip_ticket",
+  path: "/gstracking/print_trip_ticket",
   component: _components_Pages_PrintTripTicket__WEBPACK_IMPORTED_MODULE_12__.default,
   name: "printTripTicket"
 }, {
-  path: "/print_fuel_request_slip",
+  path: "/gstracking/print_fuel_request_slip",
   component: _components_Pages_PrintFuelRequestSlip_vue__WEBPACK_IMPORTED_MODULE_15__.default,
   name: "printFuelRequestSlip"
 }];
@@ -54832,7 +54793,50 @@ var render = function() {
             attrs: { id: "kt_login" }
           },
           [
-            _vm._m(0),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "login-aside d-flex flex-row-auto px-lg-0 px-5 pb-sm-40 pb-lg-40 flex-grow-1",
+                staticStyle: {
+                  "background-repeat": "no-repeat",
+                  "background-position": "bottom",
+                  "background-image":
+                    "url(assets/media/svg/illustrations/login-visual-1.svg)"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-row-fluid flex-column mt-lg-30 mb-lg-0 pb-lg-0 mb-20 pb-40 mt-0 pt-15"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "text-center mb-10",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        _c("img", {
+                          staticClass: "max-h-70px",
+                          attrs: {
+                            src:
+                              _vm.base +
+                              "/assets/media/logos/logo-letter-1.png",
+                            alt: ""
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]
+                )
+              ]
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -54984,20 +54988,47 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            _vm._m(4)
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg",
+                                attrs: { type: "button" }
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "svg-icon svg-icon-md" },
+                                  [
+                                    _c("img", {
+                                      staticClass: "h-30px",
+                                      attrs: {
+                                        src:
+                                          _vm.base +
+                                          "/assets/media/logos/ISSO.png",
+                                        alt: ""
+                                      }
+                                    })
+                                  ]
+                                ),
+                                _vm._v(
+                                  "Sign in with ISSO\n                                "
+                                )
+                              ]
+                            )
                           ])
                         ],
                         2
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(5),
+                    _vm._m(4),
                     _vm._v(" "),
-                    _vm._m(6)
+                    _vm._m(5)
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(7)
+                _vm._m(6)
               ]
             )
           ]
@@ -55012,53 +55043,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      {
-        staticClass:
-          "login-aside d-flex flex-row-auto px-lg-0 px-5 pb-sm-40 pb-lg-40 flex-grow-1",
-        staticStyle: {
-          "background-repeat": "no-repeat",
-          "background-position": "bottom",
-          "background-image":
-            "url(assets/media/svg/illustrations/login-visual-1.svg)"
-        }
-      },
+      "h3",
+      { staticClass: "font-weight-bolder text-center display5 pb-lg-0 pb-40" },
       [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex flex-row-fluid flex-column mt-lg-30 mb-lg-0 pb-lg-0 mb-20 pb-40 mt-0 pt-15"
-          },
-          [
-            _c(
-              "a",
-              { staticClass: "text-center mb-10", attrs: { href: "#" } },
-              [
-                _c("img", {
-                  staticClass: "max-h-70px",
-                  attrs: {
-                    src: "/assets/media/logos/logo-letter-1.png",
-                    alt: ""
-                  }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "h3",
-              {
-                staticClass:
-                  "font-weight-bolder text-center display5 pb-lg-0 pb-40"
-              },
-              [
-                _vm._v("\n                        GS Tracking "),
-                _c("br"),
-                _vm._v("General Services Tracking System\n                    ")
-              ]
-            )
-          ]
-        )
+        _vm._v("\n                        GS Tracking "),
+        _c("br"),
+        _vm._v("General Services Tracking System\n                    ")
       ]
     )
   },
@@ -55093,28 +55083,6 @@ var staticRenderFns = [
         [_vm._v("Password")]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass:
-          "btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg",
-        attrs: { type: "button" }
-      },
-      [
-        _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-          _c("img", {
-            staticClass: "h-30px",
-            attrs: { src: "/assets/media/logos/ISSO.png", alt: "" }
-          })
-        ]),
-        _vm._v("Sign in with ISSO\n                                ")
-      ]
-    )
   },
   function() {
     var _vm = this

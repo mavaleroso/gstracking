@@ -112,7 +112,7 @@ export default {
     methods: {
         logout() {
             this.$session.destroy();
-            location.href = "/logout";
+            location.href = BASE_URL + "/logout";
         }
     }
 };
