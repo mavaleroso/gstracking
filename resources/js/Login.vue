@@ -127,7 +127,8 @@
                                     >
                                         Sign In
                                     </button>
-                                    <button
+                                    <a
+                                        :href="base + '/auth_isso'"
                                         type="button"
                                         class="btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg"
                                     >
@@ -141,7 +142,7 @@
                                                 alt=""
                                             /> </span
                                         >Sign in with ISSO
-                                    </button>
+                                    </a>
                                 </div>
                                 <!--end::Action-->
                             </form>

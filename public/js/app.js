@@ -2228,6 +2228,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Login",
   props: {
@@ -54989,11 +54990,14 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c(
-                              "button",
+                              "a",
                               {
                                 staticClass:
                                   "btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg",
-                                attrs: { type: "button" }
+                                attrs: {
+                                  href: _vm.base + "/auth_isso",
+                                  type: "button"
+                                }
                               },
                               [
                                 _c(
