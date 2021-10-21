@@ -132,8 +132,13 @@ class AuthController extends Controller
                 $user = $this->provider->getResourceOwner($token);
 
                 // Use these details to create a new profile
-                printf('Hello %s!', $user->getName());
-                die($user);
+                // printf('Hello %s!', $user->getName());
+                // die($user);
+                $oauth = $user->getId();
+                $username = $user->getUname();
+                $lname = $user->getLname();
+                $fname = $user->getFname();
+                $name = $user->getName();
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
