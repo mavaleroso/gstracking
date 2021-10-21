@@ -23,7 +23,10 @@
                         <!--begin::Aside header-->
                         <a href="#" class="text-center mb-10">
                             <img
-                                src="/assets/media/logos/logo-letter-1.png"
+                                :src="
+                                    base +
+                                        '/assets/media/logos/logo-letter-1.png'
+                                "
                                 class="max-h-70px"
                                 alt=""
                             />
@@ -130,7 +133,10 @@
                                     >
                                         <span class="svg-icon svg-icon-md">
                                             <img
-                                                src="/assets/media/logos/ISSO.png"
+                                                :src="
+                                                    base +
+                                                        '/assets/media/logos/ISSO.png'
+                                                "
                                                 class="h-30px"
                                                 alt=""
                                             /> </span
@@ -250,6 +256,7 @@ export default {
             password: "",
             errors: [],
             listdata: [],
+            base: BASE_URL,
             req: axios.create({
                 baseUrl: BASE_URL
             })
@@ -273,7 +280,7 @@ export default {
                 };
                 $("#login-btn").addClass("spinner spinner-white spinner-right");
                 this.req
-                    .post(BASE_URL + "/login", data)
+                    .post(BASE_URL + "/auth", data)
                     .then(response => {
                         if (response.data[0].type == "error") {
                             this.errors.push(response.data[0].message);
@@ -284,7 +291,7 @@ export default {
                             this.$session.destroy();
                             this.$session.start();
                             this.$session.set("user", response.data[0].user);
-                            window.location = "/";
+                            window.location = BASE_URL;
                         }
                     })
                     .catch(error => {
