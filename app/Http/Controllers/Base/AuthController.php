@@ -145,27 +145,19 @@ class AuthController extends Controller
                         'email' => $data['email']
                     ]);
                 }
-
-                $status = $this->loginUser->execute($data);
-                if ($status === User::LOGIN_BAD_CREDENTIALS || $status === User::LOGIN_INACTIVE) {
-                    // Message
-                    $message = __('main/notifications.login_bad_credentials');
-                    if ($status === User::LOGIN_INACTIVE)
-                        $message = __('main/notifications.login_inactive');
-                    // redirect back to login page
-
-                    return response()->json([
-                        ['type' => 'error', 'message' => $message]
-                    ]);
-                } else {
-                    return response()->json([
-                        ['type' => 'success', 'message' => 'Login successfully!', 'user' => auth()->user()]
-                    ]);
-                }
+                session([
+                    'sub' => $data['sub'],
+                    'name' => $data['name'],
+                    'given_name' => $data['given_name'],
+                    'family_name' => $data['family_name'],
+                    'username' => $data['preferred_username'],
+                    'email' => $data['email']
+                ]);
+                // auth('users')->attempt($data);
+                return redirect()->route('main.login');
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
-
             // Use this to interact with an API on the users behalf
             echo $token->getToken();
         }
