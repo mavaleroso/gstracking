@@ -10,6 +10,7 @@ use App\Services\Users\LogoutUser;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
 
 
@@ -154,7 +155,7 @@ class AuthController extends Controller
                 //    'username' => $data['preferred_username'],
                 //    'email' => $data['email']
                 //]);
-                auth('users')->attempt($newData);
+                Auth::attempt($newData);
                 return redirect()->route('main.login');
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
