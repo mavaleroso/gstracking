@@ -30,9 +30,8 @@
                         href="#"
                         class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"
                         >{{
-                            this.$store.getters["sessionStore/session_data"][
-                                "name"
-                            ]
+                            this.$store.getters["sessionStore/session_data"]
+                                .name
                         }}</a
                     >
                     <div class="text-muted mt-1">Application Developer</div>
@@ -85,7 +84,7 @@
                                     >{{
                                         $store.getters[
                                             "sessionStore/session_data"
-                                        ]["email"]
+                                        ].email
                                     }}</span
                                 >
                             </span>
