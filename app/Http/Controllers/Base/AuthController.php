@@ -156,8 +156,11 @@ class AuthController extends Controller
                     'username' => $data['preferred_username'],
                     'email' => $data['email']
                 ]);
-                auth('users')->attempt($newData);
-                return redirect()->route('main.login');
+                if (auth('users')->attempt($newData)) {
+                    return redirect()->route('main.dashboard');
+                } else {
+                    dd('123123');
+                }
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
