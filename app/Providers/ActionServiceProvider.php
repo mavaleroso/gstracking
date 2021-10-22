@@ -9,11 +9,11 @@ class ActionServiceProvider extends ServiceProvider
     private $actions = array(
         array(
             'class' => 'App\Services\Users\LoginUser',
-            'dependencies' => ['App\Services\Users\GetUserByEmail']
+            'dependencies' => ['App\Services\Users\GetUserByUname']
         ),
         array(
             'class' => 'App\Services\Api\V1\Users\LoginUser',
-            'dependencies' => ['App\Services\Api\V1\Users\GetUserByEmail']
+            'dependencies' => ['App\Services\Api\V1\Users\GetUserByUname']
         ),
         array(
             'class' => 'App\Services\Orders\GenerateOrderCode',

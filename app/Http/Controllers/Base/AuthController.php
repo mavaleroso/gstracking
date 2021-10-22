@@ -9,6 +9,7 @@ use App\Services\Users\LoginUser;
 use App\Services\Users\LogoutUser;
 use App\Models\User;
 use App\Models\UserDetail;
+use Illuminate\Http\Request;
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
 
 
@@ -52,7 +53,7 @@ class AuthController extends Controller
             'realm'                     => 'entdswd.local',
             'clientId'                  => 'caraga-gstracking',
             'clientSecret'              => 'ae34050d-5179-4d8e-ae10-e0eacbc0be16',
-            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/login',
+            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/auth_callback',
             'encryptionAlgorithm'       => 'RS256'
         ]);
     }
@@ -98,6 +99,12 @@ class AuthController extends Controller
         $this->logoutUser->execute();
         $this->provider->getLogoutUrl();
         return redirect()->route('main.login');
+    }
+
+    public function testOauthCallback(Request $request)
+    {
+        $attributes = $request->getUserAttributes();
+        dd($attributes);
     }
 
     public function login_isso()

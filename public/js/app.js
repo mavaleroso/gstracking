@@ -2236,7 +2236,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      email: "",
+      username: "",
       password: "",
       errors: [],
       listdata: [],
@@ -2252,8 +2252,8 @@ __webpack_require__.r(__webpack_exports__);
 
       this.errors = [];
 
-      if (!this.email) {
-        this.errors.push("Email is required.");
+      if (!this.username) {
+        this.errors.push("Username is required.");
       }
 
       if (!this.password) {
@@ -2262,7 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.errors.length) {
         var data = {
-          email: this.email,
+          username: this.username,
           password: this.password
         };
         $("#login-btn").addClass("spinner spinner-white spinner-right");
@@ -54892,7 +54892,7 @@ var render = function() {
                                 staticClass:
                                   "font-size-h6 font-weight-bolder text-dark"
                               },
-                              [_vm._v("Email")]
+                              [_vm._v("Username")]
                             ),
                             _vm._v(" "),
                             _c("input", {
@@ -54900,8 +54900,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.email,
-                                  expression: "email"
+                                  value: _vm.username,
+                                  expression: "username"
                                 }
                               ],
                               staticClass:
@@ -54912,13 +54912,13 @@ var render = function() {
                                 name: "username",
                                 type: "text"
                               },
-                              domProps: { value: _vm.email },
+                              domProps: { value: _vm.username },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
-                                  _vm.email = $event.target.value
+                                  _vm.username = $event.target.value
                                 }
                               }
                             })

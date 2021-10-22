@@ -84,7 +84,7 @@
                                 <div class="form-group">
                                     <label
                                         class="font-size-h6 font-weight-bolder text-dark"
-                                        >Email</label
+                                        >Username</label
                                     >
                                     <input
                                         class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
@@ -92,7 +92,7 @@
                                         id="username"
                                         name="username"
                                         type="text"
-                                        v-model="email"
+                                        v-model="username"
                                     />
                                 </div>
                                 <!--end::Form group-->
@@ -253,7 +253,7 @@ export default {
     },
     data() {
         return {
-            email: "",
+            username: "",
             password: "",
             errors: [],
             listdata: [],
@@ -266,8 +266,8 @@ export default {
     methods: {
         login() {
             this.errors = [];
-            if (!this.email) {
-                this.errors.push("Email is required.");
+            if (!this.username) {
+                this.errors.push("Username is required.");
             }
 
             if (!this.password) {
@@ -276,7 +276,7 @@ export default {
 
             if (!this.errors.length) {
                 const data = {
-                    email: this.email,
+                    username: this.username,
                     password: this.password
                 };
                 $("#login-btn").addClass("spinner spinner-white spinner-right");

@@ -18,6 +18,7 @@ Route::get('/', 'Base\LoginController@index')->name('main.login');
 Route::get('/login', 'Base\LoginController@index');
 Route::post('/auth', 'Base\AuthController@login')->name('main.auth.login');
 Route::get('/auth_isso', 'Base\AuthController@login_isso')->name('main.auth.login_isso');
+Route::get('/auth_callback', 'Base\AuthController@testOauthCallback');
 Route::get('/logout', 'Base\AuthController@logout')->name('main.auth.logout');
 Route::get('/dashboard', 'Base\DashboardController@index')->name('main.dashboard');
 
