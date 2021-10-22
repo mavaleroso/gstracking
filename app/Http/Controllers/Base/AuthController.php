@@ -103,8 +103,7 @@ class AuthController extends Controller
 
     public function testOauthCallback(Request $request)
     {
-        $attributes = $request->getUserAttributes();
-        dd($attributes);
+        dd($request);
     }
 
     public function login_isso()
