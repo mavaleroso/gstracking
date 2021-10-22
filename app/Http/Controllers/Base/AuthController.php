@@ -148,15 +148,15 @@ class AuthController extends Controller
 
                 if (!User::where('sub', $data['sub'])->first()) User::create($newData);
 
-                //session([
-                //    'sub' => $data['sub'],
-                //    'name' => $data['name'],
-                //    'given_name' => $data['given_name'],
-                //    'family_name' => $data['family_name'],
-                //    'username' => $data['preferred_username'],
-                //    'email' => $data['email']
-                //]);
-                Auth::attempt($newData);
+                session([
+                    'sub' => $data['sub'],
+                    'name' => $data['name'],
+                    'given_name' => $data['given_name'],
+                    'family_name' => $data['family_name'],
+                    'username' => $data['preferred_username'],
+                    'email' => $data['email']
+                ]);
+                auth('users')->attempt($newData);
                 return redirect()->route('main.login');
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
