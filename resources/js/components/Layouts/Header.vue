@@ -44,10 +44,10 @@
 export default {
     data() {
         return {
-            nchar: this.$store.getters["sessionStore/session_data"]["user"].name
+            nchar: this.$store.getters["sessionStore/session_data"]["name"]
                 .charAt(0)
                 .toUpperCase(),
-            name: this.$store.getters["sessionStore/session_data"]["user"].name
+            name: this.$store.getters["sessionStore/session_data"]["name"]
                 .split(" ")
                 .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
                 .join(" ")
