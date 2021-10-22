@@ -2447,11 +2447,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      nchar: this.$store.getters["sessionStore/session_data"]["user"].name.charAt(0).toUpperCase(),
-      name: this.$store.getters["sessionStore/session_data"]["user"].name.split(" ").map(function (w) {
+      nchar: this.$store.getters["sessionStore/session_data"].name.charAt(0).toUpperCase(),
+      name: this.$store.getters["sessionStore/session_data"].name.split(" ").map(function (w) {
         return w[0].toUpperCase() + w.substr(1).toLowerCase();
       }).join(" ")
     };
+  },
+  mounted: function mounted() {
+    console.log(this.$store.getters["sessionStore/session_data"]);
   }
 });
 
@@ -2509,7 +2512,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -55969,10 +55971,7 @@ var render = function() {
               },
               [
                 _vm._v(
-                  _vm._s(
-                    this.$store.getters["sessionStore/session_data"]["user"]
-                      .name
-                  )
+                  _vm._s(this.$store.getters["sessionStore/session_data"].name)
                 )
               ]
             ),
@@ -56053,9 +56052,7 @@ var render = function() {
                     [
                       _vm._v(
                         _vm._s(
-                          _vm.$store.getters["sessionStore/session_data"][
-                            "user"
-                          ].email
+                          _vm.$store.getters["sessionStore/session_data"].email
                         )
                       )
                     ]

@@ -52,6 +52,9 @@ export default {
                 .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
                 .join(" ")
         };
+    },
+    mounted() {
+        console.log(this.$store.getters["sessionStore/session_data"]);
     }
 };
 </script>
