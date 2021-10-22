@@ -52,7 +52,7 @@ class AuthController extends Controller
             'realm'                     => 'entdswd.local',
             'clientId'                  => 'caraga-gstracking',
             'clientSecret'              => 'ae34050d-5179-4d8e-ae10-e0eacbc0be16',
-            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/auth_isso',
+            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/dashboard',
             'encryptionAlgorithm'       => 'RS256'
         ]);
     }
