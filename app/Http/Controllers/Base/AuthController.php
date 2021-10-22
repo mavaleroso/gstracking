@@ -8,6 +8,7 @@ use App\Traits\ThrottlesRequests;
 use App\Services\Users\LoginUser;
 use App\Services\Users\LogoutUser;
 use App\Models\User;
+use App\Models\UserDetail;
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
 
 
@@ -135,10 +136,14 @@ class AuthController extends Controller
                 // printf('Hello %s!', $user->getName());
                 // die($user);
                 $oauth = $user->getId();
-                $username = $user->getUname();
+                $empID = $user->id_number();
+                $fname = $user->first_name();
                 $lname = $user->getLname();
-                $fname = $user->getFname();
-                $name = $user->getName();
+                UserDetail::create([
+                    'user_id' => $oauth,
+                    'first_name' => $fname,
+                    'last_name' => $lname
+                ]);
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
