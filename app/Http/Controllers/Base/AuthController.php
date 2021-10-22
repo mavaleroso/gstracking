@@ -133,18 +133,35 @@ class AuthController extends Controller
 
                 // We got an access token, let's now get the user's details
                 $user = $this->provider->getResourceOwner($token);
+                $data = $user->toArray();
 
-                // Use these details to create a new profile
-                dd($user);
-                // $oauth = $user->getId();
-                // $empID = $user->id_number();
-                // $fname = $user->first_name();
-                // $lname = $user->getLname();
-                // UserDetail::create([
-                //     'user_id' => $oauth,
-                //     'first_name' => $fname,
-                //     'last_name' => $lname
-                // ]);
+                if (User::find()->where('sub', $data['sub'])->first()) {
+                    User::create([
+                        'sub' => $data['sub'],
+                        'name' => $data['name'],
+                        'given_name' => $data['given_name'],
+                        'family_name' => $data['family_name'],
+                        'username' => $data['preferred_username'],
+                        'email' => $data['email']
+                    ]);
+                }
+
+                $status = $this->loginUser->execute($data);
+                if ($status === User::LOGIN_BAD_CREDENTIALS || $status === User::LOGIN_INACTIVE) {
+                    // Message
+                    $message = __('main/notifications.login_bad_credentials');
+                    if ($status === User::LOGIN_INACTIVE)
+                        $message = __('main/notifications.login_inactive');
+                    // redirect back to login page
+
+                    return response()->json([
+                        ['type' => 'error', 'message' => $message]
+                    ]);
+                } else {
+                    return response()->json([
+                        ['type' => 'success', 'message' => 'Login successfully!', 'user' => auth()->user()]
+                    ]);
+                }
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
