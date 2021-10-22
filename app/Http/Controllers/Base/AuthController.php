@@ -135,25 +135,26 @@ class AuthController extends Controller
                 $user = $this->provider->getResourceOwner($token);
                 $data = $user->toArray();
 
-                if (User::where('sub', $data['sub'])->first()) {
+                if (!User::where('sub', $data['sub'])->first()) {
                     User::create([
                         'sub' => $data['sub'],
                         'name' => $data['name'],
                         'given_name' => $data['given_name'],
                         'family_name' => $data['family_name'],
                         'username' => $data['preferred_username'],
-                        'email' => $data['email']
+                        'email' => $data['email'],
+                        'email_verified' => $data['email_verified']
                     ]);
                 }
-                session([
-                    'sub' => $data['sub'],
-                    'name' => $data['name'],
-                    'given_name' => $data['given_name'],
-                    'family_name' => $data['family_name'],
-                    'username' => $data['preferred_username'],
-                    'email' => $data['email']
-                ]);
-                // auth('users')->attempt($data);
+                //session([
+                //    'sub' => $data['sub'],
+                //    'name' => $data['name'],
+                //    'given_name' => $data['given_name'],
+                //    'family_name' => $data['family_name'],
+                //    'username' => $data['preferred_username'],
+                //    'email' => $data['email']
+                //]);
+                auth('users')->attempt($data);
                 return redirect()->route('main.login');
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
