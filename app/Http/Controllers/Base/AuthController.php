@@ -135,7 +135,7 @@ class AuthController extends Controller
                 $user = $this->provider->getResourceOwner($token);
                 $data = $user->toArray();
 
-                if (User::find()->where('sub', $data['sub'])->first()) {
+                if (User::where('sub', $data['sub'])->first()) {
                     User::create([
                         'sub' => $data['sub'],
                         'name' => $data['name'],
