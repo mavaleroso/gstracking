@@ -53,7 +53,7 @@ class AuthController extends Controller
             'realm'                     => 'entdswd.local',
             'clientId'                  => 'caraga-gstracking',
             'clientSecret'              => 'ae34050d-5179-4d8e-ae10-e0eacbc0be16',
-            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/auth_callback',
+            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/auth_isso',
             'encryptionAlgorithm'       => 'RS256'
         ]);
     }
@@ -140,7 +140,6 @@ class AuthController extends Controller
 
                 // Use these details to create a new profile
                 printf('Hello %s!', $user->getName());
-                dd($user);
                 // $oauth = $user->getId();
                 // $empID = $user->id_number();
                 // $fname = $user->first_name();
