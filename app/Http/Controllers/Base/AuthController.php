@@ -52,7 +52,7 @@ class AuthController extends Controller
             'realm'                     => 'entdswd.local',
             'clientId'                  => 'caraga-gstracking',
             'clientSecret'              => 'ae34050d-5179-4d8e-ae10-e0eacbc0be16',
-            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/dashboard',
+            'redirectUri'               => 'https://crg-finance-svr.entdswd.local/gstracking/login_isso',
             'encryptionAlgorithm'       => 'RS256'
         ]);
     }
@@ -133,17 +133,17 @@ class AuthController extends Controller
                 $user = $this->provider->getResourceOwner($token);
 
                 // Use these details to create a new profile
-                // printf('Hello %s!', $user->getName());
-                // die($user);
-                $oauth = $user->getId();
-                $empID = $user->id_number();
-                $fname = $user->first_name();
-                $lname = $user->getLname();
-                UserDetail::create([
-                    'user_id' => $oauth,
-                    'first_name' => $fname,
-                    'last_name' => $lname
-                ]);
+                printf('Hello %s!', $user->getName());
+                dd($user);
+                // $oauth = $user->getId();
+                // $empID = $user->id_number();
+                // $fname = $user->first_name();
+                // $lname = $user->getLname();
+                // UserDetail::create([
+                //     'user_id' => $oauth,
+                //     'first_name' => $fname,
+                //     'last_name' => $lname
+                // ]);
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
             }
