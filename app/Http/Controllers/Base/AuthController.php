@@ -143,7 +143,7 @@ class AuthController extends Controller
                     'username' => $data['preferred_username'],
                     'email' => $data['email'],
                     'email_verified' => $data['email_verified'],
-                    'password' => NULL
+                    'password' => 'password'
                 ];
 
                 if (!User::where('sub', $data['sub'])->first()) User::create($newData);
