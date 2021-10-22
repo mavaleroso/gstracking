@@ -134,18 +134,18 @@ class AuthController extends Controller
                 // We got an access token, let's now get the user's details
                 $user = $this->provider->getResourceOwner($token);
                 $data = $user->toArray();
+                $newData = [
+                    'sub' => $data['sub'],
+                    'name' => $data['name'],
+                    'given_name' => $data['given_name'],
+                    'family_name' => $data['family_name'],
+                    'username' => $data['preferred_username'],
+                    'email' => $data['email'],
+                    'email_verified' => $data['email_verified']
+                ];
 
-                if (!User::where('sub', $data['sub'])->first()) {
-                    User::create([
-                        'sub' => $data['sub'],
-                        'name' => $data['name'],
-                        'given_name' => $data['given_name'],
-                        'family_name' => $data['family_name'],
-                        'username' => $data['preferred_username'],
-                        'email' => $data['email'],
-                        'email_verified' => $data['email_verified']
-                    ]);
-                }
+                if (!User::where('sub', $data['sub'])->first()) User::create($newData);
+
                 //session([
                 //    'sub' => $data['sub'],
                 //    'name' => $data['name'],
@@ -154,7 +154,7 @@ class AuthController extends Controller
                 //    'username' => $data['preferred_username'],
                 //    'email' => $data['email']
                 //]);
-                auth('users')->attempt($data);
+                auth('users')->attempt($newData);
                 return redirect()->route('main.login');
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());
