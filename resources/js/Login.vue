@@ -289,9 +289,9 @@ export default {
                                 "spinner spinner-white spinner-right"
                             );
                         } else {
-                            this.$session.destroy();
-                            this.$session.start();
-                            this.$session.set("user", response.data[0].user);
+                            // this.$session.destroy();
+                            // this.$session.start();
+                            // this.$session.set("user", response.data[0].user);
                             window.location = BASE_URL;
                         }
                     })

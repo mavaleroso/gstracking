@@ -98,7 +98,8 @@ class AuthController extends Controller
     public function logout()
     {
         $this->logoutUser->execute();
-        $this->provider->getLogoutUrl();
+        redirect($this->provider->getLogoutUrl());
+
         return redirect()->route('main.login');
     }
 
@@ -148,18 +149,16 @@ class AuthController extends Controller
 
                 if (!User::where('sub', $data['sub'])->first()) User::create($newData);
 
-                session([
-                    'sub' => $data['sub'],
-                    'name' => $data['name'],
-                    'given_name' => $data['given_name'],
-                    'family_name' => $data['family_name'],
-                    'username' => $data['preferred_username'],
-                    'email' => $data['email']
-                ]);
+                // session([
+                //     'sub' => $data['sub'],
+                //     'name' => $data['name'],
+                //     'given_name' => $data['given_name'],
+                //     'family_name' => $data['family_name'],
+                //     'username' => $data['preferred_username'],
+                //     'email' => $data['email']
+                // ]);
                 if (auth('users')->attempt($newData)) {
                     return redirect()->route('main.dashboard');
-                } else {
-                    dd('123123');
                 }
             } catch (Exception $e) {
                 exit('Failed to get resource owner: ' . $e->getMessage());

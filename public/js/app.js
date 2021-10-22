@@ -1925,6 +1925,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["sessionData"],
   components: {
     Navbar: _components_Layouts_Navbar__WEBPACK_IMPORTED_MODULE_0__.default,
     Mobile: _components_Layouts_Mobile__WEBPACK_IMPORTED_MODULE_2__.default,
@@ -1939,6 +1940,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.ini();
+    this.session();
   },
   methods: {
     ini: function ini() {
@@ -1957,7 +1959,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     vuexStore: function vuexStore() {
-      this.$store.dispatch("sessionStore/setLocalData", this.$session.getAll());
+      this.$store.dispatch("sessionStore/setLocalData", this.sessionData);
       this.$store.dispatch("employees/loadEmployee");
       this.$store.dispatch("drivers/loadDrivers");
       this.$store.dispatch("po/loadPos");
@@ -1965,6 +1967,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("department/loadSection");
       this.$store.dispatch("department/loadDivision");
       this.$store.dispatch("mot/loadMot");
+    },
+    session: function session() {
+      this.$session.destroy();
+      this.$session.start();
+      this.$session.set("user", this.sessionData);
     }
   }
 });
@@ -2272,12 +2279,9 @@ __webpack_require__.r(__webpack_exports__);
 
             $("#login-btn").removeClass("spinner spinner-white spinner-right");
           } else {
-            _this.$session.destroy();
-
-            _this.$session.start();
-
-            _this.$session.set("user", response.data[0].user);
-
+            // this.$session.destroy();
+            // this.$session.start();
+            // this.$session.set("user", response.data[0].user);
             window.location = BASE_URL;
           }
         })["catch"](function (error) {

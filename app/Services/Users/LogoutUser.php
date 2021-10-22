@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Services\Users;
 
-class LogoutUser 
+class LogoutUser
 {
     /**
      * Logout user

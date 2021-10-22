@@ -61,6 +61,7 @@ import Subheader from "./components/Layouts/Subheader";
 import Navfooter from "./components/Layouts/Footer";
 import Rightpanel from "./components/Layouts/Rightpanel";
 export default {
+    props: ["sessionData"],
     components: {
         Navbar,
         Mobile,
@@ -75,6 +76,7 @@ export default {
     },
     mounted() {
         this.ini();
+        this.session();
     },
     methods: {
         ini() {
@@ -94,10 +96,7 @@ export default {
             });
         },
         vuexStore() {
-            this.$store.dispatch(
-                "sessionStore/setLocalData",
-                this.$session.getAll()
-            );
+            this.$store.dispatch("sessionStore/setLocalData", this.sessionData);
             this.$store.dispatch("employees/loadEmployee");
             this.$store.dispatch("drivers/loadDrivers");
             this.$store.dispatch("po/loadPos");
@@ -105,6 +104,11 @@ export default {
             this.$store.dispatch("department/loadSection");
             this.$store.dispatch("department/loadDivision");
             this.$store.dispatch("mot/loadMot");
+        },
+        session() {
+            this.$session.destroy();
+            this.$session.start();
+            this.$session.set("user", this.sessionData);
         }
     }
 };
