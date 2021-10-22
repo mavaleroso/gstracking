@@ -101,13 +101,9 @@ class AuthController extends Controller
         return redirect()->route('main.login');
     }
 
-    public function testOauthCallback(Request $request)
-    {
-        dd($request);
-    }
-
     public function login_isso()
     {
+        session_start();
         if (!isset($_GET['code'])) {
 
             // If we don't have an authorization code then get one
@@ -139,7 +135,7 @@ class AuthController extends Controller
                 $user = $this->provider->getResourceOwner($token);
 
                 // Use these details to create a new profile
-                printf('Hello %s!', $user->getName());
+                dd($user);
                 // $oauth = $user->getId();
                 // $empID = $user->id_number();
                 // $fname = $user->first_name();
