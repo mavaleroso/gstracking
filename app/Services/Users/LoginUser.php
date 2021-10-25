@@ -2,7 +2,7 @@
 
 namespace App\Services\Users;
 
-use App\Services\Users\GetUserByEmail;
+use App\Services\Users\GetUserByUname;
 use App\Models\User;
 
 
@@ -16,9 +16,9 @@ class LoginUser
     /**
      * Initialization
      */
-    public function __construct(GetUserByEmail $getUserByEmail)
+    public function __construct(GetUserByUname $getUserByUname)
     {
-        $this->getUserByEmail = $getUserByEmail;
+        $this->getUserByUname = $getUserByUname;
     }
 
     /**
@@ -29,7 +29,7 @@ class LoginUser
      */
     public function execute(array $data)
     {
-        $user = $this->getUserByEmail->execute($data['email']);
+        $user = $this->getUserByUname->execute($data['username']);
         if (!isset($user))
             return User::LOGIN_BAD_CREDENTIALS;
         // Check if active

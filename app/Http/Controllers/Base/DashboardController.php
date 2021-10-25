@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
     public function logs()
     {
-        $play = TransactionLogs::orderBy('id','desc')->get();
+        $play = TransactionLogs::orderBy('id', 'desc')->get();
         return response()->json($play);
     }
 

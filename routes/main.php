@@ -15,7 +15,9 @@ use App\Http\Controller;
 */
 
 Route::get('/', 'Base\LoginController@index')->name('main.login');
-Route::post('/login', 'Base\AuthController@login')->name('main.auth.login');
+Route::get('/login', 'Base\LoginController@index');
+Route::post('/auth', 'Base\AuthController@login')->name('main.auth.login');
+Route::get('/auth_isso', 'Base\AuthController@login_isso')->name('main.auth.login_isso');
 Route::get('/logout', 'Base\AuthController@logout')->name('main.auth.logout');
 Route::get('/dashboard', 'Base\DashboardController@index')->name('main.dashboard');
 

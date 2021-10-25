@@ -23,7 +23,10 @@
                         <!--begin::Aside header-->
                         <a href="#" class="text-center mb-10">
                             <img
-                                src="/assets/media/logos/logo-letter-1.png"
+                                :src="
+                                    base +
+                                        '/assets/media/logos/logo-letter-1.png'
+                                "
                                 class="max-h-70px"
                                 alt=""
                             />
@@ -81,7 +84,7 @@
                                 <div class="form-group">
                                     <label
                                         class="font-size-h6 font-weight-bolder text-dark"
-                                        >Email</label
+                                        >Username</label
                                     >
                                     <input
                                         class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
@@ -89,7 +92,7 @@
                                         id="username"
                                         name="username"
                                         type="text"
-                                        v-model="email"
+                                        v-model="username"
                                     />
                                 </div>
                                 <!--end::Form group-->
@@ -124,18 +127,22 @@
                                     >
                                         Sign In
                                     </button>
-                                    <button
+                                    <a
+                                        :href="base + '/auth_isso'"
                                         type="button"
                                         class="btn btn-light-primary font-weight-bolder px-5 py-3 my-3 font-size-lg"
                                     >
                                         <span class="svg-icon svg-icon-md">
                                             <img
-                                                src="/assets/media/logos/ISSO.png"
+                                                :src="
+                                                    base +
+                                                        '/assets/media/logos/ISSO.png'
+                                                "
                                                 class="h-30px"
                                                 alt=""
                                             /> </span
                                         >Sign in with ISSO
-                                    </button>
+                                    </a>
                                 </div>
                                 <!--end::Action-->
                             </form>
@@ -246,10 +253,11 @@ export default {
     },
     data() {
         return {
-            email: "",
+            username: "",
             password: "",
             errors: [],
             listdata: [],
+            base: BASE_URL,
             req: axios.create({
                 baseUrl: BASE_URL
             })
@@ -258,8 +266,8 @@ export default {
     methods: {
         login() {
             this.errors = [];
-            if (!this.email) {
-                this.errors.push("Email is required.");
+            if (!this.username) {
+                this.errors.push("Username is required.");
             }
 
             if (!this.password) {
@@ -268,12 +276,12 @@ export default {
 
             if (!this.errors.length) {
                 const data = {
-                    email: this.email,
+                    username: this.username,
                     password: this.password
                 };
                 $("#login-btn").addClass("spinner spinner-white spinner-right");
                 this.req
-                    .post(BASE_URL + "/login", data)
+                    .post(BASE_URL + "/auth", data)
                     .then(response => {
                         if (response.data[0].type == "error") {
                             this.errors.push(response.data[0].message);
@@ -281,10 +289,10 @@ export default {
                                 "spinner spinner-white spinner-right"
                             );
                         } else {
-                            this.$session.destroy();
-                            this.$session.start();
-                            this.$session.set("user", response.data[0].user);
-                            window.location = "/";
+                            // this.$session.destroy();
+                            // this.$session.start();
+                            // this.$session.set("user", response.data[0].user);
+                            window.location = BASE_URL;
                         }
                     })
                     .catch(error => {
