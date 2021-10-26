@@ -48,7 +48,7 @@ export default {
             var year = () => {
                 $(() => {
                     let system = JSON.parse(JSON.stringify(this.system));
-                    $("#year").val(system[4].value);
+                    // $("#year").val(system[4].value);
                 });
             };
 

@@ -1,13 +1,99 @@
 <template>
     <div class="card card-custom card-stretch" id="kt_page_stretched_card">
         <div class="card-header">
-            <div class="card-title">
-                <a href="#" class="mr-3">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span
-                                class="input-group-text svg-icon svg-icon-md svg-icon-primary"
-                            >
+            <div class="card-toolbar">
+                <ul class="nav nav-light-success nav-bold nav-pills">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            data-toggle="tab"
+                            href="#kt_tab_pane_5_1"
+                        >
+                            <span class="nav-icon"
+                                ><i class="flaticon2-chat-1"></i
+                            ></span>
+                            <span class="nav-text">Approved</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-toggle="tab"
+                            href="#kt_tab_pane_5_2"
+                        >
+                            <span class="nav-icon"
+                                ><i class="flaticon2-drop"></i
+                            ></span>
+                            <span class="nav-text">Pending</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div :class="loading ? 'card-body overlay overlay-block' : 'card-body'">
+            <div class="tab-content">
+                <div
+                    class="tab-pane fade show active"
+                    id="kt_tab_pane_5_1"
+                    role="tabpanel"
+                    aria-labelledby="kt_tab_pane_5_1"
+                >
+                    <div class="d-flex">
+                        <a href="#" class="mr-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span
+                                        class="input-group-text svg-icon svg-icon-md svg-icon-primary"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            width="24px"
+                                            height="24px"
+                                            viewBox="0 0 24 24"
+                                            version="1.1"
+                                        >
+                                            <g
+                                                stroke="none"
+                                                stroke-width="1"
+                                                fill="none"
+                                                fill-rule="evenodd"
+                                            >
+                                                <rect
+                                                    x="0"
+                                                    y="0"
+                                                    width="24"
+                                                    height="24"
+                                                />
+                                                <path
+                                                    d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z"
+                                                    fill="#000000"
+                                                    fill-rule="nonzero"
+                                                    opacity="0.3"
+                                                />
+                                                <path
+                                                    d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
+                                                    fill="#000000"
+                                                    fill-rule="nonzero"
+                                                />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name=""
+                                    placeholder="Search"
+                                    v-model="searchData"
+                                />
+                            </div>
+                        </a>
+                        <a
+                            href="#"
+                            class="btn btn-primary font-weight-bolder d-block ml-auto"
+                        >
+                            <span class="svg-icon svg-icon-md">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -29,183 +115,388 @@
                                             height="24"
                                         />
                                         <path
-                                            d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z"
+                                            d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z"
                                             fill="#000000"
-                                            fill-rule="nonzero"
-                                            opacity="0.3"
-                                        />
-                                        <path
-                                            d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
-                                            fill="#000000"
-                                            fill-rule="nonzero"
                                         />
                                     </g>
                                 </svg>
                             </span>
-                        </div>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name=""
-                            placeholder="Search"
-                            v-model="searchData"
-                        />
-                    </div>
-                </a>
-            </div>
-            <div class="card-toolbar">
-                <a href="#" class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-md">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
+                            Advance Filter</a
                         >
-                            <g
-                                stroke="none"
-                                stroke-width="1"
-                                fill="none"
-                                fill-rule="evenodd"
-                            >
-                                <rect x="0" y="0" width="24" height="24" />
-                                <path
-                                    d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z"
-                                    fill="#000000"
-                                />
-                            </g>
-                        </svg>
-                    </span>
-                    Advance Filter</a
-                >
-            </div>
-        </div>
-        <div :class="loading ? 'card-body overlay overlay-block' : 'card-body'">
-            <div
-                v-if="travels == null"
-                class="alert alert-custom alert-warning fade show mb-5 px-5 py-0"
-                role="alert"
-            >
-                <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                <div class="alert-text">No data available!</div>
-                <div class="alert-close">
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="alert"
-                        aria-label="Close"
+                    </div>
+
+                    <div
+                        v-if="travels == null"
+                        class="alert alert-custom alert-warning fade show mb-5 px-5 py-0"
+                        role="alert"
                     >
-                        <span aria-hidden="true"
-                            ><i class="ki ki-close"></i
-                        ></span>
-                    </button>
+                        <div class="alert-icon">
+                            <i class="flaticon-warning"></i>
+                        </div>
+                        <div class="alert-text">No data available!</div>
+                        <div class="alert-close">
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true"
+                                    ><i class="ki ki-close"></i
+                                ></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                        <div class="spinner spinner-primary"></div>
+                    </div>
+                    <div class="card-scroll">
+                        <table
+                            id="pending-travels-tbl"
+                            class="table rounded table-sm table-hover"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>Code</th>
+                                    <th>Destination</th>
+                                    <th>Passengers</th>
+                                    <th>Vehicles</th>
+                                    <th>Assigned MOT</th>
+                                    <th>Travel Date</th>
+                                    <th>Return Date</th>
+                                    <th>Portal Status</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="travels">
+                                <tr
+                                    v-for="(t, index) in travels.filter(
+                                        i => i.status == 1
+                                    )"
+                                    :key="index"
+                                >
+                                    <td>{{ indexers(index + 1) }}</td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                            >{{ t.type }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
+                                            >{{ t.tracking_no }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.place }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-primary m-1"
+                                            >{{
+                                                t.tracking_no.reduce(
+                                                    (acc, item) =>
+                                                        acc +
+                                                        parseInt(
+                                                            item.passenger_count
+                                                        ),
+                                                    0
+                                                )
+                                            }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                            >{{ t.transactions.length }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
+                                            >{{
+                                                vehiclemodes.filter(
+                                                    i => i.id == t.mot
+                                                )[0].name
+                                            }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.inclusive_from }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.inclusive_to }}</span
+                                        >
+                                    </td>
+                                    <td v-if="t.type == 'rito'">
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.status }}</span
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div v-if="loading" class="overlay-layer bg-dark-o-10">
-                <div class="spinner spinner-primary"></div>
-            </div>
-            <div class="card-scroll">
-                <table
-                    id="pending-travels-tbl"
-                    class="table rounded table-sm table-hover"
+                <div
+                    class="tab-pane fade"
+                    id="kt_tab_pane_5_2"
+                    role="tabpanel"
+                    aria-labelledby="kt_tab_pane_5_2"
                 >
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Code</th>
-                            <th>Destination</th>
-                            <th>Passengers</th>
-                            <th>Vehicles</th>
-                            <th>Assigned MOT</th>
-                            <th>Travel Date</th>
-                            <th>Return Date</th>
-                            <th>Portal Status</th>
-                        </tr>
-                    </thead>
-                    <tbody v-if="travels">
-                        <tr v-for="(t, index) in travels" :key="index">
-                            <td>{{ indexers(index + 1) }}</td>
-                            <td>
-                                <span
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1"
-                                    >{{ t.type }}</span
+                    <div class="d-flex">
+                        <a href="#" class="mr-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span
+                                        class="input-group-text svg-icon svg-icon-md svg-icon-primary"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            width="24px"
+                                            height="24px"
+                                            viewBox="0 0 24 24"
+                                            version="1.1"
+                                        >
+                                            <g
+                                                stroke="none"
+                                                stroke-width="1"
+                                                fill="none"
+                                                fill-rule="evenodd"
+                                            >
+                                                <rect
+                                                    x="0"
+                                                    y="0"
+                                                    width="24"
+                                                    height="24"
+                                                />
+                                                <path
+                                                    d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z"
+                                                    fill="#000000"
+                                                    fill-rule="nonzero"
+                                                    opacity="0.3"
+                                                />
+                                                <path
+                                                    d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
+                                                    fill="#000000"
+                                                    fill-rule="nonzero"
+                                                />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name=""
+                                    placeholder="Search"
+                                    v-model="searchData"
+                                />
+                            </div>
+                        </a>
+                        <a
+                            href="#"
+                            class="btn btn-primary font-weight-bolder d-block ml-auto"
+                        >
+                            <span class="svg-icon svg-icon-md">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="24px"
+                                    height="24px"
+                                    viewBox="0 0 24 24"
+                                    version="1.1"
                                 >
-                            </td>
-                            <td>
-                                <span
-                                    v-for="(t, index) in t.tracking_no"
+                                    <g
+                                        stroke="none"
+                                        stroke-width="1"
+                                        fill="none"
+                                        fill-rule="evenodd"
+                                    >
+                                        <rect
+                                            x="0"
+                                            y="0"
+                                            width="24"
+                                            height="24"
+                                        />
+                                        <path
+                                            d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z"
+                                            fill="#000000"
+                                        />
+                                    </g>
+                                </svg>
+                            </span>
+                            Advance Filter</a
+                        >
+                    </div>
+                    <div
+                        v-if="travels == null"
+                        class="alert alert-custom alert-warning fade show mb-5 px-5 py-0"
+                        role="alert"
+                    >
+                        <div class="alert-icon">
+                            <i class="flaticon-warning"></i>
+                        </div>
+                        <div class="alert-text">No data available!</div>
+                        <div class="alert-close">
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true"
+                                    ><i class="ki ki-close"></i
+                                ></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="loading" class="overlay-layer bg-dark-o-10">
+                        <div class="spinner spinner-primary"></div>
+                    </div>
+                    <div class="card-scroll">
+                        <table
+                            id="pending-travels-tbl"
+                            class="table rounded table-sm table-hover"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Action</th>
+                                    <th>Type</th>
+                                    <th>Code</th>
+                                    <th>Destination</th>
+                                    <th>Passengers</th>
+                                    <th>Vehicles</th>
+                                    <th>Assigned MOT</th>
+                                    <th>Travel Date</th>
+                                    <th>Return Date</th>
+                                    <th>Portal Status</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="travels">
+                                <tr
+                                    v-for="(t, index) in travels.filter(
+                                        i => i.status == 0
+                                    )"
                                     :key="index"
-                                    class="label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
-                                    >{{ t.tracking_no }}</span
                                 >
-                            </td>
-                            <td>
-                                <span
-                                    v-for="(t, index) in t.tracking_no"
-                                    :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                    >{{ t.place }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    class="label label-lg label-rounded label-inline label-primary m-1"
-                                    >{{
-                                        t.tracking_no.reduce(
-                                            (acc, item) =>
-                                                acc +
-                                                parseInt(item.passenger_count),
-                                            0
-                                        )
-                                    }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1"
-                                    >{{ t.transactions.length }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
-                                    >{{
-                                        vehiclemodes.filter(
-                                            i => i.id == t.mot
-                                        )[0].name
-                                    }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    v-for="(t, index) in t.tracking_no"
-                                    :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                    >{{ t.inclusive_from }}</span
-                                >
-                            </td>
-                            <td>
-                                <span
-                                    v-for="(t, index) in t.tracking_no"
-                                    :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                    >{{ t.inclusive_to }}</span
-                                >
-                            </td>
-                            <td v-if="t.type == 'rito'">
-                                <span
-                                    v-for="(t, index) in t.tracking_no"
-                                    :key="index"
-                                    class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                    >{{ t.status }}</span
-                                >
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                    <td>{{ indexers(index + 1) }}</td>
+                                    <td>
+                                        <button
+                                            @click="approve(t.id)"
+                                            data-id=""
+                                            class="btn btn-sm btn-clean btn-approve"
+                                            title="Approve Request"
+                                        >
+                                            <i class="flaticon2-checkmark"></i>
+                                            Approve
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                            >{{ t.type }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
+                                            >{{ t.tracking_no }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.place }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-primary m-1"
+                                            >{{
+                                                t.tracking_no.reduce(
+                                                    (acc, item) =>
+                                                        acc +
+                                                        parseInt(
+                                                            item.passenger_count
+                                                        ),
+                                                    0
+                                                )
+                                            }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1"
+                                            >{{ t.transactions.length }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
+                                            >{{
+                                                vehiclemodes.filter(
+                                                    i => i.id == t.mot
+                                                )[0].name
+                                            }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.inclusive_from }}</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.inclusive_to }}</span
+                                        >
+                                    </td>
+                                    <td v-if="t.type == 'rito'">
+                                        <span
+                                            v-for="(t, index) in t.tracking_no"
+                                            :key="index"
+                                            class="label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            >{{ t.status }}</span
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer">
@@ -364,6 +655,37 @@ export default {
                     this.loading = false;
                 });
         },
+        approve(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel",
+                reverseButtons: false
+            }).then(result => {
+                if (result.value) {
+                    axios
+                        .put(BASE_URL + "/tracking/travelsstatus/" + id)
+                        .then(response => {
+                            this.getTravels();
+                            Swal.fire(
+                                "Good job!",
+                                response.data.message,
+                                "success"
+                            );
+                            this.$showToast(response.data.message, "success");
+                        });
+                } else if (result.dismiss === "cancel") {
+                    Swal.fire(
+                        "Cancelled!",
+                        "The request has been cancelled.",
+                        "error"
+                    );
+                }
+            });
+        },
         pageSet(type, page = null) {
             if (type == "jump") {
                 this.pages.prevPage = page - 1;
@@ -379,7 +701,9 @@ export default {
             this.getTravels();
         },
         getVehicleModes() {
-            this.vehiclemodes = this.$store.getters["mot/mot"];
+            setTimeout(() => {
+                this.vehiclemodes = this.$store.getters["mot/mot"];
+            }, 1000);
         }
     }
 };

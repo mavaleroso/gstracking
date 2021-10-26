@@ -22,6 +22,7 @@ class RequestTransaction extends Migration
             $table->mediumText('remarks')->nullable();
             $table->bigInteger('transaction_vehicles_id')->nullable();
             $table->bigInteger('user_id')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }
