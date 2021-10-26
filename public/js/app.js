@@ -3424,8 +3424,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var year = function year() {
         $(function () {
-          var system = JSON.parse(JSON.stringify(_this.system));
-          $("#year").val(system[4].value);
+          var system = JSON.parse(JSON.stringify(_this.system)); // $("#year").val(system[4].value);
         });
       };
 
@@ -10789,7 +10788,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vm.getData(paxVal, count);
         });
         $("#passenger-select-".concat(count)).on("select2:clear", function (e) {
-          console.log("counttt " + count);
           $("#pax_des_" + "".concat(count)).val(null);
           $("#pax_gen_" + "".concat(count)).val(null);
           vm.pax_gen[count - 1] = "";
@@ -12156,9 +12154,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         for (var i = 0; i < _this4.names.length; i++) {
           if (_this4.names[i] == "status_radio") {
-            console.log("1");
-            console.log(keys);
-
             if (keys.indexOf("status_radio") == -1) {
               if ($(".checkbox-inline").next().length != 0) {
                 $(".checkbox-inline").next(".invalid-feedback").remove();
@@ -13104,6 +13099,297 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -13164,6 +13450,31 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         _this.loading = false;
       });
     },
+    approve: function approve(id) {
+      var _this2 = this;
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Submit",
+        cancelButtonText: "Cancel",
+        reverseButtons: false
+      }).then(function (result) {
+        if (result.value) {
+          axios.put(BASE_URL + "/tracking/travelsstatus/" + id).then(function (response) {
+            _this2.getTravels();
+
+            Swal.fire("Good job!", response.data.message, "success");
+
+            _this2.$showToast(response.data.message, "success");
+          });
+        } else if (result.dismiss === "cancel") {
+          Swal.fire("Cancelled!", "The request has been cancelled.", "error");
+        }
+      });
+    },
     pageSet: function pageSet(type) {
       var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
@@ -13180,7 +13491,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.getTravels();
     },
     getVehicleModes: function getVehicleModes() {
-      this.vehiclemodes = this.$store.getters["mot/mot"];
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.vehiclemodes = _this3.$store.getters["mot/mot"];
+      }, 1000);
     }
   }
 });
@@ -68519,156 +68834,7 @@ var render = function() {
       attrs: { id: "kt_page_stretched_card" }
     },
     [
-      _c("div", { staticClass: "card-header" }, [
-        _c("div", { staticClass: "card-title" }, [
-          _c("a", { staticClass: "mr-3", attrs: { href: "#" } }, [
-            _c("div", { staticClass: "input-group" }, [
-              _c("div", { staticClass: "input-group-prepend" }, [
-                _c(
-                  "span",
-                  {
-                    staticClass:
-                      "input-group-text svg-icon svg-icon-md svg-icon-primary"
-                  },
-                  [
-                    _c(
-                      "svg",
-                      {
-                        attrs: {
-                          xmlns: "http://www.w3.org/2000/svg",
-                          "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                          width: "24px",
-                          height: "24px",
-                          viewBox: "0 0 24 24",
-                          version: "1.1"
-                        }
-                      },
-                      [
-                        _c(
-                          "g",
-                          {
-                            attrs: {
-                              stroke: "none",
-                              "stroke-width": "1",
-                              fill: "none",
-                              "fill-rule": "evenodd"
-                            }
-                          },
-                          [
-                            _c("rect", {
-                              attrs: {
-                                x: "0",
-                                y: "0",
-                                width: "24",
-                                height: "24"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z",
-                                fill: "#000000",
-                                "fill-rule": "nonzero",
-                                opacity: "0.3"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z",
-                                fill: "#000000",
-                                "fill-rule": "nonzero"
-                              }
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.searchData,
-                    expression: "searchData"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", name: "", placeholder: "Search" },
-                domProps: { value: _vm.searchData },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.searchData = $event.target.value
-                  }
-                }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-toolbar" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-primary font-weight-bolder",
-              attrs: { href: "#" }
-            },
-            [
-              _c("span", { staticClass: "svg-icon svg-icon-md" }, [
-                _c(
-                  "svg",
-                  {
-                    attrs: {
-                      xmlns: "http://www.w3.org/2000/svg",
-                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
-                      width: "24px",
-                      height: "24px",
-                      viewBox: "0 0 24 24",
-                      version: "1.1"
-                    }
-                  },
-                  [
-                    _c(
-                      "g",
-                      {
-                        attrs: {
-                          stroke: "none",
-                          "stroke-width": "1",
-                          fill: "none",
-                          "fill-rule": "evenodd"
-                        }
-                      },
-                      [
-                        _c("rect", {
-                          attrs: { x: "0", y: "0", width: "24", height: "24" }
-                        }),
-                        _vm._v(" "),
-                        _c("path", {
-                          attrs: {
-                            d:
-                              "M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z",
-                            fill: "#000000"
-                          }
-                        })
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v("\n                Advance Filter")
-            ]
-          )
-        ])
-      ]),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "div",
@@ -68676,197 +68842,795 @@ var render = function() {
           class: _vm.loading ? "card-body overlay overlay-block" : "card-body"
         },
         [
-          _vm.travels == null
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
-                  attrs: { role: "alert" }
-                },
-                [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "alert-text" }, [
-                    _vm._v("No data available!")
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.loading
-            ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
-                _c("div", { staticClass: "spinner spinner-primary" })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-scroll" }, [
+          _c("div", { staticClass: "tab-content" }, [
             _c(
-              "table",
+              "div",
               {
-                staticClass: "table rounded table-sm table-hover",
-                attrs: { id: "pending-travels-tbl" }
+                staticClass: "tab-pane fade show active",
+                attrs: {
+                  id: "kt_tab_pane_5_1",
+                  role: "tabpanel",
+                  "aria-labelledby": "kt_tab_pane_5_1"
+                }
               },
               [
-                _vm._m(2),
-                _vm._v(" "),
-                _vm.travels
-                  ? _c(
-                      "tbody",
-                      _vm._l(_vm.travels, function(t, index) {
-                        return _c("tr", { key: index }, [
-                          _c("td", [_vm._v(_vm._s(_vm.indexers(index + 1)))]),
-                          _vm._v(" "),
-                          _c("td", [
+                _c("div", { staticClass: "d-flex" }, [
+                  _c("a", { staticClass: "mr-3", attrs: { href: "#" } }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("div", { staticClass: "input-group-prepend" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "input-group-text svg-icon svg-icon-md svg-icon-primary"
+                          },
+                          [
                             _c(
-                              "span",
+                              "svg",
                               {
-                                staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1"
-                              },
-                              [_vm._v(_vm._s(t.type))]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(t.tracking_no, function(t, index) {
-                              return _c(
-                                "span",
-                                {
-                                  key: index,
-                                  staticClass:
-                                    "label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
-                                },
-                                [_vm._v(_vm._s(t.tracking_no))]
-                              )
-                            }),
-                            0
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(t.tracking_no, function(t, index) {
-                              return _c(
-                                "span",
-                                {
-                                  key: index,
-                                  staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                },
-                                [_vm._v(_vm._s(t.place))]
-                              )
-                            }),
-                            0
-                          ),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "label label-lg label-rounded label-inline label-primary m-1"
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                  width: "24px",
+                                  height: "24px",
+                                  viewBox: "0 0 24 24",
+                                  version: "1.1"
+                                }
                               },
                               [
-                                _vm._v(
-                                  _vm._s(
-                                    t.tracking_no.reduce(function(acc, item) {
-                                      return (
-                                        acc + parseInt(item.passenger_count)
-                                      )
-                                    }, 0)
-                                  )
+                                _c(
+                                  "g",
+                                  {
+                                    attrs: {
+                                      stroke: "none",
+                                      "stroke-width": "1",
+                                      fill: "none",
+                                      "fill-rule": "evenodd"
+                                    }
+                                  },
+                                  [
+                                    _c("rect", {
+                                      attrs: {
+                                        x: "0",
+                                        y: "0",
+                                        width: "24",
+                                        height: "24"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z",
+                                        fill: "#000000",
+                                        "fill-rule": "nonzero",
+                                        opacity: "0.3"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z",
+                                        fill: "#000000",
+                                        "fill-rule": "nonzero"
+                                      }
+                                    })
+                                  ]
                                 )
                               ]
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchData,
+                            expression: "searchData"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "",
+                          placeholder: "Search"
+                        },
+                        domProps: { value: _vm.searchData },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchData = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass:
+                        "btn btn-primary font-weight-bolder d-block ml-auto",
+                      attrs: { href: "#" }
+                    },
+                    [
+                      _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                              width: "24px",
+                              height: "24px",
+                              viewBox: "0 0 24 24",
+                              version: "1.1"
+                            }
+                          },
+                          [
                             _c(
-                              "span",
+                              "g",
                               {
-                                staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1"
-                              },
-                              [_vm._v(_vm._s(t.transactions.length))]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
+                                attrs: {
+                                  stroke: "none",
+                                  "stroke-width": "1",
+                                  fill: "none",
+                                  "fill-rule": "evenodd"
+                                }
                               },
                               [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.vehiclemodes.filter(function(i) {
-                                      return i.id == t.mot
-                                    })[0].name
-                                  )
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(t.tracking_no, function(t, index) {
-                              return _c(
-                                "span",
-                                {
-                                  key: index,
-                                  staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                },
-                                [_vm._v(_vm._s(t.inclusive_from))]
-                              )
-                            }),
-                            0
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            _vm._l(t.tracking_no, function(t, index) {
-                              return _c(
-                                "span",
-                                {
-                                  key: index,
-                                  staticClass:
-                                    "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                },
-                                [_vm._v(_vm._s(t.inclusive_to))]
-                              )
-                            }),
-                            0
-                          ),
-                          _vm._v(" "),
-                          t.type == "rito"
-                            ? _c(
-                                "td",
-                                _vm._l(t.tracking_no, function(t, index) {
-                                  return _c(
-                                    "span",
-                                    {
-                                      key: index,
-                                      staticClass:
-                                        "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
-                                    },
-                                    [_vm._v(_vm._s(t.status))]
-                                  )
+                                _c("rect", {
+                                  attrs: {
+                                    x: "0",
+                                    y: "0",
+                                    width: "24",
+                                    height: "24"
+                                  }
                                 }),
-                                0
-                              )
-                            : _vm._e()
-                        ])
-                      }),
-                      0
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z",
+                                    fill: "#000000"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v("\n                        Advance Filter")
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.travels == null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "alert-text" }, [
+                          _vm._v("No data available!")
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(2)
+                      ]
                     )
-                  : _vm._e()
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                      _c("div", { staticClass: "spinner spinner-primary" })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-scroll" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table rounded table-sm table-hover",
+                      attrs: { id: "pending-travels-tbl" }
+                    },
+                    [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm.travels
+                        ? _c(
+                            "tbody",
+                            _vm._l(
+                              _vm.travels.filter(function(i) {
+                                return i.status == 1
+                              }),
+                              function(t, index) {
+                                return _c("tr", { key: index }, [
+                                  _c("td", [
+                                    _vm._v(_vm._s(_vm.indexers(index + 1)))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1"
+                                      },
+                                      [_vm._v(_vm._s(t.type))]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.tracking_no))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.place))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-primary m-1"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            t.tracking_no.reduce(function(
+                                              acc,
+                                              item
+                                            ) {
+                                              return (
+                                                acc +
+                                                parseInt(item.passenger_count)
+                                              )
+                                            },
+                                            0)
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1"
+                                      },
+                                      [_vm._v(_vm._s(t.transactions.length))]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.vehiclemodes.filter(function(
+                                              i
+                                            ) {
+                                              return i.id == t.mot
+                                            })[0].name
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.inclusive_from))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.inclusive_to))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  t.type == "rito"
+                                    ? _c(
+                                        "td",
+                                        _vm._l(t.tracking_no, function(
+                                          t,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "span",
+                                            {
+                                              key: index,
+                                              staticClass:
+                                                "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            },
+                                            [_vm._v(_vm._s(t.status))]
+                                          )
+                                        }),
+                                        0
+                                      )
+                                    : _vm._e()
+                                ])
+                              }
+                            ),
+                            0
+                          )
+                        : _vm._e()
+                    ]
+                  )
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade",
+                attrs: {
+                  id: "kt_tab_pane_5_2",
+                  role: "tabpanel",
+                  "aria-labelledby": "kt_tab_pane_5_2"
+                }
+              },
+              [
+                _c("div", { staticClass: "d-flex" }, [
+                  _c("a", { staticClass: "mr-3", attrs: { href: "#" } }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("div", { staticClass: "input-group-prepend" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "input-group-text svg-icon svg-icon-md svg-icon-primary"
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                                  width: "24px",
+                                  height: "24px",
+                                  viewBox: "0 0 24 24",
+                                  version: "1.1"
+                                }
+                              },
+                              [
+                                _c(
+                                  "g",
+                                  {
+                                    attrs: {
+                                      stroke: "none",
+                                      "stroke-width": "1",
+                                      fill: "none",
+                                      "fill-rule": "evenodd"
+                                    }
+                                  },
+                                  [
+                                    _c("rect", {
+                                      attrs: {
+                                        x: "0",
+                                        y: "0",
+                                        width: "24",
+                                        height: "24"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z",
+                                        fill: "#000000",
+                                        "fill-rule": "nonzero",
+                                        opacity: "0.3"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z",
+                                        fill: "#000000",
+                                        "fill-rule": "nonzero"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.searchData,
+                            expression: "searchData"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          name: "",
+                          placeholder: "Search"
+                        },
+                        domProps: { value: _vm.searchData },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.searchData = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass:
+                        "btn btn-primary font-weight-bolder d-block ml-auto",
+                      attrs: { href: "#" }
+                    },
+                    [
+                      _c("span", { staticClass: "svg-icon svg-icon-md" }, [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                              width: "24px",
+                              height: "24px",
+                              viewBox: "0 0 24 24",
+                              version: "1.1"
+                            }
+                          },
+                          [
+                            _c(
+                              "g",
+                              {
+                                attrs: {
+                                  stroke: "none",
+                                  "stroke-width": "1",
+                                  fill: "none",
+                                  "fill-rule": "evenodd"
+                                }
+                              },
+                              [
+                                _c("rect", {
+                                  attrs: {
+                                    x: "0",
+                                    y: "0",
+                                    width: "24",
+                                    height: "24"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d:
+                                      "M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z",
+                                    fill: "#000000"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v("\n                        Advance Filter")
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.travels == null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "alert alert-custom alert-warning fade show mb-5 px-5 py-0",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._m(4),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "alert-text" }, [
+                          _vm._v("No data available!")
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(5)
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c("div", { staticClass: "overlay-layer bg-dark-o-10" }, [
+                      _c("div", { staticClass: "spinner spinner-primary" })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-scroll" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table rounded table-sm table-hover",
+                      attrs: { id: "pending-travels-tbl" }
+                    },
+                    [
+                      _vm._m(6),
+                      _vm._v(" "),
+                      _vm.travels
+                        ? _c(
+                            "tbody",
+                            _vm._l(
+                              _vm.travels.filter(function(i) {
+                                return i.status == 0
+                              }),
+                              function(t, index) {
+                                return _c("tr", { key: index }, [
+                                  _c("td", [
+                                    _vm._v(_vm._s(_vm.indexers(index + 1)))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn btn-sm btn-clean btn-approve",
+                                        attrs: {
+                                          "data-id": "",
+                                          title: "Approve Request"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.approve(t.id)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "flaticon2-checkmark"
+                                        }),
+                                        _vm._v(
+                                          "\n                                        Approve\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1"
+                                      },
+                                      [_vm._v(_vm._s(t.type))]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.tracking_no))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.place))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-primary m-1"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            t.tracking_no.reduce(function(
+                                              acc,
+                                              item
+                                            ) {
+                                              return (
+                                                acc +
+                                                parseInt(item.passenger_count)
+                                              )
+                                            },
+                                            0)
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1"
+                                      },
+                                      [_vm._v(_vm._s(t.transactions.length))]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "label label-lg label-rounded label-inline label-light-primary m-1 p-1 h-auto"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.vehiclemodes.filter(function(
+                                              i
+                                            ) {
+                                              return i.id == t.mot
+                                            })[0].name
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.inclusive_from))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    _vm._l(t.tracking_no, function(t, index) {
+                                      return _c(
+                                        "span",
+                                        {
+                                          key: index,
+                                          staticClass:
+                                            "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                        },
+                                        [_vm._v(_vm._s(t.inclusive_to))]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  t.type == "rito"
+                                    ? _c(
+                                        "td",
+                                        _vm._l(t.tracking_no, function(
+                                          t,
+                                          index
+                                        ) {
+                                          return _c(
+                                            "span",
+                                            {
+                                              key: index,
+                                              staticClass:
+                                                "label label-lg label-rounded label-inline label-light-primary m-1 h-auto p-2"
+                                            },
+                                            [_vm._v(_vm._s(t.status))]
+                                          )
+                                        }),
+                                        0
+                                      )
+                                    : _vm._e()
+                                ])
+                              }
+                            ),
+                            0
+                          )
+                        : _vm._e()
+                    ]
+                  )
+                ])
               ]
             )
           ])
@@ -69012,6 +69776,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-toolbar" }, [
+        _c("ul", { staticClass: "nav nav-light-success nav-bold nav-pills" }, [
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link active",
+                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_5_1" }
+              },
+              [
+                _c("span", { staticClass: "nav-icon" }, [
+                  _c("i", { staticClass: "flaticon2-chat-1" })
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "nav-text" }, [_vm._v("Approved")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: { "data-toggle": "tab", href: "#kt_tab_pane_5_2" }
+              },
+              [
+                _c("span", { staticClass: "nav-icon" }, [
+                  _c("i", { staticClass: "flaticon2-drop" })
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "nav-text" }, [_vm._v("Pending")])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "alert-icon" }, [
       _c("i", { staticClass: "flaticon-warning" })
     ])
@@ -69046,6 +69854,67 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Destination")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Passengers")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Vehicles")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Assigned MOT")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Travel Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Return Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Portal Status")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-icon" }, [
+      _c("i", { staticClass: "flaticon-warning" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert-close" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "alert",
+            "aria-label": "Close"
+          }
+        },
+        [
+          _c("span", { attrs: { "aria-hidden": "true" } }, [
+            _c("i", { staticClass: "ki ki-close" })
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")]),
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),

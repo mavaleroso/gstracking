@@ -149,14 +149,6 @@ class AuthController extends Controller
 
                 if (!User::where('sub', $data['sub'])->first()) User::create($newData);
 
-                // session([
-                //     'sub' => $data['sub'],
-                //     'name' => $data['name'],
-                //     'given_name' => $data['given_name'],
-                //     'family_name' => $data['family_name'],
-                //     'username' => $data['preferred_username'],
-                //     'email' => $data['email']
-                // ]);
                 if (auth('users')->attempt($newData)) {
                     return redirect()->route('main.dashboard');
                 }
