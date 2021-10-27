@@ -142,10 +142,22 @@ class PermissionCommand extends Command
 
     private function assign()
     {
+        $role = Role::where('name', 'head')->first();
+        $permissions = Permission::pluck('id', 'id')->all();
+        $role->syncPermissions($permissions);
+        // $user = User::where('email', 'head@head.com')->first();
+        // $user->assignRole($role->id);
+
         $role = Role::where('name', 'admin')->first();
         $permissions = Permission::pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
-        $user = User::where('email', 'admin@admin.com')->first();
-        $user->assignRole($role->id);
+
+        $role = Role::where('name', 'staff')->first();
+        $permissions = Permission::whereNotIn('name', ['travelsstatus-edit', 'fuelcharges-edit'])->pluck('id', 'id')->all();
+        $role->syncPermissions($permissions);
+
+        $role = Role::where('name', 'guest')->first();
+        $permissions = Permission::where('name', 'NOT LIKE', '%edit')->where('name', 'NOT LIKE', '%create')->where('name', 'NOT LIKE', '%delete')->pluck('id', 'id')->all();
+        $role->syncPermissions($permissions);
     }
 }

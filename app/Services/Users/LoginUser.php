@@ -33,7 +33,7 @@ class LoginUser
         if (!isset($user))
             return User::LOGIN_BAD_CREDENTIALS;
         // Check if active
-        if ($user->details->is_active) {
+        // if ($user->details->is_active) {
             // Attempt
             if (!auth('users')->attempt($data)) {
                 // Event here
@@ -41,7 +41,7 @@ class LoginUser
             }
             // Success
             return User::LOGIN_SUCCESS;
-        } else
-            return User::LOGIN_INACTIVE;
+        // } else
+        //     return User::LOGIN_INACTIVE;
     }
 }

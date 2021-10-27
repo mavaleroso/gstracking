@@ -1012,7 +1012,7 @@ export default {
                         {
                             targets: 6,
                             render: data => {
-                                return this.$timeEng(data);
+                                return data ? this.$timeEng(data) : null;
                             }
                         },
                         {

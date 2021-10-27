@@ -86,7 +86,6 @@ class AuthController extends Controller
                 ['type' => 'success', 'message' => 'Login successfully!', 'user' => auth()->user()]
             ]);
         }
-
         // return redirect()->route('main.login');
     }
 
@@ -158,5 +157,24 @@ class AuthController extends Controller
             // Use this to interact with an API on the users behalf
             echo $token->getToken();
         }
+    }
+
+    public function user(Request $request)
+    {
+        return [
+            'user' => $request->user(),
+            'permissions' => $this->getPermission(),
+            'role' => $request->user()->getRoleNames(),
+        ];
+    }
+
+    private function getPermission()
+    {
+        $permissions = [];
+        foreach (auth()->user()->getAllPermissions() as $permission) {
+            $permissions[] = $permission->name;
+        }
+
+        return $permissions;
     }
 }

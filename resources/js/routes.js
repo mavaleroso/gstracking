@@ -16,6 +16,13 @@ import TravelsStatus from "./components/Pages/TravelsStatus";
 import FuelCharges from "./components/Pages/FuelCharges";
 import printFuelRequestSlip from "./components/Pages/PrintFuelRequestSlip.vue";
 
+// Spatie Permissions
+import RolesAndPermissions from "./mixins/spatie.vue";
+import Config from "./mixins/config.vue";
+
+// Vuex Store
+import store from "./store";
+
 const routes = [
     {
         path: "/gstracking/dashboard",
@@ -27,8 +34,22 @@ const routes = [
     },
     {
         path: "/gstracking/request_travel",
-        component: RequestTravel,
         name: "requestTravel",
+        component: async () => {
+            return Config.methods.$delay(1000).then(() => {
+                if (
+                    RolesAndPermissions.methods.$role([
+                        "admin",
+                        "head",
+                        "staff"
+                    ])
+                ) {
+                    return RequestTravel;
+                } else {
+                    alert("False");
+                }
+            });
+        },
         meta: {
             title: "Request Travel"
         }

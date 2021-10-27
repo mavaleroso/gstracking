@@ -61,7 +61,6 @@ import Subheader from "./components/Layouts/Subheader";
 import Navfooter from "./components/Layouts/Footer";
 import Rightpanel from "./components/Layouts/Rightpanel";
 export default {
-    props: ["sessionData"],
     components: {
         Navbar,
         Mobile,
@@ -71,12 +70,19 @@ export default {
         Navfooter,
         Rightpanel
     },
+    data() {
+        return {
+            user: [],
+            role: [],
+            permissions: []
+        };
+    },
     created() {
-        this.vuexStore();
+        this.getUser();
     },
     mounted() {
         this.ini();
-        this.session();
+        this.vuexStore();
     },
     methods: {
         ini() {
@@ -95,8 +101,27 @@ export default {
                 document.getElementById("kt_body").appendChild(tag);
             });
         },
+        async getUser() {
+            await axios.get(BASE_URL + "/user").then(res => {
+                this.user = res.data.user;
+                this.role = res.data.role;
+                this.permissions = res.data.permissions;
+                this.$store.dispatch(
+                    "sessionStore/loadUserData",
+                    res.data.user
+                );
+                this.$store.dispatch(
+                    "sessionStore/loadRoleData",
+                    res.data.role
+                );
+                this.$store.dispatch(
+                    "sessionStore/loadPermissionsData",
+                    res.data.permissions
+                );
+                this.session();
+            });
+        },
         vuexStore() {
-            this.$store.dispatch("sessionStore/setLocalData", this.sessionData);
             this.$store.dispatch("employees/loadEmployee");
             this.$store.dispatch("drivers/loadDrivers");
             this.$store.dispatch("po/loadPos");
@@ -108,7 +133,7 @@ export default {
         session() {
             this.$session.destroy();
             this.$session.start();
-            this.$session.set("user", this.sessionData);
+            this.$session.set("user", this.user);
         }
     }
 };

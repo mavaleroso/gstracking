@@ -42,19 +42,24 @@
 </template>
 <script>
 export default {
-    data() {
-        return {
-            nchar: this.$store.getters["sessionStore/session_data"].name
-                .charAt(0)
-                .toUpperCase(),
-            name: this.$store.getters["sessionStore/session_data"].name
-                .split(" ")
-                .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
-                .join(" ")
-        };
-    },
-    mounted() {
-        console.log(this.$store.getters["sessionStore/session_data"]);
+    computed: {
+        nchar() {
+            let name = this.$store.getters["sessionStore/user"].name;
+            if (name) {
+                let nchar = name.charAt(0).toUpperCase();
+                return nchar;
+            }
+        },
+        name() {
+            let name = this.$store.getters["sessionStore/user"].name;
+            if (name) {
+                let n = name
+                    .split(" ")
+                    .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
+                    .join(" ");
+                return n;
+            }
+        }
     }
 };
 </script>

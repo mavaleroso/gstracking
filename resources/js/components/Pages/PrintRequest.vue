@@ -576,7 +576,9 @@ export default {
                             : res.data.travel[0].created_at;
                     this.travel_time =
                         this.type == "local"
-                            ? this.$timeEng(res.data.travel[0].depart_time)
+                            ? res.data.travel[0].depart_time
+                                ? this.$timeEng(res.data.travel[0].depart_time)
+                                : ""
                             : "";
                     autosize($("#kt_autosize_1"));
                 });

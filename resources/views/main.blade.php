@@ -37,7 +37,7 @@
     <body>
         
         <div id="app" class="animate__animated animate__fadeIn">
-            <index :session-data="{{ auth()->user() }}"></index>
+            <index></index>
         </div>
         
         <script>var BASE_URL = '{{ env('APP_URL') }}';</script>
