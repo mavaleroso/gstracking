@@ -15,13 +15,11 @@ import printTripTicket from "./components/Pages/PrintTripTicket";
 import TravelsStatus from "./components/Pages/TravelsStatus";
 import FuelCharges from "./components/Pages/FuelCharges";
 import printFuelRequestSlip from "./components/Pages/PrintFuelRequestSlip.vue";
+import error403 from "./components/Error/403.vue";
 
 // Spatie Permissions
 import RolesAndPermissions from "./mixins/spatie.vue";
 import Config from "./mixins/config.vue";
-
-// Vuex Store
-import store from "./store";
 
 const routes = [
     {
@@ -46,7 +44,7 @@ const routes = [
                 ) {
                     return RequestTravel;
                 } else {
-                    alert("False");
+                    return error403;
                 }
             });
         },
