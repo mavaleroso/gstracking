@@ -61,4 +61,8 @@ return [
 
     // External Passengers
     'externalpassengers_updated_successfully' => 'External Passengers updated succesfully',
+
+
+    // Travel Status
+    'travelstatus_updated_successfully' => 'External Passengers updated succesfully',
 ];

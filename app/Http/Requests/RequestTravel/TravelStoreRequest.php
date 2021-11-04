@@ -33,7 +33,7 @@ class TravelStoreRequest extends FormRequest
             'pur_travel' => 'required',
             'date_travel' => 'required|after_or_equal:today',
             'date_return' => 'required|after_or_equal:today',
-            'time_depart' => 'required',
+            'time_depart' => 'nullable',
             'pax_total' => 'required',
             'destination_place' => 'required',
             'ext_pax_total' => 'required',
@@ -68,7 +68,6 @@ class TravelStoreRequest extends FormRequest
             'pur_travel' => 'Purpose',
             'date_travel' => 'Travel Date',
             'date_return' => 'Return Date',
-            'time_depart' => 'Time',
         ];
 
 
@@ -102,7 +101,6 @@ class TravelStoreRequest extends FormRequest
             'date_travel' => __('main/validations.required'),
             'destination_place' => __('main/validations.required'),
             'date_return' => __('main/validations.required'),
-            'time_depart' => __('main/validations.required')
         ];
 
         for ($i = 1; $i <= $this->request->get('pax_total'); $i++) {

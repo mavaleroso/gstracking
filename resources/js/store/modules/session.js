@@ -1,19 +1,39 @@
 const state = {
-    session_data: []
+    user: [],
+    role: [],
+    permissions: []
 };
 const getters = {
-    session_data(state) {
-        return state.session_data;
+    user(state) {
+        return state.user;
+    },
+    role(state) {
+        return state.role;
+    },
+    permissions(state) {
+        return state.permissions;
     }
 };
 const actions = {
-    setLocalData({ commit }, payload) {
-        commit("setSessData", payload);
+    async loadUserData({ commit }, payload) {
+        await commit("setUser", payload);
+    },
+    async loadRoleData({ commit }, payload) {
+        await commit("setRole", payload);
+    },
+    async loadPermissionsData({ commit }, payload) {
+        await commit("setPermissions", payload);
     }
 };
 const mutations = {
-    setSessData: (state, session_data) => {
-        state.session_data = session_data;
+    setUser: (state, user) => {
+        state.user = user;
+    },
+    setRole: (state, role) => {
+        state.role = role;
+    },
+    setPermissions: (state, permissions) => {
+        state.permissions = permissions;
     }
 };
 export default {

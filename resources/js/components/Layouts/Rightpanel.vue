@@ -29,11 +29,7 @@
                     <a
                         href="#"
                         class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"
-                        >{{
-                            this.$store.getters["sessionStore/session_data"][
-                                "user"
-                            ].name
-                        }}</a
+                        >{{ this.$store.getters["sessionStore/user"].name }}</a
                     >
                     <div class="text-muted mt-1">Application Developer</div>
                     <div class="navi mt-2">
@@ -83,9 +79,8 @@
                                 <span
                                     class="navi-text text-muted text-hover-primary"
                                     >{{
-                                        $store.getters[
-                                            "sessionStore/session_data"
-                                        ]["user"].email
+                                        $store.getters["sessionStore/user"]
+                                            .email
                                     }}</span
                                 >
                             </span>
@@ -112,7 +107,7 @@ export default {
     methods: {
         logout() {
             this.$session.destroy();
-            location.href = "/logout";
+            location.href = BASE_URL + "/logout";
         }
     }
 };

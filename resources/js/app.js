@@ -10,9 +10,12 @@ import "nprogress/nprogress.css";
 import Vue from "vue";
 import Vuex from "vuex";
 import ConfigMixin from "./mixins/config.vue";
+import RoleAndPermissions from "./mixins/spatie.vue";
 import VueSession from "vue-session";
 
 Vue.mixin(ConfigMixin);
+Vue.mixin(RoleAndPermissions);
+
 Vue.use(Vuex);
 Vue.use(VueSession);
 

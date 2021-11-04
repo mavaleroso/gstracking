@@ -70,11 +70,19 @@ export default {
         Navfooter,
         Rightpanel
     },
+    data() {
+        return {
+            user: [],
+            role: [],
+            permissions: []
+        };
+    },
     created() {
-        this.vuexStore();
+        this.getUser();
     },
     mounted() {
         this.ini();
+        this.vuexStore();
     },
     methods: {
         ini() {
@@ -93,11 +101,27 @@ export default {
                 document.getElementById("kt_body").appendChild(tag);
             });
         },
+        async getUser() {
+            await axios.get(BASE_URL + "/user").then(res => {
+                this.user = res.data.user;
+                this.role = res.data.role;
+                this.permissions = res.data.permissions;
+                this.$store.dispatch(
+                    "sessionStore/loadUserData",
+                    res.data.user
+                );
+                this.$store.dispatch(
+                    "sessionStore/loadRoleData",
+                    res.data.role
+                );
+                this.$store.dispatch(
+                    "sessionStore/loadPermissionsData",
+                    res.data.permissions
+                );
+                this.session();
+            });
+        },
         vuexStore() {
-            this.$store.dispatch(
-                "sessionStore/setLocalData",
-                this.$session.getAll()
-            );
             this.$store.dispatch("employees/loadEmployee");
             this.$store.dispatch("drivers/loadDrivers");
             this.$store.dispatch("po/loadPos");
@@ -105,63 +129,12 @@ export default {
             this.$store.dispatch("department/loadSection");
             this.$store.dispatch("department/loadDivision");
             this.$store.dispatch("mot/loadMot");
+        },
+        session() {
+            this.$session.destroy();
+            this.$session.start();
+            this.$session.set("user", this.user);
         }
-
-        // storeDestination() {
-        //     let division = localStorage.getItem("division");
-        //     let region = localStorage.getItem("region");
-        //     let section = localStorage.getItem("section");
-        //     let province = localStorage.getItem("province");
-        //     let city = localStorage.getItem("city");
-        //     let barangay = localStorage.getItem("barangay");
-
-        //     if (
-        //         division === null ||
-        //         region === null ||
-        //         section === null ||
-        //         province === null ||
-        //         city === null ||
-        //         barangay === null
-        //     ) {
-        //         this.$store.dispatch("destination/loadDivision");
-        //         this.$store.dispatch("destination/loadRegion");
-        //         this.$store.dispatch("destination/loadSection");
-        //         this.$store.dispatch("destination/loadProvince");
-        //         this.$store.dispatch("destination/loadCity");
-        //         this.$store.dispatch("destination/loadBarangay");
-        //     } else {
-        //         this.$store.dispatch(
-        //             "destination/setLocalDivision",
-        //             JSON.parse(localStorage.getItem("division"))
-        //         );
-        //         this.$store.dispatch(
-        //             "destination/setLocalRegion",
-        //             JSON.parse(localStorage.getItem("region"))
-        //         );
-        //         this.$store.dispatch(
-        //             "destination/setLocalSection",
-        //             JSON.parse(localStorage.getItem("section"))
-        //         );
-        //         this.$store.dispatch(
-        //             "destination/setLocalProvince",
-        //             JSON.parse(localStorage.getItem("province]"))
-        //         );
-        //         this.$store.dispatch(
-        //             "destination/setLocalCity",
-        //             JSON.parse(localStorage.getItem("city]"))
-        //         );
-        //         this.$store.dispatch(
-        //             "destination/setLocalBarangay",
-        //             JSON.parse(localStorage.getItem("barangay]"))
-        //         );
-        //     }
-
-        //     // if (localStorage.getItem("ListEmployee") === null) {
-        //     // }
-        //     // else {
-        //     // 	this.$store.commit('setEmployee', JSON.parse(localStorage.getItem('ListEmployee')));
-        //     // }
-        // },
     }
 };
 </script>

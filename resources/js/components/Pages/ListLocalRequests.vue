@@ -967,8 +967,7 @@ export default {
         tdatatable() {
             let vm = this;
             var initTable = () => {
-                var table = $("#request-tbl");
-                table.DataTable({
+                var table = $("#request-tbl").DataTable({
                     scrollY: "50vh",
                     scrollX: true,
                     scrollCollapse: true,
@@ -1013,7 +1012,7 @@ export default {
                         {
                             targets: 6,
                             render: data => {
-                                return this.$timeEng(data);
+                                return data ? this.$timeEng(data) : null;
                             }
                         },
                         {
@@ -1082,6 +1081,16 @@ export default {
                             });
                     }
                 });
+                table
+                    .on("order.dt search.dt", function() {
+                        table
+                            .column(0, { search: "applied", order: "applied" })
+                            .nodes()
+                            .each(function(cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                    })
+                    .draw();
             };
             return {
                 init: function() {

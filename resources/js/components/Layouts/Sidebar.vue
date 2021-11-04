@@ -111,6 +111,7 @@
                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                     </li>
                     <li
+                        v-if="$role(['admin', 'head', 'staff'])"
                         class="menu-item menu-item-submenu"
                         aria-haspopup="true"
                         data-menu-toggle="hover"

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Main;
 use App\Http\Controllers\Base\BaseController as Controller;
 use Illuminate\Http\Request;
 use App\Services\TravelsStatus\GetListingTravelsStatus;
+use App\Services\TravelsStatus\UpdateTravelStatusById;
 
 class TravelsStatusController extends Controller
 {
-     /**
+    /**
      * Initialization
      */
     public function __construct()
@@ -20,7 +21,7 @@ class TravelsStatusController extends Controller
         $this->middleware('permission:travelsstatus-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:travelsstatus-delete', ['only' => ['destroy']]);
         $this->middleware('permission:travelsstatus-view', ['only' => ['show']]);
-    } 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +62,6 @@ class TravelsStatusController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -82,9 +82,10 @@ class TravelsStatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTravelStatusById $updateTravelStatusById, $id)
     {
-        //
+        $data = $updateTravelStatusById->execute($id);
+        return json_encode(['type' => 'success', 'message' => __('main/notifications.travelstatus_updated_successfully'), 'result' => $data]);
     }
 
     /**

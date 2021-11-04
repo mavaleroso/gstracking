@@ -429,8 +429,6 @@ export default {
                     }
                     for (let i = 0; i < this.names.length; i++) {
                         if (this.names[i] == "status_radio") {
-                            console.log("1");
-                            console.log(keys);
                             if (keys.indexOf("status_radio") == -1) {
                                 if ($(".checkbox-inline").next().length != 0) {
                                     $(".checkbox-inline")

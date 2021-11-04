@@ -12,20 +12,22 @@ class RoleSeeder extends Seeder
         [
             'id' => 1,
             'guard_name' => 'users',
-            'name' => 'admin',
-            'is_staff' => 1
+            'name' => 'admin'
         ],
         [
             'id' => 2,
             'guard_name' => 'users',
-            'name' => 'doctors',
-            'is_staff' => 0
+            'name' => 'head'
         ],
         [
             'id' => 3,
             'guard_name' => 'users',
-            'name' => 'sellers',
-            'is_staff' => 0
+            'name' => 'staff'
+        ],
+        [
+            'id' => 4,
+            'guard_name' => 'users',
+            'name' => 'guest'
         ]
     ];
 
@@ -36,7 +38,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('roles')->truncate();
+        DB::table('roles')->truncate();
         app()['cache']->forget('spatie.permission.cache');
         $roles = $this->roles;
         foreach ($roles as $key => $data) {
